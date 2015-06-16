@@ -17,6 +17,7 @@ import os,osproc,strutils,parseutils,strfmt,terminal,times,rdstdin
 # nim 0.11.3 
 # translate shell from github
 # awk or gawk
+# python 2.7.x  and mecab library for japanese 
 # 
 # switches can be changed on the Next :   prompt
 # 
