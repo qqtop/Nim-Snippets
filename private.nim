@@ -29,6 +29,9 @@ import os,terminal,strfmt,math,unicode,parseutils,strutils,sequtils,random,times
 
 const PRIVATLIBVERSION = 0.5
 
+let start* = epochTime()
+
+
 converter toTwInt(x: cushort): int = result = int(x)
 when defined(Linux):
     proc getTerminalWidth*() : int =
@@ -123,7 +126,7 @@ template msgwb*(code: stmt): stmt {.immediate.} =
 template msgb*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgBlack,true)
       code
-      setforegroundcolor(fgWhite)
+      setforegroundcolor(fgBlack)
 
 
 
@@ -308,32 +311,17 @@ proc compareDates*(startDate,endDate:string) : int =
           result = -2
 
 
-proc sleepy*(s:int) =
-      ## sleepy
-      ##
-      ## a sleep function to delay execution
-      ##
-      ## sleep(0.5)  # secs
-      ##
-
-      var ss = epochtime()
-      var ee = ss + s.float
-      var c = 0
-      while ee > epochtime():
-         inc c
-      # feedback line can be commented out
-      #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
+proc sleepy*[T:float|int](s:T) =
+        # s is in seconds
+        var ss = epochtime()
+        var ee = ss + s.float
+        var c = 0
+        while ee > epochtime():
+            inc c
+        # feedback line can be commented out
+        #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
 
 
-proc sleepy*(s:float) =
-    # s is in seconds
-    var ss = epochtime()
-    var ee = ss + s
-    var c = 0
-    while ee > epochtime():
-        inc c
-    # feedback line can be commented out
-    #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
 
 
 proc plusDays*(aDate:string,days:int):string =
@@ -387,7 +375,6 @@ proc plusDays*(aDate:string,days:int):string =
         rxs = ""
 
    result = rxs
-
 
 
 proc minusDays*(aDate:string,days:int):string =
@@ -452,15 +439,13 @@ proc handler*() {.noconv.} =
         ## just by this library into your project you will have an automatic
         ##
         ## exit handler via ctrl-c
-
-
         eraseScreen()
         echo()
         echo aline
         msgg() do: echo "Thank you for using     : ",getAppFilename()
         msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
         echo aline
-        echo "Using private Version   : ", PRIVATLIBVERSION
+        echo "private Version         : ", PRIVATLIBVERSION
         echo "Nim Version             : ", NimVersion
         echo()
         rainbow("Have a Nice Day !")  ## change or add custom messages as required
@@ -653,3 +638,6 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
 
 # putting this here we can stop all programs which use this lib and get the desired exit messages
 setControlCHook(handler)
+# this will reset any color changes in the terminal
+# so no need for this line in the calling prog
+system.addQuitProc(resetAttributes)
