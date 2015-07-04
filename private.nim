@@ -6,17 +6,17 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.5
+##   Version     : 0.6
 ##
 ##   ProjectStart: 2015-06-20
 ##
-##   Compiler    : Nim 0.10.3
+##   Compiler    : Nim 0.11.3
 ##
-##   Description : library with accumulation of procs for
+##   Description : library with a collection of procs and templates
 ##
-##                 display , date handling and more
+##                 display , date handling and much more
 ##
-##   Documenation: nim doc private
+##   Docs        : nim doc private
 ##
 ##   Tested      : on linux only
 ##
@@ -25,12 +25,12 @@
 ##   Note        : may change at any time
 ##
 
-import os,terminal,strfmt,math,unicode,parseutils,strutils,sequtils,random,times
+import os,terminal,strfmt,math,unicode,parseutils,strutils
+import sequtils,random,times,tables
 
-const PRIVATLIBVERSION = 0.5
+const PRIVATLIBVERSION = 0.6
 
-let start* = epochTime()
-
+let start* = epochTime()  #  so we can check execution timing with one line
 
 converter toTwInt(x: cushort): int = result = int(x)
 when defined(Linux):
@@ -55,10 +55,10 @@ when defined(Linux):
     var tw* = getTerminalWidth()
     var aline* = repeat("-",tw)
 
-# will change this once windows gets a real terminal or shell
-
+# will change this once windows gets a real terminal
+# or shell which will never happen
 when defined(Windows):
-   tw = repeat("-",80)
+     tw = repeat("-",80)
 
 
 template msgg*(code: stmt): stmt {.immediate.} =
@@ -530,7 +530,7 @@ proc handler*() {.noconv.} =
 proc superHeader*(bstring:string) =
   ## superheader
   ##
-  ## a framed header display display routine
+  ## a framed header display routine
   ##
   ## suitable for one line headers , overlong lines will
   ##
@@ -574,7 +574,7 @@ proc superHeader*(bstring:string) =
 proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     ## superheader
     ##
-    ## a framed header display display routine
+    ## a framed header display routine
     ##
     ## suitable for one line headers , overlong lines will
     ##
@@ -777,7 +777,30 @@ proc newWord*(maxwl:int = 10 ):string =
            var x = chc.randomChoice()
            if char(x) in Letters:
                nw = nw & $char(x)
-       result = normalize(nw)
+       result = normalize(nw)   # return in lower case , cleaned up
+
+
+proc iching*():seq[string] =
+    ## iching
+    ##
+    ## returns a seq containing iching unicode chars
+    var ich = newSeq[string]()
+    for j in 119552..119638:
+           ich.add($Rune(j))
+    result = ich
+
+proc hiragana*():seq[string] =
+  ## hiragana
+  ##
+  ## returns a seq containing hiragan unicode chars
+  var hir = newSeq[string]()
+  # 12353..12436 hiragana
+  for j in 12353..12436:
+         hir.add($Rune(j))
+  result = hir
+
+
+
 
 
 # putting this here we can stop all programs which use this lib and get the desired exit messages
