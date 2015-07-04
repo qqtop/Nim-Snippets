@@ -160,6 +160,7 @@ template withFile*(f: expr, filename: string, mode: FileMode,
      ##    msgg() do : rainbow("Finished")
      ##    echo()
      ##
+     ##
      ## Example 2
      ##
      ## .. code-block:: nim
@@ -173,7 +174,7 @@ template withFile*(f: expr, filename: string, mode: FileMode,
      ##               try:
      ##                  inc lc
      ##                  var al = $txt.readline()
-     ##                  var sw = "it"
+     ##                  var sw = "the"   # find all lines containing : the
      ##                  if al.contains(sw) == true:
      ##                     inc oc
      ##                     msgy() do: write(stdout,"{:<8}{:>6} {:<7}{:>6}  ".fmt("Line :",lc,"Count :",oc))
