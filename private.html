@@ -1482,10 +1482,9 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dt id="createSeqFloat"><a name="createSeqFloat,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span></pre></dt>
 <dd>
 <p>createSeqFloat</p>
-<p>convenience proc to create a seq of n default = max 10</p>
-<p>random floats</p>
+<p>convenience proc to create a seq of random floats with</p>
+<p>default length 10</p>
 <p>form @[0.34,0.056,...] or similar</p>
-<p>requires random module</p>
 <pre><span class="Comment"># create a seq with 50 random floats</span>
 <span class="Identifier">echo</span> <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
 
@@ -1494,7 +1493,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dd>
 <p>newWordCJK</p>
 <p>creates a new string consisting of n chars default = max 10</p>
-<p>of the cjk char unicode set</p>
+<p>with chars from the cjk unicode set</p>
 <p><a class="reference external" href="http://unicode-table.com/en/#cjk-unified-ideographs">http://unicode-table.com/en/#cjk-unified-ideographs</a></p>
 <p>requires unicode</p>
 <pre><span class="Comment"># create a string of chinese or CJK chars</span>
@@ -1506,7 +1505,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dd>
 <p>newWord</p>
 <p>creates a new lower case word with chars from Letters set</p>
-<p>with default max word length maxwl = 10</p>
+<p>with default max word length maxwl = 10  , min = 3 </p>
 
 
 </dd>
@@ -1585,7 +1584,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-04 15:29:24 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-04 15:51:24 UTC</small>
       </div>
     </div>
   </div>

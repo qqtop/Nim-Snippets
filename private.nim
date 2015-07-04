@@ -640,13 +640,11 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
 proc createSeqFloat*(n:int = 10) : seq[float] =
       ## createSeqFloat
       ##
-      ## convenience proc to create a seq of n default = max 10
+      ## convenience proc to create a seq of random floats with
       ##
-      ## random floats
+      ## default length 10
       ##
       ## form @[0.34,0.056,...] or similar
-      ##
-      ## requires random module
       ##
       ## .. code-block:: nim
       ##    # create a seq with 50 random floats
@@ -665,7 +663,7 @@ proc newWordCJK*(maxwl:int = 10):string =
       ##
       ## creates a new string consisting of n chars default = max 10
       ##
-      ## of the cjk char unicode set
+      ## with chars from the cjk unicode set
       ##
       ## http://unicode-table.com/en/#cjk-unified-ideographs
       ##
@@ -694,8 +692,9 @@ proc newWord*(maxwl:int = 10 ):string =
        ##
        ## creates a new lower case word with chars from Letters set
        ##
-       ## with default max word length maxwl = 10
-
+       ## with default max word length maxwl = 10  , min = 3
+       ##
+       
        var nw = ""
        # words with length range 3 to maxwl
        var maxws = toSeq(3.. <maxwl)
