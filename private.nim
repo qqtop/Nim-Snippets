@@ -636,6 +636,79 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
 
 
 
+
+proc createSeqFloat*(n:int = 10) : seq[float] =
+      ## createSeqFloat
+      ##
+      ## convenience proc to create a seq of n default = max 10
+      ##
+      ## random floats
+      ##
+      ## form @[0.34,0.056,...] or similar
+      ##
+      ## requires random module
+      ##
+      ## .. code-block:: nim
+      ##    # create a seq with 50 random floats
+      ##    echo createSeqFloat(50)
+
+      var z = newSeq[float]()
+      var rng2 = initMersenneTwister(urandom(2500))
+      for x in 0.. <n:
+        z.add(rng2.random())
+      result = z
+
+
+
+proc newWordCJK*(maxwl:int = 10):string =
+      ## newWordCJK
+      ##
+      ## creates a new string consisting of n chars default = max 10
+      ##
+      ## of the cjk char unicode set
+      ##
+      ## http://unicode-table.com/en/#cjk-unified-ideographs
+      ##
+      ## requires unicode
+      ##
+      ## .. code-block:: nim
+      ##    # create a string of chinese or CJK chars
+      ##    # with max length 20 and show it in green
+      ##    msgg() do : echo newWordCJK(20)
+
+
+      # set the char set
+      var chc = toSeq(parsehexint("3400").. parsehexint("4DB5"))
+      var nw = ""
+      # words with length range 3 to maxwl
+      var maxws = toSeq(3.. <maxwl)
+      # get a random length for a new word choosen from between 3 and maxwl
+      var nwl = maxws.randomChoice()
+      for x in 0.. <nwl:
+            nw = nw & $Rune(chc.randomChoice())
+      result = nw
+
+
+proc newWord*(maxwl:int = 10 ):string =
+       ## newWord
+       ##
+       ## creates a new lower case word with chars from Letters set
+       ##
+       ## with default max word length maxwl = 10
+
+       var nw = ""
+       # words with length range 3 to maxwl
+       var maxws = toSeq(3.. <maxwl)
+       # get a random length for a new word
+       var nwl = maxws.randomChoice()
+       var chc = toSeq(33.. 126)
+       while nw.len < nwl:
+           var x = chc.randomChoice()
+           if char(x) in Letters:
+               nw = nw & $char(x)
+       result = normalize(nw)
+
+
 # putting this here we can stop all programs which use this lib and get the desired exit messages
 setControlCHook(handler)
 # this will reset any color changes in the terminal

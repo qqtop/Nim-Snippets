@@ -1222,6 +1222,12 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="superHeader*(bstring: string; strcol: string; frmcol: string)"><wbr />super<wbr />Header</a></li>
   <li><a class="reference" href="#superHeaderA,string,string,string,bool"
     title="superHeaderA*(bb: string; strcol: string; frmcol: string; down: bool)"><wbr />super<wbr />Header<wbr />A</a></li>
+  <li><a class="reference" href="#createSeqFloat,int"
+    title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
+  <li><a class="reference" href="#newWordCJK,int"
+    title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
+  <li><a class="reference" href="#newWord,int"
+    title="newWord*(maxwl: int = 10): string"><wbr />new<wbr />Word</a></li>
 
   </ul>
 </li>
@@ -1473,6 +1479,37 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;rainbow&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;b&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="createSeqFloat"><a name="createSeqFloat,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>createSeqFloat</p>
+<p>convenience proc to create a seq of n default = max 10</p>
+<p>random floats</p>
+<p>form @[0.34,0.056,...] or similar</p>
+<p>requires random module</p>
+<pre><span class="Comment"># create a seq with 50 random floats</span>
+<span class="Identifier">echo</span> <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="newWordCJK"><a name="newWordCJK,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWordCJK</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>newWordCJK</p>
+<p>creates a new string consisting of n chars default = max 10</p>
+<p>of the cjk char unicode set</p>
+<p><a class="reference external" href="http://unicode-table.com/en/#cjk-unified-ideographs">http://unicode-table.com/en/#cjk-unified-ideographs</a></p>
+<p>requires unicode</p>
+<pre><span class="Comment"># create a string of chinese or CJK chars</span>
+<span class="Comment"># with max length 20 and show it in green</span>
+<span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">echo</span> <span class="Identifier">newWordCJK</span><span class="Punctuation">(</span><span class="DecNumber">20</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="newWord"><a name="newWord,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>newWord</p>
+<p>creates a new lower case word with chars from Letters set</p>
+<p>with default max word length maxwl = 10</p>
+
+
+</dd>
 
 </dl></div>
 <div class="section" id="18">
@@ -1548,7 +1585,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-02 15:50:35 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-04 15:29:24 UTC</small>
       </div>
     </div>
   </div>
