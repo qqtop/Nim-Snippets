@@ -144,9 +144,12 @@ template withFile*(f: expr, filename: string, mode: FileMode,
                      body: stmt): stmt {.immediate.} =
      ## withFile
      ##
-     ## similar functionality to python's withFile
+     ## file open close utility template
+     ##
+     ## Example 1
+     ##
      ## .. code-block:: nim
-     ##    let curFile="/data5/notes.txt"  # some file
+     ##    let curFile="/data5/notes.txt"    # some file
      ##    withFile(txt, curFile, fmRead):
      ##        while 1 == 1:
      ##            try:
@@ -157,6 +160,7 @@ template withFile*(f: expr, filename: string, mode: FileMode,
      ##    msgg() do : rainbow("Finished")
      ##    echo()
      ##
+     ## Example 2
      ##
      ## .. code-block:: nim
      ##    import private,strutils,strfmt
