@@ -140,7 +140,74 @@ template hdx*(code:stmt):stmt {.immediate.}  =
    echo ""
 
 
+template withFile*(f: expr, filename: string, mode: FileMode,
+                     body: stmt): stmt {.immediate.} =
+     ## withFile
+     ##
+     ## similar functionality to python's withFile
+     ## .. code-block:: nim
+     ##    let curFile="/data5/notes.txt"  # some file
+     ##    withFile(txt, curFile, fmRead):
+     ##        while 1 == 1:
+     ##            try:
+     ##               stdout.writeln(txt.readLine())   # do something with the lines
+     ##            except:
+     ##               break
+     ##    echo()
+     ##    msgg() do : rainbow("Finished")
+     ##    echo()
+     ##
+     ##
+     ## .. code-block:: nim
+     ##    import private,strutils,strfmt
+     ##
+     ##    let curFile="/data5/notes.txt"
+     ##    var lc = 0
+     ##    var oc = 0
+     ##    withFile(txt, curFile, fmRead):
+     ##           while 1 == 1:
+     ##               try:
+     ##                  inc lc
+     ##                  var al = $txt.readline()
+     ##                  var sw = "it"
+     ##                  if al.contains(sw) == true:
+     ##                     inc oc
+     ##                     msgy() do: write(stdout,"{:<8}{:>6} {:<7}{:>6}  ".fmt("Line :",lc,"Count :",oc))
+     ##                     dhlecho(al,sw,"g")
+     ##                     echo()
+     ##               except:
+     ##                  break
+     ##
+     ##    echo()
+     ##    msgg() do : rainbow("Finished")
+     ##    echo()
+     ##
+
+     let fn = filename
+     var f: File
+
+     if open(f, fn, mode):
+         try:
+           body
+         finally:
+           close(f)
+     else:
+         let msg = "Cannot open file"
+         echo ()
+         msgy() do : echo "Processing file " & curFile & ", stopped . Reason: ", msg
+         quit()
+
+
+
+
 proc rainbow*(astr : string) =
+    ## rainbow
+    ##
+    ## multicolored string
+    ##
+    ## may not work with certain Rune
+    ##
+
     var c = 0
     var a = toSeq(1.. 12)
     for x in 0.. <astr.len:
@@ -694,7 +761,7 @@ proc newWord*(maxwl:int = 10 ):string =
        ##
        ## with default max word length maxwl = 10  , min = 3
        ##
-       
+
        var nw = ""
        # words with length range 3 to maxwl
        var maxws = toSeq(3.. <maxwl)
