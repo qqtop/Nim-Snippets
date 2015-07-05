@@ -1180,6 +1180,12 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getTerminalWidth*(): int"><wbr />get<wbr />Terminal<wbr />Width</a></li>
   <li><a class="reference" href="#rainbow,string"
     title="rainbow*(astr: string)"><wbr />rainbow</a></li>
+  <li><a class="reference" href="#rainbowPW,"
+    title="rainbowPW*(): string"><wbr />rainbow<wbr />PW</a></li>
+  <li><a class="reference" href="#printColChar,string,string"
+    title="printColChar*(colstr: string; astr: string): string"><wbr />print<wbr />Col<wbr />Char</a></li>
+  <li><a class="reference" href="#makeColPW,int"
+    title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
   <li><a class="reference" href="#dhlecho,string,string,string"
     title="dhlecho*(sen: string; cw: string; col: string)"><wbr />dhlecho</a></li>
   <li><a class="reference" href="#decho,int"
@@ -1222,6 +1228,12 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="superHeader*(bstring: string; strcol: string; frmcol: string)"><wbr />super<wbr />Header</a></li>
   <li><a class="reference" href="#superHeaderA,string,string,string,bool"
     title="superHeaderA*(bb: string; strcol: string; frmcol: string; down: bool)"><wbr />super<wbr />Header<wbr />A</a></li>
+  <li><a class="reference" href="#getRandomInt,int,int"
+    title="getRandomInt*(mi: int = 0; ma: int = 1000000000): int"><wbr />get<wbr />Random<wbr />Int</a></li>
+  <li><a class="reference" href="#createSeqInt,int,int,int"
+    title="createSeqInt*(n: int = 10; mi: int = 0; ma: int = 1000000000): seq[int]"><wbr />create<wbr />Seq<wbr />Int</a></li>
+  <li><a class="reference" href="#getRandomFloat,"
+    title="getRandomFloat*(): float"><wbr />get<wbr />Random<wbr />Float</a></li>
   <li><a class="reference" href="#createSeqFloat,int"
     title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
   <li><a class="reference" href="#newWordCJK,int"
@@ -1279,7 +1291,9 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>ProjectStart: 2015-06-20</p>
 <p>Compiler    : Nim 0.11.3</p>
 <p>Description : library with a collection of procs and templates</p>
-<blockquote><p>display , date handling and much more</p></blockquote>
+<blockquote><p><p>display , date handling and much more</p>
+<p>some procs also mirror functionality from other moduls for convenience</p>
+</p></blockquote>
 <p>Docs        : nim doc private</p>
 <p>Tested      : on linux only</p>
 <p>Programming : qqTop</p>
@@ -1333,6 +1347,29 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>rainbow</p>
 <p>multicolored string</p>
 <p>may not work with certain Rune </p>
+
+
+</dd>
+<dt id="rainbowPW"><a name="rainbowPW,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">rainbowPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>rainbowPW</p>
+<p>under development</p>
+<p>idea is to have a number password with hidden colorcode</p>
+<p>the colorcode is only accessible privatly</p>
+<p>so if the password number is exposed there is no problem</p>
+<p>multicolored password stringstring</p>
+<p>may not work with certain Rune </p>
+
+
+</dd>
+<dt id="printColChar"><a name="printColChar,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColChar</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
+<dd>
+makeColPW<blockquote><p># make a colorcoded pw with length n default = 12</p></blockquote>
 
 
 </dd>
@@ -1488,6 +1525,32 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;rainbow&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;b&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="getRandomInt"><a name="getRandomInt,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomInt</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">mi</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">ma</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1000000000</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
+<dd>
+<p>getRandomInt</p>
+<p>convenience prog so we do not need to import random</p>
+<p>in calling prog</p>
+
+
+</dd>
+<dt id="createSeqInt"><a name="createSeqInt,int,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqInt</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">;</span> <span class="Identifier">mi</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">ma</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1000000000</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">int</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>createSeqFloat</p>
+<p>convenience proc to create a seq of random int with</p>
+<p>default length 10</p>
+<p>form @[4556,455,888,234,...] or similar</p>
+<pre><span class="Comment"># create a seq with 50 random floats</span>
+<span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="getRandomFloat"><a name="getRandomFloat,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
+<dd>
+<p>getRandomFloat</p>
+<p>convenience prog so we do not need to import random</p>
+<p>in calling prog</p>
+
+
+</dd>
 <dt id="createSeqFloat"><a name="createSeqFloat,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span></pre></dt>
 <dd>
 <p>createSeqFloat</p>
@@ -1528,7 +1591,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dt id="hiragana"><a name="hiragana,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">hiragana</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
 <p>hiragana</p>
-<p>returns a seq containing hiragan unicode chars</p>
+<p>returns a seq containing hiragana unicode chars</p>
 
 
 </dd>
@@ -1647,7 +1710,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-04 21:46:55 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-05 16:56:01 UTC</small>
       </div>
     </div>
   </div>

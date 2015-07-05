@@ -16,6 +16,8 @@
 ##
 ##                 display , date handling and much more
 ##
+##                 some procs also mirror functionality from other moduls for convenience
+##
 ##   Docs        : nim doc private
 ##
 ##   Tested      : on linux only
@@ -204,6 +206,26 @@ template withFile*(f: expr, filename: string, mode: FileMode,
 
 
 
+proc myPrint(xs: tuple): string =
+     ## myPrint
+     ##
+     ## tuple printer , returns a string
+     ##
+     ## code ex nim forum
+     ##
+     ## .. code-block:: nim
+     ##    echo myPrint((1,2))         # prints (1, 2)
+     ##    echo myPrint((3,4))         # prints (3, 4)
+     ##    echo myPrint(("A","B","C")) # prints (A, B, C)
+
+
+     result = "("
+     for x in xs.fields:
+       if result.len > 1:
+           result.add(", ")
+       result.add($x)
+     result.add(")")
+
 
 proc rainbow*(astr : string) =
     ## rainbow
@@ -230,6 +252,68 @@ proc rainbow*(astr : string) =
         of 10 : msggb() do : write(stdout,astr[x])
         of 11 : msgcb() do : write(stdout,astr[x])
         else  : msgw() do  : write(stdout,astr[x])
+
+
+
+proc rainbowPW*() :string =
+            ## rainbowPW
+            ##
+            ## under development
+            ##
+            ## idea is to have a number password with hidden colorcode
+            ##
+            ## the colorcode is only accessible privatly
+            ##
+            ## so if the password number is exposed there is no problem
+            ##
+            ## multicolored password stringstring
+            ##
+            ## may not work with certain Rune
+            ##
+
+            var c = 0
+            var a = toSeq(0.. 9)
+            for x in 0.. <1:
+               c = a[randomInt(a.len)]
+               case c
+                of 1  : msgg() do  : result = $c & "green"
+                of 2  : msgr() do  : result = $c & "red"
+                of 3  : msgc() do  : result = $c & "cyan"
+                of 4  : msgy() do  : result = $c & "yellow"
+                of 5  : msggb() do : result = $c & "brightgreen"
+                of 6  : msgr() do  : result = $c & "red"
+                of 7  : msgwb() do : result = $c & "brightwhite"
+                of 8  : msgc() do  : result = $c & "cyan"
+                of 9  : msgyb() do : result = $c & "brightyellow"
+                of 10 : msggb() do : result = $c & "brightgreen"
+                of 11 : msgcb() do : result = $c & "brightcyan"
+                else  : msgw() do  : result = $c & "white"
+
+proc printColChar*(colstr:string,astr:string):string =
+      case colstr
+      of "green"  : msgg() do  : write(stdout,astr)
+      of "red"    : msgr() do  : write(stdout,astr)
+      of "cyan"   : msgc() do  : write(stdout,astr)
+      of "yellow" : msgy() do  : write(stdout,astr)
+      of "brightgreen" : msggb() do : write(stdout,astr)
+      of "brightwhite" : msgwb() do : write(stdout,astr)
+      of "brightyellow": msgyb() do : write(stdout,astr)
+      of "brightcyan"  : msgcb() do : write(stdout,astr)
+      of "brightred"   : msgrb() do : write(stdout,astr)
+      else  : msgw() do  : write(stdout,astr)
+
+
+
+proc makeColPW*(n:int = 12):seq[string] =
+        ## makeColPW
+        ##
+        ##   # make a colorcoded pw with length n default = 12
+        ##
+        var z = newSeq[string]()
+        for x in 0..<n:
+           z.add(rainbowPW())
+        result =  z
+
 
 
 proc dhlecho*(sen:string,cw:string,col:string) =
@@ -707,7 +791,44 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   echo()
 
 
+var rng = initMersenneTwister(urandom(2500))
 
+proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
+       ## getRandomInt
+       ##
+       ## convenience prog so we do not need to import random
+       ##
+       ## in calling prog
+
+       result = rng.randomInt(mi,ma)
+
+
+proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
+             ## createSeqFloat
+             ##
+             ## convenience proc to create a seq of random int with
+             ##
+             ## default length 10
+             ##
+             ## form @[4556,455,888,234,...] or similar
+             ##
+             ## .. code-block:: nim
+             ##    # create a seq with 50 random floats
+             ##    echo createSeqInt(50)
+
+             var z = newSeq[int]()
+             for x in 0.. <n:
+                 z.add(getRandomInt(mi,ma))
+             result = z
+
+
+proc getRandomFloat*():float =
+              ## getRandomFloat
+              ##
+              ## convenience prog so we do not need to import random
+              ##
+              ## in calling prog
+              result = rng.random()
 
 proc createSeqFloat*(n:int = 10) : seq[float] =
       ## createSeqFloat
@@ -723,9 +844,8 @@ proc createSeqFloat*(n:int = 10) : seq[float] =
       ##    echo createSeqFloat(50)
 
       var z = newSeq[float]()
-      var rng2 = initMersenneTwister(urandom(2500))
       for x in 0.. <n:
-        z.add(rng2.random())
+        z.add(getRandomFloat())
       result = z
 
 
@@ -745,8 +865,6 @@ proc newWordCJK*(maxwl:int = 10):string =
       ##    # create a string of chinese or CJK chars
       ##    # with max length 20 and show it in green
       ##    msgg() do : echo newWordCJK(20)
-
-
       # set the char set
       var chc = toSeq(parsehexint("3400").. parsehexint("4DB5"))
       var nw = ""
@@ -766,7 +884,6 @@ proc newWord*(maxwl:int = 10 ):string =
        ##
        ## with default max word length maxwl = 10  , min = 3
        ##
-
        var nw = ""
        # words with length range 3 to maxwl
        var maxws = toSeq(3.. <maxwl)
@@ -789,18 +906,16 @@ proc iching*():seq[string] =
            ich.add($Rune(j))
     result = ich
 
+
 proc hiragana*():seq[string] =
   ## hiragana
   ##
-  ## returns a seq containing hiragan unicode chars
+  ## returns a seq containing hiragana unicode chars
   var hir = newSeq[string]()
   # 12353..12436 hiragana
   for j in 12353..12436:
          hir.add($Rune(j))
   result = hir
-
-
-
 
 
 # putting this here we can stop all programs which use this lib and get the desired exit messages
