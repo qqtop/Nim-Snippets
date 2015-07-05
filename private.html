@@ -1182,8 +1182,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="rainbow*(astr: string)"><wbr />rainbow</a></li>
   <li><a class="reference" href="#rainbowPW,"
     title="rainbowPW*(): string"><wbr />rainbow<wbr />PW</a></li>
-  <li><a class="reference" href="#printColChar,string,string"
-    title="printColChar*(colstr: string; astr: string): string"><wbr />print<wbr />Col<wbr />Char</a></li>
+  <li><a class="reference" href="#printColStr,string,string"
+    title="printColStr*(colstr: string; astr: string): string"><wbr />print<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
   <li><a class="reference" href="#dhlecho,string,string,string"
@@ -1244,6 +1244,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="iching*(): seq[string]"><wbr />iching</a></li>
   <li><a class="reference" href="#hiragana,"
     title="hiragana*(): seq[string]"><wbr />hiragana</a></li>
+  <li><a class="reference" href="#doFinish,"
+    title="doFinish*()"><wbr />do<wbr />Finish</a></li>
 
   </ul>
 </li>
@@ -1303,7 +1305,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="os.html">os</a>, <a class="reference external" href="terminal.html">terminal</a>, <a class="reference external" href="strfmt.html">strfmt</a>, <a class="reference external" href="math.html">math</a>, <a class="reference external" href="unicode.html">unicode</a>, <a class="reference external" href="parseutils.html">parseutils</a>, <a class="reference external" href="strutils.html">strutils</a>, <a class="reference external" href="sequtils.html">sequtils</a>, <a class="reference external" href="random.html">random</a>, <a class="reference external" href="times.html">times</a>, <a class="reference external" href="tables.html">tables</a>
+<a class="reference external" href="os.html">os</a>, <a class="reference external" href="terminal.html">terminal</a>, <a class="reference external" href="math.html">math</a>, <a class="reference external" href="unicode.html">unicode</a>, <a class="reference external" href="times.html">times</a>, <a class="reference external" href="tables.html">tables</a>, <a class="reference external" href="sequtils.html">sequtils</a>, <a class="reference external" href="parseutils.html">parseutils</a>, <a class="reference external" href="strutils.html">strutils</a>, <a class="reference external" href="random.html">random</a>, <a class="reference external" href="strfmt.html">strfmt</a>
 </dl></div>
 <div class="section" id="8">
 <h1><a class="toc-backref" href="#8">Vars</a></h1>
@@ -1360,9 +1362,11 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 
 
 </dd>
-<dt id="printColChar"><a name="printColChar,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColChar</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
-
+<p>printColStr</p>
+<p>prints a string with a named color</p>
+<pre><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
@@ -1593,6 +1597,14 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 
 
 </dd>
+<dt id="doFinish"><a name="doFinish,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">doFinish</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>doFinish</p>
+<p>a end of program routine which displays some information</p>
+<p>can be changed to anything desired </p>
+
+
+</dd>
 
 </dl></div>
 <div class="section" id="18">
@@ -1708,7 +1720,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-05 17:05:23 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-05 23:24:29 UTC</small>
       </div>
     </div>
   </div>

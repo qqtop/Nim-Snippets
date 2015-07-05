@@ -27,8 +27,9 @@
 ##   Note        : may change at any time
 ##
 
-import os,terminal,strfmt,math,unicode,parseutils,strutils
-import sequtils,random,times,tables
+import os,terminal,math,unicode,times,tables
+import sequtils,parseutils,strutils
+import random,strfmt
 
 const PRIVATLIBVERSION = 0.6
 
@@ -285,7 +286,15 @@ proc rainbowPW*() :string =
                 of 11 : msgcb() do : result = $c & "brightcyan"
                 else  : msgw() do  : result = $c & "white"
 
-proc printColChar*(colstr:string,astr:string):string =
+proc printColStr*(colstr:string,astr:string):string =
+      ## printColStr
+      ##
+      ## prints a string with a named color
+      ##
+      ## .. code-block:: nim
+      ##    printColStr("green","Nice it is in green")
+      ##
+
       case colstr
       of "green"  : msgg() do  : write(stdout,astr)
       of "red"    : msgr() do  : write(stdout,astr)
@@ -914,6 +923,24 @@ proc hiragana*():seq[string] =
   result = hir
 
 
+proc doFinish*() =
+    ## doFinish
+    ##
+    ## a end of program routine which displays some information
+    ##
+    ## can be changed to anything desired
+    ##
+    decho(2)
+    msgy() do : echo "{:<15}{}{}".fmt("Elapsed     : ",epochtime() - private.start," secs")
+    msgg() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
+    echo()
+    quit 0
+
+
+
+
+# putting decho here will put two blank lines before anyting else runs
+decho(2)
 # putting this here we can stop all programs which use this lib and get the desired exit messages
 setControlCHook(handler)
 # this will reset any color changes in the terminal
