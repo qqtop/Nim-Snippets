@@ -249,7 +249,7 @@ proc rainbow*(astr : string) =
         of 7  : msgwb() do : write(stdout,astr[x])
         of 8  : msgc() do  : write(stdout,astr[x])
         of 9  : msgyb() do : write(stdout,astr[x])
-        of 10 : msggb() do : write(stdout,astr[x])
+        of 10 : msgrb() do : write(stdout,astr[x])
         of 11 : msgcb() do : write(stdout,astr[x])
         else  : msgw() do  : write(stdout,astr[x])
 
@@ -266,10 +266,6 @@ proc rainbowPW*() :string =
             ##
             ## so if the password number is exposed there is no problem
             ##
-            ## multicolored password stringstring
-            ##
-            ## may not work with certain Rune
-            ##
 
             var c = 0
             var a = toSeq(0.. 9)
@@ -285,7 +281,7 @@ proc rainbowPW*() :string =
                 of 7  : msgwb() do : result = $c & "brightwhite"
                 of 8  : msgc() do  : result = $c & "cyan"
                 of 9  : msgyb() do : result = $c & "brightyellow"
-                of 10 : msggb() do : result = $c & "brightgreen"
+                of 10 : msgrb() do : result = $c & "brightred"
                 of 11 : msgcb() do : result = $c & "brightcyan"
                 else  : msgw() do  : result = $c & "white"
 
