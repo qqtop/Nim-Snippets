@@ -2,11 +2,11 @@
 ##
 ##   Library     : private.nim
 ##
-##   Status      : in use
+##   Status      : stable
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6
+##   Version     : 0.6.5
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -31,7 +31,20 @@ import os,terminal,math,unicode,times,tables
 import sequtils,parseutils,strutils
 import random,strfmt
 
-const PRIVATLIBVERSION = 0.6
+const PRIVATLIBVERSION = "0.6.5"
+const
+       red*    = "red"
+       green*  = "green"
+       cyan*   = "cyan"
+       yellow* = "yellow"
+       white*  = "white"
+       black*  = "black"
+       brightred*    = "brightred"
+       brightgreen*  = "brightgreen"
+       brightcyan*   = "brightcyan"
+       brightyellow* = "brightyellow"
+       brightwhite*  = "brightwhite"
+       clrainbow*    = "rainbow"
 
 let start* = epochTime()  #  so we can check execution timing with one line
 
@@ -129,7 +142,7 @@ template msgwb*(code: stmt): stmt {.immediate.} =
 template msgb*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgBlack,true)
       code
-      setforegroundcolor(fgBlack)
+      setforegroundcolor(fgWhite)
 
 
 
@@ -181,7 +194,7 @@ template withFile*(f: expr, filename: string, mode: FileMode,
      ##                  if al.contains(sw) == true:
      ##                     inc oc
      ##                     msgy() do: write(stdout,"{:<8}{:>6} {:<7}{:>6}  ".fmt("Line :",lc,"Count :",oc))
-     ##                     dhlecho(al,sw,"g")
+     ##                     dhlecho(al,sw,green)
      ##                     echo()
      ##               except:
      ##                  break
@@ -207,18 +220,17 @@ template withFile*(f: expr, filename: string, mode: FileMode,
 
 
 
-proc myPrint(xs: tuple): string =
-     ## myPrint
+proc printTuple(xs: tuple): string =
+     ## printTuple
      ##
      ## tuple printer , returns a string
      ##
      ## code ex nim forum
      ##
      ## .. code-block:: nim
-     ##    echo myPrint((1,2))         # prints (1, 2)
-     ##    echo myPrint((3,4))         # prints (3, 4)
-     ##    echo myPrint(("A","B","C")) # prints (A, B, C)
-
+     ##    echo printTuple((1,2))         # prints (1, 2)
+     ##    echo printTuple((3,4))         # prints (3, 4)
+     ##    echo printTuple(("A","B","C")) # prints (A, B, C)
 
      result = "("
      for x in xs.fields:
@@ -255,7 +267,6 @@ proc rainbow*(astr : string) =
         else  : msgw() do  : write(stdout,astr[x])
 
 
-
 proc rainbowPW*() :string =
            ## rainbowPW
            ##
@@ -272,16 +283,16 @@ proc rainbowPW*() :string =
            var a = toSeq(0.. 9)
            c = a[randomInt(a.len)]
            case c
-            of 1  : msgg() do  : result = $c & "green"
-            of 2  : msgr() do  : result = $c & "red"
-            of 3  : msgc() do  : result = $c & "cyan"
-            of 4  : msgy() do  : result = $c & "yellow"
-            of 5  : msggb() do : result = $c & "brightgreen"
-            of 6  : msgwb() do : result = $c & "brightwhite"
-            of 7  : msgyb() do : result = $c & "brightyellow"
-            of 8  : msgrb() do : result = $c & "brightred"
-            of 9  : msgcb() do : result = $c & "brightcyan"
-            else  : msgw() do  : result = $c & "white"
+            of 1  : msgg() do  : result = $c & green
+            of 2  : msgr() do  : result = $c & red
+            of 3  : msgc() do  : result = $c & cyan
+            of 4  : msgy() do  : result = $c & yellow
+            of 5  : msggb() do : result = $c & brightgreen
+            of 6  : msgwb() do : result = $c & brightwhite
+            of 7  : msgyb() do : result = $c & brightyellow
+            of 8  : msgrb() do : result = $c & brightred
+            of 9  : msgcb() do : result = $c & brightcyan
+            else  : msgw() do  : result = $c & white
 
 proc printColStr*(colstr:string,astr:string) =
       ## printColStr
@@ -297,17 +308,17 @@ proc printColStr*(colstr:string,astr:string) =
       ##
 
       case colstr
-      of "green"  : msgg() do  : write(stdout,astr)
-      of "red"    : msgr() do  : write(stdout,astr)
-      of "cyan"   : msgc() do  : write(stdout,astr)
-      of "yellow" : msgy() do  : write(stdout,astr)
-      of "white"  : msgw() do  : write(stdout,astr)
-      of "black"  : msgb() do  : write(stdout,astr)
-      of "brightgreen" : msggb() do : write(stdout,astr)
-      of "brightwhite" : msgwb() do : write(stdout,astr)
-      of "brightyellow": msgyb() do : write(stdout,astr)
-      of "brightcyan"  : msgcb() do : write(stdout,astr)
-      of "brightred"   : msgrb() do : write(stdout,astr)
+      of green  : msgg() do  : write(stdout,astr)
+      of red    : msgr() do  : write(stdout,astr)
+      of cyan   : msgc() do  : write(stdout,astr)
+      of yellow : msgy() do  : write(stdout,astr)
+      of white  : msgw() do  : write(stdout,astr)
+      of black  : msgb() do  : write(stdout,astr)
+      of brightgreen : msggb() do : write(stdout,astr)
+      of brightwhite : msgwb() do : write(stdout,astr)
+      of brightyellow: msgyb() do : write(stdout,astr)
+      of brightcyan  : msgcb() do : write(stdout,astr)
+      of brightred   : msgrb() do : write(stdout,astr)
       else  : msgw() do  : write(stdout,astr)
 
 
@@ -332,11 +343,11 @@ proc dhlecho*(sen:string,cw:string,col:string) =
       ## with a certain color
       ##
       ## .. code-block:: nim
-      ##    dhlecho("HELLO THIS IS A TEST","T","g")
+      ##    dhlecho("HELLO THIS IS A TEST","T",green)
       ##
       ## this would highlight all T in green
       ##
-      ## available colors : g,y,c,r,w
+      ## available colors : green,yellow,cyan,red,white
 
 
       var rx = sen.split(cw)
@@ -344,11 +355,11 @@ proc dhlecho*(sen:string,cw:string,col:string) =
           writestyled(rx[x],{})
           if x != rx.high:
             case col
-            of "g" : msgg()  do : writestyled(cw ,{styleBright})
-            of "y" : msgy()  do : writestyled(cw ,{styleBright})
-            of "c" : msgc()  do : writestyled(cw ,{styleBright})
-            of "r" : msgr()  do : writestyled(cw ,{styleBright})
-            of "w" : msgwb() do : writestyled(cw ,{styleBright})
+            of  green : msgg()  do : writestyled(cw ,{styleBright})
+            of  yellow: msgy()  do : writestyled(cw ,{styleBright})
+            of  cyan  : msgc()  do : writestyled(cw ,{styleBright})
+            of  red   : msgr()  do : writestyled(cw ,{styleBright})
+            of  white : msgwb() do : writestyled(cw ,{styleBright})
             else: msgw() do : writestyled(cw ,{})
 
 proc decho*(z:int)  =
@@ -411,7 +422,6 @@ proc intervalyears*(startDate,endDate:string) : float =
 
 
 proc validdate*(adate:string):bool =
-
      var m30 = @["04","06","09","11"]
      var m31 = @["01","03","05","07","08","10","12"]
 
@@ -476,16 +486,14 @@ proc compareDates*(startDate,endDate:string) : int =
 
 
 proc sleepy*[T:float|int](s:T) =
-        # s is in seconds
-        var ss = epochtime()
-        var ee = ss + s.float
-        var c = 0
-        while ee > epochtime():
-            inc c
-        # feedback line can be commented out
-        #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
-
-
+    # s is in seconds
+    var ss = epochtime()
+    var ee = ss + s.float
+    var c = 0
+    while ee > epochtime():
+        inc c
+    # feedback line can be commented out
+    #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
 
 
 proc plusDays*(aDate:string,days:int):string =
@@ -594,28 +602,28 @@ proc minusDays*(aDate:string,days:int):string =
 
 
 proc handler*() {.noconv.} =
-        ## handler
-        ##
-        ## this runs if ctrl-c is pressed
-        ##
-        ## and provides some feedback upon exit
-        ##
-        ## just by this library into your project you will have an automatic
-        ##
-        ## exit handler via ctrl-c
-        eraseScreen()
-        echo()
-        echo aline
-        msgg() do: echo "Thank you for using     : ",getAppFilename()
-        msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
-        echo aline
-        echo "private Version         : ", PRIVATLIBVERSION
-        echo "Nim Version             : ", NimVersion
-        echo()
-        rainbow("Have a Nice Day !")  ## change or add custom messages as required
-        decho(2)
-        system.addQuitProc(resetAttributes)
-        quit(0)
+    ## handler
+    ##
+    ## this runs if ctrl-c is pressed
+    ##
+    ## and provides some feedback upon exit
+    ##
+    ## just by using this library your project will have an automatic
+    ##
+    ## exit handler via ctrl-c
+    eraseScreen()
+    echo()
+    echo aline
+    msgg() do: echo "Thank you for using     : ",getAppFilename()
+    msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
+    echo aline
+    echo "private Version         : ", PRIVATLIBVERSION
+    echo "Nim Version             : ", NimVersion
+    echo()
+    rainbow("Have a Nice Day !")  ## change or add custom messages as required
+    decho(2)
+    system.addQuitProc(resetAttributes)
+    quit(0)
 
 
 
@@ -653,7 +661,7 @@ proc superHeader*(bstring:string) =
 
   var pdl = repeat("#",mddl)
   # now show it with the framing in yellow and text in white
-  # really need to have a terminal color checker to avoid invisible lines
+  # really want a terminal color checker to avoid invisible lines
   echo ()
   msgy() do : echo pdl
   msgy() do : write(stdout,"# ")
@@ -674,14 +682,14 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     ##
     ## the color of the string can be selected available colors
     ##
-    ## g,r,c,w,y and for going completely bonkers the frame
+    ## green,red,cyan,white,yellow and for going completely bonkers the frame
     ##
-    ## can be set to rainbow too .
+    ## can be set to clrainbow too .
     ##
     ## .. code-block:: nim
     ##    import private,terminal
     ##
-    ##    superheader("Ok That's it for Now !","rainbow","w")
+    ##    superheader("Ok That's it for Now !",clrainbow,white)
     ##    echo()
     ##
     var astring = bstring
@@ -715,36 +723,36 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # frame line
     proc frameline(pdl:string) =
         case frmcol
-        of "g" : msgg()  do : writestyled(pdl ,{})
-        of "y" : msgy()  do : writestyled(pdl ,{})
-        of "c" : msgc()  do : writestyled(pdl ,{})
-        of "r" : msgr()  do : writestyled(pdl ,{})
-        of "w" : msgwb() do : writestyled(pdl ,{})
-        of "b" : msgb()  do : writestyled(pdl ,{})
-        of "rainbow" : rainbow(pdl)
+        of  green : msgg()  do : writestyled(pdl ,{})
+        of  yellow: msgy()  do : writestyled(pdl ,{})
+        of  cyan  : msgc()  do : writestyled(pdl ,{})
+        of  red   : msgr()  do : writestyled(pdl ,{})
+        of  white : msgwb() do : writestyled(pdl ,{})
+        of  black : msgb()  do : writestyled(pdl ,{})
+        of  clrainbow : rainbow(pdl)
         else: msgw() do : writestyled(pdl ,{})
         echo()
 
     proc framemarker(am:string) =
         case frmcol
-        of "g" : msgg()  do : writestyled(am ,{})
-        of "y" : msgy()  do : writestyled(am ,{})
-        of "c" : msgc()  do : writestyled(am ,{})
-        of "r" : msgr()  do : writestyled(am ,{})
-        of "w" : msgw()  do : writestyled(am ,{})
-        of "b" : msgb()  do : writestyled(am ,{})
-        of "rainbow" : rainbow(am)
+        of  green : msgg()  do : writestyled(am ,{})
+        of  yellow: msgy()  do : writestyled(am ,{})
+        of  cyan  : msgc()  do : writestyled(am ,{})
+        of  red   : msgr()  do : writestyled(am ,{})
+        of  white : msgwb() do : writestyled(am ,{})
+        of  black : msgb()  do : writestyled(am ,{})
+        of  clrainbow : rainbow(am)
         else: msgy() do : writestyled(am ,{})
 
     proc headermessage(astring:string)  =
         case strcol
-        of "g" : msgg()  do : writestyled(astring ,{styleBright})
-        of "y" : msgy()  do : writestyled(astring ,{styleBright})
-        of "c" : msgc()  do : writestyled(astring ,{styleBright})
-        of "r" : msgr()  do : writestyled(astring ,{styleBright})
-        of "w" : msgwb() do : writestyled(astring ,{styleBright})
-        of "b" : msgb()  do : writestyled(pdl ,{})
-        of "rainbow" : rainbow(astring)
+        of green  : msgg()  do : writestyled(astring ,{styleBright})
+        of yellow : msgy()  do : writestyled(astring ,{styleBright})
+        of cyan   : msgc()  do : writestyled(astring ,{styleBright})
+        of red    : msgr()  do : writestyled(astring ,{styleBright})
+        of white  : msgwb() do : writestyled(astring ,{styleBright})
+        of black  : msgb()  do : writestyled(pdl ,{})
+        of clrainbow : rainbow(astring)
         else: msgw() do : writestyled(astring ,{})
 
     # draw everything
@@ -776,9 +784,9 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   ##    erasescreen()
   ##    cursorup(80)
   ##    let bb = "NIM the system language for the future, which extends to as far as you need and still is small !!"
-  ##    superHeaderA(bb,"rainbow","y",false)
+  ##    superHeaderA(bb,,"y",false)
   ##    decho(3)
-  ##    superheader("Ok That's it for Now !","rainbow","b")
+  ##    superheader("Ok That's it for Now !",clrainbow,"b")
   ##
 
   for x in 0.. <1:
@@ -802,41 +810,41 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
 var rng = initMersenneTwister(urandom(2500))
 
 proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
-       ## getRandomInt
-       ##
-       ## convenience prog so we do not need to import random
-       ##
-       ## in calling prog
+    ## getRandomInt
+    ##
+    ## convenience prog so we do not need to import random
+    ##
+    ## in calling prog
 
-       result = rng.randomInt(mi,ma)
+    result = rng.randomInt(mi,ma)
 
 
 proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
-             ## createSeqFloat
-             ##
-             ## convenience proc to create a seq of random int with
-             ##
-             ## default length 10
-             ##
-             ## form @[4556,455,888,234,...] or similar
-             ##
-             ## .. code-block:: nim
-             ##    # create a seq with 50 random floats
-             ##    echo createSeqInt(50)
+    ## createSeqFloat
+    ##
+    ## convenience proc to create a seq of random int with
+    ##
+    ## default length 10
+    ##
+    ## form @[4556,455,888,234,...] or similar
+    ##
+    ## .. code-block:: nim
+    ##    # create a seq with 50 random floats
+    ##    echo createSeqInt(50)
 
-             var z = newSeq[int]()
-             for x in 0.. <n:
-                 z.add(getRandomInt(mi,ma))
-             result = z
+    var z = newSeq[int]()
+    for x in 0.. <n:
+       z.add(getRandomInt(mi,ma))
+    result = z
 
 
 proc getRandomFloat*():float =
-              ## getRandomFloat
-              ##
-              ## convenience prog so we do not need to import random
-              ##
-              ## in calling prog
-              result = rng.random()
+    ## getRandomFloat
+    ##
+    ## convenience prog so we do not need to import random
+    ##
+    ## in calling prog
+    result = rng.random()
 
 proc createSeqFloat*(n:int = 10) : seq[float] =
       ## createSeqFloat
@@ -886,25 +894,25 @@ proc newWordCJK*(maxwl:int = 10):string =
 
 
 proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
-       ## newWord
-       ##
-       ## creates a new lower case word with chars from Letters set
-       ##
-       ## default min word length minwl = 3
-       ##
-       ## default max word length maxwl = 10
-       ##
-       var nw = ""
-       # words with length range 3 to maxwl
-       var maxws = toSeq(minwl.. maxwl)
-       # get a random length for a new word
-       var nwl = maxws.randomChoice()
-       var chc = toSeq(33.. 126)
-       while nw.len < nwl:
-           var x = chc.randomChoice()
-           if char(x) in Letters:
-               nw = nw & $char(x)
-       result = normalize(nw)   # return in lower case , cleaned up
+    ## newWord
+    ##
+    ## creates a new lower case word with chars from Letters set
+    ##
+    ## default min word length minwl = 3
+    ##
+    ## default max word length maxwl = 10
+    ##
+    var nw = ""
+    # words with length range 3 to maxwl
+    var maxws = toSeq(minwl.. maxwl)
+    # get a random length for a new word
+    var nwl = maxws.randomChoice()
+    var chc = toSeq(33.. 126)
+    while nw.len < nwl:
+       var x = chc.randomChoice()
+       if char(x) in Letters:
+           nw = nw & $char(x)
+    result = normalize(nw)   # return in lower case , cleaned up
 
 
 proc iching*():seq[string] =
@@ -918,14 +926,14 @@ proc iching*():seq[string] =
 
 
 proc hiragana*():seq[string] =
-  ## hiragana
-  ##
-  ## returns a seq containing hiragana unicode chars
-  var hir = newSeq[string]()
-  # 12353..12436 hiragana
-  for j in 12353..12436:
-         hir.add($Rune(j))
-  result = hir
+    ## hiragana
+    ##
+    ## returns a seq containing hiragana unicode chars
+    var hir = newSeq[string]()
+    # 12353..12436 hiragana
+    for j in 12353..12436:
+           hir.add($Rune(j))
+    result = hir
 
 
 proc doFinish*() =
@@ -937,11 +945,9 @@ proc doFinish*() =
     ##
     decho(2)
     msgy() do : echo "{:<15}{}{}".fmt("Elapsed     : ",epochtime() - private.start," secs")
-    msgg() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
+    msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
     echo()
     quit 0
-
-
 
 
 # putting decho here will put two blank lines before anyting else runs
