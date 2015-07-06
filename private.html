@@ -1324,9 +1324,9 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Compiler    : Nim 0.11.3</p>
 <p>Description : library with a collection of procs and templates</p>
 <blockquote><p><p>display , date handling and much more</p>
-<p>some procs also mirror functionality from other moduls for convenience</p>
+<p>some procs mirror functionality of other moduls for convenience</p>
 </p></blockquote>
-<p>Docs        : nim doc private</p>
+<p>Docs        : <a class="reference external" href="http://qqtop.github.io/private.html">http://qqtop.github.io/private.html</a></p>
 <p>Tested      : on linux only</p>
 <p>Programming : qqTop</p>
 <p>Note        : may change at any time</p>
@@ -1357,7 +1357,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <dl class="item">
 <dt id="start"><a name="start"></a><pre><span class="Identifier">start</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">epochTime</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
 <dd>
-
+check execution timing with one line see doFinish
 
 </dd>
 
@@ -1635,12 +1635,12 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 </dd>
 <dt id="createSeqInt"><a name="createSeqInt,int,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqInt</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">;</span> <span class="Identifier">mi</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">ma</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1000000000</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">int</span><span class="Other">]</span></pre></dt>
 <dd>
-<p>createSeqFloat</p>
+<p>createSeqInt</p>
 <p>convenience proc to create a seq of random int with</p>
 <p>default length 10</p>
 <p>form @[4556,455,888,234,...] or similar</p>
-<pre><span class="Comment"># create a seq with 50 random floats</span>
-<span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
+<pre><span class="Comment"># create a seq with 50 random integers ,between 100 and 2000</span>
+<span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">,</span><span class="DecNumber">100</span><span class="Punctuation">,</span><span class="DecNumber">2000</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="getRandomFloat"><a name="getRandomFloat,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
@@ -1819,7 +1819,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-06 11:12:19 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-06 14:19:32 UTC</small>
       </div>
     </div>
   </div>

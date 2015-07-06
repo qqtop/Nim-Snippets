@@ -16,9 +16,9 @@
 ##
 ##                 display , date handling and much more
 ##
-##                 some procs also mirror functionality from other moduls for convenience
+##                 some procs mirror functionality of other moduls for convenience
 ##
-##   Docs        : nim doc private
+##   Docs        : http://qqtop.github.io/private.html
 ##
 ##   Tested      : on linux only
 ##
@@ -46,27 +46,27 @@ const
        brightwhite*  = "brightwhite"
        clrainbow*    = "rainbow"
 
-let start* = epochTime()  #  so we can check execution timing with one line
+let start* = epochTime()  ##  check execution timing with one line see doFinish
 
 converter toTwInt(x: cushort): int = result = int(x)
 when defined(Linux):
     proc getTerminalWidth*() : int =
-      ## getTerminalWidth
-      ##
-      ## utility to easily draw correctly sized lines on linux terminals
-      ##
-      ## and get linux get terminal width
-      ##
-      ## for windows this currently is set to terminalwidth 80
-      ##
-      type WinSize = object
-        row, col, xpixel, ypixel: cushort
-      const TIOCGWINSZ = 0x5413
-      proc ioctl(fd: cint, request: culong, argp: pointer)
-        {.importc, header: "<sys/ioctl.h>".}
-      var size: WinSize
-      ioctl(0, TIOCGWINSZ, addr size)
-      result = toTwInt(size.col)
+        ## getTerminalWidth
+        ##
+        ## utility to easily draw correctly sized lines on linux terminals
+        ##
+        ## and get linux get terminal width
+        ##
+        ## for windows this currently is set to terminalwidth 80
+        ##
+        type WinSize = object
+          row, col, xpixel, ypixel: cushort
+        const TIOCGWINSZ = 0x5413
+        proc ioctl(fd: cint, request: culong, argp: pointer)
+          {.importc, header: "<sys/ioctl.h>".}
+        var size: WinSize
+        ioctl(0, TIOCGWINSZ, addr size)
+        result = toTwInt(size.col)
 
     var tw* = getTerminalWidth()
     var aline* = repeat("-",tw)
@@ -145,7 +145,6 @@ template msgb*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgWhite)
 
 
-
 template hdx*(code:stmt):stmt {.immediate.}  =
    echo ""
    echo repeat("+",tw)
@@ -217,7 +216,6 @@ template withFile*(f: expr, filename: string, mode: FileMode,
          echo ()
          msgy() do : echo "Processing file " & curFile & ", stopped . Reason: ", msg
          quit()
-
 
 
 proc printTuple(xs: tuple): string =
@@ -294,6 +292,7 @@ proc rainbowPW*() :string =
             of 9  : msgcb() do : result = $c & brightcyan
             else  : msgw() do  : result = $c & white
 
+
 proc printColStr*(colstr:string,astr:string) =
       ## printColStr
       ##
@@ -322,7 +321,6 @@ proc printColStr*(colstr:string,astr:string) =
       else  : msgw() do  : write(stdout,astr)
 
 
-
 proc makeColPW*(n:int = 12):seq[string] =
         ## makeColPW
         ##
@@ -332,7 +330,6 @@ proc makeColPW*(n:int = 12):seq[string] =
         for x in 0..<n:
            z.add(rainbowPW())
         result =  z
-
 
 
 proc dhlecho*(sen:string,cw:string,col:string) =
@@ -349,7 +346,6 @@ proc dhlecho*(sen:string,cw:string,col:string) =
       ##
       ## available colors : green,yellow,cyan,red,white
 
-
       var rx = sen.split(cw)
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
@@ -362,6 +358,7 @@ proc dhlecho*(sen:string,cw:string,col:string) =
             of  white : msgwb() do : writestyled(cw ,{styleBright})
             else: msgw() do : writestyled(cw ,{})
 
+
 proc decho*(z:int)  =
     ## decho
     ##
@@ -373,6 +370,7 @@ proc decho*(z:int)  =
     for x in 0.. <z:
       echo()
 
+
 proc day*(aDate:string) : string =
    ## day,month year extracts the relevant part from
    ##
@@ -380,12 +378,14 @@ proc day*(aDate:string) : string =
    aDate.split("-")[2]
 
 proc month*(aDate:string) : string =
-  var asdm = $(parseInt(aDate.split("-")[1]))
-  if len(asdm) < 2: asdm = "0" & asdm
-  result = asdm
+    var asdm = $(parseInt(aDate.split("-")[1]))
+    if len(asdm) < 2: asdm = "0" & asdm
+    result = asdm
+
 
 proc year*(aDate:string) : string = aDate.split("-")[0]
      ## Format yyyy
+
 
 proc intervalsecs*(startDate,endDate:string) : float =
       ## interval procs returns time elapsed between two dates in secs,hours etc.
@@ -396,25 +396,31 @@ proc intervalsecs*(startDate,endDate:string) : float =
       var isecs = esecs - ssecs
       result = isecs
 
+
 proc intervalmins*(startDate,endDate:string) : float =
       var imins = intervalsecs(startDate,endDate) / 60
       result = imins
+
 
 proc intervalhours*(startDate,endDate:string) : float =
       var ihours = intervalsecs(startDate,endDate) / 3600
       result = ihours
 
+
 proc intervaldays*(startDate,endDate:string) : float =
       var idays = intervalsecs(startDate,endDate) / 3600 / 24
       result = idays
+
 
 proc intervalweeks*(startDate,endDate:string) : float =
       var iweeks = intervalsecs(startDate,endDate) / 3600 / 24 / 7
       result = iweeks
 
+
 proc intervalmonths*(startDate,endDate:string) : float =
       var imonths = intervalsecs(startDate,endDate) / 3600 / 24 / 365  * 12
       result = imonths
+
 
 proc intervalyears*(startDate,endDate:string) : float =
       var iyears = intervalsecs(startDate,endDate) / 3600 / 24 / 365
@@ -458,7 +464,6 @@ proc validdate*(adate:string):bool =
                             result = true
                           else:
                             result = false
-
 
 
 proc compareDates*(startDate,endDate:string) : int =
@@ -506,14 +511,12 @@ proc plusDays*(aDate:string,days:int):string =
    ## the passed in date string must be a valid date or an error message will be returned
    ##
    var rxs = ""
-
    if validdate(adate) == true:
 
         var spdate = aDate.split("-")
         var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
         var mflag: bool = false
         tifo.year = parseInt(spdate[0])
-
         case parseInt(spdate[1])
         of 1 :  tifo.month = mJan
         of 2 :  tifo.month = mFeb
@@ -527,17 +530,13 @@ proc plusDays*(aDate:string,days:int):string =
         of 10:  tifo.month = mOct
         of 11:  tifo.month = mNov
         of 12 : tifo.month = mDec
-        else :
-          mflag = true
-
+        else  : mflag = true
         tifo.monthday = parseInt(spdate[2])
-
         if mflag == false:
             var myinterval = initInterval()
             myinterval.days = days
             var rx = tifo + myinterval
             rxs = rx.format("yyyy-MM-dd")
-
         else :
               msgr() do: echo "Date error. Wrong month : " &  spdate[1]
               rxs = ""
@@ -561,12 +560,10 @@ proc minusDays*(aDate:string,days:int):string =
 
    var rxs = ""
    if validdate(adate) == true:
-
         var spdate = aDate.split("-")
         var tifo = parse(aDate,"yyyy-MM-dd")  # this returns a TimeInfo type
         var mflag: bool = false
         tifo.year = parseInt(spdate[0])
-
         case parseInt(spdate[1])
         of 1 :  tifo.month = mJan
         of 2 :  tifo.month = mFeb
@@ -580,11 +577,8 @@ proc minusDays*(aDate:string,days:int):string =
         of 10:  tifo.month = mOct
         of 11:  tifo.month = mNov
         of 12 : tifo.month = mDec
-        else :
-          mflag = true
-
+        else  : mflag = true
         tifo.monthday = parseInt(spdate[2])
-
         if mflag == false:
             var myinterval = initInterval()
             myinterval.days = days
@@ -626,7 +620,6 @@ proc handler*() {.noconv.} =
     quit(0)
 
 
-
 proc superHeader*(bstring:string) =
   ## superheader
   ##
@@ -641,17 +634,14 @@ proc superHeader*(bstring:string) =
   # frame = 46
   var mmax = 43
   var mddl = 46
-
   ## max length = tw-2
   var okl = tw - 6
   var astrl = astring.len
   if astrl > okl :
      astring = astring[0.. okl]
      mddl = okl + 5
-
   elif astrl > mmax :
        mddl = astrl + 4
-
   else :
       # default or smaller
        var n = mmax - astrl
@@ -697,17 +687,14 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # frame = 46
     var mmax = 43
     var mddl = 46
-
     ## max length = tw-2
     var okl = tw - 6
     var astrl = astring.len
     if astrl > okl :
        astring = astring[0.. okl]
        mddl = okl + 5
-
     elif astrl > mmax :
          mddl = astrl + 4
-
     else :
         # default or smaller
          var n = mmax - astrl
@@ -807,6 +794,7 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   echo()
 
 
+# init the MersenneTwister
 var rng = initMersenneTwister(urandom(2500))
 
 proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
@@ -820,7 +808,7 @@ proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
 
 
 proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
-    ## createSeqFloat
+    ## createSeqInt
     ##
     ## convenience proc to create a seq of random int with
     ##
@@ -829,8 +817,8 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
     ## form @[4556,455,888,234,...] or similar
     ##
     ## .. code-block:: nim
-    ##    # create a seq with 50 random floats
-    ##    echo createSeqInt(50)
+    ##    # create a seq with 50 random integers ,between 100 and 2000
+    ##    echo createSeqInt(50,100,2000)
 
     var z = newSeq[int]()
     for x in 0.. <n:
@@ -845,6 +833,7 @@ proc getRandomFloat*():float =
     ##
     ## in calling prog
     result = rng.random()
+
 
 proc createSeqFloat*(n:int = 10) : seq[float] =
       ## createSeqFloat
@@ -863,7 +852,6 @@ proc createSeqFloat*(n:int = 10) : seq[float] =
       for x in 0.. <n:
         z.add(getRandomFloat())
       result = z
-
 
 
 proc newWordCJK*(maxwl:int = 10):string =
@@ -957,3 +945,4 @@ setControlCHook(handler)
 # this will reset any color changes in the terminal
 # so no need for this line in the calling prog
 system.addQuitProc(resetAttributes)
+# end of private.nim
