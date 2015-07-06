@@ -257,39 +257,40 @@ proc rainbow*(astr : string) =
 
 
 proc rainbowPW*() :string =
-            ## rainbowPW
-            ##
-            ## under development
-            ##
-            ## idea is to have a number password with hidden colorcode
-            ##
-            ## the colorcode is only accessible privatly
-            ##
-            ## so if the password number is exposed there is no problem
-            ##
+           ## rainbowPW
+           ##
+           ## under development
+           ##
+           ## idea is to have a number password with hidden colorcode
+           ##
+           ## the colorcode is only accessible privatly
+           ##
+           ## so if the password number is exposed there is no problem
+           ##
 
-            var c = 0
-            var a = toSeq(0.. 9)
-            for x in 0.. <1:
-               c = a[randomInt(a.len)]
-               case c
-                of 1  : msgg() do  : result = $c & "green"
-                of 2  : msgr() do  : result = $c & "red"
-                of 3  : msgc() do  : result = $c & "cyan"
-                of 4  : msgy() do  : result = $c & "yellow"
-                of 5  : msggb() do : result = $c & "brightgreen"
-                of 6  : msgr() do  : result = $c & "red"
-                of 7  : msgwb() do : result = $c & "brightwhite"
-                of 8  : msgc() do  : result = $c & "cyan"
-                of 9  : msgyb() do : result = $c & "brightyellow"
-                of 10 : msgrb() do : result = $c & "brightred"
-                of 11 : msgcb() do : result = $c & "brightcyan"
-                else  : msgw() do  : result = $c & "white"
+           var c = 0
+           var a = toSeq(0.. 9)
+           c = a[randomInt(a.len)]
+           case c
+            of 1  : msgg() do  : result = $c & "green"
+            of 2  : msgr() do  : result = $c & "red"
+            of 3  : msgc() do  : result = $c & "cyan"
+            of 4  : msgy() do  : result = $c & "yellow"
+            of 5  : msggb() do : result = $c & "brightgreen"
+            of 6  : msgwb() do : result = $c & "brightwhite"
+            of 7  : msgyb() do : result = $c & "brightyellow"
+            of 8  : msgrb() do : result = $c & "brightred"
+            of 9  : msgcb() do : result = $c & "brightcyan"
+            else  : msgw() do  : result = $c & "white"
 
-proc printColStr*(colstr:string,astr:string):string =
+proc printColStr*(colstr:string,astr:string) =
       ## printColStr
       ##
       ## prints a string with a named color
+      ##
+      ## colors : green,red,cyan,yellow,white,black
+      ##
+      ##          brightgreen,brightred,brightcyan,brightyellow,brightwhite
       ##
       ## .. code-block:: nim
       ##    printColStr("green","Nice it is in green")
@@ -300,6 +301,8 @@ proc printColStr*(colstr:string,astr:string):string =
       of "red"    : msgr() do  : write(stdout,astr)
       of "cyan"   : msgc() do  : write(stdout,astr)
       of "yellow" : msgy() do  : write(stdout,astr)
+      of "white"  : msgw() do  : write(stdout,astr)
+      of "black"  : msgb() do  : write(stdout,astr)
       of "brightgreen" : msggb() do : write(stdout,astr)
       of "brightwhite" : msgwb() do : write(stdout,astr)
       of "brightyellow": msgyb() do : write(stdout,astr)
@@ -312,7 +315,7 @@ proc printColStr*(colstr:string,astr:string):string =
 proc makeColPW*(n:int = 12):seq[string] =
         ## makeColPW
         ##
-        ##   # make a colorcoded pw with length n default = 12
+        ## make a colorcoded pw with length n default = 12
         ##
         var z = newSeq[string]()
         for x in 0..<n:
@@ -882,16 +885,18 @@ proc newWordCJK*(maxwl:int = 10):string =
       result = nw
 
 
-proc newWord*(maxwl:int = 10 ):string =
+proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
        ## newWord
        ##
        ## creates a new lower case word with chars from Letters set
        ##
-       ## with default max word length maxwl = 10  , min = 3
+       ## default min word length minwl = 3
+       ##
+       ## default max word length maxwl = 10
        ##
        var nw = ""
        # words with length range 3 to maxwl
-       var maxws = toSeq(3.. <maxwl)
+       var maxws = toSeq(minwl.. maxwl)
        # get a random length for a new word
        var nwl = maxws.randomChoice()
        var chc = toSeq(33.. 126)

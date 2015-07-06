@@ -1183,7 +1183,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <li><a class="reference" href="#rainbowPW,"
     title="rainbowPW*(): string"><wbr />rainbow<wbr />PW</a></li>
   <li><a class="reference" href="#printColStr,string,string"
-    title="printColStr*(colstr: string; astr: string): string"><wbr />print<wbr />Col<wbr />Str</a></li>
+    title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
   <li><a class="reference" href="#dhlecho,string,string,string"
@@ -1238,8 +1238,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
   <li><a class="reference" href="#newWordCJK,int"
     title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
-  <li><a class="reference" href="#newWord,int"
-    title="newWord*(maxwl: int = 10): string"><wbr />new<wbr />Word</a></li>
+  <li><a class="reference" href="#newWord,int,int"
+    title="newWord*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word</a></li>
   <li><a class="reference" href="#iching,"
     title="iching*(): seq[string]"><wbr />iching</a></li>
   <li><a class="reference" href="#hiragana,"
@@ -1362,16 +1362,19 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 
 
 </dd>
-<dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printColStr</p>
 <p>prints a string with a named color</p>
+<p>colors : green,red,cyan,yellow,white,black</p>
+<blockquote><p>brightgreen,brightred,brightcyan,brightyellow,brightwhite</p></blockquote>
 <pre><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
-makeColPW<blockquote><p># make a colorcoded pw with length n default = 12</p></blockquote>
+<p>makeColPW</p>
+<p>make a colorcoded pw with length n default = 12 </p>
 
 
 </dd>
@@ -1575,11 +1578,12 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">echo</span> <span class="Identifier">newWordCJK</span><span class="Punctuation">(</span><span class="DecNumber">20</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="newWord"><a name="newWord,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dt id="newWord"><a name="newWord,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>newWord</p>
 <p>creates a new lower case word with chars from Letters set</p>
-<p>with default max word length maxwl = 10  , min = 3 </p>
+<p>default min word length minwl = 3</p>
+<p>default max word length maxwl = 10 </p>
 
 
 </dd>
@@ -1720,7 +1724,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-05 23:24:29 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-06 08:43:23 UTC</small>
       </div>
     </div>
   </div>
