@@ -12,9 +12,9 @@
 ##
 ##   Compiler    : Nim 0.11.3
 ##
-##   Description : library with a collection of procs and templates
+##   Description : private.nim is a public library with a collection of procs and templates
 ##
-##                 display , date handling and much more
+##                 for display , date handling and much more
 ##
 ##                 some procs mirror functionality of other moduls for convenience
 ##
@@ -100,6 +100,7 @@ template msgy*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgYellow)
       code
       setforegroundcolor(fgWhite)
+
 
 template msgyb*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgYellow,true)
@@ -208,9 +209,9 @@ template withFile*(f: expr, filename: string, mode: FileMode,
 
      if open(f, fn, mode):
          try:
-           body
+             body
          finally:
-           close(f)
+             close(f)
      else:
          let msg = "Cannot open file"
          echo ()
@@ -218,7 +219,7 @@ template withFile*(f: expr, filename: string, mode: FileMode,
          quit()
 
 
-proc printTuple(xs: tuple): string =
+proc printTuple*(xs: tuple): string =
      ## printTuple
      ##
      ## tuple printer , returns a string
@@ -321,6 +322,39 @@ proc printColStr*(colstr:string,astr:string) =
       else  : msgw() do  : write(stdout,astr)
 
 
+
+proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
+    ## print
+    ##
+    ## similar to printColStr but issues a echo() command that is
+    ##
+    ## every item will be shown on a new line in the same color
+    ##
+    ## and most everything passed in will be converted to string
+    ##
+    ## .. code-block:: nim
+    ##    print green,"Nice try 1", 2.52234, @[4, 5, 6]
+    ##
+
+    for vastr in mvastr:
+      case colstr
+      of green  : msgg() do  : echo vastr
+      of red    : msgr() do  : echo vastr
+      of cyan   : msgc() do  : echo vastr
+      of yellow : msgy() do  : echo vastr
+      of white  : msgw() do  : echo vastr
+      of black  : msgb() do  : echo vastr
+      of brightgreen : msggb() do : echo vastr
+      of brightwhite : msgwb() do : echo vastr
+      of brightyellow: msgyb() do : echo vastr
+      of brightcyan  : msgcb() do : echo vastr
+      of brightred   : msgrb() do : echo vastr
+      of clrainbow   : 
+                       rainbow(vastr)
+                       echo()
+      else  : msgw() do  : echo vastr
+
+
 proc makeColPW*(n:int = 12):seq[string] =
         ## makeColPW
         ##
@@ -332,10 +366,10 @@ proc makeColPW*(n:int = 12):seq[string] =
         result =  z
 
 
-proc dhlecho*(sen:string,cw:string,col:string) =
+proc dhlecho*(sen:string,astr:string,col:string) =
       ## dhlecho
       ##
-      ## echo a line and highlight all appearances of a char or string
+      ## print a string and highlight all appearances of a char or string
       ##
       ## with a certain color
       ##
@@ -346,17 +380,25 @@ proc dhlecho*(sen:string,cw:string,col:string) =
       ##
       ## available colors : green,yellow,cyan,red,white
 
-      var rx = sen.split(cw)
+      var rx = sen.split(astr)
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
           if x != rx.high:
-            case col
-            of  green : msgg()  do : writestyled(cw ,{styleBright})
-            of  yellow: msgy()  do : writestyled(cw ,{styleBright})
-            of  cyan  : msgc()  do : writestyled(cw ,{styleBright})
-            of  red   : msgr()  do : writestyled(cw ,{styleBright})
-            of  white : msgwb() do : writestyled(cw ,{styleBright})
-            else: msgw() do : writestyled(cw ,{})
+              case col
+              of green  : msgg() do  : write(stdout,astr)
+              of red    : msgr() do  : write(stdout,astr)
+              of cyan   : msgc() do  : write(stdout,astr)
+              of yellow : msgy() do  : write(stdout,astr)
+              of white  : msgw() do  : write(stdout,astr)
+              of black  : msgb() do  : write(stdout,astr)
+              of brightgreen : msggb() do : write(stdout,astr)
+              of brightwhite : msgwb() do : write(stdout,astr)
+              of brightyellow: msgyb() do : write(stdout,astr)
+              of brightcyan  : msgcb() do : write(stdout,astr)
+              of brightred   : msgrb() do : write(stdout,astr)
+              of clrainbow   : rainbow(astr)
+              else  : msgw() do  : write(stdout,astr)
+
 
 
 proc decho*(z:int)  =
@@ -924,6 +966,7 @@ proc hiragana*():seq[string] =
     result = hir
 
 
+
 proc doFinish*() =
     ## doFinish
     ##
@@ -932,8 +975,8 @@ proc doFinish*() =
     ## can be changed to anything desired
     ##
     decho(2)
-    msgy() do : echo "{:<15}{}{}".fmt("Elapsed     : ",epochtime() - private.start," secs")
     msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
+    msgy() do : echo "{:<15}{}{}".fmt("Elapsed     : ",epochtime() - private.start," secs")
     echo()
     quit 0
 

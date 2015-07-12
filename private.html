@@ -1208,16 +1208,20 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#getTerminalWidth,"
     title="getTerminalWidth*(): int"><wbr />get<wbr />Terminal<wbr />Width</a></li>
+  <li><a class="reference" href="#printTuple,"
+    title="printTuple*(xs: tuple): string"><wbr />print<wbr />Tuple</a></li>
   <li><a class="reference" href="#rainbow,string"
     title="rainbow*(astr: string)"><wbr />rainbow</a></li>
   <li><a class="reference" href="#rainbowPW,"
     title="rainbowPW*(): string"><wbr />rainbow<wbr />PW</a></li>
   <li><a class="reference" href="#printColStr,string,string"
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
+  <li><a class="reference" href="#print,string,varargs[string,]"
+    title="print*(colstr: string = white; mvastr: varargs[string, `$`])"><wbr />print</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
   <li><a class="reference" href="#dhlecho,string,string,string"
-    title="dhlecho*(sen: string; cw: string; col: string)"><wbr />dhlecho</a></li>
+    title="dhlecho*(sen: string; astr: string; col: string)"><wbr />dhlecho</a></li>
   <li><a class="reference" href="#decho,int"
     title="decho*(z: int)"><wbr />decho</a></li>
   <li><a class="reference" href="#day,string"
@@ -1322,8 +1326,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Version     : 0.6.5</p>
 <p>ProjectStart: 2015-06-20</p>
 <p>Compiler    : Nim 0.11.3</p>
-<p>Description : library with a collection of procs and templates</p>
-<blockquote><p><p>display , date handling and much more</p>
+<p>Description : private.nim is a public library with a collection of procs and templates</p>
+<blockquote><p><p>for display , date handling and much more</p>
 <p>some procs mirror functionality of other moduls for convenience</p>
 </p></blockquote>
 <p>Docs        : <a class="reference external" href="http://qqtop.github.io/private.html">http://qqtop.github.io/private.html</a></p>
@@ -1439,6 +1443,16 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="printTuple"><a name="printTuple,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printTuple</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">xs</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>printTuple</p>
+<p>tuple printer , returns a string</p>
+<p>code ex nim forum</p>
+<pre><span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">,</span><span class="DecNumber">2</span><span class="Punctuation">)</span><span class="Punctuation">)</span>         <span class="Comment"># prints (1, 2)</span>
+<span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">,</span><span class="DecNumber">4</span><span class="Punctuation">)</span><span class="Punctuation">)</span>         <span class="Comment"># prints (3, 4)</span>
+<span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="StringLit">&quot;A&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;B&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;C&quot;</span><span class="Punctuation">)</span><span class="Punctuation">)</span> <span class="Comment"># prints (A, B, C)</span></pre>
+
+</dd>
 <dt id="rainbow"><a name="rainbow,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">rainbow</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>rainbow</p>
@@ -1466,6 +1480,15 @@ check execution timing with one line see doFinish
 <pre><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="print"><a name="print,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">print</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>print</p>
+<p>similar to printColStr but issues a echo() command that is</p>
+<p>every item will be shown on a new line in the same color</p>
+<p>and most everything passed in will be converted to string</p>
+<pre><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
+
+</dd>
 <dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
 <p>makeColPW</p>
@@ -1473,10 +1496,10 @@ check execution timing with one line see doFinish
 
 
 </dd>
-<dt id="dhlecho"><a name="dhlecho,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dhlecho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">sen</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cw</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dt id="dhlecho"><a name="dhlecho,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dhlecho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">sen</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>dhlecho</p>
-<p>echo a line and highlight all appearances of a char or string</p>
+<p>print a string and highlight all appearances of a char or string</p>
 <p>with a certain color</p>
 <pre><span class="Identifier">dhlecho</span><span class="Punctuation">(</span><span class="StringLit">&quot;HELLO THIS IS A TEST&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;T&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre><p>this would highlight all T in green</p>
 <p>available colors : green,yellow,cyan,red,white</p>
@@ -1819,7 +1842,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-06 14:19:32 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-12 14:19:52 UTC</small>
       </div>
     </div>
   </div>
