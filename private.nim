@@ -413,66 +413,10 @@ proc decho*(z:int)  =
       echo()
 
 
-proc day*(aDate:string) : string =
-   ## day,month year extracts the relevant part from
-   ##
-   ## a date string of format yyyy-MM-dd
-   aDate.split("-")[2]
-
-proc month*(aDate:string) : string =
-    var asdm = $(parseInt(aDate.split("-")[1]))
-    if len(asdm) < 2: asdm = "0" & asdm
-    result = asdm
-
-
-proc year*(aDate:string) : string = aDate.split("-")[0]
-     ## Format yyyy
-
-
-proc intervalsecs*(startDate,endDate:string) : float =
-      ## interval procs returns time elapsed between two dates in secs,hours etc.
-      ##
-      var f     = "yyyy-MM-dd"
-      var ssecs = toSeconds(timeinfototime(startDate.parse(f)))
-      var esecs = toSeconds(timeinfototime(endDate.parse(f)))
-      var isecs = esecs - ssecs
-      result = isecs
-
-
-proc intervalmins*(startDate,endDate:string) : float =
-      var imins = intervalsecs(startDate,endDate) / 60
-      result = imins
-
-
-proc intervalhours*(startDate,endDate:string) : float =
-      var ihours = intervalsecs(startDate,endDate) / 3600
-      result = ihours
-
-
-proc intervaldays*(startDate,endDate:string) : float =
-      var idays = intervalsecs(startDate,endDate) / 3600 / 24
-      result = idays
-
-
-proc intervalweeks*(startDate,endDate:string) : float =
-      var iweeks = intervalsecs(startDate,endDate) / 3600 / 24 / 7
-      result = iweeks
-
-
-proc intervalmonths*(startDate,endDate:string) : float =
-      var imonths = intervalsecs(startDate,endDate) / 3600 / 24 / 365  * 12
-      result = imonths
-
-
-proc intervalyears*(startDate,endDate:string) : float =
-      var iyears = intervalsecs(startDate,endDate) / 3600 / 24 / 365
-      result = iyears
-
-
 proc validdate*(adate:string):bool =
      var m30 = @["04","06","09","11"]
      var m31 = @["01","03","05","07","08","10","12"]
-
+     
      var xdate = parseInt(aDate.replace("-",""))
      # check 1 is our date between 1900 - 3000
      if xdate > 19000101 and xdate < 30001212:
@@ -508,6 +452,95 @@ proc validdate*(adate:string):bool =
                             result = false
 
 
+proc day*(aDate:string) : string =
+   ## day,month year extracts the relevant part from
+   ##
+   ## a date string of format yyyy-MM-dd
+   aDate.split("-")[2]
+
+proc month*(aDate:string) : string =
+    var asdm = $(parseInt(aDate.split("-")[1]))
+    if len(asdm) < 2: asdm = "0" & asdm
+    result = asdm
+
+
+proc year*(aDate:string) : string = aDate.split("-")[0]
+     ## Format yyyy
+
+
+proc intervalsecs*(startDate,endDate:string) : float =
+      ## interval procs returns time elapsed between two dates in secs,hours etc.
+      if validdate(startDate) and validdate(endDate):
+          var f     = "yyyy-MM-dd"
+          var ssecs = toSeconds(timeinfototime(startDate.parse(f)))
+          var esecs = toSeconds(timeinfototime(endDate.parse(f)))
+          var isecs = esecs - ssecs
+          result = isecs
+      else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalsecs"
+          result = -0.0
+
+proc intervalmins*(startDate,endDate:string) : float =
+      if validdate(startDate) and validdate(endDate): 
+           var imins = intervalsecs(startDate,endDate) / 60
+           result = imins
+      else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalmins"
+          result = -0.0
+
+
+proc intervalhours*(startDate,endDate:string) : float =
+     if validdate(startDate) and validdate(endDate):
+         var ihours = intervalsecs(startDate,endDate) / 3600
+         result = ihours
+     else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalhours"
+          result = -0.0
+
+proc intervaldays*(startDate,endDate:string) : float =
+      if validdate(startDate) and validdate(endDate):
+          var idays = intervalsecs(startDate,endDate) / 3600 / 24
+          result = idays
+      else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervaldays"
+          result = -0.0
+
+proc intervalweeks*(startDate,endDate:string) : float =
+
+      if validdate(startDate) and validdate(endDate):
+          var iweeks = intervalsecs(startDate,endDate) / 3600 / 24 / 7
+          result = iweeks
+      else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalweeks"
+          result = -0.0
+
+
+proc intervalmonths*(startDate,endDate:string) : float =
+     if validdate(startDate) and validdate(endDate): 
+          var imonths = intervalsecs(startDate,endDate) / 3600 / 24 / 365  * 12
+          result = imonths
+
+     else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalmonths"
+          result = -0.0
+
+proc intervalyears*(startDate,endDate:string) : float =
+     if validdate(startDate) and validdate(endDate): 
+          var iyears = intervalsecs(startDate,endDate) / 3600 / 24 / 365
+          result = iyears
+     else:
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc intervalyears"
+          result = -0.0
+
+
+
 proc compareDates*(startDate,endDate:string) : int =
      # dates must be in form yyyy-MM-dd
      # we want this to answer
@@ -529,6 +562,9 @@ proc compareDates*(startDate,endDate:string) : int =
         else:
           result = -1
      else:
+         
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
+          msgr() do : echo  "proc comparedates"
           result = -2
 
 
@@ -635,6 +671,8 @@ proc minusDays*(aDate:string,days:int):string =
         rxs = ""
 
    result = rxs
+
+
 
 
 proc handler*() {.noconv.} =

@@ -1228,6 +1228,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="dhlecho*(sen: string; astr: string; col: string)"><wbr />dhlecho</a></li>
   <li><a class="reference" href="#decho,int"
     title="decho*(z: int)"><wbr />decho</a></li>
+  <li><a class="reference" href="#validdate,string"
+    title="validdate*(adate: string): bool"><wbr />validdate</a></li>
   <li><a class="reference" href="#day,string"
     title="day*(aDate: string): string"><wbr />day</a></li>
   <li><a class="reference" href="#month,string"
@@ -1248,8 +1250,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="intervalmonths*(startDate, endDate: string): float"><wbr />intervalmonths</a></li>
   <li><a class="reference" href="#intervalyears,string,string"
     title="intervalyears*(startDate, endDate: string): float"><wbr />intervalyears</a></li>
-  <li><a class="reference" href="#validdate,string"
-    title="validdate*(adate: string): bool"><wbr />validdate</a></li>
   <li><a class="reference" href="#compareDates,string,string"
     title="compareDates*(startDate, endDate: string): int"><wbr />compare<wbr />Dates</a></li>
   <li><a class="reference" href="#sleepy,T"
@@ -1518,6 +1518,11 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="validdate"><a name="validdate,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">validdate</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">adate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
+<dd>
+
+
+</dd>
 <dt id="day"><a name="day,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">day</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">aDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>day,month year extracts the relevant part from</p>
@@ -1537,7 +1542,7 @@ Format yyyy
 </dd>
 <dt id="intervalsecs"><a name="intervalsecs,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">intervalsecs</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">startDate</span><span class="Other">,</span> <span class="Identifier">endDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
 <dd>
-interval procs returns time elapsed between two dates in secs,hours etc. 
+interval procs returns time elapsed between two dates in secs,hours etc.
 
 </dd>
 <dt id="intervalmins"><a name="intervalmins,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">intervalmins</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">startDate</span><span class="Other">,</span> <span class="Identifier">endDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
@@ -1566,11 +1571,6 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 
 </dd>
 <dt id="intervalyears"><a name="intervalyears,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">intervalyears</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">startDate</span><span class="Other">,</span> <span class="Identifier">endDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
-<dd>
-
-
-</dd>
-<dt id="validdate"><a name="validdate,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">validdate</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">adate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
 <dd>
 
 
@@ -1846,7 +1846,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-14 14:23:56 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-14 20:46:09 UTC</small>
       </div>
     </div>
   </div>
