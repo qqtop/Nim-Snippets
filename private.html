@@ -489,7 +489,7 @@ pre {
   box-sizing: border-box;
   min-width: calc(100% - 19.5px);
   padding: 9.5px;
-  margin: 0 10px 0px 10px;
+  margin: 0.25em 10px 0.25em 10px;
   font-size: 14px;
   line-height: 20px;
   white-space: pre !important;
@@ -892,6 +892,10 @@ div.align-right {
 
 /* div.align-center * { */
 /*   text-align: left } */
+
+ul.simple > li {
+  margin-bottom: 0.5em }
+
 ol.simple, ul.simple {
   margin-bottom: 1em; }
 
@@ -1448,7 +1452,7 @@ check execution timing with one line see doFinish
 <p>printTuple</p>
 <p>tuple printer , returns a string</p>
 <p>code ex nim forum</p>
-<pre><span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">,</span><span class="DecNumber">2</span><span class="Punctuation">)</span><span class="Punctuation">)</span>         <span class="Comment"># prints (1, 2)</span>
+<pre class = "listing"><span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="DecNumber">1</span><span class="Punctuation">,</span><span class="DecNumber">2</span><span class="Punctuation">)</span><span class="Punctuation">)</span>         <span class="Comment"># prints (1, 2)</span>
 <span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">,</span><span class="DecNumber">4</span><span class="Punctuation">)</span><span class="Punctuation">)</span>         <span class="Comment"># prints (3, 4)</span>
 <span class="Identifier">echo</span> <span class="Identifier">printTuple</span><span class="Punctuation">(</span><span class="Punctuation">(</span><span class="StringLit">&quot;A&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;B&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;C&quot;</span><span class="Punctuation">)</span><span class="Punctuation">)</span> <span class="Comment"># prints (A, B, C)</span></pre>
 
@@ -1477,7 +1481,7 @@ check execution timing with one line see doFinish
 <p>prints a string with a named color</p>
 <p>colors : green,red,cyan,yellow,white,black</p>
 <blockquote><p>brightgreen,brightred,brightcyan,brightyellow,brightwhite</p></blockquote>
-<pre><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
+<pre class = "listing"><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="print"><a name="print,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">print</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
@@ -1486,7 +1490,7 @@ check execution timing with one line see doFinish
 <p>similar to printColStr but issues a echo() command that is</p>
 <p>every item will be shown on a new line in the same color</p>
 <p>and most everything passed in will be converted to string</p>
-<pre><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
+<pre class = "listing"><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
 
 </dd>
 <dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
@@ -1501,7 +1505,7 @@ check execution timing with one line see doFinish
 <p>dhlecho</p>
 <p>print a string and highlight all appearances of a char or string</p>
 <p>with a certain color</p>
-<pre><span class="Identifier">dhlecho</span><span class="Punctuation">(</span><span class="StringLit">&quot;HELLO THIS IS A TEST&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;T&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre><p>this would highlight all T in green</p>
+<pre class = "listing"><span class="Identifier">dhlecho</span><span class="Punctuation">(</span><span class="StringLit">&quot;HELLO THIS IS A TEST&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;T&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre><p>this would highlight all T in green</p>
 <p>available colors : green,yellow,cyan,red,white</p>
 
 
@@ -1510,7 +1514,7 @@ check execution timing with one line see doFinish
 <dd>
 <p>decho</p>
 <p>blank lines creator</p>
-<pre><span class="Identifier">decho</span><span class="Punctuation">(</span><span class="DecNumber">10</span><span class="Punctuation">)</span></pre><p>to create 10 blank lines</p>
+<pre class = "listing"><span class="Identifier">decho</span><span class="Punctuation">(</span><span class="DecNumber">10</span><span class="Punctuation">)</span></pre><p>to create 10 blank lines</p>
 
 
 </dd>
@@ -1627,7 +1631,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>the color of the string can be selected available colors</p>
 <p>green,red,cyan,white,yellow and for going completely bonkers the frame</p>
 <p>can be set to clrainbow too .</p>
-<pre><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">terminal</span>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">terminal</span>
 
 <span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
@@ -1639,7 +1643,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>animated superheader</p>
 <p>parameters for animated superheaderA :</p>
 <p>headerstring, txt color, frame color, updown animation : true/false</p>
-<pre><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">terminal</span>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">terminal</span>
 <span class="Identifier">erasescreen</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">cursorup</span><span class="Punctuation">(</span><span class="DecNumber">80</span><span class="Punctuation">)</span>
 <span class="Keyword">let</span> <span class="Identifier">bb</span> <span class="Operator">=</span> <span class="StringLit">&quot;NIM the system language for the future, which extends to as far as you need and still is small !!&quot;</span>
@@ -1662,7 +1666,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>convenience proc to create a seq of random int with</p>
 <p>default length 10</p>
 <p>form @[4556,455,888,234,...] or similar</p>
-<pre><span class="Comment"># create a seq with 50 random integers ,between 100 and 2000</span>
+<pre class = "listing"><span class="Comment"># create a seq with 50 random integers ,between 100 and 2000</span>
 <span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">,</span><span class="DecNumber">100</span><span class="Punctuation">,</span><span class="DecNumber">2000</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -1680,7 +1684,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>convenience proc to create a seq of random floats with</p>
 <p>default length 10</p>
 <p>form @[0.34,0.056,...] or similar</p>
-<pre><span class="Comment"># create a seq with 50 random floats</span>
+<pre class = "listing"><span class="Comment"># create a seq with 50 random floats</span>
 <span class="Identifier">echo</span> <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -1691,7 +1695,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>with chars from the cjk unicode set</p>
 <p><a class="reference external" href="http://unicode-table.com/en/#cjk-unified-ideographs">http://unicode-table.com/en/#cjk-unified-ideographs</a></p>
 <p>requires unicode</p>
-<pre><span class="Comment"># create a string of chinese or CJK chars</span>
+<pre class = "listing"><span class="Comment"># create a string of chinese or CJK chars</span>
 <span class="Comment"># with max length 20 and show it in green</span>
 <span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">echo</span> <span class="Identifier">newWordCJK</span><span class="Punctuation">(</span><span class="DecNumber">20</span><span class="Punctuation">)</span></pre>
 
@@ -1798,7 +1802,7 @@ msgX templates convenience templates for colored text output the assumption is t
 <p>withFile</p>
 <p>file open close utility template</p>
 <p>Example 1</p>
-<pre><span class="Keyword">let</span> <span class="Identifier">curFile</span><span class="Operator">=</span><span class="StringLit">&quot;/data5/notes.txt&quot;</span>    <span class="Comment"># some file</span>
+<pre class = "listing"><span class="Keyword">let</span> <span class="Identifier">curFile</span><span class="Operator">=</span><span class="StringLit">&quot;/data5/notes.txt&quot;</span>    <span class="Comment"># some file</span>
 <span class="Identifier">withFile</span><span class="Punctuation">(</span><span class="Identifier">txt</span><span class="Punctuation">,</span> <span class="Identifier">curFile</span><span class="Punctuation">,</span> <span class="Identifier">fmRead</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
     <span class="Keyword">while</span> <span class="DecNumber">1</span> <span class="Operator">==</span> <span class="DecNumber">1</span><span class="Punctuation">:</span>
         <span class="Keyword">try</span><span class="Punctuation">:</span>
@@ -1808,7 +1812,7 @@ msgX templates convenience templates for colored text output the assumption is t
 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">rainbow</span><span class="Punctuation">(</span><span class="StringLit">&quot;Finished&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre><p>Example 2</p>
-<pre><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">strutils</span><span class="Punctuation">,</span><span class="Identifier">strfmt</span>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">strutils</span><span class="Punctuation">,</span><span class="Identifier">strfmt</span>
 
 <span class="Keyword">let</span> <span class="Identifier">curFile</span><span class="Operator">=</span><span class="StringLit">&quot;/data5/notes.txt&quot;</span>
 <span class="Keyword">var</span> <span class="Identifier">lc</span> <span class="Operator">=</span> <span class="DecNumber">0</span>
@@ -1842,7 +1846,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-12 14:19:52 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-14 13:56:31 UTC</small>
       </div>
     </div>
   </div>
