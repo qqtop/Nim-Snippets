@@ -1282,6 +1282,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="iching*(): seq[string]"><wbr />iching</a></li>
   <li><a class="reference" href="#hiragana,"
     title="hiragana*(): seq[string]"><wbr />hiragana</a></li>
+  <li><a class="reference" href="#katakana,"
+    title="katakana*(): seq[string]"><wbr />katakana</a></li>
   <li><a class="reference" href="#doFinish,"
     title="doFinish*()"><wbr />do<wbr />Finish</a></li>
 
@@ -1520,6 +1522,10 @@ check execution timing with one line see doFinish
 </dd>
 <dt id="validdate"><a name="validdate,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">validdate</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">adate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
 <dd>
+<p>validdate</p>
+<p>try to ensure correct dates of form yyyy-MM-dd</p>
+<p>correct : 2015-08-15</p>
+<p>wrong   : 2015-08-32 , 201508-15, 2015-13-10 etc. </p>
 
 
 </dd>
@@ -1723,6 +1729,13 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 
 
 </dd>
+<dt id="katakana"><a name="katakana,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">katakana</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>full width katakana</p>
+<p>returns a seq containing full width katakan unicode chars </p>
+
+
+</dd>
 <dt id="doFinish"><a name="doFinish,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">doFinish</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>doFinish</p>
@@ -1846,7 +1859,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-07-14 20:46:09 UTC</small>
+        <small>Made with Nim. Generated: 2015-07-16 10:23:50 UTC</small>
       </div>
     </div>
   </div>

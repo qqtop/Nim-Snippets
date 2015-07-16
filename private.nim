@@ -414,6 +414,15 @@ proc decho*(z:int)  =
 
 
 proc validdate*(adate:string):bool =
+     ## validdate
+     ## 
+     ## try to ensure correct dates of form yyyy-MM-dd
+     ## 
+     ## correct : 2015-08-15
+     ## 
+     ## wrong   : 2015-08-32 , 201508-15, 2015-13-10 etc.
+     ## 
+
      var m30 = @["04","06","09","11"]
      var m31 = @["01","03","05","07","08","10","12"]
      
@@ -470,6 +479,7 @@ proc year*(aDate:string) : string = aDate.split("-")[0]
 
 proc intervalsecs*(startDate,endDate:string) : float =
       ## interval procs returns time elapsed between two dates in secs,hours etc.
+      #  since all interval routines call error message display also here
       if validdate(startDate) and validdate(endDate):
           var f     = "yyyy-MM-dd"
           var ssecs = toSeconds(timeinfototime(startDate.parse(f)))
@@ -477,69 +487,37 @@ proc intervalsecs*(startDate,endDate:string) : float =
           var isecs = esecs - ssecs
           result = isecs
       else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalsecs"
-          result = -0.0
+          msgr() do : echo  "Date error. : " &  startDate,"/",endDate," incorrect date found."
+          #result = -0.0
 
 proc intervalmins*(startDate,endDate:string) : float =
-      if validdate(startDate) and validdate(endDate): 
            var imins = intervalsecs(startDate,endDate) / 60
            result = imins
-      else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalmins"
-          result = -0.0
+    
 
 
 proc intervalhours*(startDate,endDate:string) : float =
-     if validdate(startDate) and validdate(endDate):
          var ihours = intervalsecs(startDate,endDate) / 3600
          result = ihours
-     else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalhours"
-          result = -0.0
+    
 
 proc intervaldays*(startDate,endDate:string) : float =
-      if validdate(startDate) and validdate(endDate):
           var idays = intervalsecs(startDate,endDate) / 3600 / 24
           result = idays
-      else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervaldays"
-          result = -0.0
-
+     
 proc intervalweeks*(startDate,endDate:string) : float =
-
-      if validdate(startDate) and validdate(endDate):
           var iweeks = intervalsecs(startDate,endDate) / 3600 / 24 / 7
           result = iweeks
-      else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalweeks"
-          result = -0.0
-
+     
 
 proc intervalmonths*(startDate,endDate:string) : float =
-     if validdate(startDate) and validdate(endDate): 
           var imonths = intervalsecs(startDate,endDate) / 3600 / 24 / 365  * 12
           result = imonths
 
-     else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalmonths"
-          result = -0.0
-
 proc intervalyears*(startDate,endDate:string) : float =
-     if validdate(startDate) and validdate(endDate): 
           var iyears = intervalsecs(startDate,endDate) / 3600 / 24 / 365
           result = iyears
-     else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc intervalyears"
-          result = -0.0
-
-
+    
 
 proc compareDates*(startDate,endDate:string) : int =
      # dates must be in form yyyy-MM-dd
@@ -550,7 +528,6 @@ proc compareDates*(startDate,endDate:string) : int =
      # -1 undefined , invalid s date
      # -2 undefined . invalid e and or s date
      if validdate(startDate) and validdate(enddate):
-
         var std = startDate.replace("-","")
         var edd = endDate.replace("-","")
         if std == edd:
@@ -562,9 +539,6 @@ proc compareDates*(startDate,endDate:string) : int =
         else:
           result = -1
      else:
-         
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate,"  Format yyyy-MM-dd expected"
-          msgr() do : echo  "proc comparedates"
           result = -2
 
 
@@ -620,7 +594,6 @@ proc plusDays*(aDate:string,days:int):string =
               rxs = ""
 
    else:
-        msgr() do : echo  "Date error. Invalid date : " &  aDate,"  Format yyyy-MM-dd expected"
         rxs = ""
 
    result = rxs
@@ -667,11 +640,9 @@ proc minusDays*(aDate:string,days:int):string =
               msgr() do: echo "Date error. Wrong month : " &  spdate[1]
               rxs = ""
    else:
-        msgr() do : echo  "Date error. Invalid date : " &  aDate ,"  Format yyyy-MM-dd expected"
         rxs = ""
 
    result = rxs
-
 
 
 
@@ -1002,6 +973,18 @@ proc hiragana*():seq[string] =
     for j in 12353..12436:
            hir.add($Rune(j))
     result = hir
+
+
+proc katakana*():seq[string] =
+    ## full width katakana
+    ## 
+    ## returns a seq containing full width katakan unicode chars
+    ## 
+    var kat = newSeq[string]()
+    # s U+30A0–U+30FF.
+    for j in parsehexint("30A0") .. parsehexint("30FF"):
+        kat.add($RUne(j))
+    result = kat    
 
 
 
