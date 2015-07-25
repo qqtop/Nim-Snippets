@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6.6
+##   Version     : 0.6.5
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -157,7 +157,7 @@ template hdx*(code:stmt):stmt =
 
 
 
-template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt =
+template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt {.immediate.} =
      ## withFile
      ##
      ## file open close utility template
