@@ -956,7 +956,7 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     ##
     ## build in pop does the same from the other side
     ##
-    ## .. code-bloxk:: nim
+    ## .. code-block:: nim
     ##    var a: seq[float] = @[1.5, 23.3, 3.4]
     ##    echo shift(a)
     ##    echo a
