@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6.5
+##   Version     : 0.6.6
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -29,9 +29,9 @@
 
 import os,terminal,math,unicode,times,tables
 import sequtils,parseutils,strutils
-import random,strfmt
+import random,strfmt,httpclient
 
-const PRIVATLIBVERSION = "0.6.5"
+const PRIVATLIBVERSION = "0.6.6"
 const
        red*    = "red"
        green*  = "green"
@@ -77,7 +77,7 @@ when defined(Windows):
      tw = repeat("-",80)
 
 
-template msgg*(code: stmt): stmt {.immediate.} =
+template msgg*(code: stmt): stmt   =
       ## msgX templates
       ## convenience templates for colored text output
       ## the assumption is that the terminal is white text and black background
@@ -89,64 +89,64 @@ template msgg*(code: stmt): stmt {.immediate.} =
       setforegroundcolor(fgWhite)
 
 
-template msggb*(code: stmt): stmt {.immediate.} =
+template msggb*(code: stmt): stmt   =
 
       setforegroundcolor(fgGreen,true)
       code
       setforegroundcolor(fgWhite)
 
 
-template msgy*(code: stmt): stmt {.immediate.} =
+template msgy*(code: stmt): stmt =
       setforegroundcolor(fgYellow)
       code
       setforegroundcolor(fgWhite)
 
 
-template msgyb*(code: stmt): stmt {.immediate.} =
+template msgyb*(code: stmt): stmt =
       setforegroundcolor(fgYellow,true)
       code
       setforegroundcolor(fgWhite)
 
 
-template msgr*(code: stmt): stmt {.immediate.} =
+template msgr*(code: stmt): stmt =
       setforegroundcolor(fgRed)
       code
       setforegroundcolor(fgWhite)
 
 
-template msgrb*(code: stmt): stmt {.immediate.} =
+template msgrb*(code: stmt): stmt =
       setforegroundcolor(fgRed,true)
       code
       setforegroundcolor(fgWhite)
 
-template msgc*(code: stmt): stmt {.immediate.} =
+template msgc*(code: stmt): stmt =
       setforegroundcolor(fgCyan)
       code
       setforegroundcolor(fgWhite)
 
-template msgcb*(code: stmt): stmt {.immediate.} =
+template msgcb*(code: stmt): stmt =
       setforegroundcolor(fgCyan,true)
       code
       setforegroundcolor(fgWhite)
 
 
-template msgw*(code: stmt): stmt {.immediate.} =
+template msgw*(code: stmt): stmt =
       setforegroundcolor(fgWhite)
       code
       setforegroundcolor(fgWhite)
 
-template msgwb*(code: stmt): stmt {.immediate.} =
+template msgwb*(code: stmt): stmt =
       setforegroundcolor(fgWhite,true)
       code
       setforegroundcolor(fgWhite)
 
-template msgb*(code: stmt): stmt {.immediate.} =
+template msgb*(code: stmt): stmt =
       setforegroundcolor(fgBlack,true)
       code
       setforegroundcolor(fgWhite)
 
 
-template hdx*(code:stmt):stmt {.immediate.}  =
+template hdx*(code:stmt):stmt =
    echo ""
    echo repeat("+",tw)
    setforegroundcolor(fgCyan)
@@ -156,8 +156,8 @@ template hdx*(code:stmt):stmt {.immediate.}  =
    echo ""
 
 
-template withFile*(f: expr, filename: string, mode: FileMode,
-                     body: stmt): stmt {.immediate.} =
+
+template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt =
      ## withFile
      ##
      ## file open close utility template
@@ -349,7 +349,7 @@ proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
       of brightyellow: msgyb() do : echo vastr
       of brightcyan  : msgcb() do : echo vastr
       of brightred   : msgrb() do : echo vastr
-      of clrainbow   : 
+      of clrainbow   :
                        rainbow(vastr)
                        echo()
       else  : msgw() do  : echo vastr
@@ -415,17 +415,17 @@ proc decho*(z:int)  =
 
 proc validdate*(adate:string):bool =
      ## validdate
-     ## 
+     ##
      ## try to ensure correct dates of form yyyy-MM-dd
-     ## 
+     ##
      ## correct : 2015-08-15
-     ## 
+     ##
      ## wrong   : 2015-08-32 , 201508-15, 2015-13-10 etc.
-     ## 
+     ##
 
      var m30 = @["04","06","09","11"]
      var m31 = @["01","03","05","07","08","10","12"]
-     
+
      var xdate = parseInt(aDate.replace("-",""))
      # check 1 is our date between 1900 - 3000
      if xdate > 19000101 and xdate < 30001212:
@@ -493,22 +493,22 @@ proc intervalsecs*(startDate,endDate:string) : float =
 proc intervalmins*(startDate,endDate:string) : float =
            var imins = intervalsecs(startDate,endDate) / 60
            result = imins
-    
+
 
 
 proc intervalhours*(startDate,endDate:string) : float =
          var ihours = intervalsecs(startDate,endDate) / 3600
          result = ihours
-    
+
 
 proc intervaldays*(startDate,endDate:string) : float =
           var idays = intervalsecs(startDate,endDate) / 3600 / 24
           result = idays
-     
+
 proc intervalweeks*(startDate,endDate:string) : float =
           var iweeks = intervalsecs(startDate,endDate) / 3600 / 24 / 7
           result = iweeks
-     
+
 
 proc intervalmonths*(startDate,endDate:string) : float =
           var imonths = intervalsecs(startDate,endDate) / 3600 / 24 / 365  * 12
@@ -517,7 +517,7 @@ proc intervalmonths*(startDate,endDate:string) : float =
 proc intervalyears*(startDate,endDate:string) : float =
           var iyears = intervalsecs(startDate,endDate) / 3600 / 24 / 365
           result = iyears
-    
+
 
 proc compareDates*(startDate,endDate:string) : int =
      # dates must be in form yyyy-MM-dd
@@ -551,6 +551,30 @@ proc sleepy*[T:float|int](s:T) =
         inc c
     # feedback line can be commented out
     #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
+
+
+
+
+proc dayOfWeekJulian*(day, month, year: int): WeekDay =
+  # will soon be part of times.nim
+  # This is for the Julian calendar
+  # Day & month start from one.
+  let
+    a = (14 - month) div 12
+    y = year - a
+    m = month + (12*a) - 2
+    d = (5 + day + y + (y div 4) + (31*m) div 12) mod 7
+  # The value of d is 0 for a Sunday, 1 for a Monday, 2 for a Tuesday, etc. so we must correct
+  # for the WeekDay type.
+  if d == 0: return dSun
+  result = d.WeekDay
+
+
+
+
+
+
+
 
 
 proc plusDays*(aDate:string,days:int):string =
@@ -845,6 +869,24 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   echo()
 
 
+
+
+proc getWanIp*():string =
+   ## getWanIp
+   ##
+   ## get your wan ip from heroku
+   ##
+
+   var myWanIp = "Wan Ip not established."
+   try:
+      myWanIP = getContent("http://my-ip.heroku.com")
+   except:
+      discard
+   result = myWanIp
+
+
+
+
 # init the MersenneTwister
 var rng = initMersenneTwister(urandom(2500))
 
@@ -877,6 +919,29 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
     result = z
 
 
+
+
+proc harmonics*(n:int64):float64 =
+     ## harmonics
+     ##
+     ## returns a float containing sum of 1 + 1/2 + 1/3 + 1/n
+     ##
+     if n == 0:
+       result = 0.0
+
+     elif n > 0:
+
+        var h = 0.0
+        for x in 1.. n:
+           var hn = 1.0 / x.float64
+           h = h + hn
+        result = h
+
+     else:
+         msgr() do : echo "Harmonics here defined for positive n only"
+         #result = -1
+
+
 proc getRandomFloat*():float =
     ## getRandomFloat
     ##
@@ -884,6 +949,21 @@ proc getRandomFloat*():float =
     ##
     ## in calling prog
     result = rng.random()
+
+
+proc shift*[T](x: var seq[T], zz: Natural = 0): T =
+    ## shift takes a seq and returns the first , and deletes it from the seq
+    ##
+    ## build in pop does the same from the other side
+    ##
+    ## .. code-bloxk:: nim
+    ##    var a: seq[float] = @[1.5, 23.3, 3.4]
+    ##    echo shift(a)
+    ##    echo a
+    ##
+    ##
+    result = x[zz]
+    x.delete(zz)
 
 
 proc createSeqFloat*(n:int = 10) : seq[float] =
@@ -977,14 +1057,14 @@ proc hiragana*():seq[string] =
 
 proc katakana*():seq[string] =
     ## full width katakana
-    ## 
-    ## returns a seq containing full width katakan unicode chars
-    ## 
+    ##
+    ## returns a seq containing full width katakana unicode chars
+    ##
     var kat = newSeq[string]()
     # s U+30A0–U+30FF.
     for j in parsehexint("30A0") .. parsehexint("30FF"):
         kat.add($RUne(j))
-    result = kat    
+    result = kat
 
 
 
