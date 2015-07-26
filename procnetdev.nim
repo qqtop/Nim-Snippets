@@ -56,6 +56,7 @@ var
     lwcoll  = 0
  
 while 1 == 1:
+
      var g      = aget(3)
      var name   = g.da0
      var rbytes = g.da1
@@ -76,29 +77,29 @@ while 1 == 1:
      printColStr(brightred,name & " ")
      
      if mbps1 > 0.01 :
-        printColStr(cyan ,formatFloat(mbps1, ffDecimal, 2) & " rx  ")
+        printColStr(cyan ," rx " & formatFloat(mbps1, ffDecimal, 2) & " Mbps | ")
      else:
-        printColStr(white,formatFloat(mbps1, ffDecimal, 2) & " rx  ")
+        printColStr(white," rx " & formatFloat(mbps1, ffDecimal, 2) & " Mbps | ")
      
      if mib1 > 0.01 :
-        printColStr(green , formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
+        printColStr(green , formatFloat(mib1, ffDecimal, 2) & " MiB/s | ")
      else:
-        printColStr(white, formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
+        printColStr(white,  formatFloat(mib1, ffDecimal, 2) & " MiB/s | ")
          
      if pps1 > 0.01 :
-        printColStr(yellow ,formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
+        printColStr(yellow ,formatFloat(pps1, ffDecimal, 2) & " pps tx | ")
      else:
-        printColStr(white,formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
+        printColStr(white,formatFloat(pps1, ffDecimal, 2) & " pps tx  | ")
             
      if mbps2 > 0.01 :
-        printColStr(cyan ,formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
+        printColStr(cyan ,formatFloat(mbps2, ffDecimal, 2) & " Mbps  | ")
      else:
-        printColStr(white,formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
+        printColStr(white,formatFloat(mbps2, ffDecimal, 2) & " Mbps  | ")
        
      if mib2 > 0.01 :
-        printColStr(green ,formatFloat(mib2, ffDecimal, 2) & " pps  ")
+        printColStr(green ,formatFloat(mib2, ffDecimal, 2) & " MiB/s | ")
      else:
-        printColStr(white,formatFloat(mib2, ffDecimal, 2) & " pps  ")
+        printColStr(white,formatFloat(mib2, ffDecimal, 2) & " MiB/s | ")
                 
      if pps2 > 0.01 :
         printColStr(yellow ,formatFloat(pps2, ffDecimal, 2) & " pps")
