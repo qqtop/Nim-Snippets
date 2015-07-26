@@ -10,7 +10,7 @@ import os,math,strutils,strfmt,private
 ## 
 ## License : MIT opensource
 ## 
-## 
+## VERSION : 0.5
 
 
 type
@@ -73,37 +73,37 @@ while 1 == 1:
       
      clearup()  # comment this out for full history
      
-     printColStr("brightyellow",name & " ")
+     printColStr(brightred,name & " ")
      
      if mbps1 > 0.01 :
-        printColStr("cyan" ,formatFloat(mbps1, ffDecimal, 2) & " rx  ")
+        printColStr(cyan ,formatFloat(mbps1, ffDecimal, 2) & " rx  ")
      else:
-        printColStr("white",formatFloat(mbps1, ffDecimal, 2) & " rx  ")
+        printColStr(white,formatFloat(mbps1, ffDecimal, 2) & " rx  ")
      
      if mib1 > 0.01 :
-        printColStr("green" , formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
+        printColStr(green , formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
      else:
-        printColStr("white", formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
+        printColStr(white, formatFloat(mib1, ffDecimal, 2) & " MiB/s  ")
          
      if pps1 > 0.01 :
-        printColStr("yellow" ,formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
+        printColStr(yellow ,formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
      else:
-        printColStr("white",formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
+        printColStr(white,formatFloat(pps1, ffDecimal, 2) & " pps tx  ")
             
      if mbps2 > 0.01 :
-        printColStr("cyan" ,formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
+        printColStr(cyan ,formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
      else:
-        printColStr("white",formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
+        printColStr(white,formatFloat(mbps2, ffDecimal, 2) & " MiB/s  ")
        
      if mib2 > 0.01 :
-        printColStr("green" ,formatFloat(mib2, ffDecimal, 2) & " pps  ")
+        printColStr(green ,formatFloat(mib2, ffDecimal, 2) & " pps  ")
      else:
-        printColStr("white",formatFloat(mib2, ffDecimal, 2) & " pps  ")
+        printColStr(white,formatFloat(mib2, ffDecimal, 2) & " pps  ")
                 
      if pps2 > 0.01 :
-        printColStr("yellow" ,formatFloat(pps2, ffDecimal, 2) & " pps")
+        printColStr(yellow ,formatFloat(pps2, ffDecimal, 2) & " pps")
      else:
-        printColStr("white",formatFloat(pps2, ffDecimal, 2) & " pps")
+        printColStr(white ,formatFloat(pps2, ffDecimal, 2) & " pps")
       
      echo()
       
