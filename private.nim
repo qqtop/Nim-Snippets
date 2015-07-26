@@ -219,6 +219,17 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
+
+proc clearup*(x:int = 80) =
+   ## clearup
+   ## 
+   ## a convenience proc to clear monitor
+   ##
+   
+   erasescreen()
+   cursorup(80)
+
+
 proc printTuple*(xs: tuple): string =
      ## printTuple
      ##
