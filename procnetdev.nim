@@ -57,7 +57,7 @@ var
  
 while 1 == 1:
 
-     var g      = aget(3)
+     var g      = aget(2)
      var name   = g.da0
      var rbytes = g.da1
      var rpkt   = g.da2
@@ -74,40 +74,65 @@ while 1 == 1:
       
      clearup()  # comment this out for full history
      
-     printColStr(brightred,name & " ")
+     # do not change format string
+     var pdn = "{:<8}: rx {:>7.2f} Mbps {:>7.2f} MiB/s {:>7.2f} pps  tx {:>7.2f} Mbps {:>7.2f} MiB/s {:>7.2f} pps".fmt(name,mbps1,mib1,pps1,mbps2,mib2,pps2)
+     var aseq = newSeq[string]()
      
+     # tokenize the formated string   
+     for word in tokenize(pdn):
+              aseq.add(word.token)
+          
+     # now display values > 0.01 in color       
+     printColStr(brightred,aseq[0])
+     #printColStr(white,aseq[1]) 
+     printColStr(white,aseq[4])
+     printColStr(white,aseq[5])
      if mbps1 > 0.01 :
-        printColStr(cyan ," rx " & formatFloat(mbps1, ffDecimal, 2) & " Mbps | ")
+         printColStr(cyan,aseq[6])
      else:
-        printColStr(white," rx " & formatFloat(mbps1, ffDecimal, 2) & " Mbps | ")
-     
+         printColStr(white,aseq[6])
+     printColStr(white,aseq[7])
+     printColStr(white,aseq[8])
+     printColStr(white,aseq[9])
      if mib1 > 0.01 :
-        printColStr(green , formatFloat(mib1, ffDecimal, 2) & " MiB/s | ")
+         printColStr(green,aseq[10])
      else:
-        printColStr(white,  formatFloat(mib1, ffDecimal, 2) & " MiB/s | ")
-         
+         printColStr(white,aseq[10])
+     printColStr(white,aseq[11])
+     printColStr(white,aseq[12])
+     printColStr(white,aseq[13])
      if pps1 > 0.01 :
-        printColStr(yellow ,formatFloat(pps1, ffDecimal, 2) & " pps tx | ")
+         printColStr(yellow,aseq[14])
      else:
-        printColStr(white,formatFloat(pps1, ffDecimal, 2) & " pps tx  | ")
-            
+         printColStr(white,aseq[14])
+     printColStr(white,aseq[15])
+     printColStr(white,aseq[16])
+     printColStr(white,aseq[17])
+     printColStr(white,aseq[18])
+     printColStr(white,aseq[19])
      if mbps2 > 0.01 :
-        printColStr(cyan ,formatFloat(mbps2, ffDecimal, 2) & " Mbps  | ")
+         printColStr(cyan ,aseq[20])
      else:
-        printColStr(white,formatFloat(mbps2, ffDecimal, 2) & " Mbps  | ")
-       
+         printColStr(white,aseq[20])
+     printColStr(white,aseq[21])
+     printColStr(white,aseq[22])
+     printColStr(white,aseq[23])
      if mib2 > 0.01 :
-        printColStr(green ,formatFloat(mib2, ffDecimal, 2) & " MiB/s | ")
+         printColStr(green,aseq[24])
      else:
-        printColStr(white,formatFloat(mib2, ffDecimal, 2) & " MiB/s | ")
-                
+         printColStr(white,aseq[24])
+     printColStr(white,aseq[25])
+     printColStr(white,aseq[26])
+     printColStr(white,aseq[27])
      if pps2 > 0.01 :
-        printColStr(yellow ,formatFloat(pps2, ffDecimal, 2) & " pps")
+         printColStr(yellow ,aseq[28])
      else:
-        printColStr(white ,formatFloat(pps2, ffDecimal, 2) & " pps")
-      
+         printColStr(white , aseq[28])
+     printColStr(white,aseq[29])
+     printColStr(white,aseq[30])
+     
      echo()
-      
+ 
      lrbytes  = rbytes
      lrpkt    = rpkt 
      lwbytes  = wbytes
