@@ -1,4 +1,4 @@
-
+{.deadCodeElim: on.}
 ##
 ##   Library     : private.nim
 ##
@@ -227,7 +227,7 @@ proc clearup*(x:int = 80) =
    ##
    
    erasescreen()
-   cursorup(80)
+   cursorup(x)
 
 
 proc printTuple*(xs: tuple): string =
@@ -331,7 +331,6 @@ proc printColStr*(colstr:string,astr:string) =
       of brightcyan  : msgcb() do : write(stdout,astr)
       of brightred   : msgrb() do : write(stdout,astr)
       else  : msgw() do  : write(stdout,astr)
-
 
 
 proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
@@ -553,6 +552,7 @@ proc compareDates*(startDate,endDate:string) : int =
           result = -2
 
 
+
 proc sleepy*[T:float|int](s:T) =
     # s is in seconds
     var ss = epochtime()
@@ -577,15 +577,7 @@ proc dayOfWeekJulian*(day, month, year: int): WeekDay =
     d = (5 + day + y + (y div 4) + (31*m) div 12) mod 7
   # The value of d is 0 for a Sunday, 1 for a Monday, 2 for a Tuesday, etc. so we must correct
   # for the WeekDay type.
-  if d == 0: return dSun
   result = d.WeekDay
-
-
-
-
-
-
-
 
 
 proc plusDays*(aDate:string,days:int):string =
@@ -678,6 +670,92 @@ proc minusDays*(aDate:string,days:int):string =
         rxs = ""
 
    result = rxs
+
+
+
+
+
+proc getFirstMondayYear*(ayear:string):string = 
+    ## getFirstMondayYear
+    ## 
+    ## returns date of first monday of any given year
+    ## 
+    ## .. code-block:: nim
+    ##    echo  getFirstMondayYear("2015")
+    ##    
+    ##    
+  
+    var n:WeekDay
+    for x in 1.. 8:
+       var datestr= ayear & "-01-0" & $x
+       if validdate(datestr) == true:
+         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
+         n = z.WeekDay
+         var wd = $(n)
+         if wd == "Monday":
+             result = datestr
+         
+
+
+proc getFirstMondayYearMonth*(aym:string):string = 
+    ## getFirstMondayYearMonth
+    ## 
+    ## returns date of first monday in given year and month
+    ## 
+    ## .. code-block:: nim
+    ##    echo  getFirstMondayYearMonth("2015-12")
+    ##    echo  getFirstMondayYearMonth("2015-06")
+    ##    echo  getFirstMondayYearMonth("2015-2")
+    ##    
+    ## in case of invalid dates nil will be returned
+    ## 
+    
+    var n:WeekDay
+    var amx = aym
+    for x in 1.. 8:
+       if aym.len < 7:
+          var yr = year(amx) 
+          var mo = month(aym)  # this also fixes wrong months
+          amx = yr & "-" & mo 
+       var datestr = amx & "-0" & $x
+       if validdate(datestr) == true:
+         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
+         n = z.WeekDay
+         var wd = $(n)
+         if wd == "Monday":
+            result = datestr
+         
+
+
+proc getNextMonday*(adate:string):string = 
+    ## getNextMonday
+    ## 
+    ## .. code-block:: nim
+    ##    echo  getNextMonday(getDateStr())
+    ## 
+    ## in case of invalid dates nil will be returned
+    ## 
+
+    var n:WeekDay
+    var datestr = adate
+    for x in 1.. 8:
+       if validdate(datestr) == true:
+         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
+         n = z.WeekDay
+         var wd = $(n)
+         if wd == "Monday":
+            result = datestr     
+         else:
+            datestr = plusdays(datestr,1)
+        
+
+
+
+
+
+
+
+
 
 
 
@@ -1088,7 +1166,7 @@ proc doFinish*() =
     ##
     decho(2)
     msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
-    msgy() do : echo "{:<15}{}{}".fmt("Elapsed     : ",epochtime() - private.start," secs")
+    msgy() do : echo "{:<15}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs")
     echo()
     quit 0
 
