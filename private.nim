@@ -74,7 +74,8 @@ when defined(Linux):
 # will change this once windows gets a real terminal
 # or shell which will never happen
 when defined(Windows):
-     tw = repeat("-",80)
+     var tw* = 80
+     var aline* = repeat("-",tw)
 
 
 template msgg*(code: stmt): stmt   =
