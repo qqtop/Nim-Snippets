@@ -77,7 +77,6 @@ when defined(Windows):
      var tw* = 80
      var aline* = repeat("-",tw)
 
-
 template msgg*(code: stmt): stmt   =
       ## msgX templates
       ## convenience templates for colored text output
@@ -443,14 +442,14 @@ proc validdate*(adate:string):bool =
         var spdate = aDate.split("-")
         if parseint(spdate[0]) >= 1900 and parseint(spdate[0]) <= 3000:
              if spdate[1] in m30:
-               # so day max 30
+                #  day max 30
                 if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 31:
                    result = true
                 else:
                    result = false
 
              elif spdate[1] in m31:
-               # so day max 30
+                # day max 31
                 if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 32:
                    result = true
                 else:
@@ -462,14 +461,14 @@ proc validdate*(adate:string):bool =
                       # check leapyear
                       if isleapyear(parseint(spdate[0])) == true:
                           if parseInt(spdate[2]) > 0 and parseint(spdate[2]) < 30:
-                            result = true
+                             result = true
                           else:
-                            result = false
+                             result = false
                       else:
                           if parseInt(spdate[2]) > 0 and parseint(spdate[2]) < 29:
-                            result = true
+                             result = true
                           else:
-                            result = false
+                             result = false
 
 
 proc day*(aDate:string) : string =
@@ -581,6 +580,10 @@ proc dayOfWeekJulian*(day, month, year: int): WeekDay =
   result = d.WeekDay
 
 
+
+proc fx(nx:TimeInfo):string =
+        result = nx.format("yyyy-MM-dd")
+
 proc plusDays*(aDate:string,days:int):string =
    ## plusDays
    ##
@@ -590,42 +593,16 @@ proc plusDays*(aDate:string,days:int):string =
    ##
    ## the passed in date string must be a valid date or an error message will be returned
    ##
-   var rxs = ""
-   if validdate(adate) == true:
-
-        var spdate = aDate.split("-")
-        var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
-        var mflag: bool = false
-        tifo.year = parseInt(spdate[0])
-        case parseInt(spdate[1])
-        of 1 :  tifo.month = mJan
-        of 2 :  tifo.month = mFeb
-        of 3 :  tifo.month = mMar
-        of 4 :  tifo.month = mApr
-        of 5 :  tifo.month = mMay
-        of 6 :  tifo.month = mJun
-        of 7 :  tifo.month = mJul
-        of 8 :  tifo.month = mAug
-        of 9 :  tifo.month = mSep
-        of 10:  tifo.month = mOct
-        of 11:  tifo.month = mNov
-        of 12 : tifo.month = mDec
-        else  : mflag = true
-        tifo.monthday = parseInt(spdate[2])
-        if mflag == false:
-            var myinterval = initInterval()
-            myinterval.days = days
-            var rx = tifo + myinterval
-            rxs = rx.format("yyyy-MM-dd")
-        else :
-              msgr() do: echo "Date error. Wrong month : " &  spdate[1]
-              rxs = ""
-
+   if validdate(aDate) == true:
+      var rxs = ""
+      var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
+      var myinterval = initInterval()   
+      myinterval.days = days
+      rxs = fx(tifo + myinterval)
+      result = rxs
    else:
-        rxs = ""
-
-   result = rxs
-
+      msgr() do : echo "Date error : ",aDate
+      result = "Error"
 
 proc minusDays*(aDate:string,days:int):string =
    ## minusDays
@@ -637,42 +614,16 @@ proc minusDays*(aDate:string,days:int):string =
    ## the passed in date string must be a valid date or an error message will be returned
    ##
 
-   var rxs = ""
-   if validdate(adate) == true:
-        var spdate = aDate.split("-")
-        var tifo = parse(aDate,"yyyy-MM-dd")  # this returns a TimeInfo type
-        var mflag: bool = false
-        tifo.year = parseInt(spdate[0])
-        case parseInt(spdate[1])
-        of 1 :  tifo.month = mJan
-        of 2 :  tifo.month = mFeb
-        of 3 :  tifo.month = mMar
-        of 4 :  tifo.month = mApr
-        of 5 :  tifo.month = mMay
-        of 6 :  tifo.month = mJun
-        of 7 :  tifo.month = mJul
-        of 8 :  tifo.month = mAug
-        of 9 :  tifo.month = mSep
-        of 10:  tifo.month = mOct
-        of 11:  tifo.month = mNov
-        of 12 : tifo.month = mDec
-        else  : mflag = true
-        tifo.monthday = parseInt(spdate[2])
-        if mflag == false:
-            var myinterval = initInterval()
-            myinterval.days = days
-            var rx = tifo - myinterval
-            rxs = rx.format("yyyy-MM-dd")
-
-        else :
-              msgr() do: echo "Date error. Wrong month : " &  spdate[1]
-              rxs = ""
+   if validdate(aDate) == true:
+      var rxs = ""
+      var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
+      var myinterval = initInterval()   
+      myinterval.days = days
+      rxs = fx(tifo - myinterval)
+      result = rxs
    else:
-        rxs = ""
-
-   result = rxs
-
-
+      msgr() do : echo "Date error : ",aDate
+      result = "Error"
 
 
 
