@@ -1207,7 +1207,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <li><a class="reference" href="#brightwhite"
     title="brightwhite* = &quot;brightwhite&quot;"><wbr />brightwhite</a></li>
   <li><a class="reference" href="#clrainbow"
-    title="clrainbow* = &quot;rainbow&quot;"><wbr />clrainbow</a></li>
+    title="clrainbow* = &quot;clrainbow&quot;"><wbr />clrainbow</a></li>
 
   </ul>
 </li>
@@ -1262,6 +1262,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="sleepy*[T: float | int](s: T)"><wbr />sleepy</a></li>
   <li><a class="reference" href="#dayOfWeekJulian,int,int,int"
     title="dayOfWeekJulian*(day, month, year: int): WeekDay"><wbr />day<wbr />Of<wbr />Week<wbr />Julian</a></li>
+  <li><a class="reference" href="#dayOfWeekJulian,string"
+    title="dayOfWeekJulian*(datestr: string): string"><wbr />day<wbr />Of<wbr />Week<wbr />Julian</a></li>
   <li><a class="reference" href="#plusDays,string,int"
     title="plusDays*(aDate: string; days: int): string"><wbr />plus<wbr />Days</a></li>
   <li><a class="reference" href="#minusDays,string,int"
@@ -1298,6 +1300,12 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
   <li><a class="reference" href="#newWord,int,int"
     title="newWord*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word</a></li>
+  <li><a class="reference" href="#newWord2,int,int"
+    title="newWord2*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word2</a></li>
+  <li><a class="reference" href="#newWord3,int,int,bool"
+    title="newWord3*(minwl: int = 3; maxwl: int = 10; nflag: bool = true): string"><wbr />new<wbr />Word3</a></li>
+  <li><a class="reference" href="#newWord4,int,int"
+    title="newWord4*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word4</a></li>
   <li><a class="reference" href="#iching,"
     title="iching*(): seq[string]"><wbr />iching</a></li>
   <li><a class="reference" href="#hiragana,"
@@ -1460,7 +1468,7 @@ check execution timing with one line see doFinish
 
 
 </dd>
-<dt id="clrainbow"><a name="clrainbow"></a><pre><span class="Identifier">clrainbow</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;rainbow&quot;</span></pre></dt>
+<dt id="clrainbow"><a name="clrainbow"></a><pre><span class="Identifier">clrainbow</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;clrainbow&quot;</span></pre></dt>
 <dd>
 
 
@@ -1633,6 +1641,13 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 
 
 </dd>
+<dt id="dayOfWeekJulian"><a name="dayOfWeekJulian,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dayOfWeekJulian</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">datestr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>dayOfWeekJulian</p>
+<p>returns the day of the week of a date given in format yyyy-MM-dd as string</p>
+
+
+</dd>
 <dt id="plusDays"><a name="plusDays,string,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">plusDays</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">aDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">days</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>plusDays</p>
@@ -1670,7 +1685,13 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 </dd>
 <dt id="getNextMonday"><a name="getNextMonday,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getNextMonday</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">adate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
-getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="Identifier">getDateStr</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span></pre><p>in case of invalid dates nil will be returned </p>
+getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="Identifier">getDateStr</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span></pre><pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
+
+<span class="Keyword">var</span> <span class="Identifier">dw</span> <span class="Operator">=</span> <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-08-10&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">echo</span> <span class="Identifier">dw</span>
+<span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="FloatNumber">1.</span><span class="Operator">.</span> <span class="DecNumber">10</span><span class="Punctuation">:</span>
+    <span class="Identifier">dw</span> <span class="Operator">=</span> <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="Identifier">dw</span><span class="Punctuation">)</span>
+    <span class="Identifier">echo</span> <span class="Identifier">dw</span></pre><p>in case of invalid dates nil will be returned </p>
 
 
 </dd>
@@ -1798,6 +1819,34 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dd>
 <p>newWord</p>
 <p>creates a new lower case word with chars from Letters set</p>
+<p>default min word length minwl = 3</p>
+<p>default max word length maxwl = 10 </p>
+
+
+</dd>
+<dt id="newWord2"><a name="newWord2,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord2</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>newWord2</p>
+<p>creates a new lower case word with chars from IdentChars set</p>
+<p>default min word length minwl = 3</p>
+<p>default max word length maxwl = 10 </p>
+
+
+</dd>
+<dt id="newWord3"><a name="newWord3,int,int,bool"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord3</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">;</span> <span class="Identifier">nflag</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>newWord3</p>
+<p>creates a new lower case word with chars from AllChars set if nflag = true</p>
+<p>creates a new anycase word with chars from AllChars set if nflag = false</p>
+<p>default min word length minwl = 3</p>
+<p>default max word length maxwl = 10 </p>
+
+
+</dd>
+<dt id="newWord4"><a name="newWord4,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord4</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>newWord4</p>
+<p>creates a random hiragana word without meaning from the hiragana unicode set</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
 
@@ -1947,7 +1996,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-03 22:26:20 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-10 22:56:50 UTC</small>
       </div>
     </div>
   </div>

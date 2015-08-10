@@ -44,7 +44,7 @@ const
        brightcyan*   = "brightcyan"
        brightyellow* = "brightyellow"
        brightwhite*  = "brightwhite"
-       clrainbow*    = "rainbow"
+       clrainbow*    = "clrainbow"
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -77,7 +77,7 @@ when defined(Windows):
      var tw* = 80
      var aline* = repeat("-",tw)
 
-template msgg*(code: stmt): stmt   =
+template msgg*(code: stmt): stmt =
       ## msgX templates
       ## convenience templates for colored text output
       ## the assumption is that the terminal is white text and black background
@@ -330,6 +330,7 @@ proc printColStr*(colstr:string,astr:string) =
       of brightyellow: msgyb() do : write(stdout,astr)
       of brightcyan  : msgcb() do : write(stdout,astr)
       of brightred   : msgrb() do : write(stdout,astr)
+      of clrainbow   : rainbow(astr)
       else  : msgw() do  : write(stdout,astr)
 
 
@@ -440,7 +441,7 @@ proc validdate*(adate:string):bool =
      # check 1 is our date between 1900 - 3000
      if xdate > 19000101 and xdate < 30001212:
         var spdate = aDate.split("-")
-        if parseint(spdate[0]) >= 1900 and parseint(spdate[0]) <= 3000:
+        if parseInt(spdate[0]) >= 1900 and parseInt(spdate[0]) <= 3000:
              if spdate[1] in m30:
                 #  day max 30
                 if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 31:
@@ -459,13 +460,13 @@ proc validdate*(adate:string):bool =
                    # so its february
                    if spdate[1] == "02" :
                       # check leapyear
-                      if isleapyear(parseint(spdate[0])) == true:
-                          if parseInt(spdate[2]) > 0 and parseint(spdate[2]) < 30:
+                      if isleapyear(parseInt(spdate[0])) == true:
+                          if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 30:
                              result = true
                           else:
                              result = false
                       else:
-                          if parseInt(spdate[2]) > 0 and parseint(spdate[2]) < 29:
+                          if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 29:
                              result = true
                           else:
                              result = false
@@ -567,7 +568,8 @@ proc sleepy*[T:float|int](s:T) =
 
 
 proc dayOfWeekJulian*(day, month, year: int): WeekDay =
-  # will soon be part of times.nim
+  #
+  # may be part of times.nim later
   # This is for the Julian calendar
   # Day & month start from one.
   let
@@ -578,6 +580,21 @@ proc dayOfWeekJulian*(day, month, year: int): WeekDay =
   # The value of d is 0 for a Sunday, 1 for a Monday, 2 for a Tuesday, etc. so we must correct
   # for the WeekDay type.
   result = d.WeekDay
+
+
+
+proc dayOfWeekJulian*(datestr:string): string =
+   ## dayOfWeekJulian 
+   ##
+   ## returns the day of the week of a date given in format yyyy-MM-dd as string
+   ## 
+   ## 
+   ##
+   ##
+  
+   var dw = dayofweekjulian(parseInt(day(datestr)),parseInt(month(datestr)),parseInt(year(datestr))) 
+   result = $dw
+  
 
 
 
@@ -641,10 +658,8 @@ proc getFirstMondayYear*(ayear:string):string =
     for x in 1.. 8:
        var datestr= ayear & "-01-0" & $x
        if validdate(datestr) == true:
-         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
-         n = z.WeekDay
-         var wd = $(n)
-         if wd == "Monday":
+         var z = dayofweekjulian(datestr) 
+         if z == "Monday":
              result = datestr
          
 
@@ -671,10 +686,8 @@ proc getFirstMondayYearMonth*(aym:string):string =
           amx = yr & "-" & mo 
        var datestr = amx & "-0" & $x
        if validdate(datestr) == true:
-         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
-         n = z.WeekDay
-         var wd = $(n)
-         if wd == "Monday":
+         var z = dayofweekjulian(datestr) 
+         if z == "Monday":
             result = datestr
          
 
@@ -685,30 +698,37 @@ proc getNextMonday*(adate:string):string =
     ## .. code-block:: nim
     ##    echo  getNextMonday(getDateStr())
     ## 
+    ## 
+    ## .. code-block:: nim
+    ##      import private
+    ##
+    ##      var dw = getNextMonday("2015-08-10")
+    ##      echo dw
+    ##      for x in 1.. 10:
+    ##          dw = getNextMonday(dw)
+    ##          echo dw
+    ## 
+    ## 
     ## in case of invalid dates nil will be returned
     ## 
 
     var n:WeekDay
     var datestr = adate
-    for x in 1.. 8:
+    var z = dayofweekjulian(datestr) 
+    
+    if z == "Monday":
+      # so the datestr points to a monday we need to add a 
+      # day to get the next one calculated
+      datestr = plusdays(datestr,1)
+    
+    for x in 1.. <8:
        if validdate(datestr) == true:
-         var z = dayofweekjulian(parseint(day(datestr)),parseint(month(datestr)),parseint(year(datestr))) 
-         n = z.WeekDay
-         var wd = $(n)
-         if wd == "Monday":
+         z = dayofweekjulian(datestr) 
+         if z == "Monday":
             result = datestr     
          else:
             datestr = plusdays(datestr,1)
         
-
-
-
-
-
-
-
-
-
 
 
 proc handler*() {.noconv.} =
@@ -1062,17 +1082,110 @@ proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
     ##
     ## default max word length maxwl = 10
     ##
-    var nw = ""
-    # words with length range 3 to maxwl
-    var maxws = toSeq(minwl.. maxwl)
-    # get a random length for a new word
-    var nwl = maxws.randomChoice()
-    var chc = toSeq(33.. 126)
-    while nw.len < nwl:
-       var x = chc.randomChoice()
-       if char(x) in Letters:
-           nw = nw & $char(x)
-    result = normalize(nw)   # return in lower case , cleaned up
+    
+    if minwl <= maxwl:
+        var nw = ""
+        # words with length range 3 to maxwl
+        var maxws = toSeq(minwl.. maxwl)
+        # get a random length for a new word
+        var nwl = maxws.randomChoice()
+        var chc = toSeq(33.. 126)
+        while nw.len < nwl:
+          var x = chc.randomChoice()
+          if char(x) in Letters:
+              nw = nw & $char(x)
+        result = normalize(nw)   # return in lower case , cleaned up
+
+    else:
+         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         result = ""
+
+
+proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
+    ## newWord2
+    ##
+    ## creates a new lower case word with chars from IdentChars set
+    ##
+    ## default min word length minwl = 3
+    ##
+    ## default max word length maxwl = 10
+    ##
+    if minwl <= maxwl:
+        var nw = ""
+        # words with length range 3 to maxwl
+        var maxws = toSeq(minwl.. maxwl)
+        # get a random length for a new word
+        var nwl = maxws.randomChoice()
+        var chc = toSeq(33.. 126)
+        while nw.len < nwl:
+          var x = chc.randomChoice()
+          if char(x) in IdentChars:
+              nw = nw & $char(x)
+        result = normalize(nw)   # return in lower case , cleaned up
+    
+    else: 
+         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         result = ""
+ 
+
+proc newWord3*(minwl:int=3,maxwl:int = 10 ,nflag:bool = true):string =
+    ## newWord3
+    ##
+    ## creates a new lower case word with chars from AllChars set if nflag = true 
+    ##
+    ## creates a new anycase word with chars from AllChars set if nflag = false 
+    ##
+    ## default min word length minwl = 3
+    ##
+    ## default max word length maxwl = 10
+    ##
+    if minwl <= maxwl:
+        var nw = ""
+        # words with length range 3 to maxwl
+        var maxws = toSeq(minwl.. maxwl)
+        # get a random length for a new word
+        var nwl = maxws.randomChoice()
+        var chc = toSeq(33.. 126)
+        while nw.len < nwl:
+          var x = chc.randomChoice()
+          if char(x) in AllChars:
+              nw = nw & $char(x)
+        if nflag == true:      
+           result = normalize(nw)   # return in lower case , cleaned up
+        else :
+           result = nw
+        
+    else:
+         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         result = ""
+           
+
+proc newWord4*(minwl:int=3,maxwl:int = 10 ):string =
+    ## newWord4
+    ##
+    ## creates a random hiragana word without meaning from the hiragana unicode set 
+    ##
+    ## default min word length minwl = 3
+    ##
+    ## default max word length maxwl = 10
+    ##
+    if minwl <= maxwl:
+        var nw = ""
+        # words with length range 3 to maxwl
+        var maxws = toSeq(minwl.. maxwl)
+        # get a random length for a new word
+        var nwl = maxws.randomChoice()
+        var chc = toSeq(12353.. 12436)
+        while nw.len < nwl:
+           var x = chc.randomChoice()
+           nw = nw & $Rune(x)
+        
+        result = nw
+        
+    else:
+         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         result = ""
+           
 
 
 proc iching*():seq[string] =
