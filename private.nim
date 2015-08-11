@@ -18,6 +18,8 @@
 ##
 ##                 some procs mirror functionality of other moduls for convenience
 ##
+##   Project     : https://github.com/qqtop/Nim-Snippets
+##
 ##   Docs        : http://qqtop.github.io/private.html
 ##
 ##   Tested      : on linux only
@@ -701,9 +703,8 @@ proc getNextMonday*(adate:string):string =
     ## 
     ## .. code-block:: nim
     ##      import private
-    ##
-    ##      var dw = getNextMonday("2015-08-10")
-    ##      echo dw
+    ##      # get next 10 mondays
+    ##      var dw = "2015-08-10"
     ##      for x in 1.. 10:
     ##          dw = getNextMonday(dw)
     ##          echo dw
@@ -713,22 +714,25 @@ proc getNextMonday*(adate:string):string =
     ## 
 
     var n:WeekDay
-    var datestr = adate
-    var z = dayofweekjulian(datestr) 
-    
-    if z == "Monday":
-      # so the datestr points to a monday we need to add a 
-      # day to get the next one calculated
-      datestr = plusdays(datestr,1)
-    
-    for x in 1.. <8:
-       if validdate(datestr) == true:
-         z = dayofweekjulian(datestr) 
-         if z == "Monday":
-            result = datestr     
-         else:
-            datestr = plusdays(datestr,1)
+    var ndatestr = ""
+    if validdate(adate) == true:  
+        var z = dayofweekjulian(adate) 
         
+        if z == "Monday":
+          # so the datestr points to a monday we need to add a 
+          # day to get the next one calculated
+            ndatestr = plusDays(adate,1)
+        else:
+            ndatestr = adate 
+        
+        var datestr = ndatestr
+        for x in 0.. <7:
+          if validdate(datestr) == true:
+            z = dayofweekjulian(datestr) 
+            if z.strip() != "Monday":
+                datestr = plusDays(datestr,1)  
+            else:
+                result = datestr  
 
 
 proc handler*() {.noconv.} =

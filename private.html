@@ -1364,6 +1364,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <blockquote><p><p>for display , date handling and much more</p>
 <p>some procs mirror functionality of other moduls for convenience</p>
 </p></blockquote>
+<p>Project     : <a class="reference external" href="https://github.com/qqtop/Nim-Snippets">https://github.com/qqtop/Nim-Snippets</a></p>
 <p>Docs        : <a class="reference external" href="http://qqtop.github.io/private.html">http://qqtop.github.io/private.html</a></p>
 <p>Tested      : on linux only</p>
 <p>Programming : qqTop</p>
@@ -1686,9 +1687,8 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dt id="getNextMonday"><a name="getNextMonday,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getNextMonday</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">adate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="Identifier">getDateStr</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span></pre><pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
-
-<span class="Keyword">var</span> <span class="Identifier">dw</span> <span class="Operator">=</span> <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-08-10&quot;</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span> <span class="Identifier">dw</span>
+<span class="Comment"># get next 10 mondays</span>
+<span class="Keyword">var</span> <span class="Identifier">dw</span> <span class="Operator">=</span> <span class="StringLit">&quot;2015-08-10&quot;</span>
 <span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="FloatNumber">1.</span><span class="Operator">.</span> <span class="DecNumber">10</span><span class="Punctuation">:</span>
     <span class="Identifier">dw</span> <span class="Operator">=</span> <span class="Identifier">getNextMonday</span><span class="Punctuation">(</span><span class="Identifier">dw</span><span class="Punctuation">)</span>
     <span class="Identifier">echo</span> <span class="Identifier">dw</span></pre><p>in case of invalid dates nil will be returned </p>
@@ -1996,7 +1996,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-10 22:56:50 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-11 09:16:41 UTC</small>
       </div>
     </div>
   </div>
