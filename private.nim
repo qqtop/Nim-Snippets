@@ -963,9 +963,10 @@ proc getIpInfo*(ip:string):JsonNode =
      ## 
      ## and can be queried like so
      ## 
-     ## echo getfields(jz)
-     ## 
-     ## echo jz["city"].getstr
+     ## .. code-block:: nim
+     ##   var jz = getIpInfo("208.80.152.201")
+     ##   echo getfields(jz)
+     ##   echo jz["city"].getstr
      ##
      ##
      if ip != "":
@@ -983,7 +984,8 @@ proc showIpInfo*(ip:string) =
       ## 
       ## Example:
       ## 
-      ## showIpInfo("208.80.152.201")
+      ## .. code-block:: nim
+      ##    showIpInfo("208.80.152.201")
       ## 
       var jz = getIpInfo(ip)
       decho(2)
