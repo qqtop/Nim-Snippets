@@ -1747,14 +1747,15 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <p>superHeaderA</p>
 <p>animated superheader</p>
 <p>parameters for animated superheaderA :</p>
-<p>headerstring, txt color, frame color, updown animation : true/false</p>
-<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">terminal</span>
-<span class="Identifier">erasescreen</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-<span class="Identifier">cursorup</span><span class="Punctuation">(</span><span class="DecNumber">80</span><span class="Punctuation">)</span>
-<span class="Keyword">let</span> <span class="Identifier">bb</span> <span class="Operator">=</span> <span class="StringLit">&quot;NIM the system language for the future, which extends to as far as you need and still is small !!&quot;</span>
-<span class="Identifier">superHeaderA</span><span class="Punctuation">(</span><span class="Identifier">bb</span><span class="Punctuation">,</span><span class="Punctuation">,</span><span class="StringLit">&quot;y&quot;</span><span class="Punctuation">,</span><span class="Identifier">false</span><span class="Punctuation">)</span>
-<span class="Identifier">decho</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
-<span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="StringLit">&quot;b&quot;</span><span class="Punctuation">)</span></pre>
+<p>headerstring, txt color, frame color, text animation : true/false</p>
+<p>Example :</p>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
+<span class="Identifier">clearup</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">let</span> <span class="Identifier">bb</span> <span class="Operator">=</span> <span class="StringLit">&quot;NIM the system language for the future, which extends to as far as you need !!&quot;</span>
+<span class="Identifier">superHeaderA</span><span class="Punctuation">(</span><span class="Identifier">bb</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">true</span><span class="Punctuation">)</span>
+<span class="Identifier">clearup</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
+<span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="StringLit">&quot;b&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="getWanIp"><a name="getWanIp,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getWanIp</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
@@ -2029,7 +2030,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-11 21:37:07 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-11 22:03:24 UTC</small>
       </div>
     </div>
   </div>

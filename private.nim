@@ -907,17 +907,18 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   ##
   ## parameters for animated superheaderA :
   ##
-  ## headerstring, txt color, frame color, updown animation : true/false
+  ## headerstring, txt color, frame color, text animation : true/false
+  ##
+  ## Example :
   ##
   ## .. code-block:: nim
-  ##    import private,terminal
-  ##    erasescreen()
-  ##    cursorup(80)
-  ##    let bb = "NIM the system language for the future, which extends to as far as you need and still is small !!"
-  ##    superHeaderA(bb,,"y",false)
-  ##    decho(3)
+  ##    import private
+  ##    clearup()
+  ##    let bb = "NIM the system language for the future, which extends to as far as you need !!"
+  ##    superHeaderA(bb,white,red,true)
+  ##    clearup(3)
   ##    superheader("Ok That's it for Now !",clrainbow,"b")
-  ##
+  ##    doFinish()
 
   for x in 0.. <1:
     erasescreen()
