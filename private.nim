@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6.5
+##   Version     : 0.6.8
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -16,7 +16,7 @@
 ##
 ##                 for display , date handling and much more
 ##
-##                 some procs mirror functionality of other moduls for convenience
+##                 some procs may mirror functionality of other moduls for convenience
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
@@ -29,11 +29,11 @@
 ##   Note        : may change at any time
 ##
 
-import os,terminal,math,unicode,times,tables
+import os,terminal,math,unicode,times,tables,json
 import sequtils,parseutils,strutils
 import random,strfmt,httpclient
 
-const PRIVATLIBVERSION = "0.6.6"
+const PRIVATLIBVERSION = "0.6.8"
 const
        red*    = "red"
        green*  = "green"
@@ -220,7 +220,12 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          msgy() do : echo "Processing file " & curFile & ", stopped . Reason: ", msg
          quit()
 
-
+proc dline*(n:int = tw) =
+     ## dline
+     ## 
+     ## draw a line with given length
+     ## 
+     echo repeat("-",n)
 
 proc clearup*(x:int = 80) =
    ## clearup
@@ -598,8 +603,6 @@ proc dayOfWeekJulian*(datestr:string): string =
    result = $dw
   
 
-
-
 proc fx(nx:TimeInfo):string =
         result = nx.format("yyyy-MM-dd")
 
@@ -949,6 +952,46 @@ proc getWanIp*():string =
       discard
    result = myWanIp
 
+proc getIpInfo*(ip:string):JsonNode =
+     ## getIpInfo
+     ##
+     ## use ip-api.com free service limited to abt 250 requests/min
+     ## 
+     ## exceeding this you will need to unlock your wan ip manually at their site
+     ## 
+     ## the JsonNode is returned for further processing if needed
+     ## 
+     ## and can be queried like so
+     ## 
+     ## echo getfields(jz)
+     ## 
+     ## echo jz["city"].getstr
+     ##
+     ##
+     if ip != "":
+       
+          var s = "http://ip-api.com/json/" & ip 
+          var z = getcontent(s)
+          var jz = parseJson(z)
+          result = jz  
+
+
+proc showIpInfo*(ip:string) =
+      ## showIpInfo
+      ##
+      ## displays ip details for a given ip
+      ## 
+      ## Example:
+      ## 
+      ## showIpInfo("208.80.152.201")
+      ## 
+      var jz = getIpInfo(ip)
+      decho(2)
+      msgg() do: echo "Ip-Info for " & ip
+      msgy() do: dline(40)
+      for x in jz.getfields():
+          echo "{:<15} : {}".fmt($x.key,$x.val)
+      msgy() do : echo "{:<15} : {}".fmt("Source","ip-api.com")
 
 
 
