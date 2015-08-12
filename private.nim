@@ -900,14 +900,14 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # finished drawing
 
 
-proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
+proc superHeaderA*(bb:string,strcol:string,frmcol:string,anim:bool,animcount:int = 1) =
   ## superHeaderA
   ##
-  ## animated superheader
+  ## attempt of an animated superheader
   ##
   ## parameters for animated superheaderA :
   ##
-  ## headerstring, txt color, frame color, text animation : true/false
+  ## headerstring, txt color, frame color, left/right animation : true/false ,animcount
   ##
   ## Example :
   ##
@@ -915,26 +915,30 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,down:bool) =
   ##    import private
   ##    clearup()
   ##    let bb = "NIM the system language for the future, which extends to as far as you need !!"
-  ##    superHeaderA(bb,white,red,true)
+  ##    superHeaderA(bb,white,red,true,3)
   ##    clearup(3)
   ##    superheader("Ok That's it for Now !",clrainbow,"b")
   ##    doFinish()
-
-  for x in 0.. <1:
-    erasescreen()
-    for zz in 0.. bb.len:
-          superheader($bb[0.. zz],strcol,frmcol)
-          sleepy(0.05)
-          cursorup(5)
-    if down == true:
-        for zz in countdown(bb.len,-1,1):
-              superheader($bb[0.. zz],strcol,frmcol)
-              sleepy(0.1)
+  
+  for am in 0..<animcount:
+      for x in 0.. <1:
+        erasescreen()
+        for zz in 0.. bb.len:
               erasescreen()
-              cursorup(5)
-
-    sleepy(0.5)
-
+              superheader($bb[0.. zz],strcol,frmcol)
+              sleepy(0.05)
+              cursorup(80)
+        if anim == true:
+            for zz in countdown(bb.len,-1,1):
+                  superheader($bb[0.. zz],strcol,frmcol)
+                  sleepy(0.1)
+                  erasescreen()
+                  cursorup(80)
+        else:
+             erasescreen()
+             cursorup(80)
+        sleepy(0.5)
+        
   echo()
 
 

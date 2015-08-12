@@ -1282,8 +1282,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="superHeader*(bstring: string)"><wbr />super<wbr />Header</a></li>
   <li><a class="reference" href="#superHeader,string,string,string"
     title="superHeader*(bstring: string; strcol: string; frmcol: string)"><wbr />super<wbr />Header</a></li>
-  <li><a class="reference" href="#superHeaderA,string,string,string,bool"
-    title="superHeaderA*(bb: string; strcol: string; frmcol: string; down: bool)"><wbr />super<wbr />Header<wbr />A</a></li>
+  <li><a class="reference" href="#superHeaderA,string,string,string,bool,int"
+    title="superHeaderA*(bb: string; strcol: string; frmcol: string; anim: bool; animcount: int = 1)"><wbr />super<wbr />Header<wbr />A</a></li>
   <li><a class="reference" href="#getWanIp,"
     title="getWanIp*(): string"><wbr />get<wbr />Wan<wbr />Ip</a></li>
   <li><a class="reference" href="#getIpInfo,string"
@@ -1742,17 +1742,18 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="superHeaderA"><a name="superHeaderA,string,string,string,bool"></a><pre><span class="Keyword">proc</span> <span class="Identifier">superHeaderA</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">bb</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">strcol</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">frmcol</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">down</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span></pre></dt>
+<dt id="superHeaderA"><a name="superHeaderA,string,string,string,bool,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">superHeaderA</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">bb</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">strcol</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">frmcol</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">anim</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span>
+                  <span class="Identifier">animcount</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>superHeaderA</p>
-<p>animated superheader</p>
+<p>attempt of an animated superheader</p>
 <p>parameters for animated superheaderA :</p>
-<p>headerstring, txt color, frame color, text animation : true/false</p>
+<p>headerstring, txt color, frame color, left/right animation : true/false ,animcount</p>
 <p>Example :</p>
 <pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
 <span class="Identifier">clearup</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Keyword">let</span> <span class="Identifier">bb</span> <span class="Operator">=</span> <span class="StringLit">&quot;NIM the system language for the future, which extends to as far as you need !!&quot;</span>
-<span class="Identifier">superHeaderA</span><span class="Punctuation">(</span><span class="Identifier">bb</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">true</span><span class="Punctuation">)</span>
+<span class="Identifier">superHeaderA</span><span class="Punctuation">(</span><span class="Identifier">bb</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">true</span><span class="Punctuation">,</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
 <span class="Identifier">clearup</span><span class="Punctuation">(</span><span class="DecNumber">3</span><span class="Punctuation">)</span>
 <span class="Identifier">superheader</span><span class="Punctuation">(</span><span class="StringLit">&quot;Ok That's it for Now !&quot;</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="StringLit">&quot;b&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
@@ -2030,7 +2031,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-11 22:03:24 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-12 11:26:40 UTC</small>
       </div>
     </div>
   </div>
