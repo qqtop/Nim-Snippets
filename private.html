@@ -1230,6 +1230,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#print,string,varargs[string,]"
     title="print*(colstr: string = white; mvastr: varargs[string, `$`])"><wbr />print</a></li>
+  <li><a class="reference" href="#printBiCol,string,string,string,string"
+    title="printBiCol*(s: string; sep: string; colLeft: string = yellow; colRight: string = white)"><wbr />print<wbr />Bi<wbr />Col</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
   <li><a class="reference" href="#dhlecho,string,string,string"
@@ -1552,6 +1554,20 @@ check execution timing with one line see doFinish
 <p>every item will be shown on a new line in the same color</p>
 <p>and most everything passed in will be converted to string</p>
 <pre class = "listing"><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
+
+</dd>
+<dt id="printBiCol"><a name="printBiCol,string,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBiCol</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">colLeft</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">yellow</span><span class="Other">;</span>
+                <span class="Identifier">colRight</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>printBiCol</p>
+<p>echos a line in 2 colors</p>
+<pre class = "listing"><span class="Keyword">for</span> <span class="Identifier">x</span>  <span class="Keyword">in</span> <span class="FloatNumber">0.</span><span class="Operator">.</span> <span class="Operator">&lt;</span><span class="DecNumber">3</span><span class="Punctuation">:</span>
+   <span class="Comment"># here use default colors for left and right side of the seperator</span>
+   <span class="Identifier">printBiCol</span><span class="Punctuation">(</span><span class="StringLit">&quot;Test $1  : Ok this was $1 : what&quot;</span> <span class="Operator">%</span> <span class="Operator">$</span><span class="Identifier">x</span><span class="Punctuation">,</span><span class="StringLit">&quot;:&quot;</span><span class="Punctuation">)</span>
+
+<span class="Keyword">for</span> <span class="Identifier">x</span>  <span class="Keyword">in</span> <span class="FloatNumber">4.</span><span class="Operator">.</span> <span class="Operator">&lt;</span><span class="DecNumber">6</span><span class="Punctuation">:</span>
+    <span class="Comment"># here we change the colors</span>
+    <span class="Identifier">printBiCol</span><span class="Punctuation">(</span><span class="StringLit">&quot;Test $1  : Ok this was $1 : what&quot;</span> <span class="Operator">%</span> <span class="Operator">$</span><span class="Identifier">x</span><span class="Punctuation">,</span><span class="StringLit">&quot;:&quot;</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
@@ -2031,7 +2047,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-12 11:26:40 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-12 22:06:40 UTC</small>
       </div>
     </div>
   </div>

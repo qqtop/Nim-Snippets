@@ -373,6 +373,26 @@ proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
       else  : msgw() do  : echo vastr
 
 
+
+proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = white) =
+     ## printBiCol
+     ##
+     ## echos a line in 2 colors 
+     ## 
+     ## .. code-block:: nim
+     ##    for x  in 0.. <3:     
+     ##       # here use default colors for left and right side of the seperator     
+     ##       printBiCol("Test $1  : Ok this was $1 : what" % $x,":")
+     ##
+     ##    for x  in 4.. <6:     
+     ##        # here we change the colors
+     ##        printBiCol("Test $1  : Ok this was $1 : what" % $x,":",cyan,red) 
+     ##
+     var z = s.split(sep)
+     printColStr(colLeft,z[0] & sep)
+     print(colRight,z[1])  
+     
+
 proc makeColPW*(n:int = 12):seq[string] =
         ## makeColPW
         ##
