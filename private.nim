@@ -343,8 +343,8 @@ proc printColStr*(colstr:string,astr:string) =
       else  : msgw() do  : write(stdout,astr)
 
 
-proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
-    ## print
+proc printLnColStr*(colstr:string = white,mvastr: varargs[string, `$`]) =
+    ## printLnColStr
     ##
     ## similar to printColStr but issues a echo() command that is
     ##
@@ -376,27 +376,28 @@ proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
 
 
 
-proc printx*(s:string , cols : seq[string]) =
-     ## print x
+
+proc println*(s:string , cols: varargs[string, `$`]) =
+     ## println
      ##
-     ## echoing of colored strings
+     ## displays colored strings and issues a newline when finished
      ## 
      ## strings will be tokenized and colored according to colors in cols
      ## 
      ## .. code-block:: nim
-     ##    printx(st,@[clrainbow,white,red,cyan,yellow])
-     ##    printx("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),@[green,white,red,cyan])
-     ##    printx("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),@[green,brightwhite,clrainbow,red,cyan])
-     ##    printx("blah",@[green,white,red,cyan])    
-     ##    printx("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##    println(st,@[clrainbow,white,red,cyan,yellow])
+     ##    println("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    println("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    println("blah",green,white,red,cyan)    
+     ##    # can also pass a seq
+     ##    println("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
+     var col = newSeq[string]()
      var c = 0
-     var col = cols
+     for x in cols:
+         col.add(x)
      var pcol = ""
-     if col.len < 1:
-        # if no col specified use white as default
-        pcol = white
-          
+         
      for x in s.tokenize() :
             if x.isSep == false:
                 if c < cols.len:
@@ -409,6 +410,45 @@ proc printx*(s:string , cols : seq[string]) =
             else:
                 write(stdout,x.token)
      echo ""    
+
+
+
+
+proc print*(s:string , cols: varargs[string, `$`]) =
+     ## print
+     ##
+     ## similar to println
+     ## 
+     ## echoing of colored strings without newline
+     ## 
+     ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## .. code-block:: nim
+     ##    print(st,@[clrainbow,white,red,cyan,yellow])
+     ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    print("blah",green,white,red,cyan) 
+     ##    # also can use a seq or colors
+     ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##
+     var col = newSeq[string]()
+     var c = 0
+     for x in cols:
+         col.add(x)
+     var pcol = ""
+         
+     for x in s.tokenize() :
+            if x.isSep == false:
+                if c < cols.len:
+                  pcol = col[c]
+                else :
+                  pcol = white   
+                printColStr(pcol,x.token)
+                c += 1  
+              
+            else:
+                write(stdout,x.token)
+       
 
 
 proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = white) =
@@ -458,7 +498,10 @@ proc printhl*(sen:string,astr:string,col:string) =
       ##
       ## this would highlight all T in green
       ##
-      ## available colors : green,yellow,cyan,red,white
+      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
+      ## 
+      ##                    brightred,brightcyan,brightyellow,clrainbow
+      
 
       var rx = sen.split(astr)
       for x in rx.low.. rx.high:
@@ -1354,7 +1397,8 @@ proc doFinish*() =
 
 # putting decho here will put two blank lines before anyting else runs
 decho(2)
-# putting this here we can stop all programs which use this lib and get the desired exit messages
+# putting this here we can stop most programs which use this lib and get the
+# automatic exit messages
 setControlCHook(handler)
 # this will reset any color changes in the terminal
 # so no need for this line in the calling prog
