@@ -47,6 +47,8 @@ const
        brightyellow* = "brightyellow"
        brightwhite*  = "brightwhite"
        clrainbow*    = "clrainbow"
+         
+         
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -196,7 +198,7 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
      ##                  if al.contains(sw) == true:
      ##                     inc oc
      ##                     msgy() do: write(stdout,"{:<8}{:>6} {:<7}{:>6}  ".fmt("Line :",lc,"Count :",oc))
-     ##                     dhlecho(al,sw,green)
+     ##                     printhl(al,sw,green)
      ##                     echo()
      ##               except:
      ##                  break
@@ -315,7 +317,7 @@ proc rainbowPW*() :string =
 proc printColStr*(colstr:string,astr:string) =
       ## printColStr
       ##
-      ## prints a string with a named color
+      ## prints a string with a named color in colstr
       ##
       ## colors : green,red,cyan,yellow,white,black
       ##
@@ -374,6 +376,41 @@ proc print*(colstr:string = white,mvastr: varargs[string, `$`]) =
 
 
 
+proc printx*(s:string , cols : seq[string]) =
+     ## print x
+     ##
+     ## echoing of colored strings
+     ## 
+     ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## .. code-block:: nim
+     ##    printx(st,@[clrainbow,white,red,cyan,yellow])
+     ##    printx("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),@[green,white,red,cyan])
+     ##    printx("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),@[green,brightwhite,clrainbow,red,cyan])
+     ##    printx("blah",@[green,white,red,cyan])    
+     ##    printx("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##
+     var c = 0
+     var col = cols
+     var pcol = ""
+     if col.len < 1:
+        # if no col specified use white as default
+        pcol = white
+          
+     for x in s.tokenize() :
+            if x.isSep == false:
+                if c < cols.len:
+                  pcol = col[c]
+                else :
+                  pcol = white   
+                printColStr(pcol,x.token)
+                c += 1  
+              
+            else:
+                write(stdout,x.token)
+     echo ""    
+
+
 proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = white) =
      ## printBiCol
      ##
@@ -385,13 +422,18 @@ proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = 
      ##       printBiCol("Test $1  : Ok this was $1 : what" % $x,":")
      ##
      ##    for x  in 4.. <6:     
-     ##        # here we change the colors
+     ##        # here we change the default colors
      ##        printBiCol("Test $1  : Ok this was $1 : what" % $x,":",cyan,red) 
+     ##
+     ##    # following requires strfmt module
+     ##    printBiCol("{} : {}     {}".fmt("Good Idea","Number",50),":",yellow,green)  
+     ##
      ##
      var z = s.split(sep)
      printColStr(colLeft,z[0] & sep)
      print(colRight,z[1])  
      
+
 
 proc makeColPW*(n:int = 12):seq[string] =
         ## makeColPW
@@ -404,15 +446,15 @@ proc makeColPW*(n:int = 12):seq[string] =
         result =  z
 
 
-proc dhlecho*(sen:string,astr:string,col:string) =
-      ## dhlecho
+proc printhl*(sen:string,astr:string,col:string) =
+      ## printhl
       ##
       ## print a string and highlight all appearances of a char or string
       ##
       ## with a certain color
       ##
       ## .. code-block:: nim
-      ##    dhlecho("HELLO THIS IS A TEST","T",green)
+      ##    printhl("HELLO THIS IS A TEST","T",green)
       ##
       ## this would highlight all T in green
       ##
