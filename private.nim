@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6.8
+##   Version     : 0.6.9
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -26,14 +26,14 @@
 ##
 ##   Programming : qqTop
 ##
-##   Note        : may change at any time
+##   Note        : may be improved at any time
 ##
 
 import os,terminal,math,unicode,times,tables,json
 import sequtils,parseutils,strutils
 import random,strfmt,httpclient
 
-const PRIVATLIBVERSION = "0.6.8"
+const PRIVATLIBVERSION = "0.6.9"
 const
        red*    = "red"
        green*  = "green"
@@ -75,11 +75,10 @@ when defined(Linux):
     var tw* = getTerminalWidth()
     var aline* = repeat("-",tw)
 
-# will change this once windows gets a real terminal
-# or shell which will never happen
 when defined(Windows):
-     var tw* = 80
-     var aline* = repeat("-",tw)
+    var tw* = 80
+    var aline* = repeat("-",tw)
+
 
 template msgg*(code: stmt): stmt =
       ## msgX templates
@@ -377,7 +376,7 @@ proc printLnColStr*(colstr:string = white,mvastr: varargs[string, `$`]) =
 
 
 
-proc println*(s:string , cols: varargs[string, `$`]) =
+proc printLn*(s:string , cols: varargs[string, `$`]) =
      ## println
      ##
      ## displays colored strings and issues a newline when finished
@@ -417,9 +416,9 @@ proc println*(s:string , cols: varargs[string, `$`]) =
 proc print*(s:string , cols: varargs[string, `$`]) =
      ## print
      ##
-     ## similar to println
+     ## similar to printLn
      ## 
-     ## echoing of colored strings without newline
+     ## echoing of colored strings however without newline
      ## 
      ## strings will be tokenized and colored according to colors in cols
      ## 
@@ -454,7 +453,7 @@ proc print*(s:string , cols: varargs[string, `$`]) =
 proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = white) =
      ## printBiCol
      ##
-     ## echos a line in 2 colors 
+     ## echos a line in 2 colors based on a seperator
      ## 
      ## .. code-block:: nim
      ##    for x  in 0.. <3:     
@@ -475,26 +474,15 @@ proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = 
      
 
 
-proc makeColPW*(n:int = 12):seq[string] =
-        ## makeColPW
-        ##
-        ## make a colorcoded pw with length n default = 12
-        ##
-        var z = newSeq[string]()
-        for x in 0..<n:
-           z.add(rainbowPW())
-        result =  z
-
-
-proc printhl*(sen:string,astr:string,col:string) =
-      ## printhl
+proc printHl*(sen:string,astr:string,col:string) =
+      ## printHl
       ##
-      ## print a string and highlight all appearances of a char or string
+      ## print and highlight all appearances of a char or substring of a string
       ##
       ## with a certain color
       ##
       ## .. code-block:: nim
-      ##    printhl("HELLO THIS IS A TEST","T",green)
+      ##    printHl("HELLO THIS IS A TEST","T",green)
       ##
       ## this would highlight all T in green
       ##
@@ -521,6 +509,20 @@ proc printhl*(sen:string,astr:string,col:string) =
               of brightred   : msgrb() do : write(stdout,astr)
               of clrainbow   : rainbow(astr)
               else  : msgw() do  : write(stdout,astr)
+
+
+
+proc makeColPW*(n:int = 12):seq[string] =
+        ## makeColPW
+        ##
+        ## experimental
+        ##
+        ## make a colorcoded pw with length n default = 12
+        ##
+        var z = newSeq[string]()
+        for x in 0..<n:
+           z.add(rainbowPW())
+        result =  z
 
 
 
@@ -588,6 +590,7 @@ proc day*(aDate:string) : string =
    ## day,month year extracts the relevant part from
    ##
    ## a date string of format yyyy-MM-dd
+   ## 
    aDate.split("-")[2]
 
 proc month*(aDate:string) : string =
@@ -602,7 +605,8 @@ proc year*(aDate:string) : string = aDate.split("-")[0]
 
 proc intervalsecs*(startDate,endDate:string) : float =
       ## interval procs returns time elapsed between two dates in secs,hours etc.
-      #  since all interval routines call error message display also here
+      #  since all interval routines call intervalsecs error message display also here
+      #  
       if validdate(startDate) and validdate(endDate):
           var f     = "yyyy-MM-dd"
           var ssecs = toSeconds(timeinfototime(startDate.parse(f)))
@@ -684,6 +688,8 @@ proc dayOfWeekJulian*(day, month, year: int): WeekDay =
   # may be part of times.nim later
   # This is for the Julian calendar
   # Day & month start from one.
+  # original code from coffeshop 
+  # 
   let
     a = (14 - month) div 12
     y = year - a
@@ -692,7 +698,6 @@ proc dayOfWeekJulian*(day, month, year: int): WeekDay =
   # The value of d is 0 for a Sunday, 1 for a Monday, 2 for a Tuesday, etc. so we must correct
   # for the WeekDay type.
   result = d.WeekDay
-
 
 
 proc dayOfWeekJulian*(datestr:string): string =
@@ -771,7 +776,7 @@ proc getFirstMondayYear*(ayear:string):string =
          var z = dayofweekjulian(datestr) 
          if z == "Monday":
              result = datestr
-         
+        
 
 
 proc getFirstMondayYearMonth*(aym:string):string = 
@@ -850,9 +855,12 @@ proc handler*() {.noconv.} =
     ##
     ## and provides some feedback upon exit
     ##
-    ## just by using this library your project will have an automatic
+    ## just by using this module your project will have an automatic
     ##
     ## exit handler via ctrl-c
+    ## 
+    ## this handler may not work if code compiled into a .dll or .so file
+    ## 
     eraseScreen()
     echo()
     echo aline
@@ -875,7 +883,7 @@ proc superHeader*(bstring:string) =
   ##
   ## suitable for one line headers , overlong lines will
   ##
-  ## be cut to terminal window size with out ceremony
+  ## be cut to terminal window width without ceremony
   ##
   var astring = bstring
   # minimum default size that is string max len = 43 and
@@ -935,7 +943,6 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # frame = 46
     var mmax = 43
     var mddl = 46
-    ## max length = tw-2
     var okl = tw - 6
     var astrl = astring.len
     if astrl > okl :
@@ -952,7 +959,7 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
 
     var pdl = repeat("#",mddl)
     # now show it with the framing in yellow and text in white
-    # really need to have a terminal color checker to avoid invisible lines
+    # really want to have a terminal color checker to avoid invisible lines
     echo ()
 
     # frame line
@@ -1139,6 +1146,34 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
     result = z
 
 
+proc getRandomFloat*():float =
+    ## getRandomFloat
+    ##
+    ## convenience prog so we do not need to import random
+    ##
+    ## in calling prog
+    result = rng.random()
+
+
+proc createSeqFloat*(n:int = 10) : seq[float] =
+      ## createSeqFloat
+      ##
+      ## convenience proc to create a seq of random floats with
+      ##
+      ## default length 10
+      ##
+      ## form @[0.34,0.056,...] or similar
+      ##
+      ## .. code-block:: nim
+      ##    # create a seq with 50 random floats
+      ##    echo createSeqFloat(50)
+
+      var z = newSeq[float]()
+      for x in 0.. <n:
+        z.add(getRandomFloat())
+      result = z
+
+
 
 
 proc harmonics*(n:int64):float64 =
@@ -1162,13 +1197,7 @@ proc harmonics*(n:int64):float64 =
          #result = -1
 
 
-proc getRandomFloat*():float =
-    ## getRandomFloat
-    ##
-    ## convenience prog so we do not need to import random
-    ##
-    ## in calling prog
-    result = rng.random()
+
 
 
 proc shift*[T](x: var seq[T], zz: Natural = 0): T =
@@ -1186,29 +1215,12 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     x.delete(zz)
 
 
-proc createSeqFloat*(n:int = 10) : seq[float] =
-      ## createSeqFloat
-      ##
-      ## convenience proc to create a seq of random floats with
-      ##
-      ## default length 10
-      ##
-      ## form @[0.34,0.056,...] or similar
-      ##
-      ## .. code-block:: nim
-      ##    # create a seq with 50 random floats
-      ##    echo createSeqFloat(50)
-
-      var z = newSeq[float]()
-      for x in 0.. <n:
-        z.add(getRandomFloat())
-      result = z
 
 
 proc newWordCJK*(maxwl:int = 10):string =
       ## newWordCJK
       ##
-      ## creates a new string consisting of n chars default = max 10
+      ## creates a new random string consisting of n chars default = max 10
       ##
       ## with chars from the cjk unicode set
       ##
@@ -1235,7 +1247,7 @@ proc newWordCJK*(maxwl:int = 10):string =
 proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
     ## newWord
     ##
-    ## creates a new lower case word with chars from Letters set
+    ## creates a new lower case random word with chars from Letters set
     ##
     ## default min word length minwl = 3
     ##
@@ -1263,7 +1275,7 @@ proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
 proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
     ## newWord2
     ##
-    ## creates a new lower case word with chars from IdentChars set
+    ## creates a new lower case random word with chars from IdentChars set
     ##
     ## default min word length minwl = 3
     ##
@@ -1290,7 +1302,7 @@ proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
 proc newWord3*(minwl:int=3,maxwl:int = 10 ,nflag:bool = true):string =
     ## newWord3
     ##
-    ## creates a new lower case word with chars from AllChars set if nflag = true 
+    ## creates a new lower case random word with chars from AllChars set if nflag = true 
     ##
     ## creates a new anycase word with chars from AllChars set if nflag = false 
     ##
@@ -1387,6 +1399,8 @@ proc doFinish*() =
     ## a end of program routine which displays some information
     ##
     ## can be changed to anything desired
+    ## 
+    ## and should be the last line of the application
     ##
     decho(2)
     msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))

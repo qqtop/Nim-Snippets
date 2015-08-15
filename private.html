@@ -1230,16 +1230,16 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#printLnColStr,string,varargs[string,]"
     title="printLnColStr*(colstr: string = white; mvastr: varargs[string, `$`])"><wbr />print<wbr />Ln<wbr />Col<wbr />Str</a></li>
-  <li><a class="reference" href="#println,string,varargs[string,]"
-    title="println*(s: string; cols: varargs[string, `$`])"><wbr />println</a></li>
+  <li><a class="reference" href="#printLn,string,varargs[string,]"
+    title="printLn*(s: string; cols: varargs[string, `$`])"><wbr />print<wbr />Ln</a></li>
   <li><a class="reference" href="#print,string,varargs[string,]"
     title="print*(s: string; cols: varargs[string, `$`])"><wbr />print</a></li>
   <li><a class="reference" href="#printBiCol,string,string,string,string"
     title="printBiCol*(s: string; sep: string; colLeft: string = yellow; colRight: string = white)"><wbr />print<wbr />Bi<wbr />Col</a></li>
+  <li><a class="reference" href="#printHl,string,string,string"
+    title="printHl*(sen: string; astr: string; col: string)"><wbr />print<wbr />Hl</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
-  <li><a class="reference" href="#printhl,string,string,string"
-    title="printhl*(sen: string; astr: string; col: string)"><wbr />printhl</a></li>
   <li><a class="reference" href="#decho,int"
     title="decho*(z: int)"><wbr />decho</a></li>
   <li><a class="reference" href="#validdate,string"
@@ -1300,14 +1300,14 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getRandomInt*(mi: int = 0; ma: int = 1000000000): int"><wbr />get<wbr />Random<wbr />Int</a></li>
   <li><a class="reference" href="#createSeqInt,int,int,int"
     title="createSeqInt*(n: int = 10; mi: int = 0; ma: int = 1000000000): seq[int]"><wbr />create<wbr />Seq<wbr />Int</a></li>
-  <li><a class="reference" href="#harmonics,int64"
-    title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
   <li><a class="reference" href="#getRandomFloat,"
     title="getRandomFloat*(): float"><wbr />get<wbr />Random<wbr />Float</a></li>
-  <li><a class="reference" href="#shift,seq[T],Natural"
-    title="shift*[T](x: var seq[T]; zz: Natural = 0): T"><wbr />shift</a></li>
   <li><a class="reference" href="#createSeqFloat,int"
     title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
+  <li><a class="reference" href="#harmonics,int64"
+    title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
+  <li><a class="reference" href="#shift,seq[T],Natural"
+    title="shift*[T](x: var seq[T]; zz: Natural = 0): T"><wbr />shift</a></li>
   <li><a class="reference" href="#newWordCJK,int"
     title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
   <li><a class="reference" href="#newWord,int,int"
@@ -1369,7 +1369,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <p class="module-desc"><blockquote><p><p>Library     : private.nim</p>
 <p>Status      : stable</p>
 <p>License     : MIT opensource</p>
-<p>Version     : 0.6.8</p>
+<p>Version     : 0.6.9</p>
 <p>ProjectStart: 2015-06-20</p>
 <p>Compiler    : Nim 0.11.3</p>
 <p>Description : private.nim is a public library with a collection of procs and templates</p>
@@ -1380,7 +1380,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Docs        : <a class="reference external" href="http://qqtop.github.io/private.html">http://qqtop.github.io/private.html</a></p>
 <p>Tested      : on linux only</p>
 <p>Programming : qqTop</p>
-<p>Note        : may change at any time</p>
+<p>Note        : may be improved at any time</p>
 </p></blockquote>
 </p>
   <div class="section" id="6">
@@ -1560,7 +1560,7 @@ check execution timing with one line see doFinish
 <pre class = "listing"><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
 
 </dd>
-<dt id="println"><a name="println,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">println</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dt id="printLn"><a name="printLn,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLn</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>println</p>
 <p>displays colored strings and issues a newline when finished</p>
@@ -1576,8 +1576,8 @@ check execution timing with one line see doFinish
 <dt id="print"><a name="print,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">print</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>print</p>
-<p>similar to println</p>
-<p>echoing of colored strings without newline</p>
+<p>similar to printLn</p>
+<p>echoing of colored strings however without newline</p>
 <p>strings will be tokenized and colored according to colors in cols</p>
 <pre class = "listing"><span class="Identifier">print</span><span class="Punctuation">(</span><span class="Identifier">st</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
@@ -1591,7 +1591,7 @@ check execution timing with one line see doFinish
                 <span class="Identifier">colRight</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printBiCol</p>
-<p>echos a line in 2 colors</p>
+<p>echos a line in 2 colors based on a seperator</p>
 <pre class = "listing"><span class="Keyword">for</span> <span class="Identifier">x</span>  <span class="Keyword">in</span> <span class="FloatNumber">0.</span><span class="Operator">.</span> <span class="Operator">&lt;</span><span class="DecNumber">3</span><span class="Punctuation">:</span>
    <span class="Comment"># here use default colors for left and right side of the seperator</span>
    <span class="Identifier">printBiCol</span><span class="Punctuation">(</span><span class="StringLit">&quot;Test $1  : Ok this was $1 : what&quot;</span> <span class="Operator">%</span> <span class="Operator">$</span><span class="Identifier">x</span><span class="Punctuation">,</span><span class="StringLit">&quot;:&quot;</span><span class="Punctuation">)</span>
@@ -1604,21 +1604,22 @@ check execution timing with one line see doFinish
 <span class="Identifier">printBiCol</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} : {}     {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="StringLit">&quot;Good Idea&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Number&quot;</span><span class="Punctuation">,</span><span class="DecNumber">50</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="StringLit">&quot;:&quot;</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
+<dt id="printHl"><a name="printHl,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printHl</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">sen</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
-<p>makeColPW</p>
-<p>make a colorcoded pw with length n default = 12 </p>
+<p>printHl</p>
+<p>print and highlight all appearances of a char or substring of a string</p>
+<p>with a certain color</p>
+<pre class = "listing"><span class="Identifier">printHl</span><span class="Punctuation">(</span><span class="StringLit">&quot;HELLO THIS IS A TEST&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;T&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre><p>this would highlight all T in green</p>
+<p>available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite</p>
+<blockquote><p>brightred,brightcyan,brightyellow,clrainbow</p></blockquote>
 
 
 </dd>
-<dt id="printhl"><a name="printhl,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printhl</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">sen</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dt id="makeColPW"><a name="makeColPW,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">makeColPW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">12</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
-<p>printhl</p>
-<p>print a string and highlight all appearances of a char or string</p>
-<p>with a certain color</p>
-<pre class = "listing"><span class="Identifier">printhl</span><span class="Punctuation">(</span><span class="StringLit">&quot;HELLO THIS IS A TEST&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;T&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre><p>this would highlight all T in green</p>
-<p>available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite</p>
-<blockquote><p>brightred,brightcyan,brightyellow,clrainbow</p></blockquote>
+<p>makeColPW</p>
+<p>experimental</p>
+<p>make a colorcoded pw with length n default = 12 </p>
 
 
 </dd>
@@ -1642,7 +1643,7 @@ check execution timing with one line see doFinish
 <dt id="day"><a name="day,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">day</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">aDate</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>day,month year extracts the relevant part from</p>
-<p>a date string of format yyyy-MM-dd</p>
+<p>a date string of format yyyy-MM-dd </p>
 
 
 </dd>
@@ -1764,8 +1765,9 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <p>handler</p>
 <p>this runs if ctrl-c is pressed</p>
 <p>and provides some feedback upon exit</p>
-<p>just by using this library your project will have an automatic</p>
+<p>just by using this module your project will have an automatic</p>
 <p>exit handler via ctrl-c</p>
+<p>this handler may not work if code compiled into a .dll or .so file </p>
 
 
 </dd>
@@ -1774,7 +1776,7 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <p>superheader</p>
 <p>a framed header display routine</p>
 <p>suitable for one line headers , overlong lines will</p>
-<p>be cut to terminal window size with out ceremony </p>
+<p>be cut to terminal window width without ceremony </p>
 
 
 </dd>
@@ -1855,28 +1857,12 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">,</span><span class="DecNumber">100</span><span class="Punctuation">,</span><span class="DecNumber">2000</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="harmonics"><a name="harmonics,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">harmonics</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float64</span></pre></dt>
-<dd>
-<p>harmonics</p>
-<p>returns a float containing sum of 1 + 1/2 + 1/3 + 1/n </p>
-
-
-</dd>
 <dt id="getRandomFloat"><a name="getRandomFloat,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
 <dd>
 <p>getRandomFloat</p>
 <p>convenience prog so we do not need to import random</p>
 <p>in calling prog</p>
 
-
-</dd>
-<dt id="shift"><a name="shift,seq[T],Natural"></a><pre><span class="Keyword">proc</span> <span class="Identifier">shift</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">T</span></pre></dt>
-<dd>
-<p>shift takes a seq and returns the first , and deletes it from the seq</p>
-<p>build in pop does the same from the other side</p>
-<pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">a</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">float</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="FloatNumber">1.5</span><span class="Punctuation">,</span> <span class="FloatNumber">23.3</span><span class="Punctuation">,</span> <span class="FloatNumber">3.4</span><span class="Punctuation">]</span>
-<span class="Identifier">echo</span> <span class="Identifier">shift</span><span class="Punctuation">(</span><span class="Identifier">a</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span> <span class="Identifier">a</span></pre>
 
 </dd>
 <dt id="createSeqFloat"><a name="createSeqFloat,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">createSeqFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span></pre></dt>
@@ -1889,10 +1875,26 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Identifier">echo</span> <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="harmonics"><a name="harmonics,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">harmonics</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float64</span></pre></dt>
+<dd>
+<p>harmonics</p>
+<p>returns a float containing sum of 1 + 1/2 + 1/3 + 1/n </p>
+
+
+</dd>
+<dt id="shift"><a name="shift,seq[T],Natural"></a><pre><span class="Keyword">proc</span> <span class="Identifier">shift</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">T</span></pre></dt>
+<dd>
+<p>shift takes a seq and returns the first , and deletes it from the seq</p>
+<p>build in pop does the same from the other side</p>
+<pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">a</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">float</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="FloatNumber">1.5</span><span class="Punctuation">,</span> <span class="FloatNumber">23.3</span><span class="Punctuation">,</span> <span class="FloatNumber">3.4</span><span class="Punctuation">]</span>
+<span class="Identifier">echo</span> <span class="Identifier">shift</span><span class="Punctuation">(</span><span class="Identifier">a</span><span class="Punctuation">)</span>
+<span class="Identifier">echo</span> <span class="Identifier">a</span></pre>
+
+</dd>
 <dt id="newWordCJK"><a name="newWordCJK,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWordCJK</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>newWordCJK</p>
-<p>creates a new string consisting of n chars default = max 10</p>
+<p>creates a new random string consisting of n chars default = max 10</p>
 <p>with chars from the cjk unicode set</p>
 <p><a class="reference external" href="http://unicode-table.com/en/#cjk-unified-ideographs">http://unicode-table.com/en/#cjk-unified-ideographs</a></p>
 <p>requires unicode</p>
@@ -1904,7 +1906,7 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dt id="newWord"><a name="newWord,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>newWord</p>
-<p>creates a new lower case word with chars from Letters set</p>
+<p>creates a new lower case random word with chars from Letters set</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
 
@@ -1913,7 +1915,7 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dt id="newWord2"><a name="newWord2,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord2</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>newWord2</p>
-<p>creates a new lower case word with chars from IdentChars set</p>
+<p>creates a new lower case random word with chars from IdentChars set</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
 
@@ -1922,7 +1924,7 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dt id="newWord3"><a name="newWord3,int,int,bool"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord3</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">;</span> <span class="Identifier">nflag</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>newWord3</p>
-<p>creates a new lower case word with chars from AllChars set if nflag = true</p>
+<p>creates a new lower case random word with chars from AllChars set if nflag = true</p>
 <p>creates a new anycase word with chars from AllChars set if nflag = false</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
@@ -1963,7 +1965,8 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dd>
 <p>doFinish</p>
 <p>a end of program routine which displays some information</p>
-<p>can be changed to anything desired </p>
+<p>can be changed to anything desired</p>
+<p>and should be the last line of the application </p>
 
 
 </dd>
@@ -2082,7 +2085,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-14 20:22:35 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-15 20:17:46 UTC</small>
       </div>
     </div>
   </div>
