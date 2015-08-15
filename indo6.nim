@@ -1,8 +1,11 @@
 import "/Nimborg/high_level.nim"
-import os,osproc,strutils,parseutils,strfmt,terminal,times,rdstdin
+import private
+import os,osproc,strutils,parseutils,strfmt,rdstdin
+
 
 # indo6
-# a small wrapper around soimorts translate shell
+
+# initial idea for a small wrapper around translate shell
 # for more convenient terminal use. 
 # Now also supports mecab via python to display hiragana in
 # case of japanese translation
@@ -12,105 +15,56 @@ import os,osproc,strutils,parseutils,strfmt,terminal,times,rdstdin
 # usage : 
 #  kata : senang
 #  
-# requires:
-# 
-# nim 0.11.3 
+# tested nim 0.11.3 
 # translate shell from github
-# awk or gawk
-# python 2.7.x  and mecab library for japanese 
+# awk
 # 
-# switches can be changed on the Next :   prompt
-# 
-# exit with ctrl-c
-#
+# exit with ctrl-c or q at Next prompt
 # tested on linux only
+# http://pastebin.com/weNKuKWL
+# http://pastebin.com/9WryV2RP
+# http://pastebin.com/a621e7WM
+# http://pastebin.com/ERe8H9Dg
+# http://pastebin.com/U1t2K5bp
 
 var VERSION = "1.0"
 
-let t = epochTime()
+setControlCHook(handler)
 var fin :bool = false
 var switch = "d" # default set to indonesian:english
 var oldswitch = "d"  
 var acmd = ""
 var help = ""
 var bflag : bool = true
-var okswitch = ["","d","p","e","ev","ep","ej","ejp","a","av","v","k","h"]
+var okswitch = ["","d","p","e","ev","ep","ej","ejp","a","av","v","k","h","q"]
 
 # call mecab.py 
 let ppmecab = pyImport("MeCab")
 let ppkata2hira = pyImport("jcconv")
 let ppmecabP   = ppmecab.Tagger("-Oyomi")
 
-
-converter toTwInt(x: cushort): int = result = int(x)
-# we export the the proc getTerminalWidth so we can use this from another module
-proc getTerminalWidth*() : int =
-  
-  type WinSize = object
-     row, col, xpixel, ypixel: cushort
-  const TIOCGWINSZ = 0x5413
-  proc ioctl(fd: cint, request: culong, argp: pointer)
-     {.importc, header: "<sys/ioctl.h>".}
-  var size: WinSize
-  ioctl(0, TIOCGWINSZ, addr size)
-
-  # ok we get something back in the form of a cushort ,
-  # in order to use this convert it into an int :  
-  result = toTwInt(size.col)
-  
-var tw = getTerminalWidth()
-var aline = repeat("=",tw)
-
-template msgg*(code: stmt): stmt {.immediate.} =
-      setforegroundcolor(fgGreen)
-      code
-      setforegroundcolor(fgWhite)
-      
-template msgy*(code: stmt): stmt {.immediate.} =
-      setforegroundcolor(fgYellow)
-      code
-      setforegroundcolor(fgWhite)
-
-template msgr*(code: stmt): stmt {.immediate.} =
-      setforegroundcolor(fgRed)
-      code
-      setforegroundcolor(fgWhite)
-
-template msgc*(code: stmt): stmt {.immediate.} =
-      setforegroundcolor(fgCyan,true)
-      code
-      setforegroundcolor(fgWhite)
-
-
-proc handler() {.noconv.} =
-  # this runs if we press ctrl-c to kill all
-  setForegroundColor(fgYellow,false)
-  echo "\nindo6 has run for             : ", formatFloat(epochTime() - t, precision = 0), " seconds"
-  setForegroundColor(fgCyan,false)
-  echo "{}{:<11}{:>9}".fmt("Last module compilation on    : ",CompileDate ,CompileTime)  
-  setForegroundColor(fgGreen,false)   
-  echo "Programmed by                 : qqTop"
-  echo "Nim Version                   : ", NimMajor,".",NimMinor,".",NimPatch
-  echo "Sampai Jumpa , Have a Nice Day !"
-  system.addQuitProc(resetAttributes)
-  quit(0)
-  
- 
-setControlCHook(handler)
-
 var cflag : bool = false
 var hflag : bool = false
 var katax = ""
 
+proc dokatax(akatax) =
+     printLn("Kata   : " & akatax,green,brightcyan)
+     
+
+proc dowordx(akatax) =
+     printLn("Word   : " & akatax,green,brightcyan)
+     
+
 while fin == false:
-        tw = getTerminalWidth()
-        erasescreen()
-        cursorup(80)
-        msgy() do: stdout.write("{:<9}".fmt("Active : "))
-        msgc() do: stdout.write("{:<4}".fmt(switch))
-        msgy() do: stdout.writeln("{}".fmt("Switches : d,p,e,ep,v,ev,ej,ejp,a,av,k,h=help,none=last"))
-        #echo repeat("-",tw-23)
-        setforegroundcolor(fgGreen)  
+        clearup()
+        msgyb() do: stdout.write("{:<9}".fmt("Active : "))
+        msgcb() do: stdout.write("{:<4}".fmt(switch))
+        msgy()  do: stdout.write("{}".fmt("Switches : d,p,e,ep,v,ev,ej,ejp,a,av,k,h=help,none=last,q=quit"))
+        echo()
+        #echo repeat("_",tw)
+        stdout.write("_________^")
+        echo repeat("_",tw-10)  
+       
         bflag = true
         case switch 
           of "d"   : 
@@ -118,103 +72,102 @@ while fin == false:
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(readLineFromStdin("Kata   : "))
                      else:
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
-                        echo "Kata   : ",katax
+                        dokatax(katax)
           of "e"   :
                     if cflag == false :  
                         acmd = "trans -b -w $1 -s en -t id "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                     else:    
                         acmd = "trans -b -w $1 -s en -t id "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
           of "ep"  : 
                      if cflag == false:
                         acmd = "trans -b -p -w $1 -s en -t id "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -b -p -w $1 -s en -t id "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
           of "v"   : 
                      if cflag == false:
                         acmd = "trans -v -w $1 -s id -t en "  % $tw & quoteshellposix(readLineFromStdin("Kata   : "))
                      else:
                         acmd = "trans -v -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
-                        echo "Kata   : ",katax
+                        dokatax(katax)
                         
           of "ev"  : 
                      if cflag == false: 
                         acmd = "trans -v -w $1 -s en -t id "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -v -w $1 -s en -t id "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                         
           of "ej"  : 
                      if cflag == false:
                         acmd = "trans -b -w $1 -s en -t ja "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -b -w $1 -s en -t ja "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                         
           of "ejp" : 
                      if cflag == false: 
                         acmd = "trans -b -p -w $1 -s en -t ja "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -b -p -w $1 -s en -t ja "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                         
           of "a"   : 
                      if cflag == false:
                         acmd = "trans -b -w $1 "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -b -w $1 "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                         
           of "av"  : 
                      if cflag == false:
                         acmd = "trans -v -w $1 "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -v -w $1 "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                         
           of "p"   : 
                      if cflag == false:
                         acmd = "trans -p -w $1 "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -p -w $1 "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax
+                        dowordx(katax)
                     
           of "k"   :
                      if cflag == false:
                         acmd = "trans -d -w $1 "  % $tw & quoteshellposix(readLineFromStdin("Words  : "))
                      else:
                         acmd = "trans -d -w $1 "  % $tw & quoteshellposix(katax)
-                        echo "Words  : ",katax          
+                        dowordx(katax)
                         
-          of "h"   : help = "d   indonesian english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\na   any language to english\nav  any language to english verbose\nk   Dictionary Mode\nh   help" 
+          of "h"   : help = "d   indonesian english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\na   any language to english\nav  any language to english verbose\nk   Dictionary Mode\nh   help\nq   Quit" 
+           
+          of "q"   : 
+                     doFinish() 
+          
           else     : acmd = "Wrong switch selected";bflag = false
-
-       
-       
+      
           
         proc doMecab(b:string):string =
             var output2 = ppmecabP.parse(b)  # returns katakana
             var kshi = ppkata2hira.kata2hira(output2) #returns hiragana
             result = $kshi
        
-        
-        setforegroundcolor(fgyellow,true)
+               
         if switch == "h":
-          setforegroundcolor(fgWhite)
-          echo help
+          msgw() do : echo help
         else: 
           if bflag == true and hflag==false:
              var rx = execProcess(acmd).strip()
-             echo "Trans  : ",rx
+             printBiCol("Trans  : $1 " % $rx," : ",clrainbow,yellow)
              if switch == "ej" or switch == "ejp":
+                echo()
                 echo "         ",doMecab(rx)
           else:
-                setForegroundColor(fgRed)
-                echo acmd 
+                msgr() do : echo acmd 
             
-        setforegroundcolor(fgWhite)
-        
+               
         if switch in okswitch:
            # only allow good switches 
            oldswitch = switch
@@ -225,18 +178,15 @@ while fin == false:
         
               
         # switch implementation to take care of differencing between switches and words
-      
+        # seems ok now
+        echo()
         while not okswitch.contains(switch) and switch.len < 4:
-        
-           setforegroundcolor(fgWhite,true)
-           switch = readLineFromStdin("\nNext   : ")
-           setforegroundcolor(fgWhite,false)
-           # if not in okswitch we add three spaces at the end to take
-           # care of all short word situations   
-           if not okswitch.contains(switch) :
-              switch = switch & "   "
-           
-        
+             switch = readLineFromStdin("Next   : ")
+             # if not in okswitch we add three spaces at the end to take
+             # care of all short word situations   
+             if not okswitch.contains(switch) :
+                 switch = switch & "   "
+               
         if switch.len > 3:
            cflag = true
            katax = switch
