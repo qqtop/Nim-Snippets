@@ -221,6 +221,7 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          msgy() do : echo "Processing file " & curFile & ", stopped . Reason: ", msg
          quit()
 
+
 proc dline*(n:int = tw) =
      ## dline
      ## 
@@ -450,7 +451,7 @@ proc print*(s:string , cols: varargs[string, `$`]) =
        
 
 
-proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = white) =
+proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
      ## printBiCol
      ##
      ## echos a line in 2 colors based on a seperator
@@ -470,7 +471,7 @@ proc printBiCol*(s:string,sep:string,colLeft:string = yellow ,colRight:string = 
      ##
      var z = s.split(sep)
      printColStr(colLeft,z[0] & sep)
-     print(colRight,z[1])  
+     printColStr(colRight,z[1])  
      
 
 
@@ -769,7 +770,7 @@ proc getFirstMondayYear*(ayear:string):string =
     ##    
     ##    
   
-    var n:WeekDay
+    #var n:WeekDay
     for x in 1.. 8:
        var datestr= ayear & "-01-0" & $x
        if validdate(datestr) == true:
@@ -792,7 +793,7 @@ proc getFirstMondayYearMonth*(aym:string):string =
     ## in case of invalid dates nil will be returned
     ## 
     
-    var n:WeekDay
+    #var n:WeekDay
     var amx = aym
     for x in 1.. 8:
        if aym.len < 7:
@@ -826,7 +827,7 @@ proc getNextMonday*(adate:string):string =
     ## in case of invalid dates nil will be returned
     ## 
 
-    var n:WeekDay
+    #var n:WeekDay
     var ndatestr = ""
     if validdate(adate) == true:  
         var z = dayofweekjulian(adate) 
@@ -847,33 +848,6 @@ proc getNextMonday*(adate:string):string =
             else:
                 result = datestr  
 
-
-proc handler*() {.noconv.} =
-    ## handler
-    ##
-    ## this runs if ctrl-c is pressed
-    ##
-    ## and provides some feedback upon exit
-    ##
-    ## just by using this module your project will have an automatic
-    ##
-    ## exit handler via ctrl-c
-    ## 
-    ## this handler may not work if code compiled into a .dll or .so file
-    ## 
-    eraseScreen()
-    echo()
-    echo aline
-    msgg() do: echo "Thank you for using     : ",getAppFilename()
-    msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
-    echo aline
-    echo "private Version         : ", PRIVATLIBVERSION
-    echo "Nim Version             : ", NimVersion
-    echo()
-    rainbow("Have a Nice Day !")  ## change or add custom messages as required
-    decho(2)
-    system.addQuitProc(resetAttributes)
-    quit(0)
 
 
 proc superHeader*(bstring:string) =
@@ -1068,6 +1042,11 @@ proc getWanIp*():string =
    except:
       discard
    result = myWanIp
+   
+   
+proc showWanIp*() = 
+     echo "Current Wan Ip : ",getWanIp()
+     
 
 proc getIpInfo*(ip:string):JsonNode =
      ## getIpInfo
@@ -1087,11 +1066,9 @@ proc getIpInfo*(ip:string):JsonNode =
      ##
      ##
      if ip != "":
-       
-          var s = "http://ip-api.com/json/" & ip 
-          var z = getcontent(s)
-          var jz = parseJson(z)
-          result = jz  
+        result = parseJson(getContent("http://ip-api.com/json/" & ip))
+         
+          
 
 
 proc showIpInfo*(ip:string) =
@@ -1173,8 +1150,7 @@ proc createSeqFloat*(n:int = 10) : seq[float] =
         z.add(getRandomFloat())
       result = z
 
-
-
+      
 
 proc harmonics*(n:int64):float64 =
      ## harmonics
@@ -1392,6 +1368,15 @@ proc katakana*():seq[string] =
     result = kat
 
 
+proc qqTop*() =
+  ## qqTop
+  ##
+  ## prints qqTop in custom color
+  printHl("qq","qq",cyan)
+  printHl("T","T",brightgreen)
+  printHl("o","o",brightred)
+  printHl("p","p",cyan)
+  echo()
 
 proc doFinish*() =
     ## doFinish
@@ -1403,10 +1388,45 @@ proc doFinish*() =
     ## and should be the last line of the application
     ##
     decho(2)
-    msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ",PRIVATLIBVERSION,year(getDateStr()))
-    msgy() do : echo "{:<15}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs")
+    #msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ", PRIVATLIBVERSION,year(getDateStr()))
+    msgb() do : write(stdout,"{:<15}{} | {}{} | {}{} - {} | ".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"private : ", PRIVATLIBVERSION,year(getDateStr())))
+    qqTop()
+    msgy() do : echo "{:<15}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
     echo()
     quit 0
+
+
+
+
+proc handler*() {.noconv.} =
+    ## handler
+    ##
+    ## this runs if ctrl-c is pressed
+    ##
+    ## and provides some feedback upon exit
+    ##
+    ## just by using this module your project will have an automatic
+    ##
+    ## exit handler via ctrl-c
+    ## 
+    ## this handler may not work if code compiled into a .dll or .so file
+    ##
+    ## or under some other unclear circumstances
+    ## 
+    eraseScreen()
+    echo()
+    echo aline
+    msgg() do: echo "Thank you for using     : ",getAppFilename()
+    msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
+    echo aline
+    echo "private Version         : ", PRIVATLIBVERSION
+    echo "Nim Version             : ", NimVersion
+    echo()
+    rainbow("Have a Nice Day !")  ## change or add custom messages as required
+    decho(2)
+    system.addQuitProc(resetAttributes)
+    quit(0)
+
 
 
 # putting decho here will put two blank lines before anyting else runs

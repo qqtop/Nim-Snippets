@@ -1235,7 +1235,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <li><a class="reference" href="#print,string,varargs[string,]"
     title="print*(s: string; cols: varargs[string, `$`])"><wbr />print</a></li>
   <li><a class="reference" href="#printBiCol,string,string,string,string"
-    title="printBiCol*(s: string; sep: string; colLeft: string = yellow; colRight: string = white)"><wbr />print<wbr />Bi<wbr />Col</a></li>
+    title="printBiCol*(s: string; sep: string; colLeft: string = &quot;yellow&quot;;
+            colRight: string = &quot;white&quot;)"><wbr />print<wbr />Bi<wbr />Col</a></li>
   <li><a class="reference" href="#printHl,string,string,string"
     title="printHl*(sen: string; astr: string; col: string)"><wbr />print<wbr />Hl</a></li>
   <li><a class="reference" href="#makeColPW,int"
@@ -1282,8 +1283,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getFirstMondayYearMonth*(aym: string): string"><wbr />get<wbr />First<wbr />Monday<wbr />Year<wbr />Month</a></li>
   <li><a class="reference" href="#getNextMonday,string"
     title="getNextMonday*(adate: string): string"><wbr />get<wbr />Next<wbr />Monday</a></li>
-  <li><a class="reference" href="#handler,"
-    title="handler*()"><wbr />handler</a></li>
   <li><a class="reference" href="#superHeader,string"
     title="superHeader*(bstring: string)"><wbr />super<wbr />Header</a></li>
   <li><a class="reference" href="#superHeader,string,string,string"
@@ -1292,6 +1291,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="superHeaderA*(bb: string; strcol: string; frmcol: string; anim: bool; animcount: int = 1)"><wbr />super<wbr />Header<wbr />A</a></li>
   <li><a class="reference" href="#getWanIp,"
     title="getWanIp*(): string"><wbr />get<wbr />Wan<wbr />Ip</a></li>
+  <li><a class="reference" href="#showWanIp,"
+    title="showWanIp*()"><wbr />show<wbr />Wan<wbr />Ip</a></li>
   <li><a class="reference" href="#getIpInfo,string"
     title="getIpInfo*(ip: string): JsonNode"><wbr />get<wbr />Ip<wbr />Info</a></li>
   <li><a class="reference" href="#showIpInfo,string"
@@ -1324,8 +1325,12 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="hiragana*(): seq[string]"><wbr />hiragana</a></li>
   <li><a class="reference" href="#katakana,"
     title="katakana*(): seq[string]"><wbr />katakana</a></li>
+  <li><a class="reference" href="#qqTop,"
+    title="qqTop*()"><wbr />qq<wbr />Top</a></li>
   <li><a class="reference" href="#doFinish,"
     title="doFinish*()"><wbr />do<wbr />Finish</a></li>
+  <li><a class="reference" href="#handler,"
+    title="handler*()"><wbr />handler</a></li>
 
   </ul>
 </li>
@@ -1587,8 +1592,8 @@ check execution timing with one line see doFinish
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah yep 1234      333122.12  [12,45] wahahahaha&quot;</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightred</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="printBiCol"><a name="printBiCol,string,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBiCol</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">colLeft</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">yellow</span><span class="Other">;</span>
-                <span class="Identifier">colRight</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
+<dt id="printBiCol"><a name="printBiCol,string,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBiCol</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">colLeft</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;yellow&quot;</span><span class="Other">;</span>
+                <span class="Identifier">colRight</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;white&quot;</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printBiCol</p>
 <p>echos a line in 2 colors based on a seperator</p>
@@ -1760,17 +1765,6 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 
 
 </dd>
-<dt id="handler"><a name="handler,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">handler</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span> <span class="Other">{.</span><span class="Identifier">noconv</span><span class="Other">.}</span></pre></dt>
-<dd>
-<p>handler</p>
-<p>this runs if ctrl-c is pressed</p>
-<p>and provides some feedback upon exit</p>
-<p>just by using this module your project will have an automatic</p>
-<p>exit handler via ctrl-c</p>
-<p>this handler may not work if code compiled into a .dll or .so file </p>
-
-
-</dd>
 <dt id="superHeader"><a name="superHeader,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">superHeader</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">bstring</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>superheader</p>
@@ -1816,6 +1810,11 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dd>
 <p>getWanIp</p>
 <p>get your wan ip from heroku </p>
+
+
+</dd>
+<dt id="showWanIp"><a name="showWanIp,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showWanIp</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
+<dd>
 
 
 </dd>
@@ -1961,12 +1960,31 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 
 
 </dd>
+<dt id="qqTop"><a name="qqTop,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">qqTop</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>qqTop</p>
+<p>prints qqTop in custom color</p>
+
+
+</dd>
 <dt id="doFinish"><a name="doFinish,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">doFinish</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>doFinish</p>
 <p>a end of program routine which displays some information</p>
 <p>can be changed to anything desired</p>
 <p>and should be the last line of the application </p>
+
+
+</dd>
+<dt id="handler"><a name="handler,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">handler</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span> <span class="Other">{.</span><span class="Identifier">noconv</span><span class="Other">.}</span></pre></dt>
+<dd>
+<p>handler</p>
+<p>this runs if ctrl-c is pressed</p>
+<p>and provides some feedback upon exit</p>
+<p>just by using this module your project will have an automatic</p>
+<p>exit handler via ctrl-c</p>
+<p>this handler may not work if code compiled into a .dll or .so file</p>
+<p>or under some other unclear circumstances </p>
 
 
 </dd>
@@ -2085,7 +2103,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-15 20:22:20 UTC</small>
+        <small>Made with Nim. Generated: 2015-08-25 21:54:56 UTC</small>
       </div>
     </div>
   </div>
