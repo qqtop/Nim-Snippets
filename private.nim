@@ -229,6 +229,19 @@ proc dline*(n:int = tw) =
      ## 
      echo repeat("-",n)
 
+
+proc curUp*(x:int = 1) =
+     ## curUp
+     ## 
+     ## mirrors terminal cursorUp
+     cursorUp(x)
+
+proc curDn*(x:int = 1) = 
+     ## curDn
+     ##
+     ## mirrors terminal cursorDown
+     cursorDown(x)
+
 proc clearup*(x:int = 80) =
    ## clearup
    ## 
@@ -236,7 +249,7 @@ proc clearup*(x:int = 80) =
    ##
    
    erasescreen()
-   cursorup(x)
+   curup(x)
 
 
 proc printTuple*(xs: tuple): string =
@@ -1372,12 +1385,12 @@ proc qqTop*() =
   ## qqTop
   ##
   ## prints qqTop in custom color
+  ## 
   printHl("qq","qq",cyan)
   printHl("T","T",brightgreen)
   printHl("o","o",brightred)
   printHl("p","p",cyan)
-  echo()
-
+  
 proc doFinish*() =
     ## doFinish
     ##
@@ -1388,9 +1401,25 @@ proc doFinish*() =
     ## and should be the last line of the application
     ##
     decho(2)
+    
+    # version 1
     #msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ", PRIVATLIBVERSION,year(getDateStr()))
-    msgb() do : write(stdout,"{:<15}{} | {}{} | {}{} - {} | ".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"private : ", PRIVATLIBVERSION,year(getDateStr())))
+    
+    # version 2
+    #msgb() do : write(stdout,"{:<15}{} | {}{} | {}{} - {} | ".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"private : ", PRIVATLIBVERSION,year(getDateStr())))
+    #qqTop()
+    
+    # version 3
+    msgyb() do : write(stdout,"{:<15}{}".fmt("Application : ",extractFileName(getAppFilename())))
+    printColStr(black," | ")
+    printColStr(brightgreen,"Nim : ")
+    printColStr(black,NimVersion & " | ")
+    printColStr(green,"private : ")
+    printColStr(black,PRIVATLIBVERSION)
+    printColStr(black," | ")
     qqTop()
+    printLnColStr(black," - " & year(getDateStr())) 
+        
     msgy() do : echo "{:<15}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
     echo()
     quit 0
