@@ -88,7 +88,7 @@ var acountry:string
 if helpflag == true:
    helpblock() 
  
-if versionflag == true:
+elif versionflag == true:
    superHeader("NIM Yahoo Weather - Service")
    msgc() do : echo "  Nim Weather Version : ",version
  
