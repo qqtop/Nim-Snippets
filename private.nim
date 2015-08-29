@@ -943,9 +943,9 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     ##
     ## suitable for one line headers , overlong lines will
     ##
-    ## be cut to terminal window size with out ceremony
+    ## be cut to terminal window size without ceremony
     ##
-    ## the color of the string can be selected available colors
+    ## the color of the string can be selected, available colors
     ##
     ## green,red,cyan,white,yellow and for going completely bonkers the frame
     ##
@@ -1071,7 +1071,6 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,anim:bool,animcount:int
         sleepy(0.5)
         
   echo()
-
 
 
 
