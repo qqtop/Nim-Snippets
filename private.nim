@@ -493,7 +493,7 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string 
 
 
 proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
-     ## printBiCol
+     ## printLnBiCol
      ##
      ## same as printBiCol but issues a new line
      ## 
