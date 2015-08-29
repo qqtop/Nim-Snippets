@@ -466,7 +466,7 @@ proc print*(s:string , cols: varargs[string, `$`]) =
 proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
      ## printBiCol
      ##
-     ## echos a line in 2 colors based on a seperator
+     ## echos a line in 2 colors based on a seperators first occurance
      ## 
      ## .. code-block:: nim
      ##    for x  in 0.. <3:     
@@ -482,10 +482,43 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string 
      ##
      ##
      var z = s.split(sep)
+     # in case sep occures multiple time we only consider the first one
+     if z.len > 2:
+       for x in 2.. <z.len:
+          z[1] = z[1] & sep & z[x]
+     
      printColStr(colLeft,z[0] & sep)
      printColStr(colRight,z[1])  
      
 
+
+proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
+     ## printBiCol
+     ##
+     ## same as printBiCol but issues a new line
+     ## 
+     ## .. code-block:: nim
+     ##    for x  in 0.. <3:     
+     ##       # here use default colors for left and right side of the seperator     
+     ##       printLnBiCol("Test $1  : Ok this was $1 : what" % $x,":")
+     ##
+     ##    for x  in 4.. <6:     
+     ##        # here we change the default colors
+     ##        printLnBiCol("Test $1  : Ok this was $1 : what" % $x,":",cyan,red) 
+     ##
+     ##    # following requires strfmt module
+     ##    printLnBiCol("{} : {}     {}".fmt("Good Idea","Number",50),":",yellow,green)  
+     ##
+     ##
+     var z = s.split(sep)
+     # in case sep occures multiple time we only consider the first one
+     if z.len > 2:
+       for x in 2.. <z.len:
+          z[1] = z[1] & sep & z[x]
+     
+     printColStr(colLeft,z[0] & sep)
+     printLnColStr(colRight,z[1])  
+     
 
 proc printHl*(sen:string,astr:string,col:string) =
       ## printHl
@@ -1203,8 +1236,6 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     x.delete(zz)
 
 
-
-
 proc newWordCJK*(maxwl:int = 10):string =
       ## newWordCJK
       ##
@@ -1395,11 +1426,6 @@ proc fastsplit*(s: string, sep: char): seq[string] =
       start = i+1
       fieldNum += 1
   result[fieldNum] = s[start..^1]
-
-
-
-
-
 
 
 proc qqTop*() =
