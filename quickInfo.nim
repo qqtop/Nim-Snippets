@@ -42,25 +42,9 @@ from memfiles import open, lines
 ##
 
 
-const QUICKINFOVERSION = 0.5 
+const QUICKINFOVERSION = 0.6 
 const available = "Available : proc,template,converter,var,let,const,type,from,import"
 
-proc fastsplit*(s: string, sep: char): seq[string] =
-  # fastsplit code by jehan lifted from Nim Forum
-  var count = 1
-  for ch in s:
-    if ch == sep:
-      count += 1
-  result = newSeq[string](count)
-  var fieldNum = 0
-  var start = 0
-  for i in 0..high(s):
-    if s[i] == sep:
-      result[fieldNum] = s[start..i-1]
-      start = i+1
-      fieldNum += 1
-  result[fieldNum] = s[start..^1]
-  
  
 proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter","var","let","const","type","from","import"]) =
   superHeader("Info for : " & fname & $funcs,white,yellow)

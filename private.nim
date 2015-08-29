@@ -47,8 +47,7 @@ const
        brightyellow* = "brightyellow"
        brightwhite*  = "brightwhite"
        clrainbow*    = "clrainbow"
-         
-         
+
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -1379,6 +1378,28 @@ proc katakana*():seq[string] =
     for j in parsehexint("30A0") .. parsehexint("30FF"):
         kat.add($RUne(j))
     result = kat
+
+
+proc fastsplit*(s: string, sep: char): seq[string] =
+  # fastsplit code by jehan lifted from Nim Forum
+  var count = 1
+  for ch in s:
+    if ch == sep:
+      count += 1
+  result = newSeq[string](count)
+  var fieldNum = 0
+  var start = 0
+  for i in 0..high(s):
+    if s[i] == sep:
+      result[fieldNum] = s[start..i-1]
+      start = i+1
+      fieldNum += 1
+  result[fieldNum] = s[start..^1]
+
+
+
+
+
 
 
 proc qqTop*() =
