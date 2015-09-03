@@ -1,6 +1,6 @@
 # Nim-Snippets
 
-Collection of short programs and libraries in Nim
+Collection of experiments , short programs and libraries in Nim
 
 Tested on linux only.
 

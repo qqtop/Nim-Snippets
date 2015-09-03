@@ -72,11 +72,14 @@ when defined(Linux):
         result = toTwInt(size.col)
 
     var tw* = getTerminalWidth()
-    var aline* = repeat("-",tw)
+    var aline* = repeat("_",tw)
 
 when defined(Windows):
     var tw* = 80
     var aline* = repeat("-",tw)
+
+# forward declarations
+proc printColStr*(colstr:string,astr:string)
 
 
 template msgg*(code: stmt): stmt =
@@ -221,10 +224,24 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
+proc hline*(s:string = "_",n:int = tw,col:string = white) =
+     ## hline
+     ## 
+     ## draw a line with variable line char and length no new line will be issued
+     ## 
+     ## defaults are "_" and full terminal width
+     ## 
+     ## .. code-block:: nim
+     ##    hline("+",30,green)
+     ##     
+     for x in 0.. <n:
+       printColStr(col,s)
+     
+
 proc dline*(n:int = tw) =
      ## dline
      ## 
-     ## draw a line with given length
+     ## draw a line with given length in current terminal font color
      ## 
      echo repeat("-",n)
 
@@ -355,12 +372,12 @@ proc printColStr*(colstr:string,astr:string) =
       else  : msgw() do  : write(stdout,astr)
 
 
-proc printLnColStr*(colstr:string = white,mvastr: varargs[string, `$`]) =
+proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ## printLnColStr
     ##
     ## similar to printColStr but issues a echo() command that is
     ##
-    ## every item will be shown on a new line in the same color
+    ## every item will be shown on a new line in the same given color
     ##
     ## and most everything passed in will be converted to string
     ##
@@ -1063,11 +1080,9 @@ proc superHeaderA*(bb:string,strcol:string,frmcol:string,anim:bool,animcount:int
             for zz in countdown(bb.len,-1,1):
                   superheader($bb[0.. zz],strcol,frmcol)
                   sleepy(0.1)
-                  erasescreen()
-                  cursorup(80)
+                  clearup()
         else:
-             erasescreen()
-             cursorup(80)
+             clearup()
         sleepy(0.5)
         
   echo()
@@ -1411,7 +1426,14 @@ proc katakana*():seq[string] =
 
 
 proc fastsplit*(s: string, sep: char): seq[string] =
-  # fastsplit code by jehan lifted from Nim Forum
+  ## fastsplit
+  ## 
+  ##  code by jehan lifted from Nim Forum
+  ##  
+  ## for best results compile prog with : nim cc -d:release --gc:markandsweep 
+  ## 
+  ## seperator must be a char type
+  ## 
   var count = 1
   for ch in s:
     if ch == sep:
@@ -1425,6 +1447,43 @@ proc fastsplit*(s: string, sep: char): seq[string] =
       start = i+1
       fieldNum += 1
   result[fieldNum] = s[start..^1]
+
+
+
+proc splitty*(txt:string,sep:string):seq[string] =
+   ## splitty
+   ## 
+   ## same as build in split function but this retains the
+   ## 
+   ## separator on the left side of the split
+   ## 
+   ## z = splitty("Nice weather in : Djibouti",":")
+   ##
+   ## will yield:
+   ## 
+   ## Nice weather in :
+   ## Djibouti
+   ## 
+   ## rather than:
+   ## 
+   ## Nice weather in
+   ## Djibouti
+   ##
+   ## with the original split()
+   ## 
+   ## 
+
+   var rx = newSeq[string]()   
+   let z = txt.split(sep)
+   for xx in 0.. <z.len:
+     if z[xx] != txt and z[xx] != nil:
+        if xx < z.len-1:
+             rx.add(z[xx] & sep)
+        else:
+             rx.add(z[xx])
+   result = rx          
+
+
 
 
 proc qqTop*() =
@@ -1456,17 +1515,19 @@ proc doFinish*() =
     #qqTop()
     
     # version 3
-    msgyb() do : write(stdout,"{:<15}{}".fmt("Application : ",extractFileName(getAppFilename())))
+    echo aline
+    printColStr(brightyellow,"{:<14}".fmt("Application :"))
+    printColStr(black,extractFileName(getAppFilename()))
     printColStr(black," | ")
     printColStr(brightgreen,"Nim : ")
     printColStr(black,NimVersion & " | ")
-    printColStr(green,"private : ")
+    printColStr(brightcyan,"private : ")
     printColStr(black,PRIVATLIBVERSION)
     printColStr(black," | ")
     qqTop()
     printLnColStr(black," - " & year(getDateStr())) 
         
-    msgy() do : echo "{:<15}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
+    msgy() do : echo "{:<14}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
     echo()
     quit 0
 

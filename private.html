@@ -1165,7 +1165,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
       <li><a class="reference" href="#tw"
     title="tw* = getTerminalWidth()"><wbr />tw</a></li>
   <li><a class="reference" href="#aline"
-    title="aline* = repeat(&quot;-&quot;, tw)"><wbr />aline</a></li>
+    title="aline* = repeat(&quot;_&quot;, tw)"><wbr />aline</a></li>
   <li><a class="reference" href="#tw_2"
     title="tw* = 80"><wbr />tw</a></li>
   <li><a class="reference" href="#aline_2"
@@ -1216,6 +1216,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#getTerminalWidth,"
     title="getTerminalWidth*(): int"><wbr />get<wbr />Terminal<wbr />Width</a></li>
+  <li><a class="reference" href="#printColStr,string,string"
+    title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
+  <li><a class="reference" href="#hline,string,int,string"
+    title="hline*(s: string = &quot;_&quot;; n: int = tw; col: string = white)"><wbr />hline</a></li>
   <li><a class="reference" href="#dline,int"
     title="dline*(n: int = tw)"><wbr />dline</a></li>
   <li><a class="reference" href="#curUp,int"
@@ -1230,10 +1234,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="rainbow*(astr: string)"><wbr />rainbow</a></li>
   <li><a class="reference" href="#rainbowPW,"
     title="rainbowPW*(): string"><wbr />rainbow<wbr />PW</a></li>
-  <li><a class="reference" href="#printColStr,string,string"
+  <li><a class="reference" href="#printColStr,string,string_2"
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#printLnColStr,string,varargs[string,]"
-    title="printLnColStr*(colstr: string = white; mvastr: varargs[string, `$`])"><wbr />print<wbr />Ln<wbr />Col<wbr />Str</a></li>
+    title="printLnColStr*(colstr: string; mvastr: varargs[string, `$`])"><wbr />print<wbr />Ln<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#printLn,string,varargs[string,]"
     title="printLn*(s: string; cols: varargs[string, `$`])"><wbr />print<wbr />Ln</a></li>
   <li><a class="reference" href="#print,string,varargs[string,]"
@@ -1334,6 +1338,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="katakana*(): seq[string]"><wbr />katakana</a></li>
   <li><a class="reference" href="#fastsplit,string,char"
     title="fastsplit*(s: string; sep: char): seq[string]"><wbr />fastsplit</a></li>
+  <li><a class="reference" href="#splitty,string,string"
+    title="splitty*(txt: string; sep: string): seq[string]"><wbr />splitty</a></li>
   <li><a class="reference" href="#qqTop,"
     title="qqTop*()"><wbr />qq<wbr />Top</a></li>
   <li><a class="reference" href="#doFinish,"
@@ -1410,7 +1416,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 
 
 </dd>
-<dt id="aline"><a name="aline"></a><pre><span class="Identifier">aline</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">repeat</span><span class="Other">(</span><span class="StringLit">&quot;-&quot;</span><span class="Other">,</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
+<dt id="aline"><a name="aline"></a><pre><span class="Identifier">aline</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">repeat</span><span class="Other">(</span><span class="StringLit">&quot;_&quot;</span><span class="Other">,</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
@@ -1514,10 +1520,23 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="hline"><a name="hline,string,int,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">hline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;_&quot;</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>hline</p>
+<p>draw a line with variable line char and length no new line will be issued</p>
+<p>defaults are &quot;_&quot; and full terminal width</p>
+<pre class = "listing"><span class="Identifier">hline</span><span class="Punctuation">(</span><span class="StringLit">&quot;+&quot;</span><span class="Punctuation">,</span><span class="DecNumber">30</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre>
+
+</dd>
 <dt id="dline"><a name="dline,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>dline</p>
-<p>draw a line with given length </p>
+<p>draw a line with given length in current terminal font color </p>
 
 
 </dd>
@@ -1570,7 +1589,7 @@ check execution timing with one line see doFinish
 
 
 </dd>
-<dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dt id="printColStr"><a name="printColStr,string,string_2"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printColStr</p>
 <p>prints a string with a named color in colstr</p>
@@ -1579,11 +1598,11 @@ check execution timing with one line see doFinish
 <pre class = "listing"><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="StringLit">&quot;green&quot;</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice it is in green&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printLnColStr</p>
 <p>similar to printColStr but issues a echo() command that is</p>
-<p>every item will be shown on a new line in the same color</p>
+<p>every item will be shown on a new line in the same given color</p>
 <p>and most everything passed in will be converted to string</p>
 <pre class = "listing"><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
 
@@ -2002,6 +2021,23 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 </dd>
 <dt id="fastsplit"><a name="fastsplit,string,char"></a><pre><span class="Keyword">proc</span> <span class="Identifier">fastsplit</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
 <dd>
+fastsplit<blockquote><p>code by jehan lifted from Nim Forum</p></blockquote>
+<p>for best results compile prog with : nim cc -d:release --gc:markandsweep</p>
+<p>seperator must be a char type </p>
+
+
+</dd>
+<dt id="splitty"><a name="splitty,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">splitty</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">txt</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>splitty</p>
+<p>same as build in split function but this retains the</p>
+<p>separator on the left side of the split</p>
+<p>z = splitty(&quot;Nice weather in : Djibouti&quot;,&quot;:&quot;)</p>
+<p>will yield:</p>
+<p>Nice weather in : Djibouti</p>
+<p>rather than:</p>
+<p>Nice weather in Djibouti</p>
+<p>with the original split()</p>
 
 
 </dd>
@@ -2148,7 +2184,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-08-29 21:11:48 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-03 08:40:22 UTC</small>
       </div>
     </div>
   </div>

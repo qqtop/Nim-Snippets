@@ -13,7 +13,9 @@ import strutils,json,private,rdstdin
 ##
 ##   Compiler    : Nim 0.11.3
 ##
-##   Description : webcols.nim parses  color set json data from  http://colorbrewer2.org/
+##   Description : webcols.nim parses colorset json data from  http://colorbrewer2.org/
+##
+##   Requires    : private.nim
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
@@ -74,7 +76,7 @@ var cj = parseJson(colorjson)
 var cstz = cj["Spectral"]["3"]
 
 proc showBrewerAll() = 
-    ## shows all rgb colsets from colorBrewer web color sets
+    ## shows all rgb data from colorBrewer webcolor sets
     ## too much data just for reference
     for cst in colset:
       for z in 3.. <13:
@@ -92,7 +94,8 @@ proc showBrewerAll() =
 
 
 proc showBrewer(cst:string) = 
-      ## shows all rgb colsets from colorBrewer for a specific colorset
+      ## shows all rgb data from colorBrewer2 webcolor sets for a specific colorset
+      ## 
       superHeader(cst)
       for z in 3.. <13:
           try:
@@ -128,3 +131,4 @@ if acst != "":
    showBrewer(acst)
    msgb() do : echo "ColorData from http://colorbrewer2.org/"
 doFinish()
+
