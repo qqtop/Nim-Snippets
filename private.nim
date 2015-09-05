@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.6.9
+##   Version     : 0.7.0
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -29,11 +29,10 @@
 ##   Note        : may be improved at any time
 ##
 
-import os,terminal,math,unicode,times,tables,json
-import sequtils,parseutils,strutils
-import random,strfmt,httpclient
+import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
+import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
 
-const PRIVATLIBVERSION = "0.6.9"
+const PRIVATLIBVERSION = "0.7.0"
 const
        red*    = "red"
        green*  = "green"
@@ -133,7 +132,6 @@ template msgcb*(code: stmt): stmt =
       setforegroundcolor(fgCyan,true)
       code
       setforegroundcolor(fgWhite)
-
 
 template msgw*(code: stmt): stmt =
       setforegroundcolor(fgWhite)
@@ -402,7 +400,6 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
                        rainbow(vastr)
                        echo()
       else  : msgw() do  : echo vastr
-
 
 
 
@@ -1133,7 +1130,7 @@ proc getIpInfo*(ip:string):JsonNode =
 proc showIpInfo*(ip:string) =
       ## showIpInfo
       ##
-      ## displays ip details for a given ip
+      ## Displays details for a given IP
       ## 
       ## Example:
       ## 
@@ -1147,6 +1144,74 @@ proc showIpInfo*(ip:string) =
       for x in jz.getfields():
           echo "{:<15} : {}".fmt($x.key,$x.val)
       msgy() do : echo "{:<15} : {}".fmt("Source","ip-api.com")
+
+
+
+proc getHosts*(dm:string):seq[string] =
+    ## getHosts
+    ## 
+    ## returns IP addresses inside a seq[string] for a domain name and 
+    ## 
+    ## may resolve multiple IP pointing to same domain
+    ## 
+    ## .. code-block:: Nim
+    ##    import private
+    ##    var z = getHosts("bbc.co.uk")
+    ##    for x in z:
+    ##      echo x
+    ##    doFinish()
+    ## 
+    ## 
+    var rx = newSeq[string]()
+    try:
+      for i in getHostByName(dm).addrList:
+        if i.len > 0:
+          var s = ""
+          var cc = 0  
+          for c in i:
+              if s != "": 
+                  if cc == 3:
+                    s.add(",")
+                    cc = 0
+                  else:
+                    cc += 1
+                    s.add('.')
+              s.add($int(c))
+          var ss =s.split(",")
+          for x in 0.. <ss.len:
+              rx.add(ss[x])
+              #msgy() do: echo ss[x]
+        else:
+          rx = @[]
+    except:     
+           rx = @[]
+    var rxs = rx.toSet # removes doubles
+    rx = @[]
+    for x in rxs:
+        rx.add(x)
+    result = rx
+
+
+proc showHosts*(dm:string) = 
+    ## showHosts 
+    ## 
+    ## displays IP addresses for a domain name and 
+    ## 
+    ## may resolve multiple IP pointing to same domain
+    ## 
+    ## .. code-block:: Nim
+    ##    import private
+    ##    showHosts("bbc.co.uk")  
+    ##    doFinish()
+    ## 
+    ## 
+    msgg() do: echo "Hosts Data for " & dm
+    var z = getHosts(dm)
+    if z.len < 1:
+         msgr() do : echo "Nothing found or not resolved"
+    else:
+       for x in z:
+         echo x
 
 
 
@@ -1209,6 +1274,42 @@ proc createSeqFloat*(n:int = 10) : seq[float] =
         z.add(getRandomFloat())
       result = z
 
+
+
+
+proc getRandomPointInCircle*(radius:float) : seq[float] =
+  ## getRandomPointInCircle
+  ## 
+  ## based on answers found in
+  ## 
+  ## http://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
+  ## 
+  ## 
+  ## 
+  ## .. code-block:: nim
+  ##    import private,math  
+  ##    # get randompoints in a circle
+  ##    var crad:float = 1
+  ##    for x in 0.. 100:
+  ##       var k = getRandomPointInCircle(crad)
+  ##       assert k[0] <= crad and k[1] <= crad
+  ##       echo k
+  ##    doFinish()
+  ##    
+  ##     
+  
+  ## 
+  var t = 2 * math.Pi * getRandomFloat()
+  var u = getRandomFloat() + getRandomFloat()
+  var r = 0.00
+  if u > 1 :
+     r = 2-u 
+  else:
+     r = u 
+  var z = newSeq[float]()
+  z.add(radius * r * math.cos(t))
+  z.add(radius * r * math.sin(t))
+  return z
       
 
 proc harmonics*(n:int64):float64 =
@@ -1484,8 +1585,6 @@ proc splitty*(txt:string,sep:string):seq[string] =
    result = rx          
 
 
-
-
 proc qqTop*() =
   ## qqTop
   ##
@@ -1495,6 +1594,74 @@ proc qqTop*() =
   printHl("T","T",brightgreen)
   printHl("o","o",brightred)
   printHl("p","p",cyan)
+  
+
+proc doInfo*() =
+  ## doInfo
+  ## 
+  ## A more than you want to know information proc
+  ## 
+  ## 
+  let filename= extractFileName(getAppFilename())
+  var accTime = getLastAccessTime(filename)
+  var modTime = getLastModificationTime(filename)
+  let sep = ":"
+  superHeader("Information for file " & filename & " and System")
+  printLnBiCol("Last compilation on           : " & CompileDate &  " at " & CompileTime,sep,green,black)
+  # this only makes sense for non executable files
+  #printLnBiCol("Last access time to file      : " & filename & " " & $(fromSeconds(int(accTime))),sep,green,black)
+  printLnBiCol("Last modificaton time of file : " & filename & " " & $(fromSeconds(int(modTime))),sep,green,black)
+  printLnBiCol("Local TimeZone                : " & $(getTzName()),sep,green,black)
+  printLnBiCol("Offset from UTC  in secs      : " & $(getTimeZone()),sep,green,black)
+  printLnBiCol("Now                           : " & getDateStr() & " " & getClockStr(),sep,green,black)
+  printLnBiCol("Environment Info              : " & getEnv("HOME"),sep,green,black)
+  printLnBiCol("File exists                   : " & $(existsFile filename),sep,green,black)
+  printLnBiCol("Dir exists                    : " & $(existsDir "/"),sep,green,black)
+  printLnBiCol("AppDir                        : " & getAppDir(),sep,green,black)
+  printLnBiCol("App File Name                 : " & getAppFilename(),sep,green,black)
+  printLnBiCol("User home  dir                : " & getHomeDir(),sep,green,black)
+  printLnBiCol("Config Dir                    : " & getConfigDir(),sep,green,black)
+  printLnBiCol("Current Dir                   : " & getCurrentDir(),sep,green,black)
+  let fi = getFileInfo(filename)
+  printLnBiCol("File Id                       : " & $(fi.id.device) ,sep,green,black)
+  printLnBiCol("File No.                      : " & $(fi.id.file),sep,green,black)
+  printLnBiCol("Kind                          : " & $(fi.kind),sep,green,black)
+  printLnBiCol("Size                          : " & $(float(fi.size)/ float(1000)) & " kb",sep,green,black)
+  printLnBiCol("File Permissions              : ",sep,green,black)
+  for pp in fi.permissions:
+      printLnBiCol("                              : " & $pp,sep,green,black)
+  printLnBiCol("Link Count                    : " & $(fi.linkCount),sep,green,black)
+  # these only make sense non executable files
+  #printLnBiCol("Last Access                   : " & $(fi.lastAccessTime),sep,green,black)
+  #printLnBiCol("Last Write                    : " & $(fi.lastWriteTime),sep,green,black)
+  printLnBiCol("Creation                      : " & $(fi.creationTime),sep,green,black)
+
+  when defined windows:
+        printLnBiCol("System                        : Windows ..... Really ??",sep,red,black) 
+  elif defined linux:
+        printLnBiCol("System                        : Running on Linux" ,sep,brightcyan,green)
+  else:
+        printLnBiCol("System                        : Interesting Choice" ,sep,green,black)
+
+  when defined x86:
+        printLnBiCol("Code specifics                : x86" ,sep,green,black)
+
+  elif defined amd64:
+        printLnBiCol("Code specifics                : amd86" ,sep,green,black)
+  else:
+        printLnBiCol("Code specifics                : generic" ,sep,green,black)
+
+  printLnBiCol("Nim Version                   : " & $NimMajor & "." & $NimMinor & "." & $NimPatch,sep,green,black) 
+
+
+  printLnBiCol("Processor count               : " & $countProcessors(),sep,green,black)
+  printBiCol("OS                            : "& hostOS,sep,green,black)
+  printBiCol(" | CPU: "& hostCPU,sep,green,black)
+  printLnBiCol(" | cpuEndian: "& $cpuEndian,sep,green,black)
+  let pd = getpid()
+  printLnBiCol("Current pid                   : " & $pd,sep,green,black)
+  
+
   
 proc doFinish*() =
     ## doFinish
@@ -1530,6 +1697,9 @@ proc doFinish*() =
     msgy() do : echo "{:<14}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
     echo()
     quit 0
+
+
+
 
 
 

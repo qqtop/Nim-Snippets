@@ -1308,6 +1308,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getIpInfo*(ip: string): JsonNode"><wbr />get<wbr />Ip<wbr />Info</a></li>
   <li><a class="reference" href="#showIpInfo,string"
     title="showIpInfo*(ip: string)"><wbr />show<wbr />Ip<wbr />Info</a></li>
+  <li><a class="reference" href="#getHosts,string"
+    title="getHosts*(dm: string): seq[string]"><wbr />get<wbr />Hosts</a></li>
+  <li><a class="reference" href="#showHosts,string"
+    title="showHosts*(dm: string)"><wbr />show<wbr />Hosts</a></li>
   <li><a class="reference" href="#getRandomInt,int,int"
     title="getRandomInt*(mi: int = 0; ma: int = 1000000000): int"><wbr />get<wbr />Random<wbr />Int</a></li>
   <li><a class="reference" href="#createSeqInt,int,int,int"
@@ -1316,6 +1320,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getRandomFloat*(): float"><wbr />get<wbr />Random<wbr />Float</a></li>
   <li><a class="reference" href="#createSeqFloat,int"
     title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
+  <li><a class="reference" href="#getRandomPointInCircle,float"
+    title="getRandomPointInCircle*(radius: float): seq[float]"><wbr />get<wbr />Random<wbr />Point<wbr />In<wbr />Circle</a></li>
   <li><a class="reference" href="#harmonics,int64"
     title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
   <li><a class="reference" href="#shift,seq[T],Natural"
@@ -1342,6 +1348,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="splitty*(txt: string; sep: string): seq[string]"><wbr />splitty</a></li>
   <li><a class="reference" href="#qqTop,"
     title="qqTop*()"><wbr />qq<wbr />Top</a></li>
+  <li><a class="reference" href="#doInfo,"
+    title="doInfo*()"><wbr />do<wbr />Info</a></li>
   <li><a class="reference" href="#doFinish,"
     title="doFinish*()"><wbr />do<wbr />Finish</a></li>
   <li><a class="reference" href="#handler,"
@@ -1389,7 +1397,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <p class="module-desc"><blockquote><p><p>Library     : private.nim</p>
 <p>Status      : stable</p>
 <p>License     : MIT opensource</p>
-<p>Version     : 0.6.9</p>
+<p>Version     : 0.7.0</p>
 <p>ProjectStart: 2015-06-20</p>
 <p>Compiler    : Nim 0.11.3</p>
 <p>Description : private.nim is a public library with a collection of procs and templates</p>
@@ -1406,7 +1414,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="os.html">os</a>, <a class="reference external" href="terminal.html">terminal</a>, <a class="reference external" href="math.html">math</a>, <a class="reference external" href="unicode.html">unicode</a>, <a class="reference external" href="times.html">times</a>, <a class="reference external" href="tables.html">tables</a>, <a class="reference external" href="json.html">json</a>, <a class="reference external" href="sequtils.html">sequtils</a>, <a class="reference external" href="parseutils.html">parseutils</a>, <a class="reference external" href="strutils.html">strutils</a>, <a class="reference external" href="random.html">random</a>, <a class="reference external" href="strfmt.html">strfmt</a>, <a class="reference external" href="httpclient.html">httpclient</a>
+<a class="reference external" href="os.html">os</a>, <a class="reference external" href="osproc.html">osproc</a>, <a class="reference external" href="posix.html">posix</a>, <a class="reference external" href="terminal.html">terminal</a>, <a class="reference external" href="math.html">math</a>, <a class="reference external" href="unicode.html">unicode</a>, <a class="reference external" href="times.html">times</a>, <a class="reference external" href="tables.html">tables</a>, <a class="reference external" href="json.html">json</a>, <a class="reference external" href="sets.html">sets</a>, <a class="reference external" href="sequtils.html">sequtils</a>, <a class="reference external" href="parseutils.html">parseutils</a>, <a class="reference external" href="strutils.html">strutils</a>, <a class="reference external" href="random.html">random</a>, <a class="reference external" href="strfmt.html">strfmt</a>, <a class="reference external" href="httpclient.html">httpclient</a>, <a class="reference external" href="rawsockets.html">rawsockets</a>
 </dl></div>
 <div class="section" id="8">
 <h1><a class="toc-backref" href="#8">Vars</a></h1>
@@ -1892,9 +1900,31 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dt id="showIpInfo"><a name="showIpInfo,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showIpInfo</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">ip</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>showIpInfo</p>
-<p>displays ip details for a given ip</p>
+<p>Displays details for a given IP</p>
 <p>Example:</p>
 <pre class = "listing"><span class="Identifier">showIpInfo</span><span class="Punctuation">(</span><span class="StringLit">&quot;208.80.152.201&quot;</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="getHosts"><a name="getHosts,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getHosts</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">dm</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>getHosts</p>
+<p>returns IP addresses inside a seq[string] for a domain name and</p>
+<p>may resolve multiple IP pointing to same domain</p>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
+<span class="Keyword">var</span> <span class="Identifier">z</span> <span class="Operator">=</span> <span class="Identifier">getHosts</span><span class="Punctuation">(</span><span class="StringLit">&quot;bbc.co.uk&quot;</span><span class="Punctuation">)</span>
+<span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="Identifier">z</span><span class="Punctuation">:</span>
+  <span class="Identifier">echo</span> <span class="Identifier">x</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="showHosts"><a name="showHosts,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showHosts</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">dm</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>showHosts</p>
+<p>displays IP addresses for a domain name and</p>
+<p>may resolve multiple IP pointing to same domain</p>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span>
+<span class="Identifier">showHosts</span><span class="Punctuation">(</span><span class="StringLit">&quot;bbc.co.uk&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="getRandomInt"><a name="getRandomInt,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomInt</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">mi</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">ma</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1000000000</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
@@ -1931,6 +1961,21 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <p>form @[0.34,0.056,...] or similar</p>
 <pre class = "listing"><span class="Comment"># create a seq with 50 random floats</span>
 <span class="Identifier">echo</span> <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="getRandomPointInCircle"><a name="getRandomPointInCircle,float"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomPointInCircle</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">radius</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>getRandomPointInCircle</p>
+<p>based on answers found in</p>
+<p><a class="reference external" href="http://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly">http://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly</a></p>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">math</span>
+<span class="Comment"># get randompoints in a circle</span>
+<span class="Keyword">var</span> <span class="Identifier">crad</span><span class="Punctuation">:</span><span class="Identifier">float</span> <span class="Operator">=</span> <span class="DecNumber">1</span>
+<span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="FloatNumber">0.</span><span class="Operator">.</span> <span class="DecNumber">100</span><span class="Punctuation">:</span>
+   <span class="Keyword">var</span> <span class="Identifier">k</span> <span class="Operator">=</span> <span class="Identifier">getRandomPointInCircle</span><span class="Punctuation">(</span><span class="Identifier">crad</span><span class="Punctuation">)</span>
+   <span class="Identifier">assert</span> <span class="Identifier">k</span><span class="Punctuation">[</span><span class="DecNumber">0</span><span class="Punctuation">]</span> <span class="Operator">&lt;=</span> <span class="Identifier">crad</span> <span class="Keyword">and</span> <span class="Identifier">k</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">]</span> <span class="Operator">&lt;=</span> <span class="Identifier">crad</span>
+   <span class="Identifier">echo</span> <span class="Identifier">k</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="harmonics"><a name="harmonics,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">harmonics</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float64</span></pre></dt>
@@ -2045,6 +2090,13 @@ fastsplit<blockquote><p>code by jehan lifted from Nim Forum</p></blockquote>
 <dd>
 <p>qqTop</p>
 <p>prints qqTop in custom color </p>
+
+
+</dd>
+<dt id="doInfo"><a name="doInfo,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">doInfo</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>doInfo</p>
+<p>A more than you want to know information proc</p>
 
 
 </dd>
@@ -2184,7 +2236,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-03 08:40:22 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-05 14:53:03 UTC</small>
       </div>
     </div>
   </div>
