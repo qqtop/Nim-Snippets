@@ -16,7 +16,7 @@
 ##
 ##                 for display , date handling and much more
 ##
-##                 some procs may mirror functionality of other moduls for convenience
+##                 some procs may mirror functionality found in moduls for convenience
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##

@@ -8,8 +8,31 @@
 # 
 
 
-import os,strutils,osproc,terminal,times
- 
+import os,strutils,osproc,terminal,times,strfmt
+
+
+
+proc handler*() {.noconv.} =
+    ## handler
+    ##
+    ## this runs if ctrl-c is pressed
+    ##
+    ## and provides some feedback upon exit
+    ##
+    ## just by using this library your project will have an automatic
+    ##
+    ## exit handler via ctrl-c
+    eraseScreen()
+    echo()
+    echo "Thank you for using     : ",getAppFilename()
+    echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
+    echo "Nim Version             : ", NimVersion
+    echo()
+    system.addQuitProc(resetAttributes)
+    quit(0)
+
+
+setControlCHook(handler) 
 var start = epochTime() 
 var c = 0 
 var failed = newSeq[string]()
@@ -18,7 +41,7 @@ for f in walkfiles("*.nim"):
   echo " Working on : ",f
   setforegroundcolor(fgWhite)
   # change below if there are different compiler settings required
-  var exitCode = execCmd("nim -d:release -d:speed --hints:off --verbosity:0 -w:off c " & f) 
+  var exitCode = execCmd("nim -d:release --opt:speed --hints:off --verbosity:0 -w:off c " & f) 
   
   if exitCode == 0 :
       setforegroundcolor(fgWhite)
