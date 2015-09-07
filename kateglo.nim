@@ -14,7 +14,9 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##
 ##   Compiler    : Nim 0.11.3
 ##
-##   Description : Access Indonesian - Indonesian  Dictionary at kateglo.com
+##   Description : Access Indonesian - Indonesian  Dictionary 
+##   
+##                 at kateglo.com  via public API
 ##   
 ##                
 ##                 compile:  nim c -d:release kateglo
@@ -22,6 +24,8 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##                 run    :  kateglo           # uses default word: pasar 
 ##                 
 ##                           kateglo  makanan  # uses desired word makanan
+##   
+##   Notes       : the API appears to only a low single word input
 ##                 
 ##   Requires    : private.nim 
 ##   
@@ -29,7 +33,7 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
 ##
-##   Tested      : on linux only
+##   Tested      : on linux only ok on 2015-09-07
 ##
 ##
 ##   Programming : qqTop
@@ -115,8 +119,32 @@ if wflag == false:
       proc relati(data:JsonNode) =   
             var dx = data["kateglo"]["all_relation"]
             msgg() do: echo "Related Phrases"
+            msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+           
             for zd in 0.. <dx.len:
-                printLnBiCol("{:>4}{} {}".fmt($zd,":",ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                var trsin = ""
+                # we try to get the translations of the related phrases if type  = sinonim
+                var rphr = ss(dx[zd]["related_phrase"])  
+                var rtyp = ss(dx[zd]["rel_type_name"])
+                if rtyp == "Sinonim" or rtyp == "Turunan":
+                   var phrdata = getData(rphr)
+                   var phdx = phrdata["kateglo"]["translations"]
+                   trsin =  ss(phdx[0]["translation"])   
+                   printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                   
+                   var okx = wordwrap(trsin,tw - 40)
+                   var okxs = splitlines(okx)
+                   # print trans first line
+                   printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
+                   for x in 1.. <okxs.len :
+                      # here pad 14 blanks on left
+                      okxs[x] = align(okxs[x],22 + okxs[x].len)
+                      printLnColStr(white,"{}".fmt(okxs[x]))
+                   # need a sleep here or we hit the kateglo server to hard
+                   sleepy(0.5)
+                else:
+                   printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
+                echo()   
       
       proc transl(data:JsonNode) =
             var dx = data["kateglo"]["translations"]
