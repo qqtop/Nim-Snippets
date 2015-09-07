@@ -39,7 +39,8 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##   Programming : qqTop
 ##
 
-var wflag:bool = false
+var wflag:bool  = false
+var wflag2:bool = false
 
 proc getData(theWord:string):JsonNode = 
     var r:JsonNode
@@ -51,6 +52,17 @@ proc getData(theWord:string):JsonNode =
        r = nil
        wflag = true
     result = r
+
+proc getData2(theWord:string):JsonNode = 
+    var r:JsonNode
+    try:
+       r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
+    except JsonParsingError:
+       r = nil
+       wflag = true
+    result = r
+
+
 
 var aword = "" 
 if paramCount() > 0:
@@ -126,25 +138,39 @@ if wflag == false:
                 # we try to get the translations of the related phrases if type  = sinonim
                 var rphr = ss(dx[zd]["related_phrase"])  
                 var rtyp = ss(dx[zd]["rel_type_name"])
-                if rtyp == "Sinonim" or rtyp == "Turunan":
-                   var phrdata = getData(rphr)
-                   var phdx = phrdata["kateglo"]["translations"]
-                   trsin =  ss(phdx[0]["translation"])   
-                   printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
-                   
-                   var okx = wordwrap(trsin,tw - 40)
-                   var okxs = splitlines(okx)
-                   # print trans first line
-                   printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
-                   for x in 1.. <okxs.len :
-                      # here pad 14 blanks on left
-                      okxs[x] = align(okxs[x],22 + okxs[x].len)
-                      printLnColStr(white,"{}".fmt(okxs[x]))
+                if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
+                   # TODO : check that we only pass a single word rather than a phrase
+                   #        to avoid errors and slow down
+                   var phrdata = getData2(rphr)
+                   if wflag2 == false:
+                    try: 
+                      var phdx = phrdata["kateglo"]["translations"]
+                      if phdx.len > 0:
+                          trsin =  ss(phdx[0]["translation"])   
+                          printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                          
+                          var okx = wordwrap(trsin,tw - 40)
+                          var okxs = splitlines(okx)
+                          # print trans first line
+                          printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
+                          if okxs.len > 1:
+                              for x in 1.. <okxs.len :
+                                  # here pad 22 blanks on left
+                                  okxs[x] = align(okxs[x],22 + okxs[x].len)
+                                  printLnColStr(white,"{}".fmt(okxs[x]))
+                    except:
+                         discard
+                    
+                    
                    # need a sleep here or we hit the kateglo server to hard
-                   sleepy(0.5)
+                   # if too many crashes like
+                   # Error: unhandled exception: 503 Service Temporarily Unavailable [HttpRequestError]
+                   # then increase 
+                   sleepy(1.0)
+                   
                 else:
                    printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
-                echo()   
+                   echo()   
       
       proc transl(data:JsonNode) =
             var dx = data["kateglo"]["translations"]
