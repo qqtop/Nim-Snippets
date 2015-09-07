@@ -19,7 +19,7 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##                 at kateglo.com  via public API
 ##   
 ##                
-##                 compile:  nim c -d:release kateglo
+##                 compile:  nim c kateglo
 ##                 
 ##                 run    :  kateglo           # uses default word: pasar 
 ##                 
@@ -217,12 +217,14 @@ doFinish()
 #   gkamus: 1.1) expert, specialist. 2) virtuoso. 3) skilled, highly competent, professional.  2. 1) members. 2 relatives.                                                              
 # -------------------------------------------------------------------------------------------
 # Definitions
-#       1: ahli                                                                              
+#     1: ahli                                                                              
 #     Def: orang yang mahir, paham sekali dalam suatu ilmu (kepandaian)
-# -------------------------------------------------------------------------------------------      2: ahli
+# ------------------------------------------------------------------------------------------- 
+#     2: ahli
 #     Def: mahir benar
 #  Sample: dia seorang yang ahli menjalankan mesin itu                                       
-# -------------------------------------------------------------------------------------------      3: ahli
+# -------------------------------------------------------------------------------------------      
+#     3: ahli
 #     Def: anggota; orang(-orang) yang termasuk dalam suatu golongan; keluarga atau kaum
 # -------------------------------------------------------------------------------------------
 # Proverbs
