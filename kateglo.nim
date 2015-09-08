@@ -25,7 +25,7 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##                 
 ##                           kateglo  makanan  # uses desired word makanan
 ##   
-##   Notes       : the API appears to only a low single word input
+##   Notes       : the API appears to only allow single word input
 ##                 
 ##   Requires    : private.nim 
 ##   
@@ -141,7 +141,9 @@ if wflag == false:
                 if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
                    # TODO : check that we only pass a single word rather than a phrase
                    #        to avoid errors and slow down
+                   
                    var phrdata = getData2(rphr)
+                  
                    if wflag2 == false:
                     try: 
                       var phdx = phrdata["kateglo"]["translations"]
