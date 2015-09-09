@@ -287,8 +287,8 @@ proc clearup*(x:int = 80) =
    erasescreen()
    curup(x)
 
-## Var. convenience procs for colorised data output
-## these procs have similar functionality 
+# Var. convenience procs for colorised data output
+# these procs have similar functionality 
 
 proc printLn*(s:string , cols: varargs[string, `$`]) =
      ## println
@@ -815,8 +815,8 @@ proc makeColPW*(n:int = 12):seq[string] =
 
 
 
-## Var. date and time handling procs mainly to provide convenice for
-## date format yyyy-MM-dd handling
+# Var. date and time handling procs mainly to provide convenice for
+# date format yyyy-MM-dd handling
 
 proc validdate*(adate:string):bool =
      ## validdate
@@ -1128,7 +1128,7 @@ proc getNextMonday*(adate:string):string =
                 result = datestr  
 
 
-## Framed headers with var. colorising options
+# Framed headers with var. colorising options
 
 proc superHeader*(bstring:string) =
   ## superheader
@@ -1306,7 +1306,7 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
   echo()
 
 
-## Var. internet related procs
+# Var. internet related procs
 
 proc getWanIp*():string =
    ## getWanIp
@@ -1434,7 +1434,7 @@ proc showHosts*(dm:string) =
          echo x
 
 
-## Convenience procs for random data creation and handling
+# Convenience procs for random data creation and handling
 
 
 # init the MersenneTwister
@@ -1534,7 +1534,7 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   z.add(radius * r * math.sin(t))
   return z
       
-## Misc. routines 
+# Misc. routines 
 
 proc harmonics*(n:int64):float64 =
      ## harmonics
@@ -1575,7 +1575,7 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     result = x[zz]
     x.delete(zz)
 
-## Unicode random word creators
+# Unicode random word creators
 
 proc newWordCJK*(maxwl:int = 10):string =
       ## newWordCJK
@@ -1779,8 +1779,8 @@ proc katakana*():seq[string] =
         kat.add($RUne(j))
     result = kat
 
-## string splitters with additional capabilities to original split()
 
+# string splitters with additional capabilities to original split()
 
 proc fastsplit*(s: string, sep: char): seq[string] =
   ## fastsplit
@@ -1840,7 +1840,7 @@ proc splitty*(txt:string,sep:string):seq[string] =
              rx.add(z[xx])
    result = rx          
 
-## Info and handlers procs for quick information about
+# Info and handlers procs for quick information about
 
 
 proc qqTop*() =
