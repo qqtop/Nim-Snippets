@@ -284,7 +284,7 @@ proc clearup*(x:int = 80) =
    erasescreen()
    curup(x)
 
-# var. convenience procs for color output
+## Var. convenience procs for colorised data output
 
 proc printG*(s:string) = 
      ## printg
