@@ -1220,6 +1220,18 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getTerminalWidth*(): int"><wbr />get<wbr />Terminal<wbr />Width</a></li>
   <li><a class="reference" href="#printColStr,string,string"
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
+  <li><a class="reference" href="#hline,string,int,string"
+    title="hline*(s: string = &quot;_&quot;; n: int = tw; col: string = white)"><wbr />hline</a></li>
+  <li><a class="reference" href="#dline,int"
+    title="dline*(n: int = tw)"><wbr />dline</a></li>
+  <li><a class="reference" href="#decho,int"
+    title="decho*(z: int)"><wbr />decho</a></li>
+  <li><a class="reference" href="#curUp,int"
+    title="curUp*(x: int = 1)"><wbr />cur<wbr />Up</a></li>
+  <li><a class="reference" href="#curDn,int"
+    title="curDn*(x: int = 1)"><wbr />cur<wbr />Dn</a></li>
+  <li><a class="reference" href="#clearup,int"
+    title="clearup*(x: int = 80)"><wbr />clearup</a></li>
   <li><a class="reference" href="#printG,string"
     title="printG*(s: string)"><wbr />print<wbr />G</a></li>
   <li><a class="reference" href="#printGb,string"
@@ -1264,16 +1276,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printB*(s: string)"><wbr />print<wbr />B</a></li>
   <li><a class="reference" href="#printLnB,string"
     title="printLnB*(s: string)"><wbr />print<wbr />Ln<wbr />B</a></li>
-  <li><a class="reference" href="#hline,string,int,string"
-    title="hline*(s: string = &quot;_&quot;; n: int = tw; col: string = white)"><wbr />hline</a></li>
-  <li><a class="reference" href="#dline,int"
-    title="dline*(n: int = tw)"><wbr />dline</a></li>
-  <li><a class="reference" href="#curUp,int"
-    title="curUp*(x: int = 1)"><wbr />cur<wbr />Up</a></li>
-  <li><a class="reference" href="#curDn,int"
-    title="curDn*(x: int = 1)"><wbr />cur<wbr />Dn</a></li>
-  <li><a class="reference" href="#clearup,int"
-    title="clearup*(x: int = 80)"><wbr />clearup</a></li>
   <li><a class="reference" href="#printTuple,"
     title="printTuple*(xs: tuple): string"><wbr />print<wbr />Tuple</a></li>
   <li><a class="reference" href="#rainbow,string"
@@ -1298,8 +1300,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printHl*(sen: string; astr: string; col: string)"><wbr />print<wbr />Hl</a></li>
   <li><a class="reference" href="#makeColPW,int"
     title="makeColPW*(n: int = 12): seq[string]"><wbr />make<wbr />Col<wbr />PW</a></li>
-  <li><a class="reference" href="#decho,int"
-    title="decho*(z: int)"><wbr />decho</a></li>
   <li><a class="reference" href="#validdate,string"
     title="validdate*(adate: string): bool"><wbr />validdate</a></li>
   <li><a class="reference" href="#day,string"
@@ -1589,6 +1589,50 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="hline"><a name="hline,string,int,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">hline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;_&quot;</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>hline</p>
+<p>draw a line with variable line char and length no linefeed will be issued</p>
+<p>defaults are &quot;_&quot; and full terminal width</p>
+<pre class = "listing"><span class="Identifier">hline</span><span class="Punctuation">(</span><span class="StringLit">&quot;+&quot;</span><span class="Punctuation">,</span><span class="DecNumber">30</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="dline"><a name="dline,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>dline</p>
+<p>draw a line with given length in current terminal font color </p>
+
+
+</dd>
+<dt id="decho"><a name="decho,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">decho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">z</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>decho</p>
+<p>blank lines creator</p>
+<pre class = "listing"><span class="Identifier">decho</span><span class="Punctuation">(</span><span class="DecNumber">10</span><span class="Punctuation">)</span></pre><p>to create 10 blank lines</p>
+
+
+</dd>
+<dt id="curUp"><a name="curUp,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">curUp</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>curUp</p>
+<p>mirrors terminal cursorUp</p>
+
+
+</dd>
+<dt id="curDn"><a name="curDn,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">curDn</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>curDn</p>
+<p>mirrors terminal cursorDown</p>
+
+
+</dd>
+<dt id="clearup"><a name="clearup,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">clearup</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">80</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>clearup</p>
+<p>a convenience proc to clear monitor </p>
+
+
+</dd>
 <dt id="printG"><a name="printG,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printG</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printg</p>
@@ -1598,7 +1642,8 @@ check execution timing with one line see doFinish
 <p>print&lt;color&gt;b    ... prints string in said color bright no linefeed</p>
 <p>printLn&lt;color&gt;   ... prints string in said color with linefeed</p>
 <p>printLn&lt;color&gt;b  ... prints string in said color bright with linefeed</p>
-<p>colors : g,r,y,c,w,b and bright types : bg,br,by,bc,bw</p>
+<p>colors :  g green, r red, y yellow, c  cyan, w  white, b black</p>
+<blockquote><p>and bright types : types : gb,rb,yb,cb,wb</p></blockquote>
 <p>p&lt;color&gt; and pLn&lt;color&gt; routines complement the msgX templates</p>
 <p>templates are more flexible as they also accept other code blocks</p>
 <p>like writestyled , where as print... procs are mainly for strings.</p>
@@ -1728,42 +1773,6 @@ printB
 printLnB
 
 </dd>
-<dt id="hline"><a name="hline,string,int,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">hline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;_&quot;</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>hline</p>
-<p>draw a line with variable line char and length no linefeed will be issued</p>
-<p>defaults are &quot;_&quot; and full terminal width</p>
-<pre class = "listing"><span class="Identifier">hline</span><span class="Punctuation">(</span><span class="StringLit">&quot;+&quot;</span><span class="Punctuation">,</span><span class="DecNumber">30</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span></pre>
-
-</dd>
-<dt id="dline"><a name="dline,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>dline</p>
-<p>draw a line with given length in current terminal font color </p>
-
-
-</dd>
-<dt id="curUp"><a name="curUp,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">curUp</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>curUp</p>
-<p>mirrors terminal cursorUp</p>
-
-
-</dd>
-<dt id="curDn"><a name="curDn,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">curDn</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>curDn</p>
-<p>mirrors terminal cursorDown</p>
-
-
-</dd>
-<dt id="clearup"><a name="clearup,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">clearup</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">80</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>clearup</p>
-<p>a convenience proc to clear monitor </p>
-
-
-</dd>
 <dt id="printTuple"><a name="printTuple,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printTuple</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">xs</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>printTuple</p>
@@ -1887,14 +1896,6 @@ printLnB
 <p>makeColPW</p>
 <p>experimental</p>
 <p>make a colorcoded pw with length n default = 12 </p>
-
-
-</dd>
-<dt id="decho"><a name="decho,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">decho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">z</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>decho</p>
-<p>blank lines creator</p>
-<pre class = "listing"><span class="Identifier">decho</span><span class="Punctuation">(</span><span class="DecNumber">10</span><span class="Punctuation">)</span></pre><p>to create 10 blank lines</p>
 
 
 </dd>
@@ -2445,7 +2446,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-09 17:44:25 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-09 18:00:33 UTC</small>
       </div>
     </div>
   </div>

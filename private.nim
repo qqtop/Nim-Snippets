@@ -223,6 +223,68 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
+# output  horizontal lines
+
+proc hline*(s:string = "_",n:int = tw,col:string = white) =
+     ## hline
+     ## 
+     ## draw a line with variable line char and length no linefeed will be issued
+     ## 
+     ## defaults are "_" and full terminal width
+     ## 
+     ## .. code-block:: nim
+     ##    hline("+",30,green)
+     ##     
+     for x in 0.. <n:
+       printColStr(col,s)
+     
+
+proc dline*(n:int = tw) =
+     ## dline
+     ## 
+     ## draw a line with given length in current terminal font color
+     ## 
+     echo repeat("-",n)
+
+proc decho*(z:int)  =
+    ## decho
+    ##
+    ## blank lines creator
+    ##
+    ## .. code-block:: nim
+    ##    decho(10)
+    ## to create 10 blank lines
+    for x in 0.. <z:
+      echo()
+
+
+
+# simple navigation
+
+proc curUp*(x:int = 1) =
+     ## curUp
+     ## 
+     ## mirrors terminal cursorUp
+     cursorUp(x)
+
+
+proc curDn*(x:int = 1) = 
+     ## curDn
+     ##
+     ## mirrors terminal cursorDown
+     cursorDown(x)
+
+
+proc clearup*(x:int = 80) =
+   ## clearup
+   ## 
+   ## a convenience proc to clear monitor
+   ##
+   
+   erasescreen()
+   curup(x)
+
+# var. convenience procs for color output
 
 proc printG*(s:string) = 
      ## printg
@@ -241,7 +303,10 @@ proc printG*(s:string) =
      ## printLn<color>b  ... prints string in said color bright with linefeed
      ##
      ## 
-     ## colors : g,r,y,c,w,b and bright types : bg,br,by,bc,bw
+     ## colors :  g green, r red, y yellow, c  cyan, w  white, b black
+     ## 
+     ##           and bright types : types : gb,rb,yb,cb,wb 
+     ##            
      ## 
      ## p<color> and pLn<color> routines complement the msgX templates
      ## 
@@ -421,53 +486,6 @@ proc printLnB*(s:string) =
      ## 
      ## 
      msgb() do: echo(s)     
-
-
-proc hline*(s:string = "_",n:int = tw,col:string = white) =
-     ## hline
-     ## 
-     ## draw a line with variable line char and length no linefeed will be issued
-     ## 
-     ## defaults are "_" and full terminal width
-     ## 
-     ## .. code-block:: nim
-     ##    hline("+",30,green)
-     ##     
-     for x in 0.. <n:
-       printColStr(col,s)
-     
-
-proc dline*(n:int = tw) =
-     ## dline
-     ## 
-     ## draw a line with given length in current terminal font color
-     ## 
-     echo repeat("-",n)
-
-
-proc curUp*(x:int = 1) =
-     ## curUp
-     ## 
-     ## mirrors terminal cursorUp
-     cursorUp(x)
-
-
-proc curDn*(x:int = 1) = 
-     ## curDn
-     ##
-     ## mirrors terminal cursorDown
-     cursorDown(x)
-
-
-proc clearup*(x:int = 80) =
-   ## clearup
-   ## 
-   ## a convenience proc to clear monitor
-   ##
-   
-   erasescreen()
-   curup(x)
-
 
 proc printTuple*(xs: tuple): string =
      ## printTuple
@@ -789,17 +807,7 @@ proc makeColPW*(n:int = 12):seq[string] =
 
 
 
-proc decho*(z:int)  =
-    ## decho
-    ##
-    ## blank lines creator
-    ##
-    ## .. code-block:: nim
-    ##    decho(10)
-    ## to create 10 blank lines
-    for x in 0.. <z:
-      echo()
-
+# var date handling procs
 
 proc validdate*(adate:string):bool =
      ## validdate
@@ -1111,6 +1119,7 @@ proc getNextMonday*(adate:string):string =
                 result = datestr  
 
 
+# framed headers
 
 proc superHeader*(bstring:string) =
   ## superheader
@@ -1288,6 +1297,7 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
   echo()
 
 
+# internet
 
 proc getWanIp*():string =
    ## getWanIp
@@ -1417,6 +1427,8 @@ proc showHosts*(dm:string) =
          echo x
 
 
+# random
+
 
 # init the MersenneTwister
 var rng = initMersenneTwister(urandom(2500))
@@ -1515,6 +1527,7 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   z.add(radius * r * math.sin(t))
   return z
       
+# misc. routines
 
 proc harmonics*(n:int64):float64 =
      ## harmonics
@@ -1541,8 +1554,6 @@ proc harmonics*(n:int64):float64 =
 
 
 
-
-
 proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     ## shift takes a seq and returns the first , and deletes it from the seq
     ##
@@ -1557,6 +1568,7 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     result = x[zz]
     x.delete(zz)
 
+# unicode word creators
 
 proc newWordCJK*(maxwl:int = 10):string =
       ## newWordCJK
@@ -1698,10 +1710,7 @@ proc newWord4*(minwl:int=3,maxwl:int = 10 ):string =
          msgr() do : echo "Error : minimum word length larger than maximum word length"
          result = ""
            
-
-
-
-         
+        
 
 proc newWord5*(minwl:int=3,maxwl:int = 10 ):string =
     ## newWord4
@@ -1729,8 +1738,6 @@ proc newWord5*(minwl:int=3,maxwl:int = 10 ):string =
          msgr() do : echo "Error : minimum word length larger than maximum word length"
          result = ""
            
-
-
 
 
 proc iching*():seq[string] =
@@ -1764,6 +1771,8 @@ proc katakana*():seq[string] =
     for j in parsehexint("30A0") .. parsehexint("30FF"):
         kat.add($RUne(j))
     result = kat
+
+# splitters
 
 
 proc fastsplit*(s: string, sep: char): seq[string] =
@@ -1823,6 +1832,8 @@ proc splitty*(txt:string,sep:string):seq[string] =
         else:
              rx.add(z[xx])
    result = rx          
+
+# info,handlers 
 
 
 proc qqTop*() =
