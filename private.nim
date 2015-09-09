@@ -333,6 +333,10 @@ proc printG*(s:string) =
      ##    printG(s)
      ##    
      ##    
+     ## .. code-block:: nim
+     ##    import private,strutils,strfmt
+     ##    printGb("{:<13}{}".fmt("abc : ","23e2323"))   
+     ##    
      msgg() do: write(stdout,s)
 
 
@@ -1915,6 +1919,10 @@ proc doInfo*() =
 
 
 proc infoLine*() = 
+    ## infoLine
+    ## 
+    ## prints some info for current application
+    ## 
     echo aline
     printColStr(brightyellow,"{:<14}".fmt("Application :"))
     printColStr(black,extractFileName(getAppFilename()))
