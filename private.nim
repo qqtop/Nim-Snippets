@@ -16,7 +16,10 @@
 ##
 ##                 for display , date handling and much more
 ##
-##                 some procs may mirror functionality found in moduls for convenience
+##                 some procs may mirror functionality found in other moduls for convenience
+##                 
+##   Usage       : import private              
+##                 
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
@@ -285,6 +288,81 @@ proc clearup*(x:int = 80) =
    curup(x)
 
 ## Var. convenience procs for colorised data output
+## these procs have similar functionality 
+
+proc printLn*(s:string , cols: varargs[string, `$`]) =
+     ## println
+     ##
+     ## displays colored strings and issues a newline when finished
+     ## 
+     ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## .. code-block:: nim
+     ##    println(st,@[clrainbow,white,red,cyan,yellow])
+     ##    println("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    println("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    println("blah",green,white,red,cyan)    
+     ##    # can also pass a seq
+     ##    println("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##
+     var col = newSeq[string]()
+     var c = 0
+     for x in cols:
+         col.add(x)
+     var pcol = ""
+         
+     for x in s.tokenize() :
+            if x.isSep == false:
+                if c < cols.len:
+                  pcol = col[c]
+                else :
+                  pcol = white   
+                printColStr(pcol,x.token)
+                c += 1  
+              
+            else:
+                write(stdout,x.token)
+     echo ""    
+
+
+
+
+proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
+     ## print
+     ##
+     ## similar to printLn
+     ## 
+     ## echoing of colored strings however without newline
+     ## 
+     ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## .. code-block:: nim
+     ##    print(st,@[clrainbow,white,red,cyan,yellow])
+     ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    print("blah",green,white,red,cyan) 
+     ##    # also can use a seq or colors
+     ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##
+     var col = newSeq[string]()
+     var c = 0
+     for x in cols:
+         col.add(x)
+     var pcol = ""
+         
+     for x in s.tokenize() :
+            if x.isSep == false:
+                if c < cols.len:
+                  pcol = col[c]
+                else :
+                  pcol = white   
+                printColStr(pcol,x.token)
+                c += 1  
+              
+            else:
+                write(stdout,x.token)
+       
+
 
 proc printG*(s:string) = 
      ## printg
@@ -628,80 +706,6 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
 
 
 
-proc printLn*(s:string , cols: varargs[string, `$`]) =
-     ## println
-     ##
-     ## displays colored strings and issues a newline when finished
-     ## 
-     ## strings will be tokenized and colored according to colors in cols
-     ## 
-     ## .. code-block:: nim
-     ##    println(st,@[clrainbow,white,red,cyan,yellow])
-     ##    println("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    println("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    println("blah",green,white,red,cyan)    
-     ##    # can also pass a seq
-     ##    println("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
-     ##
-     var col = newSeq[string]()
-     var c = 0
-     for x in cols:
-         col.add(x)
-     var pcol = ""
-         
-     for x in s.tokenize() :
-            if x.isSep == false:
-                if c < cols.len:
-                  pcol = col[c]
-                else :
-                  pcol = white   
-                printColStr(pcol,x.token)
-                c += 1  
-              
-            else:
-                write(stdout,x.token)
-     echo ""    
-
-
-
-
-proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
-     ## print
-     ##
-     ## similar to printLn
-     ## 
-     ## echoing of colored strings however without newline
-     ## 
-     ## strings will be tokenized and colored according to colors in cols
-     ## 
-     ## .. code-block:: nim
-     ##    print(st,@[clrainbow,white,red,cyan,yellow])
-     ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    print("blah",green,white,red,cyan) 
-     ##    # also can use a seq or colors
-     ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
-     ##
-     var col = newSeq[string]()
-     var c = 0
-     for x in cols:
-         col.add(x)
-     var pcol = ""
-         
-     for x in s.tokenize() :
-            if x.isSep == false:
-                if c < cols.len:
-                  pcol = col[c]
-                else :
-                  pcol = white   
-                printColStr(pcol,x.token)
-                c += 1  
-              
-            else:
-                write(stdout,x.token)
-       
-
-
 proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
      ## printBiCol
      ##
@@ -811,7 +815,8 @@ proc makeColPW*(n:int = 12):seq[string] =
 
 
 
-# var date handling procs
+## Var. date and time handling procs mainly to provide convenice for
+## date format yyyy-MM-dd handling
 
 proc validdate*(adate:string):bool =
      ## validdate
@@ -1123,7 +1128,7 @@ proc getNextMonday*(adate:string):string =
                 result = datestr  
 
 
-# framed headers
+## Framed headers with var. colorising options
 
 proc superHeader*(bstring:string) =
   ## superheader
@@ -1301,7 +1306,7 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
   echo()
 
 
-# internet
+## Var. internet related procs
 
 proc getWanIp*():string =
    ## getWanIp
@@ -1340,9 +1345,7 @@ proc getIpInfo*(ip:string):JsonNode =
      ##
      if ip != "":
         result = parseJson(getContent("http://ip-api.com/json/" & ip))
-         
-          
-
+        
 
 proc showIpInfo*(ip:string) =
       ## showIpInfo
@@ -1431,7 +1434,7 @@ proc showHosts*(dm:string) =
          echo x
 
 
-# random
+## Convenience procs for random data creation and handling
 
 
 # init the MersenneTwister
@@ -1531,7 +1534,7 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   z.add(radius * r * math.sin(t))
   return z
       
-# misc. routines
+## Misc. routines 
 
 proc harmonics*(n:int64):float64 =
      ## harmonics
@@ -1572,7 +1575,7 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     result = x[zz]
     x.delete(zz)
 
-# unicode word creators
+## Unicode random word creators
 
 proc newWordCJK*(maxwl:int = 10):string =
       ## newWordCJK
@@ -1776,7 +1779,7 @@ proc katakana*():seq[string] =
         kat.add($RUne(j))
     result = kat
 
-# splitters
+## string splitters with additional capabilities to original split()
 
 
 proc fastsplit*(s: string, sep: char): seq[string] =
@@ -1837,7 +1840,7 @@ proc splitty*(txt:string,sep:string):seq[string] =
              rx.add(z[xx])
    result = rx          
 
-# info,handlers 
+## Info and handlers procs for quick information about
 
 
 proc qqTop*() =
