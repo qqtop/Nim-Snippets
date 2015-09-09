@@ -22,7 +22,7 @@
 ##
 ##   Docs        : http://qqtop.github.io/private.html
 ##
-##   Tested      : on linux only
+##   Tested      : on linux only 
 ##
 ##   Programming : qqTop
 ##
@@ -32,7 +32,7 @@
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
 
-const PRIVATLIBVERSION = "0.7.0"
+const PRIVATLIBVERSION* = "0.7.0"
 const
        red*    = "red"
        green*  = "green"
@@ -51,13 +51,14 @@ const
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
 converter toTwInt(x: cushort): int = result = int(x)
+
 when defined(Linux):
     proc getTerminalWidth*() : int =
         ## getTerminalWidth
         ##
         ## utility to easily draw correctly sized lines on linux terminals
         ##
-        ## and get linux get terminal width
+        ## and get linux terminal width
         ##
         ## for windows this currently is set to terminalwidth 80
         ##
@@ -222,10 +223,210 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
+
+proc printG*(s:string) = 
+     ## printg
+     ## 
+     ## prints string in green 
+     ## 
+     ## 
+     ## following single color print routines are avaialable
+     ## 
+     ## print<color>     ... prints string in said color no linefeed
+     ## 
+     ## print<color>b    ... prints string in said color bright no linefeed
+     ## 
+     ## printLn<color>   ... prints string in said color with linefeed
+     ##
+     ## printLn<color>b  ... prints string in said color bright with linefeed
+     ##
+     ## 
+     ## colors : g,r,y,c,w,b and bright types : bg,br,by,bc,bw
+     ## 
+     ## p<color> and pLn<color> routines complement the msgX templates
+     ## 
+     ## templates are more flexible as they also accept other code blocks
+     ## 
+     ## like writestyled , where as print... procs are mainly for strings.
+     ## 
+     ## 
+     ## .. code-block:: nim
+     ##    var s = "color"
+     ##    printLnG(s)
+     ##    printLnGb(s)  
+     ##    printLnR(s)  
+     ##    printLnRb(s)
+     ##    printLnC(s)
+     ##    printLnCb(s)
+     ##    printLnW(s)
+     ##    printLnWb(s)
+     ##    printLnB(s)
+     ##    printLnY(s)
+     ##    printLnYb(s)
+     ##    
+     ##    printB(s)
+     ##    printG(s)
+     ##    
+     ##    
+     msgg() do: write(stdout,s)
+
+
+proc printGb*(s:string) = 
+     ## printGb
+     ## 
+     ## 
+     msggb() do: write(stdout,s)
+
+
+proc printLnG*(s:string) = 
+     ## printLnG
+     ## 
+     ## prints a string in green and issues a newline
+     ## 
+     msgg() do: echo(s)
+     
+
+
+proc printLnGb*(s:string) = 
+     ## printLnGb
+     ## 
+     ## prints a string in bright green and issues a newline
+     ## 
+     msggb() do: echo(s)
+     
+
+
+proc printR*(s:string) = 
+     ## printR 
+     ## 
+     ## 
+     msgr() do: write(stdout,s)
+
+
+proc printRb*(s:string) = 
+     ## printRb 
+     ## 
+     ## 
+     msgrb() do: write(stdout,s)
+
+
+
+proc printLnR*(s:string) = 
+     ## printLnR
+     ##
+     ##
+     msgr() do: echo(s)  
+     
+
+proc printLnRb*(s:string) = 
+     ## printLnRb
+     ##
+     ##
+     msgrb() do: echo(s)       
+     
+     
+
+proc printY*(s:string) = 
+     ## printY
+     ## 
+     ## 
+     msgy() do: write(stdout,s)
+
+
+proc printYb*(s:string) = 
+     ## printY
+     ## 
+     ## 
+     msgyb() do: write(stdout,s)
+
+
+proc printLnY*(s:string) = 
+     ## printLnY
+     ## 
+     ## 
+     msgy() do: echo(s)
+
+
+proc printLnYb*(s:string) = 
+     ## printLnYb
+     ## 
+     ## 
+     msgyb() do: echo(s)
+
+
+     
+proc printC*(s:string) = 
+     ## printC
+     ## 
+     ## 
+     msgc() do: write(stdout,s)
+
+
+     
+proc printCb*(s:string) = 
+     ## printCb
+     ## 
+     ## 
+     msgcb() do: write(stdout,s)
+
+proc printLnC*(s:string) = 
+     ## printLnC
+     ## 
+     ## 
+     msgc() do: echo(s)     
+
+proc printLnCb*(s:string) = 
+     ## printLnCb
+     ## 
+     ## 
+     msgcb() do: echo(s)
+
+
+proc printW*(s:string) = 
+     ## printW
+     ## 
+     ## 
+     msgw() do: write(stdout,s)
+
+
+proc printWb*(s:string) = 
+     ## printWb
+     ## 
+     ## 
+     msgwb() do: write(stdout,s)
+
+proc printLnW*(s:string) = 
+     ## printLnw
+     ## 
+     ## 
+     msgw() do: echo(s)     
+
+
+proc printLnWb*(s:string) = 
+     ## printLnWb
+     ## 
+     ## 
+     msgwb() do: echo(s)
+
+
+proc printB*(s:string) = 
+     ## printB
+     ## 
+     ## 
+     msgb() do: write(stdout,s)
+
+
+proc printLnB*(s:string) = 
+     ## printLnB
+     ## 
+     ## 
+     msgb() do: echo(s)     
+
+
 proc hline*(s:string = "_",n:int = tw,col:string = white) =
      ## hline
      ## 
-     ## draw a line with variable line char and length no new line will be issued
+     ## draw a line with variable line char and length no linefeed will be issued
      ## 
      ## defaults are "_" and full terminal width
      ## 
@@ -250,11 +451,13 @@ proc curUp*(x:int = 1) =
      ## mirrors terminal cursorUp
      cursorUp(x)
 
+
 proc curDn*(x:int = 1) = 
      ## curDn
      ##
      ## mirrors terminal cursorDown
      cursorDown(x)
+
 
 proc clearup*(x:int = 80) =
    ## clearup
@@ -440,7 +643,7 @@ proc printLn*(s:string , cols: varargs[string, `$`]) =
 
 
 
-proc print*(s:string , cols: varargs[string, `$`]) =
+proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
      ## print
      ##
      ## similar to printLn
@@ -1045,10 +1248,10 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # finished drawing
 
 
-proc superHeaderA*(bb:string,strcol:string,frmcol:string,anim:bool,animcount:int = 1) =
+proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,anim:bool = true,animcount:int = 1) =
   ## superHeaderA
   ##
-  ## attempt of an animated superheader
+  ## attempt of an animated superheader , some defaults are given
   ##
   ## parameters for animated superheaderA :
   ##
@@ -1218,6 +1421,7 @@ proc showHosts*(dm:string) =
 # init the MersenneTwister
 var rng = initMersenneTwister(urandom(2500))
 
+
 proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
     ## getRandomInt
     ##
@@ -1317,14 +1521,17 @@ proc harmonics*(n:int64):float64 =
      ##
      ## returns a float containing sum of 1 + 1/2 + 1/3 + 1/n
      ##
+     var hn = 0.0
+     var h = 0.0
+     
      if n == 0:
        result = 0.0
 
      elif n > 0:
 
-        var h = 0.0
+        h = 0.0
         for x in 1.. n:
-           var hn = 1.0 / x.float64
+           hn = 1.0 / x.float64
            h = h + hn
         result = h
 
@@ -1493,6 +1700,39 @@ proc newWord4*(minwl:int=3,maxwl:int = 10 ):string =
            
 
 
+
+         
+
+proc newWord5*(minwl:int=3,maxwl:int = 10 ):string =
+    ## newWord4
+    ##
+    ## creates a random katakana word without meaning from the katakana unicode set 
+    ##
+    ## default min word length minwl = 3
+    ##
+    ## default max word length maxwl = 10
+    ##
+    if minwl <= maxwl:
+        var nw = ""
+        # words with length range 3 to maxwl
+        var maxws = toSeq(minwl.. maxwl)
+        # get a random length for a new word
+        var nwl = maxws.randomChoice()
+        var chc = toSeq(parsehexint("30A0") .. parsehexint("30FF"))
+        while nw.len < nwl:
+           var x = chc.randomChoice()
+           nw = nw & $Rune(x)
+        
+        result = nw
+        
+    else:
+         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         result = ""
+           
+
+
+
+
 proc iching*():seq[string] =
     ## iching
     ##
@@ -1603,17 +1843,19 @@ proc doInfo*() =
   ## 
   ## 
   let filename= extractFileName(getAppFilename())
-  var accTime = getLastAccessTime(filename)
+  #var accTime = getLastAccessTime(filename)
   var modTime = getLastModificationTime(filename)
   let sep = ":"
   superHeader("Information for file " & filename & " and System")
   printLnBiCol("Last compilation on           : " & CompileDate &  " at " & CompileTime,sep,green,black)
   # this only makes sense for non executable files
-  #printLnBiCol("Last access time to file      : " & filename & " " & $(fromSeconds(int(accTime))),sep,green,black)
+  #printLnBiCol("Last access time to file      : " & filename & " " & $(fromSeconds(int(getLastAccessTime(filename)))),sep,green,black)
   printLnBiCol("Last modificaton time of file : " & filename & " " & $(fromSeconds(int(modTime))),sep,green,black)
   printLnBiCol("Local TimeZone                : " & $(getTzName()),sep,green,black)
   printLnBiCol("Offset from UTC  in secs      : " & $(getTimeZone()),sep,green,black)
   printLnBiCol("Now                           : " & getDateStr() & " " & getClockStr(),sep,green,black)
+  printLnBiCol("Local Time                    : " & $getLocalTime(getTime()),sep,green,black)
+  printLnBiCol("GMT                           : " & $getGMTime(getTime()),sep,green,black)
   printLnBiCol("Environment Info              : " & getEnv("HOME"),sep,green,black)
   printLnBiCol("File exists                   : " & $(existsFile filename),sep,green,black)
   printLnBiCol("Dir exists                    : " & $(existsDir "/"),sep,green,black)
@@ -1652,8 +1894,6 @@ proc doInfo*() =
         printLnBiCol("Code specifics                : generic" ,sep,green,black)
 
   printLnBiCol("Nim Version                   : " & $NimMajor & "." & $NimMinor & "." & $NimPatch,sep,green,black) 
-
-
   printLnBiCol("Processor count               : " & $countProcessors(),sep,green,black)
   printBiCol("OS                            : "& hostOS,sep,green,black)
   printBiCol(" | CPU: "& hostCPU,sep,green,black)
@@ -1662,7 +1902,20 @@ proc doInfo*() =
   printLnBiCol("Current pid                   : " & $pd,sep,green,black)
   
 
-  
+
+proc infoLine*() = 
+    echo aline
+    printColStr(brightyellow,"{:<14}".fmt("Application :"))
+    printColStr(black,extractFileName(getAppFilename()))
+    printColStr(black," | ")
+    printColStr(brightgreen,"Nim : ")
+    printColStr(black,NimVersion & " | ")
+    printColStr(brightcyan,"private : ")
+    printColStr(black,PRIVATLIBVERSION)
+    printColStr(black," | ")
+    qqTop()
+    
+    
 proc doFinish*() =
     ## doFinish
     ##
@@ -1682,26 +1935,12 @@ proc doFinish*() =
     #qqTop()
     
     # version 3
-    echo aline
-    printColStr(brightyellow,"{:<14}".fmt("Application :"))
-    printColStr(black,extractFileName(getAppFilename()))
-    printColStr(black," | ")
-    printColStr(brightgreen,"Nim : ")
-    printColStr(black,NimVersion & " | ")
-    printColStr(brightcyan,"private : ")
-    printColStr(black,PRIVATLIBVERSION)
-    printColStr(black," | ")
-    qqTop()
+    infoLine()
     printLnColStr(black," - " & year(getDateStr())) 
-        
-    msgy() do : echo "{:<14}{:<.3f} {}".fmt("Elapsed     : ",epochtime() - private.start,"secs    ")
+    printColStr(yellow,"{:<14}".fmt("Elapsed     : "))
+    printLnColStr(black,"{:<.3f} {}".fmt(epochtime() - private.start,"secs"))
     echo()
     quit 0
-
-
-
-
-
 
 
 proc handler*() {.noconv.} =
@@ -1717,7 +1956,8 @@ proc handler*() {.noconv.} =
     ## 
     ## this handler may not work if code compiled into a .dll or .so file
     ##
-    ## or under some other unclear circumstances
+    ## or under some circumstances like being called during readLineFromStdin
+    ## 
     ## 
     eraseScreen()
     echo()
@@ -1727,12 +1967,13 @@ proc handler*() {.noconv.} =
     echo aline
     echo "private Version         : ", PRIVATLIBVERSION
     echo "Nim Version             : ", NimVersion
+    printColStr(yellow,"{:<14}".fmt("Elapsed     : "))
+    printLnColStr(black,"{:<.3f} {}".fmt(epochtime() - private.start,"secs"))
     echo()
     rainbow("Have a Nice Day !")  ## change or add custom messages as required
     decho(2)
     system.addQuitProc(resetAttributes)
     quit(0)
-
 
 
 # putting decho here will put two blank lines before anyting else runs
