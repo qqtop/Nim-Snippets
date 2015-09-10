@@ -1373,6 +1373,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
   <li><a class="reference" href="#shift,seq[T],Natural"
     title="shift*[T](x: var seq[T]; zz: Natural = 0): T"><wbr />shift</a></li>
+  <li><a class="reference" href="#ff,float"
+    title="ff*(zz: float; n = 5): string"><wbr />ff</a></li>
+  <li><a class="reference" href="#showStats,Runningstat"
+    title="showStats*(x: Runningstat)"><wbr />show<wbr />Stats</a></li>
   <li><a class="reference" href="#newWordCJK,int"
     title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
   <li><a class="reference" href="#newWord,int,int"
@@ -1433,6 +1437,16 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="msgwb*(code: stmt): stmt"><wbr />msgwb</a></li>
   <li><a class="reference" href="#msgb.t,stmt"
     title="msgb*(code: stmt): stmt"><wbr />msgb</a></li>
+  <li><a class="reference" href="#msgbb.t,stmt"
+    title="msgbb*(code: stmt): stmt"><wbr />msgbb</a></li>
+  <li><a class="reference" href="#msgbgb.t,stmt"
+    title="msgbgb*(code: stmt): stmt"><wbr />msgbgb</a></li>
+  <li><a class="reference" href="#msgbyb.t,stmt"
+    title="msgbyb*(code: stmt): stmt"><wbr />msgbyb</a></li>
+  <li><a class="reference" href="#msgwrb.t,stmt"
+    title="msgwrb*(code: stmt): stmt"><wbr />msgwrb</a></li>
+  <li><a class="reference" href="#msgbwb.t,stmt"
+    title="msgbwb*(code: stmt): stmt"><wbr />msgbwb</a></li>
   <li><a class="reference" href="#hdx.t,stmt"
     title="hdx*(code: stmt): stmt"><wbr />hdx</a></li>
   <li><a class="reference" href="#withFile.t,expr,string,FileMode,stmt"
@@ -2080,6 +2094,8 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 </dd>
 <dt id="showWanIp"><a name="showWanIp,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showWanIp</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
 <dd>
+<p>showWanIp</p>
+<p>show your current wan ip </p>
 
 
 </dd>
@@ -2190,6 +2206,26 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">a</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">float</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="FloatNumber">1.5</span><span class="Punctuation">,</span> <span class="FloatNumber">23.3</span><span class="Punctuation">,</span> <span class="FloatNumber">3.4</span><span class="Punctuation">]</span>
 <span class="Identifier">echo</span> <span class="Identifier">shift</span><span class="Punctuation">(</span><span class="Identifier">a</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">a</span></pre>
+
+</dd>
+<dt id="ff"><a name="ff,float"></a><pre><span class="Keyword">proc</span> <span class="Identifier">ff</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">n</span> <span class="Other">=</span> <span class="DecNumber">5</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>ff</p>
+<p>formats a float to string with n decimals} </p>
+
+
+</dd>
+<dt id="showStats"><a name="showStats,Runningstat"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showStats</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">Runningstat</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>statistics</p>
+<p>quickly display runningStat data</p>
+<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">math</span>
+<span class="Keyword">var</span> <span class="Identifier">rs</span><span class="Punctuation">:</span><span class="Identifier">Runningstat</span>
+<span class="Keyword">var</span> <span class="Identifier">z</span> <span class="Operator">=</span>  <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">500000</span><span class="Punctuation">)</span>
+<span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="Identifier">z</span><span class="Punctuation">:</span>
+    <span class="Identifier">rs</span><span class="Operator">.</span><span class="Identifier">push</span><span class="Punctuation">(</span><span class="Identifier">x</span><span class="Punctuation">)</span>
+<span class="Identifier">statistics</span><span class="Punctuation">(</span><span class="Identifier">rs</span><span class="Punctuation">)</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="newWordCJK"><a name="newWordCJK,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWordCJK</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
@@ -2395,6 +2431,39 @@ msgX templates convenience templates for colored text output the assumption is t
 
 
 </dd>
+<dt id="msgbb"><a name="msgbb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgbb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="msgbgb"><a name="msgbgb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgbgb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>msgbgb</p>
+<p>green background , black foregroundcolor </p>
+
+
+</dd>
+<dt id="msgbyb"><a name="msgbyb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgbyb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>msgbyb</p>
+<p>yellow background , black foregroundcolor </p>
+
+
+</dd>
+<dt id="msgwrb"><a name="msgwrb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgwrb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>msgbgb</p>
+<p>red background , white foregroundcolor </p>
+
+
+</dd>
+<dt id="msgbwb"><a name="msgbwb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgbwb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>msgbwb</p>
+<p>white background , black foregroundcolor </p>
+
+
+</dd>
 <dt id="hdx"><a name="hdx.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">hdx</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
 <dd>
 
@@ -2450,7 +2519,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-09 20:07:35 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-10 21:45:26 UTC</small>
       </div>
     </div>
   </div>

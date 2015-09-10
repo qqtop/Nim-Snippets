@@ -19,7 +19,6 @@
 ##                 some procs may mirror functionality found in other moduls for convenience
 ##                 
 ##   Usage       : import private              
-##                 
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
@@ -98,7 +97,6 @@ template msgg*(code: stmt): stmt =
 
 
 template msggb*(code: stmt): stmt   =
-
       setforegroundcolor(fgGreen,true)
       code
       setforegroundcolor(fgWhite)
@@ -151,6 +149,59 @@ template msgb*(code: stmt): stmt =
       setforegroundcolor(fgBlack,true)
       code
       setforegroundcolor(fgWhite)
+      
+template msgbb*(code: stmt): stmt =
+      # invisible on black background 
+      setforegroundcolor(fgBlack)
+      code
+      setforegroundcolor(fgWhite)
+      
+template msgbgb*(code:stmt):stmt =      
+      ## msgbgb
+      ## 
+      ## green background , black foregroundcolor
+      ## 
+      setBackGroundColor(bggreen)
+      setforegroundcolor(fgBlack)
+      code
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)      
+      
+     
+template msgbyb*(code:stmt):stmt =      
+      ## msgbyb
+      ## 
+      ## yellow background , black foregroundcolor
+      ## 
+  
+      setBackGroundColor(bgyellow)
+      setforegroundcolor(fgBlack)
+      code
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)      
+            
+     
+template msgwrb*(code:stmt):stmt =      
+      ## msgbgb
+      ## 
+      ## red background , white foregroundcolor
+      ## 
+      setBackGroundColor(bgred)
+      setforegroundcolor(fgWhite,true)
+      code
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)      
+                  
+template msgbwb*(code:stmt):stmt =      
+      ## msgbwb
+      ## 
+      ## white background , black foregroundcolor
+      ## 
+      setBackGroundColor(bgwhite)
+      setforegroundcolor(fgblack)
+      code
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)        
 
 
 template hdx*(code:stmt):stmt =
@@ -323,7 +374,6 @@ proc printLn*(s:string , cols: varargs[string, `$`]) =
             else:
                 write(stdout,x.token)
      echo ""    
-
 
 
 
@@ -778,8 +828,7 @@ proc printHl*(sen:string,astr:string,col:string) =
       ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
       ## 
       ##                    brightred,brightcyan,brightyellow,clrainbow
-      
-
+ 
       var rx = sen.split(astr)
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
@@ -830,7 +879,6 @@ proc validdate*(adate:string):bool =
 
      var m30 = @["04","06","09","11"]
      var m31 = @["01","03","05","07","08","10","12"]
-
      var xdate = parseInt(aDate.replace("-",""))
      # check 1 is our date between 1900 - 3000
      if xdate > 19000101 and xdate < 30001212:
@@ -1314,17 +1362,27 @@ proc getWanIp*():string =
    ## get your wan ip from heroku
    ##
 
-   var myWanIp = "Wan Ip not established."
+   var z = "Wan Ip not established."
    try:
-      myWanIP = getContent("http://my-ip.heroku.com")
+      z = getContent("http://my-ip.heroku.com")
+      z = z.replace(sub = "{",by = " ")
+      z = z.replace(sub = "}",by = " ")
+      z = z.replace(sub = "\"ip\":"," ")
+      z = z.replace(sub = '"' ,' ')
+      z = z.strip()
    except:
       discard
-   result = myWanIp
+   result = z
    
    
 proc showWanIp*() = 
-     echo "Current Wan Ip : ",getWanIp()
-     
+     ## showWanIp
+     ## 
+     ## show your current wan ip
+     ## 
+     printBiCol("Current Wan Ip : " & getwanip(),":",yellow,black)
+
+
 
 proc getIpInfo*(ip:string):JsonNode =
      ## getIpInfo
@@ -1574,6 +1632,44 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     ##
     result = x[zz]
     x.delete(zz)
+
+
+
+proc ff*(zz:float,n = 5):string =
+    ## ff
+    ## 
+    ## formats a float to string with n decimals}
+    ##  
+    result = $formatFloat(zz,ffDecimal,n)
+
+proc showStats*(x:Runningstat) =
+    ## statistics
+    ## 
+    ## quickly display runningStat data
+    ##  
+    ## .. code-block:: nim 
+    ##  
+    ##    import private,math
+    ##    var rs:Runningstat
+    ##    var z =  createSeqFloat(500000)
+    ##    for x in z:
+    ##        rs.push(x)
+    ##    statistics(rs)
+    ##    doFinish()
+    ## 
+    var sep = ":"
+    printLnBiCol("Sum     : " & ff(x.sum),sep,yellow,white)
+    printLnBiCol("Var     : " & ff(x.variance),sep,yellow,white)
+    printLnBiCol("Mean    : " & ff(x.mean),sep,yellow,white)
+    printLnBiCol("Std     : " & ff(x.standardDeviation),sep,yellow,white)
+    printLnBiCol("Min     : " & ff(x.min),sep,yellow,white)
+    printLnBiCol("Max     : " & ff(x.max),sep,yellow,white)
+    
+
+
+
+
+
 
 # Unicode random word creators
 
@@ -1829,7 +1925,6 @@ proc splitty*(txt:string,sep:string):seq[string] =
    ## with the original split()
    ## 
    ## 
-
    var rx = newSeq[string]()   
    let z = txt.split(sep)
    for xx in 0.. <z.len:
@@ -1839,6 +1934,7 @@ proc splitty*(txt:string,sep:string):seq[string] =
         else:
              rx.add(z[xx])
    result = rx          
+
 
 # Info and handlers procs for quick information about
 
