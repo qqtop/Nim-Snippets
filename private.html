@@ -1385,10 +1385,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="newWord2*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word2</a></li>
   <li><a class="reference" href="#newWord3,int,int,bool"
     title="newWord3*(minwl: int = 3; maxwl: int = 10; nflag: bool = true): string"><wbr />new<wbr />Word3</a></li>
-  <li><a class="reference" href="#newWord4,int,int"
-    title="newWord4*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word4</a></li>
-  <li><a class="reference" href="#newWord5,int,int"
-    title="newWord5*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Word5</a></li>
+  <li><a class="reference" href="#newHiragana,int,int"
+    title="newHiragana*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Hiragana</a></li>
+  <li><a class="reference" href="#newKatakana,int,int"
+    title="newKatakana*(minwl: int = 3; maxwl: int = 10): string"><wbr />new<wbr />Katakana</a></li>
   <li><a class="reference" href="#iching,"
     title="iching*(): seq[string]"><wbr />iching</a></li>
   <li><a class="reference" href="#hiragana,"
@@ -1475,6 +1475,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Tested      : on linux only</p>
 <p>Programming : qqTop</p>
 <p>Note        : may be improved at any time</p>
+<p>Required    : see import for modules expected to be available</p>
 </p></blockquote>
 </p>
   <div class="section" id="6">
@@ -2211,13 +2212,13 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <dt id="ff"><a name="ff,float"></a><pre><span class="Keyword">proc</span> <span class="Identifier">ff</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">n</span> <span class="Other">=</span> <span class="DecNumber">5</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>ff</p>
-<p>formats a float to string with n decimals} </p>
+<p>formats a float to string with n decimals </p>
 
 
 </dd>
 <dt id="showStats"><a name="showStats,Runningstat"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showStats</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">Runningstat</span><span class="Other">)</span></pre></dt>
 <dd>
-<p>statistics</p>
+<p>showStats</p>
 <p>quickly display runningStat data</p>
 <pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">math</span>
 <span class="Keyword">var</span> <span class="Identifier">rs</span><span class="Punctuation">:</span><span class="Identifier">Runningstat</span>
@@ -2268,18 +2269,18 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 
 
 </dd>
-<dt id="newWord4"><a name="newWord4,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord4</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dt id="newHiragana"><a name="newHiragana,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newHiragana</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
-<p>newWord4</p>
+<p>newHiragana</p>
 <p>creates a random hiragana word without meaning from the hiragana unicode set</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
 
 
 </dd>
-<dt id="newWord5"><a name="newWord5,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWord5</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dt id="newKatakana"><a name="newKatakana,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newKatakana</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">minwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">3</span><span class="Other">;</span> <span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
-<p>newWord4</p>
+<p>newKatakana</p>
 <p>creates a random katakana word without meaning from the katakana unicode set</p>
 <p>default min word length minwl = 3</p>
 <p>default max word length maxwl = 10 </p>
@@ -2519,7 +2520,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-12 13:23:55 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-12 16:54:52 UTC</small>
       </div>
     </div>
   </div>

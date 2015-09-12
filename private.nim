@@ -30,6 +30,7 @@
 ##
 ##   Note        : may be improved at any time
 ##
+##   Required    : see import for modules expected to be available
 
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
@@ -1638,12 +1639,12 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
 proc ff*(zz:float,n = 5):string =
     ## ff
     ## 
-    ## formats a float to string with n decimals}
+    ## formats a float to string with n decimals
     ##  
     result = $formatFloat(zz,ffDecimal,n)
 
 proc showStats*(x:Runningstat) =
-    ## statistics
+    ## showStats
     ## 
     ## quickly display runningStat data
     ##  
@@ -1665,10 +1666,6 @@ proc showStats*(x:Runningstat) =
     printLnBiCol("Min     : " & ff(x.min),sep,yellow,white)
     printLnBiCol("Max     : " & ff(x.max),sep,yellow,white)
     
-
-
-
-
 
 
 # Unicode random word creators
@@ -1787,8 +1784,8 @@ proc newWord3*(minwl:int=3,maxwl:int = 10 ,nflag:bool = true):string =
          result = ""
            
 
-proc newWord4*(minwl:int=3,maxwl:int = 10 ):string =
-    ## newWord4
+proc newHiragana*(minwl:int=3,maxwl:int = 10 ):string =
+    ## newHiragana
     ##
     ## creates a random hiragana word without meaning from the hiragana unicode set 
     ##
@@ -1815,8 +1812,8 @@ proc newWord4*(minwl:int=3,maxwl:int = 10 ):string =
            
         
 
-proc newWord5*(minwl:int=3,maxwl:int = 10 ):string =
-    ## newWord4
+proc newKatakana*(minwl:int=3,maxwl:int = 10 ):string =
+    ## newKatakana
     ##
     ## creates a random katakana word without meaning from the katakana unicode set 
     ##
