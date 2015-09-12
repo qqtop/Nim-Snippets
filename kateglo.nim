@@ -7,6 +7,11 @@ import os,private,httpclient,json,strfmt,strutils,sets
 ##   Status      : stable
 ##
 ##   License     : MIT opensource
+##   
+##   Kateglo     : Content license is CC-BY-NC-SA except as specified below.
+##                 Details licenses CC-BY-NC-SA can be found at:
+##                 http://creativecommons.org/licenses/by-nc-sa/3.0/
+##                 for other than personal use visit kateglo.com
 ##
 ##   Version     : 0.5.0
 ##
@@ -222,10 +227,12 @@ doFinish()
 #       1: bila                                                                               
 #     Def: kata tanya untuk menanyakan waktu; kapan
 #  Sample: bila Saudara berangkat?                                                            
-# --------------------------------------------------------------------------------------------      2: bila
+# --------------------------------------------------------------------------------------------      
+#  2: bila
 #     Def: kalau; jika; apabila
 #  Sample: ia baru menjawab bila ditanya                                                      
-# --------------------------------------------------------------------------------------------      3: bila
+# --------------------------------------------------------------------------------------------     
+#  3: bila
 #     Def: melakukan tindakan balas dendam (di Aceh)
 # --------------------------------------------------------------------------------------------
 # Proverbs
