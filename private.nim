@@ -1503,7 +1503,7 @@ var rng = initMersenneTwister(urandom(2500))
 proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
     ## getRandomInt
     ##
-    ## convenience prog so we do not need to import random
+    ## convenience proc so we do not need to import random
     ##
     ## in calling prog
 
@@ -1532,7 +1532,7 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
 proc getRandomFloat*():float =
     ## getRandomFloat
     ##
-    ## convenience prog so we do not need to import random
+    ## convenience proc so we do not need to import random
     ##
     ## in calling prog
     result = rng.random()
