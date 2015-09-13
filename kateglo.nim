@@ -290,5 +290,5 @@ doFinish()
 # 
 # 
 # ____________________________________________________________________________________________
-# Application : kateglo | Nim : 0.11.3 | private : 0.7.0 | qqTop - 2015
+# Application : kateglo | Nim : 0.11.3 | private : 0.8.0 | qqTop - 2015
 # Elapsed     : 24.554 secs
