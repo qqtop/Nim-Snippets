@@ -83,8 +83,8 @@ when defined(Linux):
     var aline* = repeat("_",tw)    ## echo aline 
 
 
-# forward declarations
-proc printColStr*(colstr:string,astr:string)
+
+proc printColStr*(colstr:string,astr:string)  ## forward declaration
 
 # templates
 
@@ -688,7 +688,7 @@ proc printColStr*(colstr:string,astr:string) =
       ##          brightgreen,brightred,brightcyan,brightyellow,brightwhite
       ##
       ## .. code-block:: nim
-      ##    printColStr("green","Nice it is in green")
+      ##    printColStr(green,"Nice, it is in green !")
       ##
 
       case colstr
@@ -797,7 +797,7 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:strin
      printLnColStr(colRight,z[1])  
      
 
-proc printHl*(sen:string,astr:string,col:string) =
+proc printHl*(s:string,substr:string,col:string) =
       ## printHl
       ##
       ## print and highlight all appearances of a char or substring of a string
@@ -813,24 +813,24 @@ proc printHl*(sen:string,astr:string,col:string) =
       ## 
       ##                    brightred,brightcyan,brightyellow,clrainbow
  
-      var rx = sen.split(astr)
+      var rx = s.split(substr)
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
           if x != rx.high:
               case col
-              of green  : msgg() do  : write(stdout,astr)
-              of red    : msgr() do  : write(stdout,astr)
-              of cyan   : msgc() do  : write(stdout,astr)
-              of yellow : msgy() do  : write(stdout,astr)
-              of white  : msgw() do  : write(stdout,astr)
-              of black  : msgb() do  : write(stdout,astr)
-              of brightgreen : msggb() do : write(stdout,astr)
-              of brightwhite : msgwb() do : write(stdout,astr)
-              of brightyellow: msgyb() do : write(stdout,astr)
-              of brightcyan  : msgcb() do : write(stdout,astr)
-              of brightred   : msgrb() do : write(stdout,astr)
-              of clrainbow   : rainbow(astr)
-              else  : msgw() do  : write(stdout,astr)
+              of green  : msgg() do  : write(stdout,substr)
+              of red    : msgr() do  : write(stdout,substr)
+              of cyan   : msgc() do  : write(stdout,substr)
+              of yellow : msgy() do  : write(stdout,substr)
+              of white  : msgw() do  : write(stdout,substr)
+              of black  : msgb() do  : write(stdout,substr)
+              of brightgreen : msggb() do : write(stdout,substr)
+              of brightwhite : msgwb() do : write(stdout,substr)
+              of brightyellow: msgyb() do : write(stdout,substr)
+              of brightcyan  : msgcb() do : write(stdout,substr)
+              of brightred   : msgrb() do : write(stdout,substr)
+              of clrainbow   : rainbow(substr)
+              else  : msgw() do  : write(stdout,substr)
 
 
 proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
