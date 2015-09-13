@@ -151,54 +151,59 @@ while true:
                               
                       
             proc relati(data:JsonNode) =   
-                  var dx = data["kateglo"]["all_relation"]
-                  msgg() do: echo "Related Phrases"
-                  msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
-                  var maxsta = dx.len-1
-                  if maxsta > 20:
-                     maxsta = 20
-                  
-                  for zd in 0.. <maxsta:
-                      var trsin = ""
-                      # we try to get the translations of the related phrases if type  = sinonim
-                      var rphr = ss(dx[zd]["related_phrase"])  
-                      var rtyp = ss(dx[zd]["rel_type_name"])
-                                           
-                      if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
-                        # TODO : check that we only pass a single word rather than a phrase
-                        #        to avoid errors and slow down
-                        
-                        var phrdata = getData2(rphr)
-                        
-                        if wflag2 == false:
-                          try: 
-                            var phdx = phrdata["kateglo"]["translations"]
-                            if phdx.len > 0:
-                                trsin =  ss(phdx[0]["translation"])   
-                                printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
-                                var okx = wordwrap(trsin,tw - 40)
-                                var okxs = splitlines(okx)
-                                # print trans first line
-                                printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
-                                if okxs.len > 1:
-                                    for x in 1.. <okxs.len :
-                                        # here pad 22 blanks on left
-                                        okxs[x] = align(okxs[x],22 + okxs[x].len)
-                                        printLnColStr(white,"{}".fmt(okxs[x]))
-                          except:
-                              discard
-                          
-                          
-                        # need a sleep here or we hit the kateglo server too hard
-                        # if too many crashes like
-                        # Error: unhandled exception: 503 Service Temporarily Unavailable [HttpRequestError]
-                        # then increase waiting secs --> see getData2 we wait one sec for next request
-                        # in case of error and this seems to remove most crashes
-                        sleepy(0.5)
-                        
-                      else:
-                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
-                        echo()   
+                 var dx = data["kateglo"]["all_relation"]
+                 if isNil(dx) == false:
+                   try:
+                      msgg() do: echo "Related Phrases"
+                      msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+                      var maxsta = dx.len-1
+                      if maxsta > 20:
+                        maxsta = 20
+                      
+                      for zd in 0.. <maxsta:
+                          var trsin = ""
+                          # we try to get the translations of the related phrases if type  = sinonim
+                          var rphr = ss(dx[zd]["related_phrase"])  
+                          var rtyp = ss(dx[zd]["rel_type_name"])
+                                              
+                          if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
+                            # TODO : check that we only pass a single word rather than a phrase
+                            #        to avoid errors and slow down
+                            
+                            var phrdata = getData2(rphr)
+                            
+                            if wflag2 == false:
+                              try: 
+                                var phdx = phrdata["kateglo"]["translations"]
+                                if phdx.len > 0:
+                                    trsin =  ss(phdx[0]["translation"])   
+                                    printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                                    var okx = wordwrap(trsin,tw - 40)
+                                    var okxs = splitlines(okx)
+                                    # print trans first line
+                                    printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
+                                    if okxs.len > 1:
+                                        for x in 1.. <okxs.len :
+                                            # here pad 22 blanks on left
+                                            okxs[x] = align(okxs[x],22 + okxs[x].len)
+                                            printLnColStr(white,"{}".fmt(okxs[x]))
+                              except:
+                                  discard
+                              
+                              
+                            # need a sleep here or we hit the kateglo server too hard
+                            # if too many crashes like
+                            # Error: unhandled exception: 503 Service Temporarily Unavailable [HttpRequestError]
+                            # then increase waiting secs --> see getData2 we wait one sec for next request
+                            # in case of error and this seems to remove most crashes
+                            sleepy(0.5)
+                            
+                          else:
+                            printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
+                          echo()   
+                   except:
+                      discard
+                     
             
             proc transl(data:JsonNode) =
                   var dx = data["kateglo"]["translations"]
