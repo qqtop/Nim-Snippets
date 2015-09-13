@@ -1174,10 +1174,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="tw* = getTerminalWidth()"><wbr />tw</a></li>
   <li><a class="reference" href="#aline"
     title="aline* = repeat(&quot;_&quot;, tw)"><wbr />aline</a></li>
-  <li><a class="reference" href="#tw_2"
-    title="tw* = 80"><wbr />tw</a></li>
-  <li><a class="reference" href="#aline_2"
-    title="aline* = repeat(&quot;-&quot;, tw)"><wbr />aline</a></li>
 
   </ul>
 </li>
@@ -1473,6 +1469,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Version     : 0.8.0</p>
 <p>ProjectStart: 2015-06-20</p>
 <p>Compiler    : Nim 0.11.3 dev</p>
+<p>OS          : Linux</p>
 <p>Description : private.nim is a public library with a collection of procs and templates</p>
 <blockquote><p><p>for colored display , date handling and more</p>
 <p>some procs may mirror functionality found in other moduls for convenience</p>
@@ -1480,10 +1477,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Usage       : import private</p>
 <p>Project     : <a class="reference external" href="https://github.com/qqtop/Nim-Snippets">https://github.com/qqtop/Nim-Snippets</a></p>
 <p>Docs        : <a class="reference external" href="http://qqtop.github.io/private.html">http://qqtop.github.io/private.html</a></p>
-<p>Tested      : on linux only</p>
+<p>Tested      : on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17</p>
 <p>Programming : qqTop</p>
 <p>Note        : may be improved at any time</p>
-<p>Required    : see import for modules expected to be available</p>
+<p>Required    : see imports for modules expected to be available</p>
 </p></blockquote>
 </p>
   <div class="section" id="6">
@@ -1506,22 +1503,12 @@ make terminal style constants available in the calling prog
 <dl class="item">
 <dt id="tw"><a name="tw"></a><pre><span class="Identifier">tw</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">getTerminalWidth</span><span class="Other">(</span><span class="Other">)</span></pre></dt>
 <dd>
-
+terminalwidth available in tw
 
 </dd>
 <dt id="aline"><a name="aline"></a><pre><span class="Identifier">aline</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">repeat</span><span class="Other">(</span><span class="StringLit">&quot;_&quot;</span><span class="Other">,</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
 <dd>
-
-
-</dd>
-<dt id="tw"><a name="tw_2"></a><pre><span class="Identifier">tw</span><span class="Operator">*</span> <span class="Other">=</span> <span class="DecNumber">80</span></pre></dt>
-<dd>
-
-
-</dd>
-<dt id="aline"><a name="aline_2"></a><pre><span class="Identifier">aline</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">repeat</span><span class="Other">(</span><span class="StringLit">&quot;-&quot;</span><span class="Other">,</span> <span class="Identifier">tw</span><span class="Other">)</span></pre></dt>
-<dd>
-
+echo aline 
 
 </dd>
 
@@ -2550,7 +2537,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-13 21:07:47 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-13 21:17:10 UTC</small>
       </div>
     </div>
   </div>

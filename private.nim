@@ -11,6 +11,8 @@
 ##   ProjectStart: 2015-06-20
 ##
 ##   Compiler    : Nim 0.11.3 dev
+##   
+##   OS          : Linux
 ##
 ##   Description : private.nim is a public library with a collection of procs and templates
 ##
@@ -24,13 +26,14 @@
 ##
 ##   Docs        : http://qqtop.github.io/private.html
 ##
-##   Tested      : on linux only 
+##   Tested      : on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17  
 ##
 ##   Programming : qqTop
 ##
 ##   Note        : may be improved at any time
 ##
-##   Required    : see import for modules expected to be available
+##   Required    : see imports for modules expected to be available
+##   
 
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
@@ -76,12 +79,9 @@ when defined(Linux):
         ioctl(0, TIOCGWINSZ, addr size)
         result = toTwInt(size.col)
 
-    var tw* = getTerminalWidth()
-    var aline* = repeat("_",tw)
+    var tw* = getTerminalWidth()   ## terminalwidth available in tw
+    var aline* = repeat("_",tw)    ## echo aline 
 
-when defined(Windows):
-    var tw* = 80
-    var aline* = repeat("-",tw)
 
 # forward declarations
 proc printColStr*(colstr:string,astr:string)
