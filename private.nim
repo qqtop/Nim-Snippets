@@ -6,15 +6,15 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.7.0
+##   Version     : 0.8.0
 ##
 ##   ProjectStart: 2015-06-20
 ##
-##   Compiler    : Nim 0.11.3
+##   Compiler    : Nim 0.11.3 dev
 ##
 ##   Description : private.nim is a public library with a collection of procs and templates
 ##
-##                 for display , date handling and much more
+##                 for colored display , date handling and more
 ##
 ##                 some procs may mirror functionality found in other moduls for convenience
 ##                 
@@ -35,7 +35,7 @@
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
 
-const PRIVATLIBVERSION* = "0.7.0"
+const PRIVATLIBVERSION* = "0.8.0"
 const
        red*    = "red"
        green*  = "green"
@@ -49,7 +49,9 @@ const
        brightyellow* = "brightyellow"
        brightwhite*  = "brightwhite"
        clrainbow*    = "clrainbow"
-
+         
+type
+     PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -84,6 +86,7 @@ when defined(Windows):
 # forward declarations
 proc printColStr*(colstr:string,astr:string)
 
+# templates
 
 template msgg*(code: stmt): stmt =
       ## msgX templates
@@ -620,25 +623,6 @@ proc printLnB*(s:string) =
      ## 
      msgb() do: echo(s)     
 
-proc printTuple*(xs: tuple): string =
-     ## printTuple
-     ##
-     ## tuple printer , returns a string
-     ##
-     ## code ex nim forum
-     ##
-     ## .. code-block:: nim
-     ##    echo printTuple((1,2))         # prints (1, 2)
-     ##    echo printTuple((3,4))         # prints (3, 4)
-     ##    echo printTuple(("A","B","C")) # prints (A, B, C)
-
-     result = "("
-     for x in xs.fields:
-       if result.len > 1:
-           result.add(", ")
-       result.add($x)
-     result.add(")")
-
 
 proc rainbow*(astr : string) =
     ## rainbow
@@ -667,32 +651,31 @@ proc rainbow*(astr : string) =
         else  : msgw() do  : write(stdout,astr[x])
 
 
-proc rainbowPW*() :string =
-           ## rainbowPW
-           ##
-           ## under development
-           ##
-           ## idea is to have a number password with hidden colorcode
-           ##
-           ## the colorcode is only accessible privatly
-           ##
-           ## so if the password number is exposed there is no problem
-           ##
+proc printRainbow*(astr : string,astyle:set[Style]) =
+    ## printRainbow
+    ##
+    ## print multicolored string with styles , for available styles see printStyled
+    ##
+    ## may not work with certain Rune
+    ##
 
-           var c = 0
-           var a = toSeq(0.. 9)
-           c = a[randomInt(a.len)]
-           case c
-            of 1  : msgg() do  : result = $c & green
-            of 2  : msgr() do  : result = $c & red
-            of 3  : msgc() do  : result = $c & cyan
-            of 4  : msgy() do  : result = $c & yellow
-            of 5  : msggb() do : result = $c & brightgreen
-            of 6  : msgwb() do : result = $c & brightwhite
-            of 7  : msgyb() do : result = $c & brightyellow
-            of 8  : msgrb() do : result = $c & brightred
-            of 9  : msgcb() do : result = $c & brightcyan
-            else  : msgw() do  : result = $c & white
+    var c = 0
+    var a = toSeq(1.. 12)
+    for x in 0.. <astr.len:
+       c = a[randomInt(a.len)]
+       case c
+        of 1  : msgg() do  : writestyled($astr[x],astyle)
+        of 2  : msgr() do  : writestyled($astr[x],astyle)
+        of 3  : msgc() do  : writestyled($astr[x],astyle)
+        of 4  : msgy() do  : writestyled($astr[x],astyle)
+        of 5  : msggb() do : writestyled($astr[x],astyle)
+        of 6  : msgr() do  : writestyled($astr[x],astyle)
+        of 7  : msgwb() do : writestyled($astr[x],astyle)
+        of 8  : msgc() do  : writestyled($astr[x],astyle)
+        of 9  : msgyb() do : writestyled($astr[x],astyle)
+        of 10 : msgrb() do : writestyled($astr[x],astyle)
+        of 11 : msgcb() do : writestyled($astr[x],astyle)
+        else  : msgw() do  : writestyled($astr[x],astyle)
 
 
 proc printColStr*(colstr:string,astr:string) =
@@ -850,19 +833,82 @@ proc printHl*(sen:string,astr:string,col:string) =
               else  : msgw() do  : write(stdout,astr)
 
 
+proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
+      ## printStyled
+      ##
+      ## extended version of writestyled and printHl to allow color and styles
+      ##
+      ## to print and highlight all appearances of a substring of a string
+      ##
+      ## styles may and in some cases not have the desired effect
+      ## 
+      ## available styles :
+      ## 
+      ## styleBright = 1,            ## bright text
+      ## styleDim,                   ## dim text
+      ## styleUnknown,               ## unknown
+      ## styleUnderscore = 4,        ## underscored text
+      ## styleBlink,                 ## blinking/bold text
+      ## styleReverse = 7,           ## unknown
+      ## styleHidden                 ## hidden text
+      ##
+      ## with a certain color
+      ##
+      ## .. code-block:: nim
+      ## 
+      ##    # this highlights all T in green and underscore them
+      ##    printStyled("HELLO THIS IS A TEST","T",green,{styleUnderScore})
+      ##    
+      ##    # this highlights all T in rainbow colors underscore and blink them
+      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{styleUnderScore,styleBlink})
+      ##
+      ##    # this highlights all T in rainbow colors , no style is applied
+      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
+      ##    
+      ##
+      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
+      ## 
+      ##                    brightred,brightcyan,brightyellow,clrainbow
+      ##                    
+ 
+      var rx = s.split(substr)
+      for x in rx.low.. rx.high:
+          writestyled(rx[x],{})
+          if x != rx.high:
+              case col
+              of green  : msgg() do  : writestyled(substr,astyle)
+              of red    : msgr() do  : writestyled(substr,astyle)
+              of cyan   : msgc() do  : writestyled(substr,astyle)
+              of yellow : msgy() do  : writestyled(substr,astyle)
+              of white  : msgw() do  : writestyled(substr,astyle)
+              of black  : msgb() do  : writestyled(substr,astyle)
+              of brightgreen : msggb() do : writestyled(substr,astyle)
+              of brightwhite : msgwb() do : writestyled(substr,astyle)
+              of brightyellow: msgyb() do : writestyled(substr,astyle)
+              of brightcyan  : msgcb() do : writestyled(substr,astyle)
+              of brightred   : msgrb() do : writestyled(substr,astyle)
+              of clrainbow   : printRainbow(substr,astyle)
+              else  : msgw() do  : writestyled(substr,{styleUnknown})
 
-proc makeColPW*(n:int = 12):seq[string] =
-        ## makeColPW
-        ##
-        ## experimental
-        ##
-        ## make a colorcoded pw with length n default = 12
-        ##
-        var z = newSeq[string]()
-        for x in 0..<n:
-           z.add(rainbowPW())
-        result =  z
 
+proc printTuple*(xs: tuple): string =
+     ## printTuple
+     ##
+     ## tuple printer , returns a string
+     ##
+     ## code ex nim forum
+     ##
+     ## .. code-block:: nim
+     ##    echo printTuple((1,2))         # prints (1, 2)
+     ##    echo printTuple((3,4))         # prints (3, 4)
+     ##    echo printTuple(("A","B","C")) # prints (A, B, C)
+
+     result = "("
+     for x in xs.fields:
+       if result.len > 1:
+           result.add(", ")
+       result.add($x)
+     result.add(")")
 
 
 # Var. date and time handling procs mainly to provide convenice for
@@ -1415,6 +1461,7 @@ proc showIpInfo*(ip:string) =
       ## 
       ## .. code-block:: nim
       ##    showIpInfo("208.80.152.201")
+      ##    showIpInfo(getHosts("bbc.com")[0])
       ## 
       var jz = getIpInfo(ip)
       decho(2)
@@ -1642,6 +1689,7 @@ proc ff*(zz:float,n = 5):string =
     ## formats a float to string with n decimals
     ##  
     result = $formatFloat(zz,ffDecimal,n)
+
 
 proc showStats*(x:Runningstat) =
     ## showStats
