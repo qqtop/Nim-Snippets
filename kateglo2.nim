@@ -108,14 +108,15 @@ while true:
             echo()
             proc ss(jn:JsonNode):string = 
                 # strip " from the string
-                var jns = $jn
-                jns = replace(jns,"\"")
+                #var jns = $jn
+                var jns = replace($jn,"\"")
                 result = jns
              
             var c = 0                
             
             proc defini(data:JsonNode) =
-                  msgg() do: echo "Definitions"
+                  printLnG("Definitions")
+                  echo()
                   for zd in data["kateglo"]["definition"]:
                       c += 1
                       printLnBiCol("{:>7}{} {}".fmt(c,sep,ss(zd["phrase"])),":",brightcyan,green)
@@ -124,8 +125,7 @@ while true:
                           
                       elif ss(zd["def_text"]).len > tw:
                             # for nicer display we need to splitlines 
-                            var ok = wordwrap(ss(zd["def_text"]),tw-20)
-                            var oks = splitlines(ok)
+                            var oks = splitlines(wordwrap(ss(zd["def_text"]),tw-20))
                             #print the first line  
                             printLnBiCol("{:>7}{} {}".fmt("Def",sep,oks[0]),":",yellow,white)
                             for x in 1.. <oks.len   :
@@ -140,8 +140,7 @@ while true:
                           # put the phrase into the place holders -- or ~ returned from kateglo
                           var oksa = replace(ss(zd["sample"]),"--",ss(zd["phrase"]))
                           oksa = replace(oksa,"~",ss(zd["phrase"]))
-                          var okx = wordwrap(oksa,tw-20)
-                          var okxs = splitlines(okx)
+                          var okxs = splitlines(wordwrap(oksa,tw-20))
                           #print the first line  
                           printLnBiCol("{:>7}{} {}".fmt("Sample",sep,okxs[0]),sep,yellow,white)
                           for x in 1.. <okxs.len   :
@@ -155,32 +154,29 @@ while true:
                  var dx = data["kateglo"]["all_relation"]
                  if isNil(dx) == false:
                    try:
-                     
                       var maxsta = dx.len-1
-                      if maxsta > 20: maxsta = 20  # limit data to abt 20
-                        
                       if maxsta > 0:
-                          msgg() do: echo "Related Phrases"
-                          msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+                          if maxsta > 20: maxsta = 20  # limit data to abt 20
+                          printLnG("Related Phrases")
+                          echo()
+                          var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+                          printStyled(mm,mm,yellow,{styleUnderscore})
+                          decho(2)
                           for zd in 0.. <maxsta:
                               var trsin = ""
                               var rphr = ss(dx[zd]["related_phrase"])  
                               var rtyp = ss(dx[zd]["rel_type_name"])
-                                                  
                               if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
                                 # TODO : check that we only pass a single word rather than a phrase
                                 #        to avoid errors and slow down
-                                
                                 var phrdata = getData2(rphr)
-                                
                                 if wflag2 == false:
                                   try: 
                                     var phdx = phrdata["kateglo"]["translations"]
                                     if phdx.len > 0:
                                         trsin =  ss(phdx[0]["translation"])   
-                                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
-                                        var okx = wordwrap(trsin,tw - 40)
-                                        var okxs = splitlines(okx)
+                                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($(zd+1),":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                                        var okxs = splitlines(wordwrap(trsin,tw - 40))
                                         # print trans first line
                                         printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
                                         if okxs.len > 1:
@@ -208,7 +204,8 @@ while true:
             
             proc transl(data:JsonNode) =
                   var dx = data["kateglo"]["translations"]
-                  msgg() do: echo "Translation"
+                  printLnG("Translation")
+                  echo()
                   for zd in 0.. <dx.len:
                       printLnBiCol("{:>8}{} {}".fmt(ss(dx[zd]["ref_source"]),":",ss(dx[zd]["translation"])),sep,yellow,white)  
                   hline("_",tw,green)  
@@ -218,12 +215,13 @@ while true:
                   var dx = data["kateglo"]["proverbs"]
                   if isNil(dx) == false:
                       var maxsta = dx.len-1
-                      if maxsta > 20: maxsta = 20  # limit data to abt 20
                       if maxsta > 0:
-                          msgg() do: echo "Proverbs"
+                          if maxsta > 20: maxsta = 20  # limit data to abt 20
+                          printLnG("Proverbs")
+                          echo()
                           for zd in 0.. <dx.len:
-                              printLnBiCol("{:>4} Prov {} {}".fmt($zd,":",ss(dx[zd]["proverb"])),sep,yellow,white)  
-                              printLnBiCol("{:>4} Mean {} {}".fmt($zd,":",ss(dx[zd]["meaning"])),sep,yellow,white) 
+                              printLnBiCol("{:>4} Prov {} {}".fmt($(zd+1),":",ss(dx[zd]["proverb"])),sep,yellow,white)  
+                              printLnBiCol("{:>4} Mean {} {}".fmt($(zd+1),":",ss(dx[zd]["meaning"])),sep,yellow,white) 
                               hline("_",tw,black)
                          
         
