@@ -99,11 +99,13 @@ while true:
       aword = readLineFromStdin("Kata : ")  
         
       let data = getData(aword)   
-
+      var sep = ":"
+        
       if wflag == false:
             echo()  
-            superHeader("Kateglo Indonesian - Indonesian Dictionary   Data for : " & aword)
-        
+            superHeader("Kateglo Indonesian - Indonesian Dictionary")
+            printLnBiCol("Dicari Kata    : " & aword,sep,brightcyan,brightgreen)
+            echo()
             proc ss(jn:JsonNode):string = 
                 # strip " from the string
                 var jns = $jn
@@ -111,8 +113,7 @@ while true:
                 result = jns
              
             var c = 0                
-            var sep = ":"
-
+            
             proc defini(data:JsonNode) =
                   msgg() do: echo "Definitions"
                   for zd in data["kateglo"]["definition"]:
@@ -147,60 +148,60 @@ while true:
                             # here pad 10 blanks on left
                             okxs[x] = align(okxs[x],10 + okxs[x].len)
                             printLnColStr(white,"{}".fmt(okxs[x]))
-                      hline("-",tw,green)  
+                      hline("_",tw,black)  
                               
                       
             proc relati(data:JsonNode) =   
                  var dx = data["kateglo"]["all_relation"]
                  if isNil(dx) == false:
                    try:
-                      msgg() do: echo "Related Phrases"
-                      msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+                     
                       var maxsta = dx.len-1
-                      if maxsta > 20:
-                        maxsta = 20
-                      
-                      for zd in 0.. <maxsta:
-                          var trsin = ""
-                          # we try to get the translations of the related phrases if type  = sinonim
-                          var rphr = ss(dx[zd]["related_phrase"])  
-                          var rtyp = ss(dx[zd]["rel_type_name"])
-                                              
-                          if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
-                            # TODO : check that we only pass a single word rather than a phrase
-                            #        to avoid errors and slow down
-                            
-                            var phrdata = getData2(rphr)
-                            
-                            if wflag2 == false:
-                              try: 
-                                var phdx = phrdata["kateglo"]["translations"]
-                                if phdx.len > 0:
-                                    trsin =  ss(phdx[0]["translation"])   
-                                    printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
-                                    var okx = wordwrap(trsin,tw - 40)
-                                    var okxs = splitlines(okx)
-                                    # print trans first line
-                                    printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
-                                    if okxs.len > 1:
-                                        for x in 1.. <okxs.len :
-                                            # here pad 22 blanks on left
-                                            okxs[x] = align(okxs[x],22 + okxs[x].len)
-                                            printLnColStr(white,"{}".fmt(okxs[x]))
-                              except:
-                                  discard
-                              
-                              
-                            # need a sleep here or we hit the kateglo server too hard
-                            # if too many crashes like
-                            # Error: unhandled exception: 503 Service Temporarily Unavailable [HttpRequestError]
-                            # then increase waiting secs --> see getData2 we wait one sec for next request
-                            # in case of error and this seems to remove most crashes
-                            sleepy(0.5)
-                            
-                          else:
-                            printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
-                          echo()   
+                      if maxsta > 20: maxsta = 20  # limit data to abt 20
+                        
+                      if maxsta > 0:
+                          msgg() do: echo "Related Phrases"
+                          msgc() do: echo "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
+                          for zd in 0.. <maxsta:
+                              var trsin = ""
+                              var rphr = ss(dx[zd]["related_phrase"])  
+                              var rtyp = ss(dx[zd]["rel_type_name"])
+                                                  
+                              if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
+                                # TODO : check that we only pass a single word rather than a phrase
+                                #        to avoid errors and slow down
+                                
+                                var phrdata = getData2(rphr)
+                                
+                                if wflag2 == false:
+                                  try: 
+                                    var phdx = phrdata["kateglo"]["translations"]
+                                    if phdx.len > 0:
+                                        trsin =  ss(phdx[0]["translation"])   
+                                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)  
+                                        var okx = wordwrap(trsin,tw - 40)
+                                        var okxs = splitlines(okx)
+                                        # print trans first line
+                                        printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
+                                        if okxs.len > 1:
+                                            for x in 1.. <okxs.len :
+                                                # here pad 22 blanks on left
+                                                okxs[x] = align(okxs[x],22 + okxs[x].len)
+                                                printLnColStr(white,"{}".fmt(okxs[x]))
+                                  except:
+                                      discard
+                                  
+                                  
+                                # need a sleep here or we hit the kateglo server too hard
+                                # if too many crashes like
+                                # Error: unhandled exception: 503 Service Temporarily Unavailable [HttpRequestError]
+                                # then increase waiting secs --> see getData2 we wait one sec for next request
+                                # in case of error and this seems to remove most crashes
+                                sleepy(0.5)
+                                
+                              else:
+                                printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
+                              echo()   
                    except:
                       discard
                      
@@ -210,17 +211,23 @@ while true:
                   msgg() do: echo "Translation"
                   for zd in 0.. <dx.len:
                       printLnBiCol("{:>8}{} {}".fmt(ss(dx[zd]["ref_source"]),":",ss(dx[zd]["translation"])),sep,yellow,white)  
-                  hline("-",tw,green)  
+                  hline("_",tw,green)  
             
                   
             proc proverbi(data:JsonNode) =
                   var dx = data["kateglo"]["proverbs"]
-                  msgg() do: echo "Proverbs"
-                  for zd in 0.. <dx.len:
-                      printLnBiCol("{:>4} Prov {} {}".fmt($zd,":",ss(dx[zd]["proverb"])),sep,yellow,white)  
-                      printLnBiCol("{:>4} Mean {} {}".fmt($zd,":",ss(dx[zd]["meaning"])),sep,yellow,white) 
-                  hline("-",tw,green) 
+                  if isNil(dx) == false:
+                      var maxsta = dx.len-1
+                      if maxsta > 20: maxsta = 20  # limit data to abt 20
+                      if maxsta > 0:
+                          msgg() do: echo "Proverbs"
+                          for zd in 0.. <dx.len:
+                              printLnBiCol("{:>4} Prov {} {}".fmt($zd,":",ss(dx[zd]["proverb"])),sep,yellow,white)  
+                              printLnBiCol("{:>4} Mean {} {}".fmt($zd,":",ss(dx[zd]["meaning"])),sep,yellow,white) 
+                              hline("_",tw,black)
+                         
         
+            # main display loop
             transl(data)
             decho(1)
             defini(data)          
