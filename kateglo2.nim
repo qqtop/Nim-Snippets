@@ -115,7 +115,7 @@ while true:
             var c = 0                
             
             proc defini(data:JsonNode) =
-                  printLnG("Definitions")
+                  printLnGb("Definitions")
                   echo()
                   for zd in data["kateglo"]["definition"]:
                       c += 1
@@ -157,7 +157,7 @@ while true:
                       var maxsta = dx.len-1
                       if maxsta > 0:
                           if maxsta > 20: maxsta = 20  # limit data to abt 20
-                          printLnG("Related Phrases")
+                          printLnGb("Related Phrases")
                           echo()
                           var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
                           printStyled(mm,mm,yellow,{styleUnderscore})
@@ -204,7 +204,7 @@ while true:
             
             proc transl(data:JsonNode) =
                   var dx = data["kateglo"]["translations"]
-                  printLnG("Translation")
+                  printLnGb("Translation")
                   echo()
                   for zd in 0.. <dx.len:
                       printLnBiCol("{:>8}{} {}".fmt(ss(dx[zd]["ref_source"]),":",ss(dx[zd]["translation"])),sep,yellow,white)  
@@ -217,7 +217,7 @@ while true:
                       var maxsta = dx.len-1
                       if maxsta > 0:
                           if maxsta > 20: maxsta = 20  # limit data to abt 20
-                          printLnG("Proverbs")
+                          printLnGb("Proverbs")
                           echo()
                           for zd in 0.. <dx.len:
                               printLnBiCol("{:>4} Prov {} {}".fmt($(zd+1),":",ss(dx[zd]["proverb"])),sep,yellow,white)  
