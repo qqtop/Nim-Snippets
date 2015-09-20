@@ -444,8 +444,6 @@ proc printG*(s:string) =
      ## 
      ## templates are more flexible as they also accept other code blocks
      ## 
-     ## like writestyled , where as print... procs are mainly for strings.
-     ## 
      ## 
      ## .. code-block:: nim
      ##    var s = "color"
@@ -1554,7 +1552,7 @@ proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
     ##
     ## in calling prog
 
-    result = rng.randomInt(mi,ma)
+    result = rng.randomInt(mi,ma + 1)
 
 
 proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
@@ -1567,7 +1565,8 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
     ## form @[4556,455,888,234,...] or similar
     ##
     ## .. code-block:: nim
-    ##    # create a seq with 50 random integers ,between 100 and 2000
+    ##    # create a seq with 50 random integers ,of set 100 .. 2000
+    ##    # including the limits 100 and 2000
     ##    echo createSeqInt(50,100,2000)
 
     var z = newSeq[int]()
@@ -1627,7 +1626,6 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   ##    
   ##     
   
-  ## 
   var t = 2 * math.Pi * getRandomFloat()
   var u = getRandomFloat() + getRandomFloat()
   var r = 0.00
@@ -1639,6 +1637,8 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   z.add(radius * r * math.cos(t))
   z.add(radius * r * math.sin(t))
   return z
+      
+      
       
 # Misc. routines 
 
@@ -1691,6 +1691,7 @@ proc ff*(zz:float,n = 5):string =
     result = $formatFloat(zz,ffDecimal,n)
 
 
+
 proc showStats*(x:Runningstat) =
     ## showStats
     ## 
@@ -1716,6 +1717,48 @@ proc showStats*(x:Runningstat) =
     
 
 
+proc newDir*(dirname:string) = 
+  ## newDir
+  ## 
+  ## creates a new directory and provides some feedback 
+  
+  if not existsDir(dirname):
+        try:
+           createDir(dirname)
+           printLnG("Directory " & dirname & " created ok")
+        except OSError:   
+           printLnR(dirname & " creation failed. Check permissions.")
+  else:
+      printLnR("Directory " & dirname & " already exists !")
+
+
+
+proc remDir*(dirname:string) =
+  ## remDir
+  ## 
+  ## deletes an existing directory , all subdirectories and files  and provides some feedback
+  ## 
+  ## root and home directory removal is disallowed 
+  ## 
+  
+  if dirname == "/home" or dirname == "/" :
+     printLnRB("Directory " & dirname & " removal not allowed !")
+     
+  else:
+    
+      if existsDir(dirname):
+          
+          try:
+            removeDir(dirname)
+            printLnG("Directory " & dirname & " deleted ok")
+          except OSError:
+            printLnR("Directory " & dirname & " deletion failed")
+      else:
+          printLnR("Directory " & dirname & " does not exists !")
+
+
+
+
 # Unicode random word creators
 
 proc newWordCJK*(maxwl:int = 10):string =
@@ -1734,15 +1777,16 @@ proc newWordCJK*(maxwl:int = 10):string =
       ##    # with max length 20 and show it in green
       ##    msgg() do : echo newWordCJK(20)
       # set the char set
-      var chc = toSeq(parsehexint("3400").. parsehexint("4DB5"))
+      let chc = toSeq(parsehexint("3400").. parsehexint("4DB5"))
       var nw = ""
       # words with length range 3 to maxwl
-      var maxws = toSeq(3.. <maxwl)
+      let maxws = toSeq(3.. <maxwl)
       # get a random length for a new word choosen from between 3 and maxwl
-      var nwl = maxws.randomChoice()
+      let nwl = maxws.randomChoice()
       for x in 0.. <nwl:
             nw = nw & $Rune(chc.randomChoice())
       result = nw
+
 
 
 proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
@@ -1758,10 +1802,10 @@ proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
     if minwl <= maxwl:
         var nw = ""
         # words with length range 3 to maxwl
-        var maxws = toSeq(minwl.. maxwl)
+        let maxws = toSeq(minwl.. maxwl)
         # get a random length for a new word
-        var nwl = maxws.randomChoice()
-        var chc = toSeq(33.. 126)
+        let nwl = maxws.randomChoice()
+        let chc = toSeq(33.. 126)
         while nw.len < nwl:
           var x = chc.randomChoice()
           if char(x) in Letters:
@@ -1785,10 +1829,10 @@ proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
     if minwl <= maxwl:
         var nw = ""
         # words with length range 3 to maxwl
-        var maxws = toSeq(minwl.. maxwl)
+        let maxws = toSeq(minwl.. maxwl)
         # get a random length for a new word
-        var nwl = maxws.randomChoice()
-        var chc = toSeq(33.. 126)
+        let nwl = maxws.randomChoice()
+        let chc = toSeq(33.. 126)
         while nw.len < nwl:
           var x = chc.randomChoice()
           if char(x) in IdentChars:
@@ -1814,10 +1858,10 @@ proc newWord3*(minwl:int=3,maxwl:int = 10 ,nflag:bool = true):string =
     if minwl <= maxwl:
         var nw = ""
         # words with length range 3 to maxwl
-        var maxws = toSeq(minwl.. maxwl)
+        let maxws = toSeq(minwl.. maxwl)
         # get a random length for a new word
-        var nwl = maxws.randomChoice()
-        var chc = toSeq(33.. 126)
+        let nwl = maxws.randomChoice()
+        let chc = toSeq(33.. 126)
         while nw.len < nwl:
           var x = chc.randomChoice()
           if char(x) in AllChars:
@@ -1844,10 +1888,10 @@ proc newHiragana*(minwl:int=3,maxwl:int = 10 ):string =
     if minwl <= maxwl:
         var nw = ""
         # words with length range 3 to maxwl
-        var maxws = toSeq(minwl.. maxwl)
+        let maxws = toSeq(minwl.. maxwl)
         # get a random length for a new word
-        var nwl = maxws.randomChoice()
-        var chc = toSeq(12353.. 12436)
+        let nwl = maxws.randomChoice()
+        let chc = toSeq(12353.. 12436)
         while nw.len < nwl:
            var x = chc.randomChoice()
            nw = nw & $Rune(x)
@@ -1872,10 +1916,10 @@ proc newKatakana*(minwl:int=3,maxwl:int = 10 ):string =
     if minwl <= maxwl:
         var nw = ""
         # words with length range 3 to maxwl
-        var maxws = toSeq(minwl.. maxwl)
+        let maxws = toSeq(minwl.. maxwl)
         # get a random length for a new word
-        var nwl = maxws.randomChoice()
-        var chc = toSeq(parsehexint("30A0") .. parsehexint("30FF"))
+        let nwl = maxws.randomChoice()
+        let chc = toSeq(parsehexint("30A0") .. parsehexint("30FF"))
         while nw.len < nwl:
            var x = chc.randomChoice()
            nw = nw & $Rune(x)
@@ -2003,7 +2047,7 @@ proc doInfo*() =
   ## 
   let filename= extractFileName(getAppFilename())
   #var accTime = getLastAccessTime(filename)
-  var modTime = getLastModificationTime(filename)
+  let modTime = getLastModificationTime(filename)
   let sep = ":"
   superHeader("Information for file " & filename & " and System")
   printLnBiCol("Last compilation on           : " & CompileDate &  " at " & CompileTime,sep,green,black)

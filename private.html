@@ -53,7 +53,7 @@ body {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #2d2d2d;
+  color: #666;
   background-color: rgba(252, 248, 244, 0.75); }
 
 /* Skeleton grid */
@@ -1381,6 +1381,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="ff*(zz: float; n = 5): string"><wbr />ff</a></li>
   <li><a class="reference" href="#showStats,Runningstat"
     title="showStats*(x: Runningstat)"><wbr />show<wbr />Stats</a></li>
+  <li><a class="reference" href="#newDir,string"
+    title="newDir*(dirname: string)"><wbr />new<wbr />Dir</a></li>
+  <li><a class="reference" href="#remDir,string"
+    title="remDir*(dirname: string)"><wbr />rem<wbr />Dir</a></li>
   <li><a class="reference" href="#newWordCJK,int"
     title="newWordCJK*(maxwl: int = 10): string"><wbr />new<wbr />Word<wbr />CJK</a></li>
   <li><a class="reference" href="#newWord,int,int"
@@ -1694,7 +1698,6 @@ forward declaration
 <blockquote><p>and bright types : types : gb,rb,yb,cb,wb</p></blockquote>
 <p>p&lt;color&gt; and pLn&lt;color&gt; routines complement the msgX templates</p>
 <p>templates are more flexible as they also accept other code blocks</p>
-<p>like writestyled , where as print... procs are mainly for strings.</p>
 <pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">&quot;color&quot;</span>
 <span class="Identifier">printLnG</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
 <span class="Identifier">printLnGb</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
@@ -2173,7 +2176,8 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <p>convenience proc to create a seq of random int with</p>
 <p>default length 10</p>
 <p>form @[4556,455,888,234,...] or similar</p>
-<pre class = "listing"><span class="Comment"># create a seq with 50 random integers ,between 100 and 2000</span>
+<pre class = "listing"><span class="Comment"># create a seq with 50 random integers ,of set 100 .. 2000</span>
+<span class="Comment"># including the limits 100 and 2000</span>
 <span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">,</span><span class="DecNumber">100</span><span class="Punctuation">,</span><span class="DecNumber">2000</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -2244,6 +2248,21 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
     <span class="Identifier">rs</span><span class="Operator">.</span><span class="Identifier">push</span><span class="Punctuation">(</span><span class="Identifier">x</span><span class="Punctuation">)</span>
 <span class="Identifier">statistics</span><span class="Punctuation">(</span><span class="Identifier">rs</span><span class="Punctuation">)</span>
 <span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="newDir"><a name="newDir,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newDir</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">dirname</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>newDir</p>
+<p>creates a new directory and provides some feedback </p>
+
+
+</dd>
+<dt id="remDir"><a name="remDir,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">remDir</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">dirname</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>remDir</p>
+<p>deletes an existing directory , all subdirectories and files  and provides some feedback</p>
+<p>root and home directory removal is disallowed </p>
+
 
 </dd>
 <dt id="newWordCJK"><a name="newWordCJK,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newWordCJK</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">maxwl</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">10</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
@@ -2537,7 +2556,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-14 13:00:13 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-20 14:01:19 UTC</small>
       </div>
     </div>
   </div>
