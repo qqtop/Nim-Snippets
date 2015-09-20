@@ -1280,7 +1280,7 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     ## can be set to clrainbow too .
     ##
     ## .. code-block:: nim
-    ##    import private,terminal
+    ##    import private
     ##
     ##    superheader("Ok That's it for Now !",clrainbow,white)
     ##    echo()
