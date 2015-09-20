@@ -24,11 +24,11 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##                 at kateglo.com  via public API
 ##   
 ##                
-##                 compile:  nim c kateglo
+##                 compile:  nim c kateglo2
 ##                 
-##                 run    :  kateglo           # uses default word: pasar 
+##                 run    :  kateglo2           # uses default word: pasar 
 ##                 
-##                           kateglo  makanan  # uses desired word makanan
+##                           kateglo2  makanan  # uses desired word makanan
 ##                           
 ##                 to stop this program : Ctrl-C  
 ##
@@ -88,7 +88,8 @@ proc getData2(theWord:string):JsonNode =
 
 
 var aword = "" 
-
+infoLine() 
+echo()
 while true:
       wflag = false
       wflag2 = false
@@ -102,6 +103,7 @@ while true:
       var sep = ":"
         
       if wflag == false:
+            
             echo()  
             superHeader("Kateglo Indonesian - Indonesian Dictionary")
             printLnBiCol("Dicari Kata    : " & aword,sep,brightcyan,brightgreen)
@@ -320,6 +322,3 @@ doFinish()
 # 
 # 
 # 
-# ____________________________________________________________________________________________
-# Application : kateglo | Nim : 0.11.3 | private : 0.8.0 | qqTop - 2015
-# Elapsed     : 24.554 secs
