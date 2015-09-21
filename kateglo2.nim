@@ -19,26 +19,29 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##
 ##   Compiler    : Nim 0.11.3  https://github.com/nim-lang/Nim
 ##
-##   Description : Access Indonesian - Indonesian  Dictionary 
+##   Description : Indonesian - Indonesian  Dictionary 
 ##   
 ##                 at kateglo.com  via public API
+##                 
+##                 with english translation
 ##   
 ##                
 ##                 compile:  nim c kateglo2
 ##                 
-##                 run    :  kateglo2           # uses default word: pasar 
+##                 run    :  kateglo2     
 ##                 
-##                           kateglo2  makanan  # uses desired word makanan
+##                           
 ##                           
 ##                 to stop this program : Ctrl-C  
-##
-##                 output is limited to 20 Sinonim , Turunan  , Gabungan Kata
-##                 
-##                 for performance reason
 ##
 ##
 ##   
 ##   Notes       : the API appears to only allow single word input
+##   
+##                 output is limited to 20 Sinonim , Turunan  , Gabungan Kata
+##                 
+##                 for performance reason 
+##
 ##                 
 ##   Requires    : private.nim 
 ##   
@@ -46,7 +49,7 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
 ##
-##   Tested      : on linux only ok on 2015-09-07
+##   Tested      : on linux only 2015-09-20
 ##
 ##
 ##   Programming : qqTop
