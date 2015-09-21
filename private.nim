@@ -36,7 +36,7 @@
 ##   
 
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
-import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets
+import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 
 const PRIVATLIBVERSION* = "0.8.0"
 const
@@ -656,6 +656,10 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
     ##
     ## may not work with certain Rune
     ##
+    ## .. code-block:: nim
+    ##    printRainBow("WoW So Nice",{styleUnderScore})
+    ##    printRainBow("  --> No Style",{}) 
+    ##
 
     var c = 0
     var a = toSeq(1.. 12)
@@ -674,6 +678,44 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
         of 10 : msgrb() do : writestyled($astr[x],astyle)
         of 11 : msgcb() do : writestyled($astr[x],astyle)
         else  : msgw() do  : writestyled($astr[x],astyle)
+
+
+
+proc printLnRainbow*(astr : string,astyle:set[Style]) =
+    ## printLnRainbow
+    ##
+    ## print multicolored string with styles , for available styles see printStyled
+    ## 
+    ## and issues a new line
+    ##
+    ## may not work with certain Rune
+    ##
+    ## .. code-block:: nim
+    ##    printLnRainBow("WoW So Nice",{styleUnderScore})
+    ##    printLnRainBow("Aha --> No Style",{}) 
+    ##
+
+    var c = 0
+    var a = toSeq(1.. 12)
+    for x in 0.. <astr.len:
+       c = a[randomInt(a.len)]
+       case c
+        of 1  : msgg() do  : writestyled($astr[x],astyle)
+        of 2  : msgr() do  : writestyled($astr[x],astyle)
+        of 3  : msgc() do  : writestyled($astr[x],astyle)
+        of 4  : msgy() do  : writestyled($astr[x],astyle)
+        of 5  : msggb() do : writestyled($astr[x],astyle)
+        of 6  : msgr() do  : writestyled($astr[x],astyle)
+        of 7  : msgwb() do : writestyled($astr[x],astyle)
+        of 8  : msgc() do  : writestyled($astr[x],astyle)
+        of 9  : msgyb() do : writestyled($astr[x],astyle)
+        of 10 : msgrb() do : writestyled($astr[x],astyle)
+        of 11 : msgcb() do : writestyled($astr[x],astyle)
+        else  : msgw() do  : writestyled($astr[x],astyle)
+    echo()
+    
+    
+
 
 
 proc printColStr*(colstr:string,astr:string) =
@@ -1406,17 +1448,22 @@ proc getWanIp*():string =
    ##
    ## get your wan ip from heroku
    ##
+   ## problems ? check : https://status.heroku.com/
 
-   var z = "Wan Ip not established."
+   var z = "Wan Ip not established. "
    try:
-      z = getContent("http://my-ip.heroku.com")
+      z = getContent("http://my-ip.heroku.com",timeout = 1000)
       z = z.replace(sub = "{",by = " ")
       z = z.replace(sub = "}",by = " ")
       z = z.replace(sub = "\"ip\":"," ")
       z = z.replace(sub = '"' ,' ')
       z = z.strip()
    except:
-      discard
+       printLnR("Check Heroku Status : https://status.heroku.com")
+       try:
+         opendefaultbrowser("https://status.heroku.com")
+       except:
+         discard
    result = z
    
    
@@ -1425,7 +1472,8 @@ proc showWanIp*() =
      ## 
      ## show your current wan ip
      ## 
-     printBiCol("Current Wan Ip : " & getwanip(),":",yellow,black)
+     printBiCol("Current Wan Ip      : " & getwanip(),":",yellow,black)
+         
 
 
 
