@@ -63,7 +63,7 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
       if zl.startswith(funcy):
                
         if funcy != "from" and funcy != "import":
-           msgy() do : echo aline
+           printLnB aline
         
         if zl.strip() == funcy:
            # this happens if we run into a block like
@@ -73,8 +73,8 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
            printColStr(black,funcy & "  block not shown")
           
         else:   
-          printBiCol(zl,funcy & " ",brightyellow,green)              
-        echo()  
+           printBiCol(zl,funcy & " ",brightyellow,green)              
+           echo()  
       
       
     
@@ -105,10 +105,10 @@ proc main() =
     fc = @["proc","template","converter","from","import"]
     showFunc(afile,fc)
     echo()
-    msgb() do : echo available
+    printLnB available
     
   echo()
-  doFinish()
+  
 
 main()
-
+doFinish()
