@@ -40,7 +40,11 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##   
 ##                 output is limited to 20 Sinonim , Turunan  , Gabungan Kata
 ##                 
-##                 for performance reason 
+##                 for performance reason , kateglo has some malformed json
+##                 
+##                 data which maybe skipped by our parsing efforts which
+##                 
+##                 shows when numbering has holes .
 ##
 ##                 
 ##   Requires    : private.nim 
@@ -49,7 +53,7 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
 ##
-##   Tested      : on linux only 2015-09-20
+##   Tested      : on linux only 2015-09-25
 ##
 ##
 ##   Programming : qqTop
@@ -83,7 +87,7 @@ proc getData2(theWord:string):JsonNode =
     except HttpRequestError:
        r = nil
        sleepy(1)
-       printLnR("Timeout solution 1 sec")
+       printLnR("Timeout 1 sec : Kateglo server was hit too fast")
        r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
            
     result = r
@@ -161,7 +165,7 @@ while true:
                    try:
                       var maxsta = dx.len-1
                       if maxsta > 0:
-                          if maxsta > 20: maxsta = 20  # limit data to abt 20
+                          if maxsta > 20: maxsta = 20  # limit data rows to abt 20
                           printLnGb("Related Phrases")
                           echo()
                           var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
@@ -189,6 +193,7 @@ while true:
                                                 # here pad 22 blanks on left
                                                 okxs[x] = align(okxs[x],22 + okxs[x].len)
                                                 printLnColStr(white,"{}".fmt(okxs[x]))
+                                                
                                   except:
                                       discard
                                   
@@ -202,7 +207,7 @@ while true:
                                 
                               else:
                                 printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
-                              echo()   
+                                 
                    except:
                       discard
                      
