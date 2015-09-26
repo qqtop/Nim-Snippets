@@ -1,6 +1,5 @@
 import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 
-
 ##
 ##   Program     : kateglo2.nim
 ##
@@ -107,7 +106,7 @@ while true:
       aword = readLineFromStdin("Kata : ")  
         
       let data = getData(aword)   
-      var sep = ":"
+      let sep = ":"
         
       if wflag == false:
             
@@ -120,7 +119,7 @@ while true:
                 #var jns = $jn
                 var jns = replace($jn,"\"")
                 result = jns
-             
+              
             var c = 0                
             
             proc defini(data:JsonNode) =
@@ -160,9 +159,9 @@ while true:
                               
                       
             proc relati(data:JsonNode) =   
-                 var dx = data["kateglo"]["all_relation"]
-                 if isNil(dx) == false:
-                   try:
+                  var dx = data["kateglo"]["all_relation"]
+                  if isNil(dx) == false:
+                    try:
                       var maxsta = dx.len-1
                       if maxsta > 0:
                           if maxsta > 20: maxsta = 20  # limit data rows to abt 20
@@ -207,10 +206,10 @@ while true:
                                 
                               else:
                                 printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)  
-                                 
-                   except:
+                                  
+                    except:
                       discard
-                     
+                      
             
             proc transl(data:JsonNode) =
                   var dx = data["kateglo"]["translations"]
@@ -233,7 +232,7 @@ while true:
                               printLnBiCol("{:>4} Prov {} {}".fmt($(zd+1),":",ss(dx[zd]["proverb"])),sep,yellow,white)  
                               printLnBiCol("{:>4} Mean {} {}".fmt($(zd+1),":",ss(dx[zd]["meaning"])),sep,yellow,white) 
                               hline("_",tw,black)
-                         
+                          
         
             # main display loop
             transl(data)
