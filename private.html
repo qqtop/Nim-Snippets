@@ -1332,8 +1332,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="compareDates*(startDate, endDate: string): int"><wbr />compare<wbr />Dates</a></li>
   <li><a class="reference" href="#sleepy,T"
     title="sleepy*[T: float | int](s: T)"><wbr />sleepy</a></li>
-  <li><a class="reference" href="#dayOfWeekJulian,int,int,int"
-    title="dayOfWeekJulian*(day, month, year: int): WeekDay"><wbr />day<wbr />Of<wbr />Week<wbr />Julian</a></li>
+  <li><a class="reference" href="#dayOfWeekJulianA,int,int,int"
+    title="dayOfWeekJulianA*(day, month, year: int): WeekDay"><wbr />day<wbr />Of<wbr />Week<wbr />Julian<wbr />A</a></li>
   <li><a class="reference" href="#dayOfWeekJulian,string"
     title="dayOfWeekJulian*(datestr: string): string"><wbr />day<wbr />Of<wbr />Week<wbr />Julian</a></li>
   <li><a class="reference" href="#plusDays,string,int"
@@ -1869,7 +1869,7 @@ printLnB
 <p>similar to printColStr but issues a echo() command that is</p>
 <p>every item will be shown on a new line in the same given color</p>
 <p>and most everything passed in will be converted to string</p>
-<pre class = "listing"><span class="Identifier">print</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
+<pre class = "listing"><span class="Identifier">printLnColStr</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
 
 </dd>
 <dt id="printBiCol"><a name="printBiCol,string,string,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBiCol</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">colLeft</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;yellow&quot;</span><span class="Other">;</span>
@@ -2019,7 +2019,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 
 
 </dd>
-<dt id="dayOfWeekJulian"><a name="dayOfWeekJulian,int,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dayOfWeekJulian</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">day</span><span class="Other">,</span> <span class="Identifier">month</span><span class="Other">,</span> <span class="Identifier">year</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">WeekDay</span></pre></dt>
+<dt id="dayOfWeekJulianA"><a name="dayOfWeekJulianA,int,int,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">dayOfWeekJulianA</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">day</span><span class="Other">,</span> <span class="Identifier">month</span><span class="Other">,</span> <span class="Identifier">year</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">WeekDay</span></pre></dt>
 <dd>
 
 
@@ -2028,6 +2028,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dd>
 <p>dayOfWeekJulian</p>
 <p>returns the day of the week of a date given in format yyyy-MM-dd as string</p>
+<p>valid for dates up to 2099-12-31</p>
 
 
 </dd>
@@ -2052,7 +2053,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <dt id="getFirstMondayYear"><a name="getFirstMondayYear,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getFirstMondayYear</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">ayear</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>getFirstMondayYear</p>
-<p>returns date of first monday of any given year</p>
+<p>returns date of first monday of any given year should be ok for the next years but after 2100-02-28 all bets are off</p>
 <pre class = "listing"><span class="Identifier">echo</span>  <span class="Identifier">getFirstMondayYear</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -2062,7 +2063,7 @@ interval procs returns time elapsed between two dates in secs,hours etc.
 <p>returns date of first monday in given year and month</p>
 <pre class = "listing"><span class="Identifier">echo</span>  <span class="Identifier">getFirstMondayYearMonth</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-12&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span>  <span class="Identifier">getFirstMondayYearMonth</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-06&quot;</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span>  <span class="Identifier">getFirstMondayYearMonth</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-2&quot;</span><span class="Punctuation">)</span></pre><p>in case of invalid dates nil will be returned </p>
+<span class="Identifier">echo</span>  <span class="Identifier">getFirstMondayYearMonth</span><span class="Punctuation">(</span><span class="StringLit">&quot;2015-2&quot;</span><span class="Punctuation">)</span></pre><p>in case of invalid dates nil will be returned should be ok for the next years but after 2100-02-28 all bets are off</p>
 
 
 </dd>
@@ -2570,7 +2571,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-25 22:07:51 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-26 08:31:41 UTC</small>
       </div>
     </div>
   </div>

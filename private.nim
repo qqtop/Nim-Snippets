@@ -757,7 +757,7 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ## and most everything passed in will be converted to string
     ##
     ## .. code-block:: nim
-    ##    print green,"Nice try 1", 2.52234, @[4, 5, 6]
+    ##    printLnColStr green,"Nice try 1", 2.52234, @[4, 5, 6]
     ##
 
     for vastr in mvastr:
@@ -955,50 +955,49 @@ proc printTuple*(xs: tuple): string =
 # date format yyyy-MM-dd handling
 
 proc validdate*(adate:string):bool =
-     ## validdate
-     ##
-     ## try to ensure correct dates of form yyyy-MM-dd
-     ##
-     ## correct : 2015-08-15
-     ##
-     ## wrong   : 2015-08-32 , 201508-15, 2015-13-10 etc.
-     ##
+      ## validdate
+      ##
+      ## try to ensure correct dates of form yyyy-MM-dd
+      ##
+      ## correct : 2015-08-15
+      ##
+      ## wrong   : 2015-08-32 , 201508-15, 2015-13-10 etc.
+      ##
+      let m30 = @["04","06","09","11"]
+      let m31 = @["01","03","05","07","08","10","12"]
+      let xdate = parseInt(aDate.replace("-",""))
+      # check 1 is our date between 1900 - 3000
+      if xdate > 19000101 and xdate < 30001212:
+          var spdate = aDate.split("-")
+          if parseInt(spdate[0]) >= 1900 and parseInt(spdate[0]) <= 3000:
+              if spdate[1] in m30:
+                  #  day max 30
+                  if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 31:
+                    result = true
+                  else:
+                    result = false
 
-     var m30 = @["04","06","09","11"]
-     var m31 = @["01","03","05","07","08","10","12"]
-     var xdate = parseInt(aDate.replace("-",""))
-     # check 1 is our date between 1900 - 3000
-     if xdate > 19000101 and xdate < 30001212:
-        var spdate = aDate.split("-")
-        if parseInt(spdate[0]) >= 1900 and parseInt(spdate[0]) <= 3000:
-             if spdate[1] in m30:
-                #  day max 30
-                if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 31:
-                   result = true
-                else:
-                   result = false
+              elif spdate[1] in m31:
+                  # day max 31
+                  if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 32:
+                    result = true
+                  else:
+                    result = false
 
-             elif spdate[1] in m31:
-                # day max 31
-                if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 32:
-                   result = true
-                else:
-                   result = false
-
-             else:
-                   # so its february
-                   if spdate[1] == "02" :
-                      # check leapyear
-                      if isleapyear(parseInt(spdate[0])) == true:
-                          if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 30:
-                             result = true
-                          else:
-                             result = false
-                      else:
-                          if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 29:
-                             result = true
-                          else:
-                             result = false
+              else:
+                    # so its february
+                    if spdate[1] == "02" :
+                        # check leapyear
+                        if isleapyear(parseInt(spdate[0])) == true:
+                            if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 30:
+                              result = true
+                            else:
+                              result = false
+                        else:
+                            if parseInt(spdate[2]) > 0 and parseInt(spdate[2]) < 29:
+                              result = true
+                            else:
+                              result = false
 
 
 proc day*(aDate:string) : string =
@@ -1087,8 +1086,8 @@ proc compareDates*(startDate,endDate:string) : int =
 
 proc sleepy*[T:float|int](s:T) =
     # s is in seconds
-    var ss = epochtime()
-    var ee = ss + s.float
+    let ss = epochtime()
+    let ee = ss + s.float
     var c = 0
     while ee > epochtime():
         inc c
@@ -1098,18 +1097,20 @@ proc sleepy*[T:float|int](s:T) =
 
 
 
-proc dayOfWeekJulian*(day, month, year: int): WeekDay =
+proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
   #
   # may be part of times.nim later
   # This is for the Julian calendar
   # Day & month start from one.
-  # original code from coffeshop 
+  # original code from coffeeshop 
+  # but seems to be off for dates after 2100-03-01 which shud be a monday 
+  # but it returned a tuesday .. 
   # 
   let
     a = (14 - month) div 12
     y = year - a
     m = month + (12*a) - 2
-    d = (5 + day + y + (y div 4) + (31*m) div 12) mod 7
+  var d  = (5 + day + y + (y div 4) + (31*m) div 12) mod 7
   # The value of d is 0 for a Sunday, 1 for a Monday, 2 for a Tuesday, etc. so we must correct
   # for the WeekDay type.
   result = d.WeekDay
@@ -1120,16 +1121,19 @@ proc dayOfWeekJulian*(datestr:string): string =
    ##
    ## returns the day of the week of a date given in format yyyy-MM-dd as string
    ## 
-   ## 
+   ## valid for dates up to 2099-12-31 
    ##
    ##
-  
-   var dw = dayofweekjulian(parseInt(day(datestr)),parseInt(month(datestr)),parseInt(year(datestr))) 
-   result = $dw
+   if parseInt(year(datestr)) < 2100:
+     let dw = dayofweekjulianA(parseInt(day(datestr)),parseInt(month(datestr)),parseInt(year(datestr))) 
+     result = $dw
+   else:
+     result = "Not defined for years > 2099"
   
 
 proc fx(nx:TimeInfo):string =
         result = nx.format("yyyy-MM-dd")
+
 
 proc plusDays*(aDate:string,days:int):string =
    ## plusDays
@@ -1142,7 +1146,7 @@ proc plusDays*(aDate:string,days:int):string =
    ##
    if validdate(aDate) == true:
       var rxs = ""
-      var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
+      let tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
       var myinterval = initInterval()   
       myinterval.days = days
       rxs = fx(tifo + myinterval)
@@ -1163,7 +1167,7 @@ proc minusDays*(aDate:string,days:int):string =
 
    if validdate(aDate) == true:
       var rxs = ""
-      var tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
+      let tifo = parse(aDate,"yyyy-MM-dd") # this returns a TimeInfo type
       var myinterval = initInterval()   
       myinterval.days = days
       rxs = fx(tifo - myinterval)
@@ -1178,6 +1182,7 @@ proc getFirstMondayYear*(ayear:string):string =
     ## getFirstMondayYear
     ## 
     ## returns date of first monday of any given year
+    ## should be ok for the next years but after 2100-02-28 all bets are off
     ## 
     ## .. code-block:: nim
     ##    echo  getFirstMondayYear("2015")
@@ -1205,14 +1210,14 @@ proc getFirstMondayYearMonth*(aym:string):string =
     ##    echo  getFirstMondayYearMonth("2015-2")
     ##    
     ## in case of invalid dates nil will be returned
-    ## 
+    ## should be ok for the next years but after 2100-02-28 all bets are off
     
     #var n:WeekDay
     var amx = aym
     for x in 1.. 8:
        if aym.len < 7:
-          var yr = year(amx) 
-          var mo = month(aym)  # this also fixes wrong months
+          let yr = year(amx) 
+          let mo = month(aym)  # this also fixes wrong months
           amx = yr & "-" & mo 
        var datestr = amx & "-0" & $x
        if validdate(datestr) == true:
@@ -1243,24 +1248,30 @@ proc getNextMonday*(adate:string):string =
 
     #var n:WeekDay
     var ndatestr = ""
-    if validdate(adate) == true:  
-        var z = dayofweekjulian(adate) 
+    if isNil(adate) == true :
+        printLnR "Error received a date with value : nil"
         
-        if z == "Monday":
-          # so the datestr points to a monday we need to add a 
-          # day to get the next one calculated
-            ndatestr = plusDays(adate,1)
-        else:
-            ndatestr = adate 
+    else:
         
-        var datestr = ndatestr
-        for x in 0.. <7:
-          if validdate(datestr) == true:
-            z = dayofweekjulian(datestr) 
-            if z.strip() != "Monday":
-                datestr = plusDays(datestr,1)  
+        if validdate(adate) == true:  
+            var z = dayofweekjulian(adate) 
+            
+            if z == "Monday":
+              # so the datestr points to a monday we need to add a 
+              # day to get the next one calculated
+                ndatestr = plusDays(adate,1)
+                
             else:
-                result = datestr  
+                ndatestr = adate 
+                        
+            for x in 0.. <7:
+              if validdate(ndatestr) == true:
+                z = dayofweekjulian(ndatestr) 
+                
+                if z.strip() != "Monday":
+                    ndatestr = plusDays(ndatestr,1)  
+                else:
+                    result = ndatestr  
 
 
 # Framed headers with var. colorising options
@@ -1277,11 +1288,11 @@ proc superHeader*(bstring:string) =
   var astring = bstring
   # minimum default size that is string max len = 43 and
   # frame = 46
-  var mmax = 43
+  let mmax = 43
   var mddl = 46
   ## max length = tw-2
-  var okl = tw - 6
-  var astrl = astring.len
+  let okl = tw - 6
+  let astrl = astring.len
   if astrl > okl :
      astring = astring[0.. okl]
      mddl = okl + 5
@@ -1289,12 +1300,12 @@ proc superHeader*(bstring:string) =
        mddl = astrl + 4
   else :
       # default or smaller
-       var n = mmax - astrl
+       let n = mmax - astrl
        for x in 0.. <n:
           astring = astring & " "
        mddl = mddl + 1
 
-  var pdl = repeat("#",mddl)
+  let pdl = repeat("#",mddl)
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
   echo ()
@@ -1304,6 +1315,7 @@ proc superHeader*(bstring:string) =
   msgy() do : echo " #"
   msgy() do : echo pdl
   echo ()
+
 
 
 proc superHeader*(bstring:string,strcol:string,frmcol:string) =
@@ -1330,10 +1342,10 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     var astring = bstring
     # minimum default size that is string max len = 43 and
     # frame = 46
-    var mmax = 43
+    let mmax = 43
     var mddl = 46
-    var okl = tw - 6
-    var astrl = astring.len
+    let okl = tw - 6
+    let astrl = astring.len
     if astrl > okl :
        astring = astring[0.. okl]
        mddl = okl + 5
@@ -1341,12 +1353,12 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
          mddl = astrl + 4
     else :
         # default or smaller
-         var n = mmax - astrl
+         let n = mmax - astrl
          for x in 0.. <n:
             astring = astring & " "
          mddl = mddl + 1
 
-    var pdl = repeat("#",mddl)
+    let pdl = repeat("#",mddl)
     # now show it with the framing in yellow and text in white
     # really want to have a terminal color checker to avoid invisible lines
     echo ()
@@ -1475,8 +1487,6 @@ proc showWanIp*() =
      printBiCol("Current Wan Ip      : " & getwanip(),":",yellow,black)
          
 
-
-
 proc getIpInfo*(ip:string):JsonNode =
      ## getIpInfo
      ##
@@ -1509,7 +1519,7 @@ proc showIpInfo*(ip:string) =
       ##    showIpInfo("208.80.152.201")
       ##    showIpInfo(getHosts("bbc.com")[0])
       ## 
-      var jz = getIpInfo(ip)
+      let jz = getIpInfo(ip)
       decho(2)
       msgg() do: echo "Ip-Info for " & ip
       msgy() do: dline(40)
