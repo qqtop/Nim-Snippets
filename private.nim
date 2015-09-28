@@ -303,6 +303,8 @@ proc dline*(n:int = tw) =
      ## draw a line with given length in current terminal font color
      ## 
      echo repeat("-",n)
+     
+     
 
 proc decho*(z:int)  =
     ## decho
@@ -314,7 +316,6 @@ proc decho*(z:int)  =
     ## to create 10 blank lines
     for x in 0.. <z:
       echo()
-
 
 
 # simple navigation
@@ -346,19 +347,19 @@ proc clearup*(x:int = 80) =
 # these procs have similar functionality 
 
 proc printLn*(s:string , cols: varargs[string, `$`]) =
-     ## println
+     ## printLn
      ##
      ## displays colored strings and issues a newline when finished
      ## 
      ## strings will be tokenized and colored according to colors in cols
      ## 
      ## .. code-block:: nim
-     ##    println(st,@[clrainbow,white,red,cyan,yellow])
-     ##    println("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    println("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    println("blah",green,white,red,cyan)    
+     ##    printLn(st,@[clrainbow,white,red,cyan,yellow])
+     ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    printLn("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    printLn("blah",green,white,red,cyan)    
      ##    # can also pass a seq
-     ##    println("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##    printLn("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
      var col = newSeq[string]()
      var c = 0
@@ -482,7 +483,7 @@ proc printLnG*(s:string) =
      ## 
      ## prints a string in green and issues a newline
      ## 
-     msgg() do: echo(s)
+     msgg() do: writeln(stdout,s)
      
 
 
@@ -491,7 +492,7 @@ proc printLnGb*(s:string) =
      ## 
      ## prints a string in bright green and issues a newline
      ## 
-     msggb() do: echo(s)
+     msggb() do: writeln(stdout,s)
      
 
 
@@ -514,14 +515,14 @@ proc printLnR*(s:string) =
      ## printLnR
      ##
      ##
-     msgr() do: echo(s)  
+     msgr() do: writeln(stdout,s)  
      
 
 proc printLnRb*(s:string) = 
      ## printLnRb
      ##
      ##
-     msgrb() do: echo(s)       
+     msgrb() do: writeln(stdout,s)       
      
      
 
@@ -543,14 +544,14 @@ proc printLnY*(s:string) =
      ## printLnY
      ## 
      ## 
-     msgy() do: echo(s)
+     msgy() do: writeln(stdout,s)
 
 
 proc printLnYb*(s:string) = 
      ## printLnYb
      ## 
      ## 
-     msgyb() do: echo(s)
+     msgyb() do: writeln(stdout,s)
 
 
      
@@ -572,13 +573,13 @@ proc printLnC*(s:string) =
      ## printLnC
      ## 
      ## 
-     msgc() do: echo(s)     
+     msgc() do: writeln(stdout,s)     
 
 proc printLnCb*(s:string) = 
      ## printLnCb
      ## 
      ## 
-     msgcb() do: echo(s)
+     msgcb() do: writeln(stdout,s)
 
 
 proc printW*(s:string) = 
@@ -598,14 +599,14 @@ proc printLnW*(s:string) =
      ## printLnw
      ## 
      ## 
-     msgw() do: echo(s)     
+     msgw() do: writeln(stdout,s)     
 
 
 proc printLnWb*(s:string) = 
      ## printLnWb
      ## 
      ## 
-     msgwb() do: echo(s)
+     msgwb() do: writeln(stdout,s)
 
 
 proc printB*(s:string) = 
@@ -619,7 +620,7 @@ proc printLnB*(s:string) =
      ## printLnB
      ## 
      ## 
-     msgb() do: echo(s)     
+     msgb() do: writeln(stdout,s)     
 
 
 proc rainbow*(astr : string) =
@@ -762,21 +763,21 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
 
     for vastr in mvastr:
       case colstr
-      of green  : msgg() do  : echo vastr
-      of red    : msgr() do  : echo vastr
-      of cyan   : msgc() do  : echo vastr
-      of yellow : msgy() do  : echo vastr
-      of white  : msgw() do  : echo vastr
-      of black  : msgb() do  : echo vastr
-      of brightgreen : msggb() do : echo vastr
-      of brightwhite : msgwb() do : echo vastr
-      of brightyellow: msgyb() do : echo vastr
-      of brightcyan  : msgcb() do : echo vastr
-      of brightred   : msgrb() do : echo vastr
+      of green  : msgg() do  : writeln(stdout,vastr)
+      of red    : msgr() do  : writeln(stdout,vastr)
+      of cyan   : msgc() do  : writeln(stdout,vastr)
+      of yellow : msgy() do  : writeln(stdout,vastr)
+      of white  : msgw() do  : writeln(stdout,vastr)
+      of black  : msgb() do  : writeln(stdout,vastr)
+      of brightgreen : msggb() do  : writeln(stdout,vastr)
+      of brightwhite : msgwb() do  : writeln(stdout,vastr)
+      of brightyellow: msgyb() do  : writeln(stdout,vastr)
+      of brightcyan  : msgcb() do  : writeln(stdout,vastr)
+      of brightred   : msgrb() do  : writeln(stdout,vastr)
       of clrainbow   :
                        rainbow(vastr)
                        echo()
-      else  : msgw() do  : echo vastr
+      else  : msgw() do  : writeln(stdout,vastr)
 
 
 
@@ -1309,11 +1310,11 @@ proc superHeader*(bstring:string) =
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
   echo ()
-  msgy() do : echo pdl
+  msgy() do : writeln(stdout,pdl)
   msgy() do : write(stdout,"# ")
   msgw() do : write(stdout,astring)
-  msgy() do : echo " #"
-  msgy() do : echo pdl
+  msgy() do : writeln(stdout," #")
+  msgy() do : writeln(stdout,pdl)
   echo ()
 
 
@@ -1741,7 +1742,7 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
 
 
 
-proc ff*(zz:float,n = 5):string =
+proc ff*(zz:float,n:int64 = 5):string =
     ## ff
     ## 
     ## formats a float to string with n decimals
