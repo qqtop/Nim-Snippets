@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.8.0
+##   Version     : 0.8.5
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -38,7 +38,7 @@
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 
-const PRIVATLIBVERSION* = "0.8.0"
+const PRIVATLIBVERSION* = "0.8.5"
 const
        red*    = "red"
        green*  = "green"
@@ -68,8 +68,7 @@ when defined(Linux):
         ##
         ## and get linux terminal width
         ##
-        ## for windows this currently is set to terminalwidth 80
-        ##
+        
         type WinSize = object
           row, col, xpixel, ypixel: cushort
         const TIOCGWINSZ = 0x5413
@@ -159,55 +158,7 @@ template msgbb*(code: stmt): stmt =
       setforegroundcolor(fgBlack)
       code
       setforegroundcolor(fgWhite)
-      
-template msgbgb*(code:stmt):stmt =      
-      ## msgbgb
-      ## 
-      ## green background , black foregroundcolor
-      ## 
-      setBackGroundColor(bggreen)
-      setforegroundcolor(fgBlack)
-      code
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)      
-      
-     
-template msgbyb*(code:stmt):stmt =      
-      ## msgbyb
-      ## 
-      ## yellow background , black foregroundcolor
-      ## 
   
-      setBackGroundColor(bgyellow)
-      setforegroundcolor(fgBlack)
-      code
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)      
-            
-     
-template msgwrb*(code:stmt):stmt =      
-      ## msgbgb
-      ## 
-      ## red background , white foregroundcolor
-      ## 
-      setBackGroundColor(bgred)
-      setforegroundcolor(fgWhite,true)
-      code
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)      
-                  
-template msgbwb*(code:stmt):stmt =      
-      ## msgbwb
-      ## 
-      ## white background , black foregroundcolor
-      ## 
-      setBackGroundColor(bgwhite)
-      setforegroundcolor(fgblack)
-      code
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)        
-
-
 template hdx*(code:stmt):stmt =
    echo ""
    echo repeat("+",tw)
@@ -216,6 +167,7 @@ template hdx*(code:stmt):stmt =
    setforegroundcolor(fgWhite)
    echo repeat("+",tw)
    echo ""
+
 
 
 
@@ -622,6 +574,140 @@ proc printLnB*(s:string) =
      ## 
      msgb() do: writeln(stdout,s)     
 
+
+  
+proc printBonG*(astring:string) =      
+      ## printBonG
+      ## 
+      ## black foregroundcolor on green background
+      ## 
+      setBackGroundColor(bggreen)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnBonG*(astring:string) =      
+      ## printLnBonG
+      ## 
+      ## black foregroundcolor on green background with newline
+      ## 
+      setBackGroundColor(bggreen)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+   
+   
+proc printBonY*(astring:string) =      
+      ## printBonY
+      ## 
+      ## black foregroundcolor on yellow background
+      ## 
+      setBackGroundColor(bgyellow)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnBonY*(astring:string) =      
+      ## printLnBonY
+      ## 
+      ## black foregroundcolor on yellow background with newline
+      ## 
+      setBackGroundColor(bgyellow)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+         
+   
+   
+   
+proc printBonR*(astring:string) =      
+      ## printBonR
+      ## 
+      ## black foregroundcolor on red background
+      ## 
+      setBackGroundColor(bgred)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnBonR*(astring:string) =      
+      ## printLnBonR
+      ## 
+      ## black foregroundcolor on red background with newline
+      ## 
+      setBackGroundColor(bgred)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+         
+      
+   
+proc printWonR*(astring:string) =      
+      ## printWonR
+      ## 
+      ## white foregroundcolor on red background
+      ## 
+      setBackGroundColor(bgred)
+      setforegroundcolor(fgWhite)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnWonR*(astring:string) =      
+      ## printLnWonR
+      ## 
+      ## white foregroundcolor on red background with newline
+      ## 
+      setBackGroundColor(bgred)
+      setforegroundcolor(fgWhite)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+         
+   
+proc printWonB*(astring:string) =      
+      ## printBonR
+      ## 
+      ## white foregroundcolor on black background
+      ## 
+      setBackGroundColor(bgwhite)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnWonB*(astring:string) =      
+      ## printLnWonB
+      ## 
+      ## white foregroundcolor on red background with newline
+      ## 
+      setBackGroundColor(bgwhite)
+      setforegroundcolor(fgBlack)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+         
 
 proc rainbow*(astr : string) =
     ## rainbow
