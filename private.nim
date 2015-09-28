@@ -42,16 +42,21 @@ const PRIVATLIBVERSION* = "0.8.5"
 const
        red*    = "red"
        green*  = "green"
+       blue*   = "blue"  
        cyan*   = "cyan"
        yellow* = "yellow"
        white*  = "white"
        black*  = "black"
+       magenta* = "magenta"  
        brightred*    = "brightred"
        brightgreen*  = "brightgreen"
+       brightblue*   = "brightblue" 
        brightcyan*   = "brightcyan"
        brightyellow* = "brightyellow"
        brightwhite*  = "brightwhite"
+       brightmagenta* = "brightmagenta"
        clrainbow*    = "clrainbow"
+         
          
 type
      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
@@ -158,6 +163,31 @@ template msgbb*(code: stmt): stmt =
       setforegroundcolor(fgBlack)
       code
       setforegroundcolor(fgWhite)
+  
+template msgbl*(code: stmt): stmt =
+      setforegroundcolor(fgBlue)
+      code
+      setforegroundcolor(fgWhite)  
+  
+template msgblb*(code: stmt): stmt =
+      setforegroundcolor(fgBlue,true)
+      code
+      setforegroundcolor(fgWhite)    
+  
+  
+template msgm*(code: stmt): stmt =
+      setforegroundcolor(fgMagenta)
+      code
+      setforegroundcolor(fgWhite)  
+  
+template msgmb*(code: stmt): stmt =
+      setforegroundcolor(fgMagenta,true)
+      code
+      setforegroundcolor(fgWhite)    
+  
+   
+  
+  
   
 template hdx*(code:stmt):stmt =
    echo ""
@@ -411,7 +441,14 @@ proc printG*(s:string) =
      ##    printLnB(s)
      ##    printLnY(s)
      ##    printLnYb(s)
-     ##    
+     ##    printLnM(s)
+     ##    printLnMb(s)
+     ##    printLnBl(s)
+     ##    printLnBlb(s)
+     ##
+     ##    printLnBlonW(s)  # print blue on white  
+     ##
+     ##
      ##    printB(s)
      ##    printG(s)
      ##    
@@ -562,18 +599,79 @@ proc printLnWb*(s:string) =
 
 
 proc printB*(s:string) = 
-     ## printB
+     ## printB   black
      ## 
      ## 
      msgb() do: write(stdout,s)
 
 
 proc printLnB*(s:string) = 
-     ## printLnB
+     ## printLnB   grey
      ## 
      ## 
      msgb() do: writeln(stdout,s)     
 
+
+
+proc printBl*(s:string) = 
+     ## printBl  darkblue
+     ## 
+     ## 
+     msgbl() do: write(stdout,s)
+
+
+
+proc printBlb*(s:string) = 
+     ## printBlb  brightblue
+     ## 
+     ## 
+     msgblb() do: write(stdout,s)
+
+
+proc printLnBl*(s:string) = 
+     ## printLnBl  darkblue
+     ## 
+     ## 
+     msgbl() do: writeln(stdout,s)
+
+
+
+proc printLnBlb*(s:string) = 
+     ## printLnBlb  brightblue
+     ## 
+     ## 
+     msgblb() do: writeln(stdout,s)
+
+
+
+proc printM*(s:string) = 
+     ## printM magenta
+     ## 
+     ## 
+     msgM() do: write(stdout,s)
+
+
+
+proc printMb*(s:string) = 
+     ## printMb  brightmagenta
+     ## 
+     ## 
+     msgMb() do: write(stdout,s)
+
+
+
+proc printLnM*(s:string) = 
+     ## printLnBl  magenta
+     ## 
+     ## 
+     msgM() do: writeln(stdout,s)
+
+
+proc printLnMb*(s:string) = 
+     ## printLnBlb  brightmagenta
+     ## 
+     ## 
+     msgMb() do: writeln(stdout,s)
 
   
 proc printBonG*(astring:string) =      
@@ -708,6 +806,36 @@ proc printLnWonB*(astring:string) =
       setBackGroundColor(bgblack)
       writeln(stdout,"")
          
+         
+         
+   
+proc printBlWonW*(astring:string) =      
+      ## printBonR
+      ## 
+      ## blue foregroundcolor on black background
+      ## 
+      setBackGroundColor(bgWhite)
+      setforegroundcolor(fgBlue)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      
+      
+      
+proc printLnBlonW*(astring:string) =      
+      ## printLnWonB
+      ## 
+      ## white foregroundcolor on red background with newline
+      ## 
+      setBackGroundColor(bgwhite)
+      setforegroundcolor(fgBlue)
+      write(stdout,astring)
+      setforegroundcolor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+         
+            
+         
 
 proc rainbow*(astr : string) =
     ## rainbow
@@ -718,7 +846,7 @@ proc rainbow*(astr : string) =
     ##
 
     var c = 0
-    var a = toSeq(1.. 12)
+    var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
        case c
@@ -733,6 +861,7 @@ proc rainbow*(astr : string) =
         of 9  : msgyb() do : write(stdout,astr[x])
         of 10 : msgrb() do : write(stdout,astr[x])
         of 11 : msgcb() do : write(stdout,astr[x])
+        of 12 : msgmb() do : write(stdout,astr[x])
         else  : msgw() do  : write(stdout,astr[x])
 
 
@@ -783,7 +912,7 @@ proc printLnRainbow*(astr : string,astyle:set[Style]) =
     ##
 
     var c = 0
-    var a = toSeq(1.. 12)
+    var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
        case c
@@ -798,6 +927,7 @@ proc printLnRainbow*(astr : string,astyle:set[Style]) =
         of 9  : msgyb() do : writestyled($astr[x],astyle)
         of 10 : msgrb() do : writestyled($astr[x],astyle)
         of 11 : msgcb() do : writestyled($astr[x],astyle)
+        of 12 : msgmb() do : writestyled($astr[x],astyle)
         else  : msgw() do  : writestyled($astr[x],astyle)
     echo()
     
@@ -825,11 +955,15 @@ proc printColStr*(colstr:string,astr:string) =
       of yellow : msgy() do  : write(stdout,astr)
       of white  : msgw() do  : write(stdout,astr)
       of black  : msgb() do  : write(stdout,astr)
+      of blue   : msgbl() do : write(stdout,astr)
+      of magenta: msgm() do  : write(stdout,astr)
       of brightgreen : msggb() do : write(stdout,astr)
       of brightwhite : msgwb() do : write(stdout,astr)
       of brightyellow: msgyb() do : write(stdout,astr)
       of brightcyan  : msgcb() do : write(stdout,astr)
       of brightred   : msgrb() do : write(stdout,astr)
+      of brightblue  : msgblb() do : write(stdout,astr)
+      of brightmagenta: msgmb() do : write(stdout,astr)
       of clrainbow   : rainbow(astr)
       else  : msgw() do  : write(stdout,astr)
 
@@ -855,11 +989,15 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
       of yellow : msgy() do  : writeln(stdout,vastr)
       of white  : msgw() do  : writeln(stdout,vastr)
       of black  : msgb() do  : writeln(stdout,vastr)
+      of blue   : msgbl() do : writeln(stdout,vastr)
+      of magenta: msgm() do  : writeln(stdout,vastr)
       of brightgreen : msggb() do  : writeln(stdout,vastr)
       of brightwhite : msgwb() do  : writeln(stdout,vastr)
       of brightyellow: msgyb() do  : writeln(stdout,vastr)
       of brightcyan  : msgcb() do  : writeln(stdout,vastr)
       of brightred   : msgrb() do  : writeln(stdout,vastr)
+      of brightblue  : msgblb() do : writeln(stdout,vastr)
+      of brightmagenta: msgmb() do : writeln(stdout,vastr)
       of clrainbow   :
                        rainbow(vastr)
                        echo()
@@ -951,11 +1089,15 @@ proc printHl*(s:string,substr:string,col:string) =
               of yellow : msgy() do  : write(stdout,substr)
               of white  : msgw() do  : write(stdout,substr)
               of black  : msgb() do  : write(stdout,substr)
+              of blue   : msgbl() do : write(stdout,substr)
+              of magenta: msgm() do  : write(stdout,substr)
               of brightgreen : msggb() do : write(stdout,substr)
               of brightwhite : msgwb() do : write(stdout,substr)
               of brightyellow: msgyb() do : write(stdout,substr)
               of brightcyan  : msgcb() do : write(stdout,substr)
               of brightred   : msgrb() do : write(stdout,substr)
+              of brightblue  : msgblb() do : write(stdout,substr)
+              of brightmagenta: msgmb() do : write(stdout,substr)
               of clrainbow   : rainbow(substr)
               else  : msgw() do  : write(stdout,substr)
 
@@ -1009,11 +1151,15 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
               of yellow : msgy() do  : writestyled(substr,astyle)
               of white  : msgw() do  : writestyled(substr,astyle)
               of black  : msgb() do  : writestyled(substr,astyle)
+              of blue   : msgbl() do : writestyled(substr,astyle)
+              of magenta: msgm() do  : writestyled(substr,astyle)
               of brightgreen : msggb() do : writestyled(substr,astyle)
               of brightwhite : msgwb() do : writestyled(substr,astyle)
               of brightyellow: msgyb() do : writestyled(substr,astyle)
               of brightcyan  : msgcb() do : writestyled(substr,astyle)
               of brightred   : msgrb() do : writestyled(substr,astyle)
+              of brightblue  : msgblb() do : writestyled(substr,astyle)
+              of brightmagenta : msgmb() do : writestyled(substr,astyle)
               of clrainbow   : printRainbow(substr,astyle)
               else  : msgw() do  : writestyled(substr,{styleUnknown})
 

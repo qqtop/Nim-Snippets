@@ -1194,6 +1194,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="red* = &quot;red&quot;"><wbr />red</a></li>
   <li><a class="reference" href="#green"
     title="green* = &quot;green&quot;"><wbr />green</a></li>
+  <li><a class="reference" href="#blue"
+    title="blue* = &quot;blue&quot;"><wbr />blue</a></li>
   <li><a class="reference" href="#cyan"
     title="cyan* = &quot;cyan&quot;"><wbr />cyan</a></li>
   <li><a class="reference" href="#yellow"
@@ -1202,16 +1204,22 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="white* = &quot;white&quot;"><wbr />white</a></li>
   <li><a class="reference" href="#black"
     title="black* = &quot;black&quot;"><wbr />black</a></li>
+  <li><a class="reference" href="#magenta"
+    title="magenta* = &quot;magenta&quot;"><wbr />magenta</a></li>
   <li><a class="reference" href="#brightred"
     title="brightred* = &quot;brightred&quot;"><wbr />brightred</a></li>
   <li><a class="reference" href="#brightgreen"
     title="brightgreen* = &quot;brightgreen&quot;"><wbr />brightgreen</a></li>
+  <li><a class="reference" href="#brightblue"
+    title="brightblue* = &quot;brightblue&quot;"><wbr />brightblue</a></li>
   <li><a class="reference" href="#brightcyan"
     title="brightcyan* = &quot;brightcyan&quot;"><wbr />brightcyan</a></li>
   <li><a class="reference" href="#brightyellow"
     title="brightyellow* = &quot;brightyellow&quot;"><wbr />brightyellow</a></li>
   <li><a class="reference" href="#brightwhite"
     title="brightwhite* = &quot;brightwhite&quot;"><wbr />brightwhite</a></li>
+  <li><a class="reference" href="#brightmagenta"
+    title="brightmagenta* = &quot;brightmagenta&quot;"><wbr />brightmagenta</a></li>
   <li><a class="reference" href="#clrainbow"
     title="clrainbow* = &quot;clrainbow&quot;"><wbr />clrainbow</a></li>
 
@@ -1284,6 +1292,22 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printB*(s: string)"><wbr />print<wbr />B</a></li>
   <li><a class="reference" href="#printLnB,string"
     title="printLnB*(s: string)"><wbr />print<wbr />Ln<wbr />B</a></li>
+  <li><a class="reference" href="#printBl,string"
+    title="printBl*(s: string)"><wbr />print<wbr />Bl</a></li>
+  <li><a class="reference" href="#printBlb,string"
+    title="printBlb*(s: string)"><wbr />print<wbr />Blb</a></li>
+  <li><a class="reference" href="#printLnBl,string"
+    title="printLnBl*(s: string)"><wbr />print<wbr />Ln<wbr />Bl</a></li>
+  <li><a class="reference" href="#printLnBlb,string"
+    title="printLnBlb*(s: string)"><wbr />print<wbr />Ln<wbr />Blb</a></li>
+  <li><a class="reference" href="#printM,string"
+    title="printM*(s: string)"><wbr />print<wbr />M</a></li>
+  <li><a class="reference" href="#printMb,string"
+    title="printMb*(s: string)"><wbr />print<wbr />Mb</a></li>
+  <li><a class="reference" href="#printLnM,string"
+    title="printLnM*(s: string)"><wbr />print<wbr />Ln<wbr />M</a></li>
+  <li><a class="reference" href="#printLnMb,string"
+    title="printLnMb*(s: string)"><wbr />print<wbr />Ln<wbr />Mb</a></li>
   <li><a class="reference" href="#printBonG,string"
     title="printBonG*(astring: string)"><wbr />print<wbr />Bon<wbr />G</a></li>
   <li><a class="reference" href="#printLnBonG,string"
@@ -1304,6 +1328,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printWonB*(astring: string)"><wbr />print<wbr />Won<wbr />B</a></li>
   <li><a class="reference" href="#printLnWonB,string"
     title="printLnWonB*(astring: string)"><wbr />print<wbr />Ln<wbr />Won<wbr />B</a></li>
+  <li><a class="reference" href="#printBlWonW,string"
+    title="printBlWonW*(astring: string)"><wbr />print<wbr />Bl<wbr />Won<wbr />W</a></li>
+  <li><a class="reference" href="#printLnBlonW,string"
+    title="printLnBlonW*(astring: string)"><wbr />print<wbr />Ln<wbr />Blon<wbr />W</a></li>
   <li><a class="reference" href="#rainbow,string"
     title="rainbow*(astr: string)"><wbr />rainbow</a></li>
   <li><a class="reference" href="#printRainbow,string,set[Style]"
@@ -1469,6 +1497,14 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="msgb*(code: stmt): stmt"><wbr />msgb</a></li>
   <li><a class="reference" href="#msgbb.t,stmt"
     title="msgbb*(code: stmt): stmt"><wbr />msgbb</a></li>
+  <li><a class="reference" href="#msgbl.t,stmt"
+    title="msgbl*(code: stmt): stmt"><wbr />msgbl</a></li>
+  <li><a class="reference" href="#msgblb.t,stmt"
+    title="msgblb*(code: stmt): stmt"><wbr />msgblb</a></li>
+  <li><a class="reference" href="#msgm.t,stmt"
+    title="msgm*(code: stmt): stmt"><wbr />msgm</a></li>
+  <li><a class="reference" href="#msgmb.t,stmt"
+    title="msgmb*(code: stmt): stmt"><wbr />msgmb</a></li>
   <li><a class="reference" href="#hdx.t,stmt"
     title="hdx*(code: stmt): stmt"><wbr />hdx</a></li>
   <li><a class="reference" href="#withFile.t,expr,string,FileMode,stmt"
@@ -1559,6 +1595,11 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="blue"><a name="blue"></a><pre><span class="Identifier">blue</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;blue&quot;</span></pre></dt>
+<dd>
+
+
+</dd>
 <dt id="cyan"><a name="cyan"></a><pre><span class="Identifier">cyan</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;cyan&quot;</span></pre></dt>
 <dd>
 
@@ -1579,12 +1620,22 @@ check execution timing with one line see doFinish
 
 
 </dd>
+<dt id="magenta"><a name="magenta"></a><pre><span class="Identifier">magenta</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;magenta&quot;</span></pre></dt>
+<dd>
+
+
+</dd>
 <dt id="brightred"><a name="brightred"></a><pre><span class="Identifier">brightred</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;brightred&quot;</span></pre></dt>
 <dd>
 
 
 </dd>
 <dt id="brightgreen"><a name="brightgreen"></a><pre><span class="Identifier">brightgreen</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;brightgreen&quot;</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="brightblue"><a name="brightblue"></a><pre><span class="Identifier">brightblue</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;brightblue&quot;</span></pre></dt>
 <dd>
 
 
@@ -1600,6 +1651,11 @@ check execution timing with one line see doFinish
 
 </dd>
 <dt id="brightwhite"><a name="brightwhite"></a><pre><span class="Identifier">brightwhite</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;brightwhite&quot;</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="brightmagenta"><a name="brightmagenta"></a><pre><span class="Identifier">brightmagenta</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;brightmagenta&quot;</span></pre></dt>
 <dd>
 
 
@@ -1723,6 +1779,13 @@ forward declaration
 <span class="Identifier">printLnB</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
 <span class="Identifier">printLnY</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
 <span class="Identifier">printLnYb</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
+<span class="Identifier">printLnM</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
+<span class="Identifier">printLnMb</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
+<span class="Identifier">printLnBl</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
+<span class="Identifier">printLnBlb</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
+
+<span class="Identifier">printLnBlonW</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>  <span class="Comment"># print blue on white</span>
+
 
 <span class="Identifier">printB</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
 <span class="Identifier">printG</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span></pre><pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">strutils</span><span class="Punctuation">,</span><span class="Identifier">strfmt</span>
@@ -1830,12 +1893,52 @@ printLnWb
 </dd>
 <dt id="printB"><a name="printB,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printB</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
-printB
+printB   black
 
 </dd>
 <dt id="printLnB"><a name="printLnB,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnB</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
-printLnB
+printLnB   grey
+
+</dd>
+<dt id="printBl"><a name="printBl,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBl</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printBl  darkblue
+
+</dd>
+<dt id="printBlb"><a name="printBlb,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBlb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printBlb  brightblue
+
+</dd>
+<dt id="printLnBl"><a name="printLnBl,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnBl</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printLnBl  darkblue
+
+</dd>
+<dt id="printLnBlb"><a name="printLnBlb,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnBlb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printLnBlb  brightblue
+
+</dd>
+<dt id="printM"><a name="printM,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printM</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printM magenta
+
+</dd>
+<dt id="printMb"><a name="printMb,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printMb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printMb  brightmagenta
+
+</dd>
+<dt id="printLnM"><a name="printLnM,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnM</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printLnBl  magenta
+
+</dd>
+<dt id="printLnMb"><a name="printLnMb,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnMb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+printLnBlb  brightmagenta
 
 </dd>
 <dt id="printBonG"><a name="printBonG,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBonG</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">astring</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
@@ -1902,6 +2005,20 @@ printLnB
 
 </dd>
 <dt id="printLnWonB"><a name="printLnWonB,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnWonB</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">astring</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>printLnWonB</p>
+<p>white foregroundcolor on red background with newline </p>
+
+
+</dd>
+<dt id="printBlWonW"><a name="printBlWonW,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printBlWonW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">astring</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>printBonR</p>
+<p>blue foregroundcolor on black background </p>
+
+
+</dd>
+<dt id="printLnBlonW"><a name="printLnBlonW,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnBlonW</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">astring</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printLnWonB</p>
 <p>white foregroundcolor on red background with newline </p>
@@ -2569,6 +2686,26 @@ msgX templates convenience templates for colored text output the assumption is t
 
 
 </dd>
+<dt id="msgbl"><a name="msgbl.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgbl</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="msgblb"><a name="msgblb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgblb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="msgm"><a name="msgm.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgm</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+
+
+</dd>
+<dt id="msgmb"><a name="msgmb.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">msgmb</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+
+
+</dd>
 <dt id="hdx"><a name="hdx.t,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">hdx</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">code</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
 <dd>
 
@@ -2624,7 +2761,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-28 13:55:29 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-28 20:27:27 UTC</small>
       </div>
     </div>
   </div>
