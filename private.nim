@@ -87,8 +87,9 @@ when defined(Linux):
     var aline* = repeat("_",tw)    ## echo aline 
 
 
-
-proc printColStr*(colstr:string,astr:string)  ## forward declaration
+# forward declarations
+proc printColStr*(colstr:string,astr:string)  
+proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) 
 
 # templates
 
@@ -121,12 +122,10 @@ template msgyb*(code: stmt): stmt =
       code
       setforegroundcolor(fgWhite)
 
-
 template msgr*(code: stmt): stmt =
       setforegroundcolor(fgRed)
       code
       setforegroundcolor(fgWhite)
-
 
 template msgrb*(code: stmt): stmt =
       setforegroundcolor(fgRed,true)
@@ -174,7 +173,6 @@ template msgblb*(code: stmt): stmt =
       code
       setforegroundcolor(fgWhite)    
   
-  
 template msgm*(code: stmt): stmt =
       setforegroundcolor(fgMagenta)
       code
@@ -184,9 +182,7 @@ template msgmb*(code: stmt): stmt =
       setforegroundcolor(fgMagenta,true)
       code
       setforegroundcolor(fgWhite)    
-  
-   
-  
+
   
   
 template hdx*(code:stmt):stmt =
@@ -325,46 +321,13 @@ proc clearup*(x:int = 80) =
    erasescreen()
    curup(x)
 
+
 # Var. convenience procs for colorised data output
-# these procs have similar functionality 
+# these procs have similar functionality  
+# print and printLn tokenize strings for selective coloring if required
+# and can be used for most standard echo like displaying jobs
 
-proc printLn*(s:string , cols: varargs[string, `$`]) =
-     ## printLn
-     ##
-     ## displays colored strings and issues a newline when finished
-     ## 
-     ## strings will be tokenized and colored according to colors in cols
-     ## 
-     ## .. code-block:: nim
-     ##    printLn(st,@[clrainbow,white,red,cyan,yellow])
-     ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    printLn("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    printLn("blah",green,white,red,cyan)    
-     ##    # can also pass a seq
-     ##    printLn("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
-     ##
-     var col = newSeq[string]()
-     var c = 0
-     for x in cols:
-         col.add(x)
-     var pcol = ""
-         
-     for x in s.tokenize() :
-            if x.isSep == false:
-                if c < cols.len:
-                  pcol = col[c]
-                else :
-                  pcol = white   
-                printColStr(pcol,x.token)
-                c += 1  
-              
-            else:
-                write(stdout,x.token)
-     echo ""    
-
-
-
-proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
+proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## print
      ##
      ## similar to printLn
@@ -378,15 +341,16 @@ proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
      ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
      ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
      ##    print("blah",green,white,red,cyan) 
-     ##    # also can use a seq or colors
+     ##    print(@[123,123,123],white,green,white)
      ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
+           
      var col = newSeq[string]()
      var c = 0
      for x in cols:
          col.add(x)
      var pcol = ""
-         
+     var s = $st    
      for x in s.tokenize() :
             if x.isSep == false:
                 if c < cols.len:
@@ -400,12 +364,31 @@ proc print*(s:string , cols: varargs[string, `$`] = @[white] ) =
                 write(stdout,x.token)
        
 
+proc printLn*[T](st:T , cols: varargs[string, `$`]) =
+     ## printLn
+     ##
+     ## displays colored strings and issues a newline when finished
+     ## 
+     ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## .. code-block:: nim
+     ##    printLn(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
+     ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    printLn("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    printLn("blah",green,white,red,cyan)    
+     ##    # can also pass a seq
+     ##    printLn("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##
+     print(st,cols)
+     writeln(stdout,"")
+
+
 
 proc printG*(s:string) = 
      ## printg
      ## 
-     ## prints string in green 
-     ## 
+     ## prints  a string in green 
+     ## to print out seq types use print or printLn procs
      ## 
      ## following single color print routines are avaialable
      ## 
@@ -878,7 +861,7 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
     ##
 
     var c = 0
-    var a = toSeq(1.. 12)
+    var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
        case c
@@ -893,6 +876,7 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
         of 9  : msgyb() do : writestyled($astr[x],astyle)
         of 10 : msgrb() do : writestyled($astr[x],astyle)
         of 11 : msgcb() do : writestyled($astr[x],astyle)
+        of 12 : msgmb() do : writestyled($astr[x],astyle)
         else  : msgw() do  : writestyled($astr[x],astyle)
 
 
@@ -1861,10 +1845,21 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
     ##    echo createSeqInt(50,100,2000)
 
     var z = newSeq[int]()
-    for x in 0.. <n:
-       z.add(getRandomInt(mi,ma))
-    result = z
+    if mi <= ma:
+      for x in 0.. <n:
+         z.add(getRandomInt(mi,ma))
+      result = z   
+    else:
+      printLnR("Error : Wrong parameters for min , max ")
 
+
+proc ff*(zz:float,n:int64 = 5):string =
+    ## ff
+    ## 
+    ## formats a float to string with n decimals
+    ##  
+    result = $formatFloat(zz,ffDecimal,n)
+      
 
 proc getRandomFloat*():float =
     ## getRandomFloat
@@ -1890,7 +1885,7 @@ proc createSeqFloat*(n:int = 10) : seq[float] =
 
       var z = newSeq[float]()
       for x in 0.. <n:
-        z.add(getRandomFloat())
+          z.add(getRandomFloat())
       result = z
 
 
@@ -1971,15 +1966,6 @@ proc shift*[T](x: var seq[T], zz: Natural = 0): T =
     ##
     result = x[zz]
     x.delete(zz)
-
-
-
-proc ff*(zz:float,n:int64 = 5):string =
-    ## ff
-    ## 
-    ## formats a float to string with n decimals
-    ##  
-    result = $formatFloat(zz,ffDecimal,n)
 
 
 

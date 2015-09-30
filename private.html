@@ -1232,6 +1232,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getTerminalWidth*(): int"><wbr />get<wbr />Terminal<wbr />Width</a></li>
   <li><a class="reference" href="#printColStr,string,string"
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
+  <li><a class="reference" href="#printLnColStr,string,varargs[string,]"
+    title="printLnColStr*(colstr: string; mvastr: varargs[string, `$`])"><wbr />print<wbr />Ln<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#hline,string,int,string"
     title="hline*(s: string = &quot;_&quot;; n: int = tw; col: string = white)"><wbr />hline</a></li>
   <li><a class="reference" href="#dline,int"
@@ -1244,10 +1246,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="curDn*(x: int = 1)"><wbr />cur<wbr />Dn</a></li>
   <li><a class="reference" href="#clearup,int"
     title="clearup*(x: int = 80)"><wbr />clearup</a></li>
-  <li><a class="reference" href="#printLn,string,varargs[string,]"
-    title="printLn*(s: string; cols: varargs[string, `$`])"><wbr />print<wbr />Ln</a></li>
-  <li><a class="reference" href="#print,string,varargs[string,]"
-    title="print*(s: string; cols: varargs[string, `$`] = @ [white])"><wbr />print</a></li>
+  <li><a class="reference" href="#print,T,varargs[string,]"
+    title="print*[T](st: T; cols: varargs[string, `$`] = @ [white])"><wbr />print</a></li>
+  <li><a class="reference" href="#printLn,T,varargs[string,]"
+    title="printLn*[T](st: T; cols: varargs[string, `$`])"><wbr />print<wbr />Ln</a></li>
   <li><a class="reference" href="#printG,string"
     title="printG*(s: string)"><wbr />print<wbr />G</a></li>
   <li><a class="reference" href="#printGb,string"
@@ -1340,7 +1342,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="printLnRainbow*(astr: string; astyle: set[Style])"><wbr />print<wbr />Ln<wbr />Rainbow</a></li>
   <li><a class="reference" href="#printColStr,string,string_2"
     title="printColStr*(colstr: string; astr: string)"><wbr />print<wbr />Col<wbr />Str</a></li>
-  <li><a class="reference" href="#printLnColStr,string,varargs[string,]"
+  <li><a class="reference" href="#printLnColStr,string,varargs[string,]_2"
     title="printLnColStr*(colstr: string; mvastr: varargs[string, `$`])"><wbr />print<wbr />Ln<wbr />Col<wbr />Str</a></li>
   <li><a class="reference" href="#printBiCol,string,string,string,string"
     title="printBiCol*(s: string; sep: string; colLeft: string = &quot;yellow&quot;;
@@ -1417,6 +1419,8 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="getRandomInt*(mi: int = 0; ma: int = 1000000000): int"><wbr />get<wbr />Random<wbr />Int</a></li>
   <li><a class="reference" href="#createSeqInt,int,int,int"
     title="createSeqInt*(n: int = 10; mi: int = 0; ma: int = 1000000000): seq[int]"><wbr />create<wbr />Seq<wbr />Int</a></li>
+  <li><a class="reference" href="#ff,float,int64"
+    title="ff*(zz: float; n: int64 = 5): string"><wbr />ff</a></li>
   <li><a class="reference" href="#getRandomFloat,"
     title="getRandomFloat*(): float"><wbr />get<wbr />Random<wbr />Float</a></li>
   <li><a class="reference" href="#createSeqFloat,int"
@@ -1427,8 +1431,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
   <li><a class="reference" href="#shift,seq[T],Natural"
     title="shift*[T](x: var seq[T]; zz: Natural = 0): T"><wbr />shift</a></li>
-  <li><a class="reference" href="#ff,float,int64"
-    title="ff*(zz: float; n: int64 = 5): string"><wbr />ff</a></li>
   <li><a class="reference" href="#showStats,Runningstat"
     title="showStats*(x: Runningstat)"><wbr />show<wbr />Stats</a></li>
   <li><a class="reference" href="#newDir,string"
@@ -1680,7 +1682,12 @@ check execution timing with one line see doFinish
 </dd>
 <dt id="printColStr"><a name="printColStr,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">astr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
-forward declaration
+
+
+</dd>
+<dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dd>
+
 
 </dd>
 <dt id="hline"><a name="hline,string,int,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">hline</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;_&quot;</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">tw</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">)</span></pre></dt>
@@ -1727,20 +1734,7 @@ forward declaration
 
 
 </dd>
-<dt id="printLn"><a name="printLn,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLn</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
-<dd>
-<p>printLn</p>
-<p>displays colored strings and issues a newline when finished</p>
-<p>strings will be tokenized and colored according to colors in cols</p>
-<pre class = "listing"><span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="Identifier">st</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
-<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
-<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} : {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightwhite</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
-<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
-<span class="Comment"># can also pass a seq</span>
-<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah yep 1234      333122.12  [12,45] wahahahaha&quot;</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightred</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
-
-</dd>
-<dt id="print"><a name="print,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">print</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span> <span class="Other">=</span> <span class="Operator">@</span> <span class="Other">[</span><span class="Identifier">white</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dt id="print"><a name="print,T,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">print</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">st</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span> <span class="Other">=</span> <span class="Operator">@</span> <span class="Other">[</span><span class="Identifier">white</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>print</p>
 <p>similar to printLn</p>
@@ -1750,14 +1744,27 @@ forward declaration
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} : {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightwhite</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
-<span class="Comment"># also can use a seq or colors</span>
+<span class="Identifier">print</span><span class="Punctuation">(</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="DecNumber">123</span><span class="Punctuation">]</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">)</span>
 <span class="Identifier">print</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah yep 1234      333122.12  [12,45] wahahahaha&quot;</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightred</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="printLn"><a name="printLn,T,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLn</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">st</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">cols</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>printLn</p>
+<p>displays colored strings and issues a newline when finished</p>
+<p>strings will be tokenized and colored according to colors in cols</p>
+<pre class = "listing"><span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="DecNumber">789</span><span class="Punctuation">]</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
+<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
+<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} : {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightwhite</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
+<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
+<span class="Comment"># can also pass a seq</span>
+<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah yep 1234      333122.12  [12,45] wahahahaha&quot;</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightred</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="printG"><a name="printG,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printG</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printg</p>
-<p>prints string in green</p>
+<p>prints  a string in green to print out seq types use print or printLn procs</p>
 <p>following single color print routines are avaialable</p>
 <p>print&lt;color&gt;     ... prints string in said color no linefeed</p>
 <p>print&lt;color&gt;b    ... prints string in said color bright no linefeed</p>
@@ -2061,7 +2068,7 @@ printLnBlb  brightmagenta
 <pre class = "listing"><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice, it is in green !&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]_2"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printLnColStr</p>
 <p>similar to printColStr but issues a echo() command that is</p>
@@ -2394,6 +2401,13 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Identifier">echo</span> <span class="Identifier">createSeqInt</span><span class="Punctuation">(</span><span class="DecNumber">50</span><span class="Punctuation">,</span><span class="DecNumber">100</span><span class="Punctuation">,</span><span class="DecNumber">2000</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="ff"><a name="ff,float,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">ff</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span> <span class="Other">=</span> <span class="DecNumber">5</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>ff</p>
+<p>formats a float to string with n decimals </p>
+
+
+</dd>
 <dt id="getRandomFloat"><a name="getRandomFloat,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">getRandomFloat</span><span class="Operator">*</span><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
 <dd>
 <p>getRandomFloat</p>
@@ -2441,13 +2455,6 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">a</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">float</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="FloatNumber">1.5</span><span class="Punctuation">,</span> <span class="FloatNumber">23.3</span><span class="Punctuation">,</span> <span class="FloatNumber">3.4</span><span class="Punctuation">]</span>
 <span class="Identifier">echo</span> <span class="Identifier">shift</span><span class="Punctuation">(</span><span class="Identifier">a</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">a</span></pre>
-
-</dd>
-<dt id="ff"><a name="ff,float,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">ff</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">zz</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span> <span class="Other">=</span> <span class="DecNumber">5</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
-<dd>
-<p>ff</p>
-<p>formats a float to string with n decimals </p>
-
 
 </dd>
 <dt id="showStats"><a name="showStats,Runningstat"></a><pre><span class="Keyword">proc</span> <span class="Identifier">showStats</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">Runningstat</span><span class="Other">)</span></pre></dt>
@@ -2761,7 +2768,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-28 20:27:27 UTC</small>
+        <small>Made with Nim. Generated: 2015-09-30 22:11:07 UTC</small>
       </div>
     </div>
   </div>
