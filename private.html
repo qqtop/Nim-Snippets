@@ -1757,7 +1757,6 @@ check execution timing with one line see doFinish
 <span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
 <span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;{} : {} {}  --&gt;   {}&quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="DecNumber">123</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice&quot;</span><span class="Punctuation">,</span><span class="DecNumber">456</span><span class="Punctuation">,</span><span class="FloatNumber">768.5</span><span class="Punctuation">)</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightwhite</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
 <span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah&quot;</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">white</span><span class="Punctuation">,</span><span class="Identifier">red</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">)</span>
-<span class="Comment"># can also pass a seq</span>
 <span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;blah yep 1234      333122.12  [12,45] wahahahaha&quot;</span><span class="Punctuation">,</span><span class="Operator">@</span><span class="Punctuation">[</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="Identifier">brightred</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">,</span><span class="Identifier">cyan</span><span class="Punctuation">,</span><span class="Identifier">clrainbow</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -1765,15 +1764,13 @@ check execution timing with one line see doFinish
 <dd>
 <p>printg</p>
 <p>prints  a string in green to print out seq types use print or printLn procs</p>
-<p>following single color print routines are avaialable</p>
+<p>following single color print routines are available</p>
 <p>print&lt;color&gt;     ... prints string in said color no linefeed</p>
 <p>print&lt;color&gt;b    ... prints string in said color bright no linefeed</p>
 <p>printLn&lt;color&gt;   ... prints string in said color with linefeed</p>
 <p>printLn&lt;color&gt;b  ... prints string in said color bright with linefeed</p>
-<p>colors :  g green, r red, y yellow, c  cyan, w  white, b black</p>
-<blockquote><p>and bright types : types : gb,rb,yb,cb,wb</p></blockquote>
-<p>p&lt;color&gt; and pLn&lt;color&gt; routines complement the msgX templates</p>
-<p>templates are more flexible as they also accept other code blocks</p>
+<p>colors :  g green, r red, y yellow, c  cyan, w  white, b black ,bl blue , m magenta</p>
+<blockquote><p>and bright types : types : gb,rb,yb,cb,wb,blb,mb</p></blockquote>
 <pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">s</span> <span class="Operator">=</span> <span class="StringLit">&quot;color&quot;</span>
 <span class="Identifier">printLnG</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
 <span class="Identifier">printLnGb</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">)</span>
@@ -2063,15 +2060,15 @@ printLnBlb  brightmagenta
 <dd>
 <p>printColStr</p>
 <p>prints a string with a named color in colstr</p>
-<p>colors : green,red,cyan,yellow,white,black</p>
-<blockquote><p>brightgreen,brightred,brightcyan,brightyellow,brightwhite</p></blockquote>
+<p>colors : green,red,cyan,yellow,white,black,blue,magenta,clrainbow</p>
+<blockquote><p>brightgreen,brightred,brightcyan,brightyellow,brightwhite,brightblue,brightmagenta</p></blockquote>
 <pre class = "listing"><span class="Identifier">printColStr</span><span class="Punctuation">(</span><span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice, it is in green !&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
 <dt id="printLnColStr"><a name="printLnColStr,string,varargs[string,]_2"></a><pre><span class="Keyword">proc</span> <span class="Identifier">printLnColStr</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">colstr</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">mvastr</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Other">]</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>printLnColStr</p>
-<p>similar to printColStr but issues a echo() command that is</p>
+<p>similar to printColStr but issues a writeln() command that is</p>
 <p>every item will be shown on a new line in the same given color</p>
 <p>and most everything passed in will be converted to string</p>
 <pre class = "listing"><span class="Identifier">printLnColStr</span> <span class="Identifier">green</span><span class="Punctuation">,</span><span class="StringLit">&quot;Nice try 1&quot;</span><span class="Punctuation">,</span> <span class="FloatNumber">2.52234</span><span class="Punctuation">,</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="DecNumber">4</span><span class="Punctuation">,</span> <span class="DecNumber">5</span><span class="Punctuation">,</span> <span class="DecNumber">6</span><span class="Punctuation">]</span></pre>
@@ -2768,7 +2765,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-09-30 22:11:07 UTC</small>
+        <small>Made with Nim. Generated: 2015-10-01 12:28:54 UTC</small>
       </div>
     </div>
   </div>

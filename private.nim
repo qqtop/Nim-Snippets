@@ -376,7 +376,6 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
      ##    printLn("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
      ##    printLn("blah",green,white,red,cyan)    
-     ##    # can also pass a seq
      ##    printLn("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
      print(st,cols)
@@ -390,7 +389,7 @@ proc printG*(s:string) =
      ## prints  a string in green 
      ## to print out seq types use print or printLn procs
      ## 
-     ## following single color print routines are avaialable
+     ## following single color print routines are available
      ## 
      ## print<color>     ... prints string in said color no linefeed
      ## 
@@ -401,15 +400,10 @@ proc printG*(s:string) =
      ## printLn<color>b  ... prints string in said color bright with linefeed
      ##
      ## 
-     ## colors :  g green, r red, y yellow, c  cyan, w  white, b black
+     ## colors :  g green, r red, y yellow, c  cyan, w  white, b black ,bl blue , m magenta
      ## 
-     ##           and bright types : types : gb,rb,yb,cb,wb 
+     ##           and bright types : types : gb,rb,yb,cb,wb,blb,mb 
      ##            
-     ## 
-     ## p<color> and pLn<color> routines complement the msgX templates
-     ## 
-     ## templates are more flexible as they also accept other code blocks
-     ## 
      ## 
      ## .. code-block:: nim
      ##    var s = "color"
@@ -656,7 +650,8 @@ proc printLnMb*(s:string) =
      ## 
      msgMb() do: writeln(stdout,s)
 
-  
+
+# some procs with different background colors  
 proc printBonG*(astring:string) =      
       ## printBonG
       ## 
@@ -915,8 +910,6 @@ proc printLnRainbow*(astr : string,astyle:set[Style]) =
         else  : msgw() do  : writestyled($astr[x],astyle)
     echo()
     
-    
-
 
 
 proc printColStr*(colstr:string,astr:string) =
@@ -924,9 +917,9 @@ proc printColStr*(colstr:string,astr:string) =
       ##
       ## prints a string with a named color in colstr
       ##
-      ## colors : green,red,cyan,yellow,white,black
+      ## colors : green,red,cyan,yellow,white,black,blue,magenta,clrainbow
       ##
-      ##          brightgreen,brightred,brightcyan,brightyellow,brightwhite
+      ##          brightgreen,brightred,brightcyan,brightyellow,brightwhite,brightblue,brightmagenta
       ##
       ## .. code-block:: nim
       ##    printColStr(green,"Nice, it is in green !")
@@ -955,7 +948,7 @@ proc printColStr*(colstr:string,astr:string) =
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ## printLnColStr
     ##
-    ## similar to printColStr but issues a echo() command that is
+    ## similar to printColStr but issues a writeln() command that is
     ##
     ## every item will be shown on a new line in the same given color
     ##
@@ -1319,8 +1312,8 @@ proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
   # may be part of times.nim later
   # This is for the Julian calendar
   # Day & month start from one.
-  # original code from coffeeshop 
-  # but seems to be off for dates after 2100-03-01 which shud be a monday 
+  # original code from coffeepot 
+  # but seems to be off for dates after 2100-03-01 which should be a monday 
   # but it returned a tuesday .. 
   # 
   let
