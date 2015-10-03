@@ -1,6 +1,11 @@
 import os,strutils,parseopt2,strfmt,json,httpclient,private
 
 # Reinstall Nim Development version  only if build waterfall says successfull
+# suitable for linux 86_64 install only
+# we only update if build satus successful 
+# no update when build warnings or failure
+
+# under development
 
 ##############################################################
 # Change dirs as required
@@ -10,7 +15,7 @@ var bsjson = "/data4/NimStuff/buildstatus.json"  # path for tmp file download
 
 ##############################################################
 
-let VERSION = "1.5"
+let VERSION = "1.6"
 
 clearup()
 
@@ -36,14 +41,25 @@ proc checkBuildStatus(bss:string):bool =
       
       downloadFile(bss,bsjson)
       var jobj = parseFile(bsjson)
-      printLnBiCol("Builder Name : " & jobj["-1"]["builderName"].getstr,":")
+      printLnBiCol("Builder Name             : " & jobj["-1"]["builderName"].getstr,":")
       var cb : string = ""
-      cb = $(jobj["-1"]["text"].getElems[1])
-      if cb == """"successful"""":
-         printLnBiCol("Finished     : " & cb,":")
-         result = true
-      else:
-         result = false
+      var lcb = jobj["-1"]["text"].len
+      #echo "lcb : ",lcb
+      
+      for x in 0.. <lcb:
+        cb = $(jobj["-1"]["text"].getElems[x])
+        if x == 1 and cb == """"successful"""":
+           printGb("Build Status : Success. Updating compiler")
+           result = true
+        elif x == 0 and cb == """"warnings"""":
+           printLnBiCol("Build Status Warnings    : " & cb,":")
+           result = false
+        elif x == 0 and cb == """"failure"""":
+           printLnBiCol("Build Status Failure     : " & cb,":")
+           result = false
+        else :
+           printLnBiCol("Build Status Failure     : failed",":")
+           result = false 
           
   
 proc byebye() =
@@ -83,7 +99,7 @@ setcurrentdir(cp)
 if checkBuildStatus(buildjson) == true :
   
     decho(2)
-    printG("Ok we update")
+    
     discard os.execShellCmd("rm -rf Nim") 
     discard os.execShellCmd("git clone git://github.com/Araq/Nim.git")
     setcurrentdir(cp&"Nim")
