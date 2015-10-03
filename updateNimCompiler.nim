@@ -57,9 +57,9 @@ proc checkBuildStatus(bss:string):bool =
         elif x == 0 and cb == """"failure"""":
            printLnBiCol("Build Status Failure     : " & cb,":")
            result = false
-        else :
-           printLnBiCol("Build Status Failure     : failed",":")
-           result = false 
+#         else :
+#            printLnBiCol("Build Status Failure     : failed",":")
+#            result = false 
           
   
 proc byebye() =
@@ -113,7 +113,7 @@ if checkBuildStatus(buildjson) == true :
 else:
   
   decho(2)
-  printLnWonR(" Nim Waterfall BuildStatus : Failed .  Try update later ")
+  printLnWonR(" Nim Waterfall BuildStatus : Warnings or Failed .  Try update later ")
   decho(2)
     
 
