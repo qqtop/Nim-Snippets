@@ -33,7 +33,7 @@
 ##   Note        : may be improved at any time
 ##
 ##   Required    : see imports for modules expected to be available
-##   
+##  
 
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
@@ -332,9 +332,14 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##
      ## similar to printLn
      ## 
-     ## echoing of colored strings however without newline
+     ## echoing of colored tokenized strings however without newline
      ## 
      ## strings will be tokenized and colored according to colors in cols
+     ## 
+     ## NOTE : this proc does not play well with Nimborg/high_level.nim
+     ##        if using nimborg have another module with all nimborg related
+     ##        processing there and import procs from this module into the main prog.
+     ##         
      ## 
      ## .. code-block:: nim
      ##    print(st,@[clrainbow,white,red,cyan,yellow])
@@ -344,32 +349,32 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##    print(@[123,123,123],white,green,white)
      ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
-           
-     var col = newSeq[string]()
-     var c = 0
-     for x in cols:
-         col.add(x)
+            
      var pcol = ""
-     var s = $st    
-     for x in s.tokenize() :
-            if x.isSep == false:
+     var c = 0  
+     var s = $st  
+     for x in s.tokenize():
+          if x.isSep == false:
                 if c < cols.len:
-                  pcol = col[c]
+                    pcol = $cols[c]
                 else :
-                  pcol = white   
+                    pcol = white 
+                    
                 printColStr(pcol,x.token)
-                c += 1  
+                c += 1
               
-            else:
+          else:
                 write(stdout,x.token)
-       
+        
+    
 
 proc printLn*[T](st:T , cols: varargs[string, `$`]) =
-     ## printLn
+     ## printTLn
      ##
-     ## displays colored strings and issues a newline when finished
+     ## displays colored tokenized strings and issues a newline when finished
      ## 
      ## strings will be tokenized and colored according to colors in cols
+     ## 
      ## 
      ## .. code-block:: nim
      ##    printLn(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
