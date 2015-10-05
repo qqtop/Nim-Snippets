@@ -86,13 +86,13 @@ when defined(Linux):
     var tw* = getTerminalWidth()   ## terminalwidth available in tw
 
 
-# forward declarations
-proc printColStr*(colstr:string,astr:string)  
-proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) 
-proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") 
-proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") 
-proc hline*(n:int = tw,col:string = white)
-proc hlineLn*(n:int = tw,col:string = white)
+## forward declarations
+proc printColStr*(colstr:string,astr:string)  ## forward declaration
+proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
+proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
+proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
+proc hline*(n:int = tw,col:string = white) ## forward declaration
+proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 
 
 # templates
@@ -196,8 +196,6 @@ template hdx*(code:stmt):stmt =
    setforegroundcolor(fgWhite)
    echo repeat("+",tw)
    echo ""
-
-
 
 
 template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt {.immediate.} =
