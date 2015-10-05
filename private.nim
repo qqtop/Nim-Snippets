@@ -216,7 +216,6 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
      ##   echo()
      ##   printLn("Finished",clRainbow)
      ##   doFinish()
-
      ##
      ##
      ## Example 2
