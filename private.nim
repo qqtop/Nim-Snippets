@@ -324,7 +324,7 @@ proc dlineLn*(n:int = tw,lt:string = "-") =
         writeln(stdout,repeat(lt,n div lt.len))
         
  
-proc decho*(z:int)  =
+proc decho*(z:int = 1)  =
     ## decho
     ##
     ## blank lines creator
@@ -1965,6 +1965,43 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
       
 # Misc. routines 
 
+
+
+proc loopy*[T](ite:T,col:string = white,sep:string = " ") =
+     ## loopy
+     ## 
+     ## the lazy programmers quick for-loop display
+     ## 
+     ## Example for loopy and loopLn
+     ## 
+     ## .. code-block:: nim
+     ##    var z = 0.. 10      
+     ##    loopy(z,sep=",")  
+     ##    decho()
+     ##    loopyLn("hello world")
+     ##    loopy("hello world",black,"")
+     ##    decho()
+     ##    loopyLn(z,yellow)
+     ##    loopy(z,brightblue)
+     ##    decho()
+     ##    loopyLn([1,2,3,4],green)
+     ##    loopy(z,brightyellow)
+     ## 
+     for lv in ite:
+        printColStr(col,$lv & sep)
+           
+           
+proc loopyLn*[T](ite:T,col:string = white,sep:string = " ") =
+     ## loopyLn
+     ## 
+     ## the lazy programmers quick for-loop display with each item on a new line !   
+     ## 
+     ## Examples see loopy
+     ## 
+     for lv in ite:
+        printLnColStr(col,$lv & sep)
+                 
+
 proc harmonics*(n:int64):float64 =
      ## harmonics
      ##
@@ -2018,7 +2055,7 @@ proc showStats*(x:Runningstat) =
     ##    var z =  createSeqFloat(500000)
     ##    for x in z:
     ##        rs.push(x)
-    ##    statistics(rs)
+    ##    showStats(rs)
     ##    doFinish()
     ## 
     var sep = ":"
@@ -2056,19 +2093,19 @@ proc remDir*(dirname:string) =
   ## 
   
   if dirname == "/home" or dirname == "/" :
-     printLnRB("Directory " & dirname & " removal not allowed !")
+       printLnRB("Directory " & dirname & " removal not allowed !")
      
   else:
     
       if existsDir(dirname):
           
           try:
-            removeDir(dirname)
-            printLnG("Directory " & dirname & " deleted ok")
+              removeDir(dirname)
+              printLnG("Directory " & dirname & " deleted ok")
           except OSError:
-            printLnR("Directory " & dirname & " deletion failed")
+              printLnR("Directory " & dirname & " deletion failed")
       else:
-          printLnR("Directory " & dirname & " does not exists !")
+              printLnR("Directory " & dirname & " does not exists !")
 
 
 

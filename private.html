@@ -1251,7 +1251,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   <li><a class="reference" href="#dlineLn,int,string"
     title="dlineLn*(n: int = tw; lt: string = &quot;-&quot;)"><wbr />dline<wbr />Ln</a></li>
   <li><a class="reference" href="#decho,int"
-    title="decho*(z: int)"><wbr />decho</a></li>
+    title="decho*(z: int = 1)"><wbr />decho</a></li>
   <li><a class="reference" href="#curUp,int"
     title="curUp*(x: int = 1)"><wbr />cur<wbr />Up</a></li>
   <li><a class="reference" href="#curDn,int"
@@ -1439,6 +1439,10 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
     title="createSeqFloat*(n: int = 10): seq[float]"><wbr />create<wbr />Seq<wbr />Float</a></li>
   <li><a class="reference" href="#getRandomPointInCircle,float"
     title="getRandomPointInCircle*(radius: float): seq[float]"><wbr />get<wbr />Random<wbr />Point<wbr />In<wbr />Circle</a></li>
+  <li><a class="reference" href="#loopy,T,string,string"
+    title="loopy*[T](ite: T; col: string = white; sep: string = &quot; &quot;)"><wbr />loopy</a></li>
+  <li><a class="reference" href="#loopyLn,T,string,string"
+    title="loopyLn*[T](ite: T; col: string = white; sep: string = &quot; &quot;)"><wbr />loopy<wbr />Ln</a></li>
   <li><a class="reference" href="#harmonics,int64"
     title="harmonics*(n: int64): float64"><wbr />harmonics</a></li>
   <li><a class="reference" href="#shift,seq[T],Natural"
@@ -1752,7 +1756,7 @@ forward declaration
 <span class="Identifier">dlineLn</span><span class="Punctuation">(</span><span class="DecNumber">30</span><span class="Punctuation">,</span><span class="StringLit">&quot;/+/&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="decho"><a name="decho,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">decho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">z</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span></pre></dt>
+<dt id="decho"><a name="decho,int"></a><pre><span class="Keyword">proc</span> <span class="Identifier">decho</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">z</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span></pre></dt>
 <dd>
 <p>decho</p>
 <p>blank lines creator</p>
@@ -2490,6 +2494,32 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="loopy"><a name="loopy,T,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">loopy</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">ite</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot; &quot;</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>loopy</p>
+<p>the lazy programmers quick for-loop display</p>
+<p>Example for loopy and loopLn</p>
+<pre class = "listing"><span class="Keyword">var</span> <span class="Identifier">z</span> <span class="Operator">=</span> <span class="FloatNumber">0.</span><span class="Operator">.</span> <span class="DecNumber">10</span>
+<span class="Identifier">loopy</span><span class="Punctuation">(</span><span class="Identifier">z</span><span class="Punctuation">,</span><span class="Identifier">sep</span><span class="Operator">=</span><span class="StringLit">&quot;,&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">decho</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">loopyLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;hello world&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">loopy</span><span class="Punctuation">(</span><span class="StringLit">&quot;hello world&quot;</span><span class="Punctuation">,</span><span class="Identifier">black</span><span class="Punctuation">,</span><span class="StringLit">&quot;&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">decho</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">loopyLn</span><span class="Punctuation">(</span><span class="Identifier">z</span><span class="Punctuation">,</span><span class="Identifier">yellow</span><span class="Punctuation">)</span>
+<span class="Identifier">loopy</span><span class="Punctuation">(</span><span class="Identifier">z</span><span class="Punctuation">,</span><span class="Identifier">brightblue</span><span class="Punctuation">)</span>
+<span class="Identifier">decho</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">loopyLn</span><span class="Punctuation">(</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">,</span><span class="DecNumber">2</span><span class="Punctuation">,</span><span class="DecNumber">3</span><span class="Punctuation">,</span><span class="DecNumber">4</span><span class="Punctuation">]</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span>
+<span class="Identifier">loopy</span><span class="Punctuation">(</span><span class="Identifier">z</span><span class="Punctuation">,</span><span class="Identifier">brightyellow</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="loopyLn"><a name="loopyLn,T,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">loopyLn</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">ite</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">col</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Identifier">white</span><span class="Other">;</span> <span class="Identifier">sep</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot; &quot;</span><span class="Other">)</span></pre></dt>
+<dd>
+<p>loopyLn</p>
+<p>the lazy programmers quick for-loop display with each item on a new line !</p>
+<p>Examples see loopy </p>
+
+
+</dd>
 <dt id="harmonics"><a name="harmonics,int64"></a><pre><span class="Keyword">proc</span> <span class="Identifier">harmonics</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float64</span></pre></dt>
 <dd>
 <p>harmonics</p>
@@ -2515,7 +2545,7 @@ getNextMonday<pre class = "listing"><span class="Identifier">echo</span>  <span 
 <span class="Keyword">var</span> <span class="Identifier">z</span> <span class="Operator">=</span>  <span class="Identifier">createSeqFloat</span><span class="Punctuation">(</span><span class="DecNumber">500000</span><span class="Punctuation">)</span>
 <span class="Keyword">for</span> <span class="Identifier">x</span> <span class="Keyword">in</span> <span class="Identifier">z</span><span class="Punctuation">:</span>
     <span class="Identifier">rs</span><span class="Operator">.</span><span class="Identifier">push</span><span class="Punctuation">(</span><span class="Identifier">x</span><span class="Punctuation">)</span>
-<span class="Identifier">statistics</span><span class="Punctuation">(</span><span class="Identifier">rs</span><span class="Punctuation">)</span>
+<span class="Identifier">showStats</span><span class="Punctuation">(</span><span class="Identifier">rs</span><span class="Punctuation">)</span>
 <span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
@@ -2817,7 +2847,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-10-05 18:11:50 UTC</small>
+        <small>Made with Nim. Generated: 2015-10-05 20:09:10 UTC</small>
       </div>
     </div>
   </div>
