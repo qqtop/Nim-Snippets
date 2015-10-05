@@ -14,7 +14,7 @@
 ##   
 ##   OS          : Linux
 ##
-##   Description : private.nim is a public library with a collection of procs and templates
+##   Description : private.nim is a public library with a collection of simple procs and templates
 ##
 ##                 for colored display , date handling and more
 ##
@@ -84,12 +84,16 @@ when defined(Linux):
         result = toTwInt(size.col)
 
     var tw* = getTerminalWidth()   ## terminalwidth available in tw
-    var aline* = repeat("_",tw)    ## echo aline 
 
 
 # forward declarations
 proc printColStr*(colstr:string,astr:string)  
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) 
+proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") 
+proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") 
+proc hline*(n:int = tw,col:string = white)
+proc hlineLn*(n:int = tw,col:string = white)
+
 
 # templates
 
@@ -184,7 +188,6 @@ template msgmb*(code: stmt): stmt =
       setforegroundcolor(fgWhite)    
 
   
-  
 template hdx*(code:stmt):stmt =
    echo ""
    echo repeat("+",tw)
@@ -253,37 +256,76 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          finally:
              close(f)
      else:
-         let msg = "Cannot open file"
          echo ()
-         msgy() do : echo "Processing file " & curFile & ", stopped . Reason: ", msg
+         printLnBiCol("Error : Cannot open file " & curFile,":",red,yellow)
          quit()
 
 
 # output  horizontal lines
 
-proc hline*(s:string = "_",n:int = tw,col:string = white) =
+proc hline*(n:int = tw,col:string = white) =
      ## hline
      ## 
-     ## draw a line with variable line char and length no linefeed will be issued
+     ## draw a full line in stated length and color no linefeed will be issued
      ## 
-     ## defaults are "_" and full terminal width
+     ## defaults full terminal width and white
      ## 
      ## .. code-block:: nim
-     ##    hline("+",30,green)
+     ##    hline(30,green)
      ##     
      for x in 0.. <n:
-       printColStr(col,s)
+         printColStr(col,"_")
      
 
-proc dline*(n:int = tw) =
+
+proc hlineLn*(n:int = tw,col:string = white) =
+     ## hlineLn
+     ## 
+     ## draw a full line in stated length and color a linefeed will be issued
+     ## 
+     ## defaults full terminal width and white
+     ## 
+     ## .. code-block:: nim
+     ##    hlineLn(30,green)
+     ##     
+     for x in 0.. <n:
+         printColStr(col,"_")
+     writeln(stdout,"") 
+     
+
+
+proc dline*(n:int = tw,lt:string = "-") =
      ## dline
      ## 
      ## draw a line with given length in current terminal font color
+     ## line char can be changed
      ## 
-     echo repeat("-",n)
+     ## .. code-block:: nim
+     ##    dline(30)
+     ##    dline(30,"/+") 
+     ## 
+     ## 
+     if lt.len <= n:
+        writeln(stdout,repeat(lt,n div lt.len))
      
      
 
+proc dlineLn*(n:int = tw,lt:string = "-") =
+     ## dlineLn
+     ## 
+     ## draw a line with given length in current terminal font color
+     ## line char can be changed
+     ## 
+     ## and issue a new line
+     ## 
+     ## .. code-block:: nim
+     ##    dlineLn(30)
+     ##    dlineLn(30,"/+/") 
+     ##
+     if lt.len <= n:
+        writeln(stdout,repeat(lt,n div lt.len))
+        
+ 
 proc decho*(z:int)  =
     ## decho
     ##
@@ -293,7 +335,7 @@ proc decho*(z:int)  =
     ##    decho(10)
     ## to create 10 blank lines
     for x in 0.. <z:
-      echo()
+        writeln(stdout,"")
 
 
 # simple navigation
@@ -330,9 +372,7 @@ proc clearup*(x:int = 80) =
 proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## print
      ##
-     ## similar to printLn
-     ## 
-     ## echoing of colored tokenized strings however without newline
+     ## echoing of colored tokenized strings  without newline
      ## 
      ## strings will be tokenized and colored according to colors in cols
      ## 
@@ -375,6 +415,9 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      ## 
      ## strings will be tokenized and colored according to colors in cols
      ## 
+     ## NOTE : this proc does not play well with Nimborg/high_level.nim
+     ##        if using nimborg have another module with all nimborg related
+     ##        processing there and import procs from this module into the main prog.
      ## 
      ## .. code-block:: nim
      ##    printLn(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
@@ -447,6 +490,7 @@ proc printGb*(s:string) =
      ## 
      ## 
      msggb() do: write(stdout,s)
+
 
 
 proc printLnG*(s:string) = 
@@ -540,11 +584,13 @@ proc printCb*(s:string) =
      ## 
      msgcb() do: write(stdout,s)
 
+
 proc printLnC*(s:string) = 
      ## printLnC
      ## 
      ## 
      msgc() do: writeln(stdout,s)     
+
 
 proc printLnCb*(s:string) = 
      ## printLnCb
@@ -565,6 +611,7 @@ proc printWb*(s:string) =
      ## 
      ## 
      msgwb() do: write(stdout,s)
+
 
 proc printLnW*(s:string) = 
      ## printLnw
@@ -602,7 +649,6 @@ proc printBl*(s:string) =
      msgbl() do: write(stdout,s)
 
 
-
 proc printBlb*(s:string) = 
      ## printBlb  brightblue
      ## 
@@ -615,7 +661,6 @@ proc printLnBl*(s:string) =
      ## 
      ## 
      msgbl() do: writeln(stdout,s)
-
 
 
 proc printLnBlb*(s:string) = 
@@ -668,8 +713,7 @@ proc printBonG*(astring:string) =
       setforegroundcolor(fgWhite)
       setBackGroundColor(bgblack)
       
-      
-      
+     
 proc printLnBonG*(astring:string) =      
       ## printLnBonG
       ## 
@@ -708,7 +752,6 @@ proc printLnBonY*(astring:string) =
       setBackGroundColor(bgblack)
       writeln(stdout,"")
          
-   
    
    
 proc printBonR*(astring:string) =      
@@ -789,8 +832,7 @@ proc printLnWonB*(astring:string) =
       setBackGroundColor(bgblack)
       writeln(stdout,"")
          
-         
-         
+        
    
 proc printBlWonW*(astring:string) =      
       ## printBonR
@@ -817,8 +859,7 @@ proc printLnBlonW*(astring:string) =
       setBackGroundColor(bgblack)
       writeln(stdout,"")
          
-            
-         
+        
 
 proc rainbow*(astr : string) =
     ## rainbow
@@ -827,7 +868,6 @@ proc rainbow*(astr : string) =
     ##
     ## may not work with certain Rune
     ##
-
     var c = 0
     var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
@@ -1043,6 +1083,7 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:strin
      printColStr(colLeft,z[0] & sep)
      printLnColStr(colRight,z[1])  
      
+
 
 proc printHl*(s:string,substr:string,col:string) =
       ## printHl
@@ -1465,7 +1506,6 @@ proc getNextMonday*(adate:string):string =
     var ndatestr = ""
     if isNil(adate) == true :
         printLnR "Error received a date with value : nil"
-        
     else:
         
         if validdate(adate) == true:  
@@ -2308,10 +2348,11 @@ proc qqTop*() =
   ##
   ## prints qqTop in custom color
   ## 
-  printHl("qq","qq",cyan)
-  printHl("T","T",brightgreen)
-  printHl("o","o",brightred)
-  printHl("p","p",cyan)
+  printC("qq")
+  printGb("T")
+  printRb("o")
+  printC("p")
+
   
 
 proc doInfo*() =
@@ -2351,7 +2392,7 @@ proc doInfo*() =
   for pp in fi.permissions:
       printLnBiCol("                              : " & $pp,sep,green,black)
   printLnBiCol("Link Count                    : " & $(fi.linkCount),sep,green,black)
-  # these only make sense non executable files
+  # these only make sense for non executable files
   #printLnBiCol("Last Access                   : " & $(fi.lastAccessTime),sep,green,black)
   #printLnBiCol("Last Write                    : " & $(fi.lastWriteTime),sep,green,black)
   printLnBiCol("Creation                      : " & $(fi.creationTime),sep,green,black)
@@ -2386,7 +2427,7 @@ proc infoLine*() =
     ## 
     ## prints some info for current application
     ## 
-    echo aline
+    hlineLn()
     printColStr(brightyellow,"{:<14}".fmt("Application :"))
     printColStr(black,extractFileName(getAppFilename()))
     printColStr(black," | ")
@@ -2443,10 +2484,10 @@ proc handler*() {.noconv.} =
     ## 
     eraseScreen()
     echo()
-    echo aline
+    hlineLn()
     msgg() do: echo "Thank you for using     : ",getAppFilename()
     msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
-    echo aline
+    hlineLn()
     echo "private Version         : ", PRIVATLIBVERSION
     echo "Nim Version             : ", NimVersion
     printColStr(yellow,"{:<14}".fmt("Elapsed     : "))
