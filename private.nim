@@ -417,6 +417,7 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      ##        if using nimborg have another module with all nimborg related
      ##        processing there and import procs from this module into the main prog.
      ## 
+     ## 
      ## .. code-block:: nim
      ##    printLn(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
      ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
