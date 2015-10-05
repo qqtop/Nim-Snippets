@@ -1539,7 +1539,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Compiler    : Nim 0.11.3 dev</p>
 <p>OS          : Linux</p>
 <p>Description : private.nim is a public library with a collection of simple procs and templates</p>
-<blockquote><p><p>for colored display , date handling and more</p>
+<blockquote><p><p>for easy colored display in a linux terminal , date handling and more</p>
 <p>some procs may mirror functionality found in other moduls for convenience</p>
 </p></blockquote>
 <p>Usage       : import private</p>
@@ -1550,7 +1550,7 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
 <p>Note        : may be improved at any time</p>
 <p>Required    : see imports for modules expected to be available</p>
 </p></blockquote>
-forward declarations</p>
+</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -2775,36 +2775,14 @@ msgX templates convenience templates for colored text output the assumption is t
 <p>Example 1</p>
 <pre class = "listing"><span class="Keyword">let</span> <span class="Identifier">curFile</span><span class="Operator">=</span><span class="StringLit">&quot;/data5/notes.txt&quot;</span>    <span class="Comment"># some file</span>
 <span class="Identifier">withFile</span><span class="Punctuation">(</span><span class="Identifier">txt</span><span class="Punctuation">,</span> <span class="Identifier">curFile</span><span class="Punctuation">,</span> <span class="Identifier">fmRead</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
-    <span class="Keyword">while</span> <span class="DecNumber">1</span> <span class="Operator">==</span> <span class="DecNumber">1</span><span class="Punctuation">:</span>
-        <span class="Keyword">try</span><span class="Punctuation">:</span>
-           <span class="Identifier">stdout</span><span class="Operator">.</span><span class="Identifier">writeln</span><span class="Punctuation">(</span><span class="Identifier">txt</span><span class="Operator">.</span><span class="Identifier">readLine</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span>   <span class="Comment"># do something with the lines</span>
-        <span class="Keyword">except</span><span class="Punctuation">:</span>
-           <span class="Keyword">break</span>
+    <span class="Keyword">while</span> <span class="Identifier">true</span><span class="Punctuation">:</span>
+       <span class="Keyword">try</span><span class="Punctuation">:</span>
+          <span class="Identifier">printLnW</span><span class="Punctuation">(</span><span class="Identifier">txt</span><span class="Operator">.</span><span class="Identifier">readLine</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span>   <span class="Comment"># do something with the lines</span>
+       <span class="Keyword">except</span><span class="Punctuation">:</span>
+          <span class="Keyword">break</span>
 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-<span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">rainbow</span><span class="Punctuation">(</span><span class="StringLit">&quot;Finished&quot;</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre><p>Example 2</p>
-<pre class = "listing"><span class="Keyword">import</span> <span class="Identifier">private</span><span class="Punctuation">,</span><span class="Identifier">strutils</span><span class="Punctuation">,</span><span class="Identifier">strfmt</span>
-
-<span class="Keyword">let</span> <span class="Identifier">curFile</span><span class="Operator">=</span><span class="StringLit">&quot;/data5/notes.txt&quot;</span>
-<span class="Keyword">var</span> <span class="Identifier">lc</span> <span class="Operator">=</span> <span class="DecNumber">0</span>
-<span class="Keyword">var</span> <span class="Identifier">oc</span> <span class="Operator">=</span> <span class="DecNumber">0</span>
-<span class="Identifier">withFile</span><span class="Punctuation">(</span><span class="Identifier">txt</span><span class="Punctuation">,</span> <span class="Identifier">curFile</span><span class="Punctuation">,</span> <span class="Identifier">fmRead</span><span class="Punctuation">)</span><span class="Punctuation">:</span>
-       <span class="Keyword">while</span> <span class="DecNumber">1</span> <span class="Operator">==</span> <span class="DecNumber">1</span><span class="Punctuation">:</span>
-           <span class="Keyword">try</span><span class="Punctuation">:</span>
-              <span class="Identifier">inc</span> <span class="Identifier">lc</span>
-              <span class="Keyword">var</span> <span class="Identifier">al</span> <span class="Operator">=</span> <span class="Operator">$</span><span class="Identifier">txt</span><span class="Operator">.</span><span class="Identifier">readline</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-              <span class="Keyword">var</span> <span class="Identifier">sw</span> <span class="Operator">=</span> <span class="StringLit">&quot;the&quot;</span>   <span class="Comment"># find all lines containing : the</span>
-              <span class="Keyword">if</span> <span class="Identifier">al</span><span class="Operator">.</span><span class="Identifier">contains</span><span class="Punctuation">(</span><span class="Identifier">sw</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span><span class="Punctuation">:</span>
-                 <span class="Identifier">inc</span> <span class="Identifier">oc</span>
-                 <span class="Identifier">msgy</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span><span class="Punctuation">:</span> <span class="Identifier">write</span><span class="Punctuation">(</span><span class="Identifier">stdout</span><span class="Punctuation">,</span><span class="StringLit">&quot;{:&lt;8}{:&gt;6} {:&lt;7}{:&gt;6}  &quot;</span><span class="Operator">.</span><span class="Identifier">fmt</span><span class="Punctuation">(</span><span class="StringLit">&quot;Line :&quot;</span><span class="Punctuation">,</span><span class="Identifier">lc</span><span class="Punctuation">,</span><span class="StringLit">&quot;Count :&quot;</span><span class="Punctuation">,</span><span class="Identifier">oc</span><span class="Punctuation">)</span><span class="Punctuation">)</span>
-                 <span class="Identifier">printhl</span><span class="Punctuation">(</span><span class="Identifier">al</span><span class="Punctuation">,</span><span class="Identifier">sw</span><span class="Punctuation">,</span><span class="Identifier">green</span><span class="Punctuation">)</span>
-                 <span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-           <span class="Keyword">except</span><span class="Punctuation">:</span>
-              <span class="Keyword">break</span>
-
-<span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-<span class="Identifier">msgg</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Keyword">do</span> <span class="Punctuation">:</span> <span class="Identifier">rainbow</span><span class="Punctuation">(</span><span class="StringLit">&quot;Finished&quot;</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
+<span class="Identifier">printLn</span><span class="Punctuation">(</span><span class="StringLit">&quot;Finished&quot;</span><span class="Punctuation">,</span><span class="Identifier">clRainbow</span><span class="Punctuation">)</span>
+<span class="Identifier">doFinish</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
 
@@ -2817,7 +2795,7 @@ msgX templates convenience templates for colored text output the assumption is t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small>Made with Nim. Generated: 2015-10-05 16:35:20 UTC</small>
+        <small>Made with Nim. Generated: 2015-10-05 18:10:39 UTC</small>
       </div>
     </div>
   </div>

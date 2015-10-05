@@ -16,7 +16,7 @@
 ##
 ##   Description : private.nim is a public library with a collection of simple procs and templates
 ##
-##                 for colored display , date handling and more
+##                 for easy colored display in a linux terminal , date handling and more
 ##
 ##                 some procs may mirror functionality found in other moduls for convenience
 ##                 
@@ -86,7 +86,7 @@ when defined(Linux):
     var tw* = getTerminalWidth()   ## terminalwidth available in tw
 
 
-## forward declarations
+# forward declarations
 proc printColStr*(colstr:string,astr:string)  ## forward declaration
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
 proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
@@ -206,16 +206,17 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
      ## Example 1
      ##
      ## .. code-block:: nim
-     ##    let curFile="/data5/notes.txt"    # some file
-     ##    withFile(txt, curFile, fmRead):
-     ##        while 1 == 1:
-     ##            try:
-     ##               stdout.writeln(txt.readLine())   # do something with the lines
-     ##            except:
-     ##               break
-     ##    echo()
-     ##    msgg() do : rainbow("Finished")
-     ##    echo()
+     ##   let curFile="/data5/notes.txt"    # some file
+     ##   withFile(txt, curFile, fmRead):
+     ##       while true:
+     ##          try:
+     ##             printLnW(txt.readLine())   # do something with the lines
+     ##          except:
+     ##             break
+     ##   echo()
+     ##   printLn("Finished",clRainbow)
+     ##   doFinish()
+
      ##
      ##
      ## Example 2
@@ -241,8 +242,8 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
      ##                  break
      ##
      ##    echo()
-     ##    msgg() do : rainbow("Finished")
-     ##    echo()
+     ##    printLn("Finished",clRainbow)
+     ##    doFinish()
      ##
 
      let fn = filename
