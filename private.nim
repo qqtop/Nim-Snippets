@@ -104,98 +104,113 @@ template msgg*(code: stmt): stmt =
       ## naming of the templates is like msg+color so msgy => yellow
       ## use like : msgg() do : echo "How nice, it's in green"
 
-      setforegroundcolor(fgGreen)
+      setForeGroundColor(fgGreen)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 
 template msggb*(code: stmt): stmt   =
-      setforegroundcolor(fgGreen,true)
+      setForeGroundColor(fgGreen,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 
 template msgy*(code: stmt): stmt =
-      setforegroundcolor(fgYellow)
+      setForeGroundColor(fgYellow)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 
 template msgyb*(code: stmt): stmt =
-      setforegroundcolor(fgYellow,true)
+      setForeGroundColor(fgYellow,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgr*(code: stmt): stmt =
-      setforegroundcolor(fgRed)
+      setForeGroundColor(fgRed)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgrb*(code: stmt): stmt =
-      setforegroundcolor(fgRed,true)
+      setForeGroundColor(fgRed,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgc*(code: stmt): stmt =
-      setforegroundcolor(fgCyan)
+      setForeGroundColor(fgCyan)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgcb*(code: stmt): stmt =
-      setforegroundcolor(fgCyan,true)
+      setForeGroundColor(fgCyan,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgw*(code: stmt): stmt =
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgwb*(code: stmt): stmt =
-      setforegroundcolor(fgWhite,true)
+      setForeGroundColor(fgWhite,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
 
 template msgb*(code: stmt): stmt =
-      setforegroundcolor(fgBlack,true)
+      setForeGroundColor(fgBlack,true)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
       
 template msgbb*(code: stmt): stmt =
       # invisible on black background 
-      setforegroundcolor(fgBlack)
+      setForeGroundColor(fgBlack)
       code
-      setforegroundcolor(fgWhite)
+      setForeGroundColor(fgWhite)
   
 template msgbl*(code: stmt): stmt =
-      setforegroundcolor(fgBlue)
+      setForeGroundColor(fgBlue)
       code
-      setforegroundcolor(fgWhite)  
+      setForeGroundColor(fgWhite)  
   
 template msgblb*(code: stmt): stmt =
-      setforegroundcolor(fgBlue,true)
+      setForeGroundColor(fgBlue,true)
       code
-      setforegroundcolor(fgWhite)    
+      setForeGroundColor(fgWhite)    
   
 template msgm*(code: stmt): stmt =
-      setforegroundcolor(fgMagenta)
+      setForeGroundColor(fgMagenta)
       code
-      setforegroundcolor(fgWhite)  
+      setForeGroundColor(fgWhite)  
   
 template msgmb*(code: stmt): stmt =
-      setforegroundcolor(fgMagenta,true)
+      setForeGroundColor(fgMagenta,true)
       code
-      setforegroundcolor(fgWhite)    
+      setForeGroundColor(fgWhite)    
 
   
 template hdx*(code:stmt):stmt =
    echo ""
    echo repeat("+",tw)
-   setforegroundcolor(fgCyan)
+   setForeGroundColor(fgCyan)
    code
-   setforegroundcolor(fgWhite)
+   setForeGroundColor(fgWhite)
    echo repeat("+",tw)
    echo ""
+
+
+template prxCol():stmt = 
+      ## internal template
+      write(stdout,astring)
+      setForeGroundColor(fgWhite)
+      setBackGroundColor(bgblack)
+
+template prxLnCol():stmt =
+      ## internal template    
+      write(stdout,astring)
+      setForeGroundColor(fgWhite)
+      setBackGroundColor(bgblack)
+      writeln(stdout,"")
+
 
 
 template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt {.immediate.} =
@@ -701,16 +716,17 @@ proc printLnMb*(s:string) =
 
 
 # some procs with different background colors  
+# still work in progress to provide more combinations ...
+
+    
 proc printBonG*(astring:string) =      
       ## printBonG
       ## 
       ## black foregroundcolor on green background
       ## 
-      setBackGroundColor(bggreen)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setBackGroundColor(bgGreen)
+      setForeGroundColor(fgBlack)
+      prxCol()
       
      
 proc printLnBonG*(astring:string) =      
@@ -719,11 +735,70 @@ proc printLnBonG*(astring:string) =
       ## black foregroundcolor on green background with newline
       ## 
       setBackGroundColor(bggreen)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgBlack)
+      prxLnCol()
+   
+   
+proc printBbonG*(astring:string) =      
+      ## printBbonG
+      ## 
+      ## brightblack foregroundcolor on green background
+      ## 
+      setBackGroundColor(bgGreen)
+      setForeGroundColor(fgBlack,true)
+      prxCol()
+      
+     
+proc printLnBbonG*(astring:string) =      
+      ## printLnBbonG
+      ## 
+      ## brightblack foregroundcolor on green background with newline
+      ## 
+      setBackGroundColor(bggreen)
+      setForeGroundColor(fgBlack,true)
+      prxLnCol()
+   
+  
+   
+proc printBbonGb*(astring:string) =      
+      ## printBbonGb
+      ## 
+      ## brightblack foregroundcolor on brightgreen background
+      ## 
+      setBackGroundColor(bgGreen,true)
+      setForeGroundColor(fgBlack,true)
+      prxCol()
+      
+     
+proc printLnBbonGb*(astring:string) =      
+      ## printLnBbonGb
+      ## 
+      ## brightblack foregroundcolor on brightgreen background with newline
+      ## 
+      setBackGroundColor(bgGreen,true)
+      setForeGroundColor(fgBlack,true)
+      prxLnCol()
+   
+      
+         
+proc printBonGb*(astring:string) =      
+      ## printBonGb
+      ## 
+      ## black foregroundcolor on brightgreen background
+      ## 
+      setBackGroundColor(bgGreen,true)
+      setForeGroundColor(fgBlack)
+      prxCol()
+      
+     
+proc printLnBonGb*(astring:string) =      
+      ## printLnBonGb
+      ## 
+      ## black foregroundcolor on brightgreen background with newline
+      ## 
+      setBackGroundColor(bgGreen,true)
+      setForeGroundColor(fgBlack)
+      prxLnCol()
    
    
 proc printBonY*(astring:string) =      
@@ -732,10 +807,8 @@ proc printBonY*(astring:string) =
       ## black foregroundcolor on yellow background
       ## 
       setBackGroundColor(bgyellow)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setForeGroundColor(fgBlack)
+      prxCol()
       
       
       
@@ -745,11 +818,8 @@ proc printLnBonY*(astring:string) =
       ## black foregroundcolor on yellow background with newline
       ## 
       setBackGroundColor(bgyellow)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgBlack)
+      prxLnCol()
          
    
    
@@ -759,10 +829,8 @@ proc printBonR*(astring:string) =
       ## black foregroundcolor on red background
       ## 
       setBackGroundColor(bgred)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setForeGroundColor(fgBlack)
+      prxCol()
       
       
       
@@ -772,11 +840,8 @@ proc printLnBonR*(astring:string) =
       ## black foregroundcolor on red background with newline
       ## 
       setBackGroundColor(bgred)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgBlack)
+      prxLnCol()
          
       
    
@@ -786,10 +851,8 @@ proc printWonR*(astring:string) =
       ## white foregroundcolor on red background
       ## 
       setBackGroundColor(bgred)
-      setforegroundcolor(fgWhite)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setForeGroundColor(fgWhite)
+      prxCol()
       
       
       
@@ -799,66 +862,120 @@ proc printLnWonR*(astring:string) =
       ## white foregroundcolor on red background with newline
       ## 
       setBackGroundColor(bgred)
-      setforegroundcolor(fgWhite)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgWhite)
+      prxLnCol()
          
    
 proc printWonB*(astring:string) =      
-      ## printBonR
+      ## printWonB
       ## 
       ## white foregroundcolor on black background
       ## 
       setBackGroundColor(bgwhite)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setForeGroundColor(fgBlack)
+      prxCol()
       
       
       
 proc printLnWonB*(astring:string) =      
       ## printLnWonB
       ## 
-      ## white foregroundcolor on red background with newline
+      ## white foregroundcolor on black background with newline
       ## 
       setBackGroundColor(bgwhite)
-      setforegroundcolor(fgBlack)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgBlack)
+      prxLnCol()
          
         
    
-proc printBlWonW*(astring:string) =      
-      ## printBonR
+proc printBlonW*(astring:string) =      
+      ## printBlonW
       ## 
-      ## blue foregroundcolor on black background
+      ## blue foregroundcolor on white background
       ## 
       setBackGroundColor(bgWhite)
-      setforegroundcolor(fgBlue)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
+      setForeGroundColor(fgBlue)
+      prxCol()
       
       
       
 proc printLnBlonW*(astring:string) =      
-      ## printLnWonB
+      ## printLnBlonW
       ## 
-      ## white foregroundcolor on red background with newline
+      ## blue foregroundcolor on white background with newline
       ## 
       setBackGroundColor(bgwhite)
-      setforegroundcolor(fgBlue)
-      write(stdout,astring)
-      setforegroundcolor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
+      setForeGroundColor(fgBlue)
+      prxLnCol()
          
-        
+
+  
+proc printConBl*(astring:string) =      
+      ## printConBl
+      ## 
+      ## cyan foregroundcolor on blue background
+      ## 
+      setBackGroundColor(bgBlue)
+      setForeGroundColor(fgCyan)
+      prxCol()
+      
+      
+      
+proc printLnConBl*(astring:string) =      
+      ## printLnConBl
+      ## 
+      ## cyan foregroundcolor on blue background with newline
+      ## 
+      setBackGroundColor(bgBlue)
+      setForeGroundColor(fgCyan)
+      prxLnCol()
+         
+
+
+  
+proc printCbonBl*(astring:string) =      
+      ## printCbonBl
+      ## 
+      ## brightcyan foregroundcolor on blue background
+      ## 
+      setBackGroundColor(bgBlue)
+      setForeGroundColor(fgCyan,true)
+      prxCol()
+      
+      
+      
+proc printLnCbonBl*(astring:string) =      
+      ## printLnCbonBl
+      ## 
+      ## brightcyan foregroundcolor on blue background with newline
+      ## 
+      setBackGroundColor(bgBlue)
+      setForeGroundColor(fgCyan,true)
+      prxLnCol()
+         
+  
+proc printCbonBlb*(astring:string) =      
+      ## printCbonBlb
+      ## 
+      ## brightcyan foregroundcolor on brightblue background
+      ## 
+      setBackGroundColor(bgBlue,true)
+      setForeGroundColor(fgCyan,true)
+      prxCol()
+      
+
+      
+proc printLnCbonBlb*(astring:string) =      
+      ## printLnCbonBl
+      ## 
+      ## brightcyan foregroundcolor on brightblue background with newline
+      ## 
+      setBackGroundColor(bgBlue,true)
+      setForeGroundColor(fgCyan,true)
+      prxLnCol()
+            
+
+
 
 proc rainbow*(astr : string) =
     ## rainbow
@@ -1971,6 +2088,9 @@ proc loopy*[T](ite:T,col:string = white,sep:string = " ") =
      ## loopy
      ## 
      ## the lazy programmers quick for-loop display
+     ## 
+     ## Todo : passing other than simple arrays,seqs or strings
+     ##        like iterators or code blocks
      ## 
      ## Example for loopy and loopLn
      ## 
