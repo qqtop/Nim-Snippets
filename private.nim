@@ -441,10 +441,12 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
 
 
 
-proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
+proc printLnBR*[T](astring:T,fg:ForegroundColor, bg:BackgroundColor) =
     ## printLnBR  
     ## 
-    ## print a string in bright fg color and bright bg color and issue a new line 
+    ## print a string/number in bright fg color and bright bg color and issue a new line 
+    ## 
+    ## Note : these proc uses the terminal color constants to specify fore and background color
     ## 
     ## .. code-block:: nim
     ##    import private
@@ -461,11 +463,13 @@ proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
     prxBCol
     writeln(stdout,"")
 
-proc printBR*(astring:string,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
+proc printBR*[T](astring:T,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
     ## printBR  
     ## 
-    ## print a string in bright fg color and bright bg color 
+    ## print a string/number in bright fg color and bright bg color 
     ## 
+    ## Note : these proc uses the terminal color constants to specify fore and background color
+    ##
     ## .. code-block:: nim
     ##    printBR("This is the string ",fgBlue,bgBlack)
     ## 
@@ -478,10 +482,12 @@ proc printBR*(astring:string,fg:ForegroundColor = fgWhite, bg:BackgroundColor = 
     
 
 
-proc printLnBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
+proc printLnBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
     ## printLnBF  
     ## 
-    ## print a string in bright fg color  and  non bright bg color and issue a new line 
+    ## print a string/number in bright fg color  and  non bright bg color and issue a new line 
+    ## 
+    ## Note : these proc uses the terminal color constants to specify fore and background color 
     ## 
     ## .. code-block:: nim
     ##    printLnBF("This is the string ",fgBlue)
@@ -493,11 +499,13 @@ proc printLnBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor =
     prxBCol
     writeln(stdout,"")
 
-proc printBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
+proc printBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
     ## printBF  
     ## 
-    ## print a string in bright fg color  and non bright bg color
+    ## print a string/number in bright fg color  and non bright bg color
     ## 
+    ## Note : these proc uses the terminal color constants to specify fore and background color
+    ##  
     ## .. code-block:: nim
     ##    printLnB("This is the string ",fgBlue,bgBlack)
     ## 
@@ -511,7 +519,7 @@ proc printBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor = b
 proc printLnBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
     ## printLnBB  
     ## 
-    ## print a string in non bright fg color and bright bg color and issue a new line 
+    ## print a string/number in non bright fg color and bright bg color and issue a new line 
     ## 
     ## .. code-block:: nim
     ##    printLnBB("This is the string ",fgBlue,bgBlack)
@@ -526,7 +534,7 @@ proc printLnBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor =
 proc printBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
     ## printBB  
     ## 
-    ## print a string in non bright fg color and bright bg color 
+    ## print a string/number in non bright fg color and bright bg color 
     ## 
     ## .. code-block:: nim
     ##    printBB("This is the string ",fgBlue,bgBlack)
@@ -538,10 +546,10 @@ proc printBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = b
     prxBCol
     
 
-proc printG*(s:string) = 
+proc printG*[T](s:T) = 
      ## printg
      ## 
-     ## prints  a string in green 
+     ## prints  a string/number in green 
      ## to print out seq types use print or printLn procs
      ## 
      ## following single color print routines are available
@@ -592,7 +600,7 @@ proc printG*(s:string) =
      msgg() do: write(stdout,s)
 
 
-proc printGb*(s:string) = 
+proc printGb*[T](s:T) = 
      ## printGb
      ## 
      ## 
@@ -600,7 +608,7 @@ proc printGb*(s:string) =
 
 
 
-proc printLnG*(s:string) = 
+proc printLnG*[T](s:T) = 
      ## printLnG
      ## 
      ## prints a string in green and issues a newline
@@ -609,7 +617,7 @@ proc printLnG*(s:string) =
      
 
 
-proc printLnGb*(s:string) = 
+proc printLnGb*[T](s:T) = 
      ## printLnGb
      ## 
      ## prints a string in bright green and issues a newline
@@ -618,28 +626,28 @@ proc printLnGb*(s:string) =
      
 
 
-proc printR*(s:string) = 
+proc printR*[T](s:T) = 
      ## printR 
      ## 
      ## 
      msgr() do: write(stdout,s)
 
 
-proc printRb*(s:string) = 
+proc printRb*[T](s:T) = 
      ## printRb 
      ## 
      ## 
      msgrb() do: write(stdout,s)
 
 
-proc printLnR*(s:string) = 
+proc printLnR*[T](s:T) = 
      ## printLnR
      ##
      ##
      msgr() do: writeln(stdout,s)  
      
 
-proc printLnRb*(s:string) = 
+proc printLnRb*[T](s:T) = 
      ## printLnRb
      ##
      ##
@@ -647,28 +655,28 @@ proc printLnRb*(s:string) =
      
      
 
-proc printY*(s:string) = 
+proc printY*[T](s:T) = 
      ## printY
      ## 
      ## 
      msgy() do: write(stdout,s)
 
 
-proc printYb*(s:string) = 
+proc printYb*[T](s:T) = 
      ## printY
      ## 
      ## 
      msgyb() do: write(stdout,s)
 
 
-proc printLnY*(s:string) = 
+proc printLnY*[T](s:T) = 
      ## printLnY
      ## 
      ## 
      msgy() do: writeln(stdout,s)
 
 
-proc printLnYb*(s:string) = 
+proc printLnYb*[T](s:T) = 
      ## printLnYb
      ## 
      ## 
@@ -676,7 +684,7 @@ proc printLnYb*(s:string) =
 
 
      
-proc printC*(s:string) = 
+proc printC*[T](s:T) = 
      ## printC
      ## 
      ## 
@@ -684,63 +692,63 @@ proc printC*(s:string) =
 
 
      
-proc printCb*(s:string) = 
+proc printCb*[T](s:T) = 
      ## printCb
      ## 
      ## 
      msgcb() do: write(stdout,s)
 
 
-proc printLnC*(s:string) = 
+proc printLnC*[T](s:T) = 
      ## printLnC
      ## 
      ## 
      msgc() do: writeln(stdout,s)     
 
 
-proc printLnCb*(s:string) = 
+proc printLnCb*[T](s:T) = 
      ## printLnCb
      ## 
      ## 
      msgcb() do: writeln(stdout,s)
 
 
-proc printW*(s:string) = 
+proc printW*[T](s:T) = 
      ## printW
      ## 
      ## 
      msgw() do: write(stdout,s)
 
 
-proc printWb*(s:string) = 
+proc printWb*[T](s:T) = 
      ## printWb
      ## 
      ## 
      msgwb() do: write(stdout,s)
 
 
-proc printLnW*(s:string) = 
+proc printLnW*[T](s:T) = 
      ## printLnw
      ## 
      ## 
      msgw() do: writeln(stdout,s)     
 
 
-proc printLnWb*(s:string) = 
+proc printLnWb*[T](s:T) = 
      ## printLnWb
      ## 
      ## 
      msgwb() do: writeln(stdout,s)
 
 
-proc printB*(s:string) = 
+proc printB*[T](s:T) = 
      ## printB   black
      ## 
      ## 
      msgb() do: write(stdout,s)
 
 
-proc printLnB*(s:string) = 
+proc printLnB*[T](s:T) = 
      ## printLnB   grey
      ## 
      ## 
@@ -748,28 +756,28 @@ proc printLnB*(s:string) =
 
 
 
-proc printBl*(s:string) = 
+proc printBl*[T](s:T) = 
      ## printBl  darkblue
      ## 
      ## 
      msgbl() do: write(stdout,s)
 
 
-proc printBlb*(s:string) = 
+proc printBlb*[T](s:T) = 
      ## printBlb  brightblue
      ## 
      ## 
      msgblb() do: write(stdout,s)
 
 
-proc printLnBl*(s:string) = 
+proc printLnBl*[T](s:T) = 
      ## printLnBl  darkblue
      ## 
      ## 
      msgbl() do: writeln(stdout,s)
 
 
-proc printLnBlb*(s:string) = 
+proc printLnBlb*[T](s:T) = 
      ## printLnBlb  brightblue
      ## 
      ## 
@@ -777,7 +785,7 @@ proc printLnBlb*(s:string) =
 
 
 
-proc printM*(s:string) = 
+proc printM*[T](s:T) = 
      ## printM magenta
      ## 
      ## 
@@ -785,7 +793,7 @@ proc printM*(s:string) =
 
 
 
-proc printMb*(s:string) = 
+proc printMb*[T](s:T) = 
      ## printMb  brightmagenta
      ## 
      ## 
@@ -793,14 +801,14 @@ proc printMb*(s:string) =
 
 
 
-proc printLnM*(s:string) = 
+proc printLnM*[T](s:T) = 
      ## printLnBl  magenta
      ## 
      ## 
      msgM() do: writeln(stdout,s)
 
 
-proc printLnMb*(s:string) = 
+proc printLnMb*[T](s:T) = 
      ## printLnBlb  brightmagenta
      ## 
      ## 
@@ -808,34 +816,35 @@ proc printLnMb*(s:string) =
 
 
 
-proc rainbow*(astr : string) =
+proc rainbow*[T](s : T) =
     ## rainbow
     ##
     ## multicolored string
     ##
     ## may not work with certain Rune
     ##
+    var astr = $s
     var c = 0
     var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
        case c
-        of 1  : msgg() do  : write(stdout,astr[x])
-        of 2  : msgr() do  : write(stdout,astr[x])
-        of 3  : msgc() do  : write(stdout,astr[x])
-        of 4  : msgy() do  : write(stdout,astr[x])
-        of 5  : msggb() do : write(stdout,astr[x])
-        of 6  : msgr() do  : write(stdout,astr[x])
-        of 7  : msgwb() do : write(stdout,astr[x])
-        of 8  : msgc() do  : write(stdout,astr[x])
-        of 9  : msgyb() do : write(stdout,astr[x])
-        of 10 : msgrb() do : write(stdout,astr[x])
-        of 11 : msgcb() do : write(stdout,astr[x])
-        of 12 : msgmb() do : write(stdout,astr[x])
-        else  : msgw() do  : write(stdout,astr[x])
+        of 1  : msgg() do  : write(stdout,$astr[x])
+        of 2  : msgr() do  : write(stdout,$astr[x])
+        of 3  : msgc() do  : write(stdout,$astr[x])
+        of 4  : msgy() do  : write(stdout,$astr[x])
+        of 5  : msggb() do : write(stdout,$astr[x])
+        of 6  : msgr() do  : write(stdout,$astr[x])
+        of 7  : msgwb() do : write(stdout,$astr[x])
+        of 8  : msgc() do  : write(stdout,$astr[x])
+        of 9  : msgyb() do : write(stdout,$astr[x])
+        of 10 : msgrb() do : write(stdout,$astr[x])
+        of 11 : msgcb() do : write(stdout,$astr[x])
+        of 12 : msgmb() do : write(stdout,$astr[x])
+        else  : msgw() do  : write(stdout,$astr[x])
 
 
-proc printRainbow*(astr : string,astyle:set[Style]) =
+proc printRainbow*[T](s : T,astyle:set[Style]) =
     ## printRainbow
     ##
     ## print multicolored string with styles , for available styles see printStyled
@@ -846,7 +855,7 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
     ##    printRainBow("WoW So Nice",{styleUnderScore})
     ##    printRainBow("  --> No Style",{}) 
     ##
-
+    var astr = $s
     var c = 0
     var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
@@ -868,7 +877,7 @@ proc printRainbow*(astr : string,astyle:set[Style]) =
 
 
 
-proc printLnRainbow*(astr : string,astyle:set[Style]) =
+proc printLnRainbow*[T](s : T,astyle:set[Style]) =
     ## printLnRainbow
     ##
     ## print multicolored string with styles , for available styles see printStyled
@@ -881,7 +890,7 @@ proc printLnRainbow*(astr : string,astyle:set[Style]) =
     ##    printLnRainBow("WoW So Nice",{styleUnderScore})
     ##    printLnRainBow("Aha --> No Style",{}) 
     ##
-
+    var astr = $s 
     var c = 0
     var a = toSeq(1.. 13)
     for x in 0.. <astr.len:
