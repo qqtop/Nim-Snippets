@@ -384,6 +384,8 @@ proc clearup*(x:int = 80) =
 # these procs have similar functionality  
 # print and printLn tokenize strings for selective coloring if required
 # and can be used for most standard echo like displaying jobs
+# printBR,printLnBR,printBF,printLnBF,printBB,printLnBB are mainly used for
+# output with bright foregroundcolor and or backgroundcolor requirements
 
 proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## print
@@ -452,12 +454,16 @@ template prxBCol():stmt =
       setBackGroundColor(bgblack)
 
 proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
-    ## printLnB  
+    ## printLnBR  
     ## 
     ## print a string in bright fg color and bright bg color and issue a new line 
     ## 
     ## .. code-block:: nim
-    ##    printLnB("This is the string ",fgBlue,bgBlack)
+    ##    import private
+    ##    printLnBR("This is the string ",fgWhite,bgBlack)
+    ##    printLnBB("This is the string ",fgBlue,bgYellow)
+    ##    printLnBF("This is the string ",fgGreen,bgBlack)
+    ##    doFinish()
     ## 
     var gFG = ord(fg)
     inc(gFG, 60)
@@ -468,12 +474,12 @@ proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
     writeln(stdout,"")
 
 proc printBR*(astring:string,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
-    ## printB  
+    ## printBR  
     ## 
     ## print a string in bright fg color and bright bg color 
     ## 
     ## .. code-block:: nim
-    ##    printB("This is the string ",fgBlue,bgBlack)
+    ##    printBR("This is the string ",fgBlue,bgBlack)
     ## 
     var gFG = ord(fg)
     inc(gFG, 60)
