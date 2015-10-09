@@ -60,6 +60,9 @@ const
          
 type
      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
+     Pfg* = terminal.ForegroundColor
+     Pbg* = terminal.BackgroundColor
+
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -443,7 +446,103 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      print(st,cols)
      writeln(stdout,"")
 
+template prxBCol():stmt = 
+      ## internal template
+      setForeGroundColor(fgWhite)
+      setBackGroundColor(bgblack)
 
+proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
+    ## printLnB  
+    ## 
+    ## print a string in bright fg color and bright bg color and issue a new line 
+    ## 
+    ## .. code-block:: nim
+    ##    printLnB("This is the string ",fgBlue,bgBlack)
+    ## 
+    var gFG = ord(fg)
+    inc(gFG, 60)
+    var gBG = ord(bg)
+    inc(gBG, 60)
+    stdout.write("\e[" & $gFG & 'm' & "\e[" & $gBG & 'm' & $astring)
+    prxBCol
+    writeln(stdout,"")
+
+proc printBR*(astring:string,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
+    ## printB  
+    ## 
+    ## print a string in bright fg color and bright bg color 
+    ## 
+    ## .. code-block:: nim
+    ##    printB("This is the string ",fgBlue,bgBlack)
+    ## 
+    var gFG = ord(fg)
+    inc(gFG, 60)
+    var gBG = ord(bg)
+    inc(gBG, 60)
+    stdout.write("\e[" & $gFG & 'm' & "\e[" & $gBG & 'm' & $astring)
+    prxBCol
+    
+
+
+proc printLnBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
+    ## printLnBF  
+    ## 
+    ## print a string in bright fg color  and  non bright bg color and issue a new line 
+    ## 
+    ## .. code-block:: nim
+    ##    printLnBF("This is the string ",fgBlue)
+    ## 
+    setBackGroundColor(bg)
+    var gFG = ord(fg)
+    inc(gFG, 60)
+    stdout.write("\e[" & $gFg & 'm' & $astring)
+    prxBCol
+    writeln(stdout,"")
+
+proc printBF*(astring:string,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
+    ## printBF  
+    ## 
+    ## print a string in bright fg color  and non bright bg color
+    ## 
+    ## .. code-block:: nim
+    ##    printLnB("This is the string ",fgBlue,bgBlack)
+    ## 
+    setBackGroundColor(bg)
+    var gFG = ord(fg)
+    inc(gFG, 60)
+    stdout.write("\e[" & $gFG & 'm' & $astring)
+    prxBCol
+
+
+proc printLnBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
+    ## printLnBB  
+    ## 
+    ## print a string in non bright fg color and bright bg color and issue a new line 
+    ## 
+    ## .. code-block:: nim
+    ##    printLnBB("This is the string ",fgBlue,bgBlack)
+    ## 
+    setForeGroundColor(fg)
+    var gBG = ord(bg)
+    inc(gBG, 60)
+    stdout.write("\e[" & $gBG & 'm' & $astring)
+    prxBCol
+    writeln(stdout,"")
+
+proc printBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
+    ## printBB  
+    ## 
+    ## print a string in non bright fg color and bright bg color 
+    ## 
+    ## .. code-block:: nim
+    ##    printBB("This is the string ",fgBlue,bgBlack)
+    ## 
+    setForeGroundColor(fg)
+    var gBG = ord(bg)
+    inc(gBG, 60)
+    stdout.write("\e[" & $gBG & 'm' & $astring)
+    prxBCol
+    
 
 proc printG*(s:string) = 
      ## printg
