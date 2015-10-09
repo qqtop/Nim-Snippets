@@ -400,7 +400,8 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##         
      ## 
      ## .. code-block:: nim
-     ##    print(st,@[clrainbow,white,red,cyan,yellow])
+     ##    import private,strfmt
+     ##    print("test",@[clrainbow,white,red,cyan,yellow])
      ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
      ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
      ##    print("blah",green,white,red,cyan) 
