@@ -427,7 +427,7 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
     
 
 proc printLn*[T](st:T , cols: varargs[string, `$`]) =
-     ## printTLn
+     ## printLn
      ##
      ## displays colored tokenized strings and issues a newline when finished
      ## 
