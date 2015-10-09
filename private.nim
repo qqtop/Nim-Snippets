@@ -199,21 +199,11 @@ template hdx*(code:stmt):stmt =
    setForeGroundColor(fgWhite)
    echo repeat("+",tw)
    echo ""
-
-
-template prxCol():stmt = 
+      
+template prxBCol():stmt = 
       ## internal template
-      write(stdout,astring)
       setForeGroundColor(fgWhite)
       setBackGroundColor(bgblack)
-
-template prxLnCol():stmt =
-      ## internal template    
-      write(stdout,astring)
-      setForeGroundColor(fgWhite)
-      setBackGroundColor(bgblack)
-      writeln(stdout,"")
-
 
 
 template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt {.immediate.} =
@@ -449,10 +439,7 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      print(st,cols)
      writeln(stdout,"")
 
-template prxBCol():stmt = 
-      ## internal template
-      setForeGroundColor(fgWhite)
-      setBackGroundColor(bgblack)
+
 
 proc printLnBR*(astring:string,fg:ForegroundColor, bg:BackgroundColor) =
     ## printLnBR  
@@ -645,7 +632,6 @@ proc printRb*(s:string) =
      msgrb() do: write(stdout,s)
 
 
-
 proc printLnR*(s:string) = 
      ## printLnR
      ##
@@ -819,267 +805,6 @@ proc printLnMb*(s:string) =
      ## 
      ## 
      msgMb() do: writeln(stdout,s)
-
-
-# some procs with different background colors  
-# still work in progress to provide more combinations ...
-
-    
-proc printBonG*(astring:string) =      
-      ## printBonG
-      ## 
-      ## black foregroundcolor on green background
-      ## 
-      setBackGroundColor(bgGreen)
-      setForeGroundColor(fgBlack)
-      prxCol()
-      
-     
-proc printLnBonG*(astring:string) =      
-      ## printLnBonG
-      ## 
-      ## black foregroundcolor on green background with newline
-      ## 
-      setBackGroundColor(bggreen)
-      setForeGroundColor(fgBlack)
-      prxLnCol()
-   
-   
-proc printBbonG*(astring:string) =      
-      ## printBbonG
-      ## 
-      ## brightblack foregroundcolor on green background
-      ## 
-      setBackGroundColor(bgGreen)
-      setForeGroundColor(fgBlack,true)
-      prxCol()
-      
-     
-proc printLnBbonG*(astring:string) =      
-      ## printLnBbonG
-      ## 
-      ## brightblack foregroundcolor on green background with newline
-      ## 
-      setBackGroundColor(bggreen)
-      setForeGroundColor(fgBlack,true)
-      prxLnCol()
-   
-  
-   
-proc printBbonGb*(astring:string) =      
-      ## printBbonGb
-      ## 
-      ## brightblack foregroundcolor on brightgreen background
-      ## 
-      setBackGroundColor(bgGreen,true)
-      setForeGroundColor(fgBlack,true)
-      prxCol()
-      
-     
-proc printLnBbonGb*(astring:string) =      
-      ## printLnBbonGb
-      ## 
-      ## brightblack foregroundcolor on brightgreen background with newline
-      ## 
-      setBackGroundColor(bgGreen,true)
-      setForeGroundColor(fgBlack,true)
-      prxLnCol()
-   
-      
-         
-proc printBonGb*(astring:string) =      
-      ## printBonGb
-      ## 
-      ## black foregroundcolor on brightgreen background
-      ## 
-      setBackGroundColor(bgGreen,true)
-      setForeGroundColor(fgBlack)
-      prxCol()
-      
-     
-proc printLnBonGb*(astring:string) =      
-      ## printLnBonGb
-      ## 
-      ## black foregroundcolor on brightgreen background with newline
-      ## 
-      setBackGroundColor(bgGreen,true)
-      setForeGroundColor(fgBlack)
-      prxLnCol()
-   
-   
-proc printBonY*(astring:string) =      
-      ## printBonY
-      ## 
-      ## black foregroundcolor on yellow background
-      ## 
-      setBackGroundColor(bgyellow)
-      setForeGroundColor(fgBlack)
-      prxCol()
-      
-      
-      
-proc printLnBonY*(astring:string) =      
-      ## printLnBonY
-      ## 
-      ## black foregroundcolor on yellow background with newline
-      ## 
-      setBackGroundColor(bgyellow)
-      setForeGroundColor(fgBlack)
-      prxLnCol()
-         
-   
-   
-proc printBonR*(astring:string) =      
-      ## printBonR
-      ## 
-      ## black foregroundcolor on red background
-      ## 
-      setBackGroundColor(bgred)
-      setForeGroundColor(fgBlack)
-      prxCol()
-      
-      
-      
-proc printLnBonR*(astring:string) =      
-      ## printLnBonR
-      ## 
-      ## black foregroundcolor on red background with newline
-      ## 
-      setBackGroundColor(bgred)
-      setForeGroundColor(fgBlack)
-      prxLnCol()
-         
-      
-   
-proc printWonR*(astring:string) =      
-      ## printWonR
-      ## 
-      ## white foregroundcolor on red background
-      ## 
-      setBackGroundColor(bgred)
-      setForeGroundColor(fgWhite)
-      prxCol()
-      
-      
-      
-proc printLnWonR*(astring:string) =      
-      ## printLnWonR
-      ## 
-      ## white foregroundcolor on red background with newline
-      ## 
-      setBackGroundColor(bgred)
-      setForeGroundColor(fgWhite)
-      prxLnCol()
-         
-   
-proc printWonB*(astring:string) =      
-      ## printWonB
-      ## 
-      ## white foregroundcolor on black background
-      ## 
-      setBackGroundColor(bgwhite)
-      setForeGroundColor(fgBlack)
-      prxCol()
-      
-      
-      
-proc printLnWonB*(astring:string) =      
-      ## printLnWonB
-      ## 
-      ## white foregroundcolor on black background with newline
-      ## 
-      setBackGroundColor(bgwhite)
-      setForeGroundColor(fgBlack)
-      prxLnCol()
-         
-        
-   
-proc printBlonW*(astring:string) =      
-      ## printBlonW
-      ## 
-      ## blue foregroundcolor on white background
-      ## 
-      setBackGroundColor(bgWhite)
-      setForeGroundColor(fgBlue)
-      prxCol()
-      
-      
-      
-proc printLnBlonW*(astring:string) =      
-      ## printLnBlonW
-      ## 
-      ## blue foregroundcolor on white background with newline
-      ## 
-      setBackGroundColor(bgwhite)
-      setForeGroundColor(fgBlue)
-      prxLnCol()
-         
-
-  
-proc printConBl*(astring:string) =      
-      ## printConBl
-      ## 
-      ## cyan foregroundcolor on blue background
-      ## 
-      setBackGroundColor(bgBlue)
-      setForeGroundColor(fgCyan)
-      prxCol()
-      
-      
-      
-proc printLnConBl*(astring:string) =      
-      ## printLnConBl
-      ## 
-      ## cyan foregroundcolor on blue background with newline
-      ## 
-      setBackGroundColor(bgBlue)
-      setForeGroundColor(fgCyan)
-      prxLnCol()
-         
-
-
-  
-proc printCbonBl*(astring:string) =      
-      ## printCbonBl
-      ## 
-      ## brightcyan foregroundcolor on blue background
-      ## 
-      setBackGroundColor(bgBlue)
-      setForeGroundColor(fgCyan,true)
-      prxCol()
-      
-      
-      
-proc printLnCbonBl*(astring:string) =      
-      ## printLnCbonBl
-      ## 
-      ## brightcyan foregroundcolor on blue background with newline
-      ## 
-      setBackGroundColor(bgBlue)
-      setForeGroundColor(fgCyan,true)
-      prxLnCol()
-         
-  
-proc printCbonBlb*(astring:string) =      
-      ## printCbonBlb
-      ## 
-      ## brightcyan foregroundcolor on brightblue background
-      ## 
-      setBackGroundColor(bgBlue,true)
-      setForeGroundColor(fgCyan,true)
-      prxCol()
-      
-
-      
-proc printLnCbonBlb*(astring:string) =      
-      ## printLnCbonBl
-      ## 
-      ## brightcyan foregroundcolor on brightblue background with newline
-      ## 
-      setBackGroundColor(bgBlue,true)
-      setForeGroundColor(fgCyan,true)
-      prxLnCol()
-            
 
 
 
@@ -2695,7 +2420,7 @@ proc infoLine*() =
     printColStr(black," | ")
     printColStr(brightgreen,"Nim : ")
     printColStr(black,NimVersion & " | ")
-    printColStr(brightcyan,"private : ")
+    printBF("private : ",fgCyan)
     printColStr(black,PRIVATLIBVERSION)
     printColStr(black," | ")
     qqTop()
