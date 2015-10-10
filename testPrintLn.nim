@@ -1,4 +1,9 @@
-import private
+
+## testing for private.nim printLn... procs 
+
+
+import private,strfmt
+
 
 superHeader("Testing var. printLn procs ")
 var s = "Test color string"
@@ -44,5 +49,14 @@ decho(2)
 printLnStyled(s,"t",clrainbow,{styleUnderScore,styleBlink})
 decho(2)
 printLnBiCol(s,"c",brightgreen,brightwhite)
+decho 2
+
+# note every item will be tokenized so we need more colors than strings passed in
+printLn("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightmagenta,clrainbow,brightblue,brightred)
+# all in one color
+printLnCb("{} {} {} {}".fmt(s,n,f,l))      
+# all in one color with new background, note printLnBR,printLnBB,printLnBF need terminal color constants
+printLnBR("{} {} {} {}".fmt(s,n,f,l),fgYellow,bgBlack)
+
 
 doFinish()
