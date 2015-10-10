@@ -39,6 +39,8 @@ import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 
 const PRIVATLIBVERSION* = "0.8.5"
+
+# foregroundcolor   
 const
        red*    = "red"
        green*  = "green"
@@ -498,6 +500,7 @@ proc printLnBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = b
     stdout.write("\e[" & $gFg & 'm' & $astring)
     prxBCol
     writeln(stdout,"")
+    
 
 proc printBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
     ## printBF  
@@ -1141,6 +1144,74 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
               of brightmagenta : msgmb() do : writestyled(substr,astyle)
               of clrainbow   : printRainbow(substr,astyle)
               else  : msgw() do  : writestyled(substr,{styleUnknown})
+
+
+
+proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
+      ## printLnStyled
+      ##
+      ## extended version of writestyled and printHl to allow color and styles
+      ##
+      ## to print and highlight all appearances of a substring of a string and issue a new line
+      ##
+      ## styles may and in some cases not have the desired effect
+      ## 
+      ## available styles :
+      ## 
+      ## styleBright = 1,            ## bright text
+      ## styleDim,                   ## dim text
+      ## styleUnknown,               ## unknown
+      ## styleUnderscore = 4,        ## underscored text
+      ## styleBlink,                 ## blinking/bold text
+      ## styleReverse = 7,           ## unknown
+      ## styleHidden                 ## hidden text
+      ##
+      ## with a certain color
+      ##
+      ## .. code-block:: nim
+      ## 
+      ##    # this highlights all T in green and underscore them
+      ##    printStyled("HELLO THIS IS A TEST","T",green,{styleUnderScore})
+      ##    
+      ##    # this highlights all T in rainbow colors underscore and blink them
+      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{styleUnderScore,styleBlink})
+      ##
+      ##    # this highlights all T in rainbow colors , no style is applied
+      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
+      ##    
+      ##
+      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
+      ## 
+      ##                    brightred,brightcyan,brightyellow,clrainbow
+      ##                    
+ 
+      var rx = s.split(substr)
+      for x in rx.low.. rx.high:
+          writestyled(rx[x],{})
+          if x != rx.high:
+              case col
+              of green  : msgg() do  : writestyled(substr,astyle)
+              of red    : msgr() do  : writestyled(substr,astyle)
+              of cyan   : msgc() do  : writestyled(substr,astyle)
+              of yellow : msgy() do  : writestyled(substr,astyle)
+              of white  : msgw() do  : writestyled(substr,astyle)
+              of black  : msgb() do  : writestyled(substr,astyle)
+              of blue   : msgbl() do : writestyled(substr,astyle)
+              of magenta: msgm() do  : writestyled(substr,astyle)
+              of brightgreen : msggb() do : writestyled(substr,astyle)
+              of brightwhite : msgwb() do : writestyled(substr,astyle)
+              of brightyellow: msgyb() do : writestyled(substr,astyle)
+              of brightcyan  : msgcb() do : writestyled(substr,astyle)
+              of brightred   : msgrb() do : writestyled(substr,astyle)
+              of brightblue  : msgblb() do : writestyled(substr,astyle)
+              of brightmagenta : msgmb() do : writestyled(substr,astyle)
+              of clrainbow   : printRainbow(substr,astyle)
+              else  : msgw() do  : writestyled(substr,{styleUnknown})
+      writeln(stdout,"")
+
+
+
+
 
 
 proc printTuple*(xs: tuple): string =
