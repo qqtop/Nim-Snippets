@@ -347,7 +347,7 @@ proc hlineLn*(n:int = tw,col:string = white) =
      ##     
      for x in 0.. <n:
          printColStr(col,"_")
-     writeln(stdout,"") 
+     writeLine(stdout,"") 
      
 
 
@@ -363,7 +363,7 @@ proc dline*(n:int = tw,lt:string = "-") =
      ## 
      ## 
      if lt.len <= n:
-        writeln(stdout,repeat(lt,n div lt.len))
+        writeLine(stdout,repeat(lt,n div lt.len))
      
      
 
@@ -380,7 +380,7 @@ proc dlineLn*(n:int = tw,lt:string = "-") =
      ##    dlineLn(30,"/+/") 
      ##
      if lt.len <= n:
-        writeln(stdout,repeat(lt,n div lt.len))
+        writeLine(stdout,repeat(lt,n div lt.len))
         
  
 proc decho*(z:int = 1)  =
@@ -392,7 +392,7 @@ proc decho*(z:int = 1)  =
     ##    decho(10)
     ## to create 10 blank lines
     for x in 0.. <z:
-        writeln(stdout,"")
+        writeLine(stdout,"")
 
 
 # simple navigation
@@ -487,22 +487,22 @@ proc printLnTK*[T](st:T , cols: varargs[string, `$`]) =
      ##    printLnTK("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
      printTK(st,cols)
-     writeln(stdout,"")
+     writeLine(stdout,"")
 
  
-converter colconv(cx:string) :string = 
+converter colconv(cx:string) : string = 
      # converter so we can use the same color names for fore and background colors
      # in print and printLn procs.
      var bg : string = ""
      case cx
-      of black  : bg  = bblack
-      of white  : bg  = bwhite
-      of green  : bg  = bgreen
-      of yellow : bg  = byellow
-      of cyan   : bg  = bcyan
-      of magenta: bg  = bmagenta
-      of red    : bg  = bred
-      of blue   : bg  = bblue
+      of black        : bg = bblack
+      of white        : bg = bwhite
+      of green        : bg = bgreen
+      of yellow       : bg = byellow
+      of cyan         : bg = bcyan
+      of magenta      : bg = bmagenta
+      of red          : bg = bred
+      of blue         : bg = bblue
       of brightred    : bg = bbrightred
       of brightgreen  : bg = bbrightgreen 
       of brightblue   : bg = bbrightblue  
@@ -511,9 +511,23 @@ converter colconv(cx:string) :string =
       of brightwhite  : bg = bbrightwhite 
       of brightmagenta: bg = bbrightmagenta 
       of brightblack  : bg = bbrightblack
+      else            : bg = bblack # default
      result = bg
  
 
+
+proc print*[T](astring:T,fg:string = white , bg:string = black) =
+    ## print
+    ##
+    ## same as printLn without new line
+    ##
+    ##
+    if fg == clrainbow:
+        rainbow($astring)
+    else:  
+        stdout.write(fg & colconv(bg) & $astring)
+    prxBCol
+    
 
 proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## printLn
@@ -539,26 +553,12 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     if fg == clrainbow:
         rainbow($astring)
     else:  
-        let cbg = colconv(bg)
-        stdout.write(fg & cbg & $astring)
+        stdout.write(fg & colconv(bg) & $astring)
         prxBCol
-    writeln(stdout,"")
+    stdout.writeLine("")
     
 
-proc print*[T](astring:T,fg:string = white , bg:string = black) =
-    ## print
-    ##
-    ## same as printLn without new line
-    ##
-    ##
-    if fg == clrainbow:
-        rainbow($astring)
-    else:  
-        let cbg = colconv(bg)
-        stdout.write(fg & cbg & $astring)
-    prxBCol
-    
-    
+   
 proc printG*[T](s:T) = 
      ## printG
      ## 
@@ -626,7 +626,7 @@ proc printLnG*[T](s:T) =
      ## 
      ## prints a string in green and issues a newline
      ## 
-     msgg() do: writeln(stdout,s)
+     msgg() do: writeLine(stdout,s)
      
 
 
@@ -635,7 +635,7 @@ proc printLnGb*[T](s:T) =
      ## 
      ## prints a string in bright green and issues a newline
      ## 
-     msggb() do: writeln(stdout,s)
+     msggb() do: writeLine(stdout,s)
      
 
 
@@ -657,14 +657,14 @@ proc printLnR*[T](s:T) =
      ## printLnR
      ##
      ##
-     msgr() do: writeln(stdout,s)  
+     msgr() do: writeLine(stdout,s)  
      
 
 proc printLnRb*[T](s:T) = 
      ## printLnRb
      ##
      ##
-     msgrb() do: writeln(stdout,s)       
+     msgrb() do: writeLine(stdout,s)       
      
      
 
@@ -686,14 +686,14 @@ proc printLnY*[T](s:T) =
      ## printLnY
      ## 
      ## 
-     msgy() do: writeln(stdout,s)
+     msgy() do: writeLine(stdout,s)
 
 
 proc printLnYb*[T](s:T) = 
      ## printLnYb
      ## 
      ## 
-     msgyb() do: writeln(stdout,s)
+     msgyb() do: writeLine(stdout,s)
 
 
      
@@ -716,14 +716,14 @@ proc printLnC*[T](s:T) =
      ## printLnC
      ## 
      ## 
-     msgc() do: writeln(stdout,s)     
+     msgc() do: writeLine(stdout,s)     
 
 
 proc printLnCb*[T](s:T) = 
      ## printLnCb
      ## 
      ## 
-     msgcb() do: writeln(stdout,s)
+     msgcb() do: writeLine(stdout,s)
 
 
 proc printW*[T](s:T) = 
@@ -744,14 +744,14 @@ proc printLnW*[T](s:T) =
      ## printLnw
      ## 
      ## 
-     msgw() do: writeln(stdout,s)     
+     msgw() do: writeLine(stdout,s)     
 
 
 proc printLnWb*[T](s:T) = 
      ## printLnWb
      ## 
      ## 
-     msgwb() do: writeln(stdout,s)
+     msgwb() do: writeLine(stdout,s)
 
 
 proc printB*[T](s:T) = 
@@ -765,7 +765,7 @@ proc printLnB*[T](s:T) =
      ## printLnB   grey
      ## 
      ## 
-     msgb() do: writeln(stdout,s)     
+     msgb() do: writeLine(stdout,s)     
 
 
 
@@ -787,14 +787,14 @@ proc printLnBl*[T](s:T) =
      ## printLnBl  darkblue
      ## 
      ## 
-     msgbl() do: writeln(stdout,s)
+     msgbl() do: writeLine(stdout,s)
 
 
 proc printLnBlb*[T](s:T) = 
      ## printLnBlb  brightblue
      ## 
      ## 
-     msgblb() do: writeln(stdout,s)
+     msgblb() do: writeLine(stdout,s)
 
 
 
@@ -818,14 +818,14 @@ proc printLnM*[T](s:T) =
      ## printLnBl  magenta
      ## 
      ## 
-     msgM() do: writeln(stdout,s)
+     msgM() do: writeLine(stdout,s)
 
 
 proc printLnMb*[T](s:T) = 
      ## printLnBlb  brightmagenta
      ## 
      ## 
-     msgMb() do: writeln(stdout,s)
+     msgMb() do: writeLine(stdout,s)
 
 
 
@@ -962,7 +962,7 @@ proc printColStr*(colstr:string,astr:string) =
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ## printLnColStr
     ##
-    ## similar to printColStr but issues a writeln() command that is
+    ## similar to printColStr but issues a writeLine() command that is
     ##
     ## every item will be shown on a new line in the same given color
     ##
@@ -974,25 +974,25 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
 
     for vastr in mvastr:
       case colstr
-      of green  : msgg() do  : writeln(stdout,vastr)
-      of red    : msgr() do  : writeln(stdout,vastr)
-      of cyan   : msgc() do  : writeln(stdout,vastr)
-      of yellow : msgy() do  : writeln(stdout,vastr)
-      of white  : msgw() do  : writeln(stdout,vastr)
-      of black  : msgb() do  : writeln(stdout,vastr)
-      of blue   : msgbl() do : writeln(stdout,vastr)
-      of magenta: msgm() do  : writeln(stdout,vastr)
-      of brightgreen : msggb() do  : writeln(stdout,vastr)
-      of brightwhite : msgwb() do  : writeln(stdout,vastr)
-      of brightyellow: msgyb() do  : writeln(stdout,vastr)
-      of brightcyan  : msgcb() do  : writeln(stdout,vastr)
-      of brightred   : msgrb() do  : writeln(stdout,vastr)
-      of brightblue  : msgblb() do : writeln(stdout,vastr)
-      of brightmagenta: msgmb() do : writeln(stdout,vastr)
+      of green  : msgg() do  : writeLine(stdout,vastr)
+      of red    : msgr() do  : writeLine(stdout,vastr)
+      of cyan   : msgc() do  : writeLine(stdout,vastr)
+      of yellow : msgy() do  : writeLine(stdout,vastr)
+      of white  : msgw() do  : writeLine(stdout,vastr)
+      of black  : msgb() do  : writeLine(stdout,vastr)
+      of blue   : msgbl() do : writeLine(stdout,vastr)
+      of magenta: msgm() do  : writeLine(stdout,vastr)
+      of brightgreen : msggb() do  : writeLine(stdout,vastr)
+      of brightwhite : msgwb() do  : writeLine(stdout,vastr)
+      of brightyellow: msgyb() do  : writeLine(stdout,vastr)
+      of brightcyan  : msgcb() do  : writeLine(stdout,vastr)
+      of brightred   : msgrb() do  : writeLine(stdout,vastr)
+      of brightblue  : msgblb() do : writeLine(stdout,vastr)
+      of brightmagenta: msgmb() do : writeLine(stdout,vastr)
       of clrainbow   :
                        rainbow(vastr)
                        echo()
-      else  : msgw() do  : writeln(stdout,vastr)
+      else  : msgw() do  : writeLine(stdout,vastr)
 
 
 
@@ -1217,7 +1217,7 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
               of brightmagenta : msgmb() do : writestyled(substr,astyle)
               of clrainbow   : printRainbow(substr,astyle)
               else  : msgw() do  : writestyled(substr,{styleUnknown})
-      writeln(stdout,"")
+      writeLine(stdout,"")
 
 
 
@@ -1601,11 +1601,11 @@ proc superHeader*(bstring:string) =
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
   echo ()
-  msgy() do : writeln(stdout,pdl)
+  msgy() do : writeLine(stdout,pdl)
   msgy() do : write(stdout,"# ")
   msgw() do : write(stdout,astring)
-  msgy() do : writeln(stdout," #")
-  msgy() do : writeln(stdout,pdl)
+  msgy() do : writeLine(stdout," #")
+  msgy() do : writeLine(stdout,pdl)
   echo ()
 
 
