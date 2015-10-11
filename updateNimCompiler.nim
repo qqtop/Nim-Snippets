@@ -113,7 +113,7 @@ if checkBuildStatus(buildjson) == true :
 else:
   
   decho(2)
-  printLnWonR(" Nim Waterfall BuildStatus : Warnings or Failed .  Try update later ")
+  printLn(" Nim Waterfall BuildStatus : Warnings or Failed .  Try update later ",white,red)
   decho(2)
     
 

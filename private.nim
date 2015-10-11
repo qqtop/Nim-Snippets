@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.8.5
+##   Version     : 0.8.8
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -38,33 +38,82 @@
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 
-const PRIVATLIBVERSION* = "0.8.5"
 
-# foregroundcolor   
-const
-       red*    = "red"
-       green*  = "green"
-       blue*   = "blue"  
-       cyan*   = "cyan"
-       yellow* = "yellow"
-       white*  = "white"
-       black*  = "black"
-       magenta* = "magenta"  
-       brightred*    = "brightred"
-       brightgreen*  = "brightgreen"
-       brightblue*   = "brightblue" 
-       brightcyan*   = "brightcyan"
-       brightyellow* = "brightyellow"
-       brightwhite*  = "brightwhite"
-       brightmagenta* = "brightmagenta"
-       clrainbow*    = "clrainbow"
-         
-         
 type
      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
      Pfg* = terminal.ForegroundColor
      Pbg* = terminal.BackgroundColor
 
+
+const PRIVATLIBVERSION* = "0.8.8"
+  
+  
+proc f(fg:ForegroundColor):string =
+    var gFG = ord(fg)
+    result = "\e[" & $gFG & 'm'
+    
+proc b(bg:BackgroundColor):string =
+    var gBG = ord(bg)
+    result = "\e[" & $gBG & 'm'
+
+proc fbright(fg:ForegroundColor): string =
+    var gFG = ord(fg)
+    inc(gFG, 60)
+    result = "\e[" & $gFG & 'm'
+
+proc bbright(bg:BackgroundColor): string =
+    var gBG = ord(bg)
+    inc(gBG, 60)
+    result = "\e[" & $gBG & 'm'
+
+
+const
+       # ForegroundColor Normal
+       
+       red*     = f(fgRed)
+       green*   = f(fgGreen)
+       blue*    = f(fgBlue)
+       cyan*    = f(fgCyan)
+       yellow*  = f(fgYellow)
+       white*   = f(fgWhite)
+       black*   = f(fgBlack)
+       magenta* = f(fgMagenta)
+      
+       # ForegroundColor Bright
+       
+       brightred*     = fbright(fgRed)
+       brightgreen*   = fbright(fgGreen)
+       brightblue*    = fbright(fgBlue) 
+       brightcyan*    = fbright(fgCyan)
+       brightyellow*  = fbright(fgYellow)
+       brightwhite*   = fbright(fgWhite)
+       brightmagenta* = fbright(fgMagenta)
+       brightblack*   = fbright(fgBlack)
+       
+       clrainbow*   = "clrainbow"
+       
+       # BackgroundColor Normal
+
+       bred*     = b(bgRed)
+       bgreen*   = b(bgGreen)
+       bblue*    = b(bgBlue)
+       bcyan*    = b(bgCyan)
+       byellow*  = b(bgYellow)
+       bwhite*   = b(bgWhite)
+       bblack*   = b(bgBlack)
+       bmagenta* = b(bgMagenta)  
+      
+       # BackgroundColor Bright
+      
+       bbrightred*     = bbright(bgRed)
+       bbrightgreen*   = bbright(bgGreen)
+       bbrightblue*    = bbright(bgBlue) 
+       bbrightcyan*    = bbright(bgCyan)
+       bbrightyellow*  = bbright(bgYellow)
+       bbrightwhite*   = bbright(bgWhite)
+       bbrightmagenta* = bbright(bgMagenta)
+       bbrightblack*   = bbright(bgBlack)
+       # bclrainbow*   = "clrainbow"
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -98,7 +147,7 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string 
 proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
 proc hline*(n:int = tw,col:string = white) ## forward declaration
 proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
-
+proc rainbow*[T](s : T)
 
 # templates
 
@@ -379,8 +428,8 @@ proc clearup*(x:int = 80) =
 # printBR,printLnBR,printBF,printLnBF,printBB,printLnBB are mainly used for
 # output with bright foregroundcolor and or backgroundcolor requirements
 
-proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
-     ## print
+proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
+     ## printTK
      ##
      ## echoing of colored tokenized strings  without newline
      ## 
@@ -393,12 +442,12 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## 
      ## .. code-block:: nim
      ##    import private,strfmt
-     ##    print("test",@[clrainbow,white,red,cyan,yellow])
-     ##    print("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    print("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    print("blah",green,white,red,cyan) 
-     ##    print(@[123,123,123],white,green,white)
-     ##    print("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##    printTK("test",@[clrainbow,white,red,cyan,yellow])
+     ##    printTK("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    printTK("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    printTK("blah",green,white,red,cyan) 
+     ##    printTK(@[123,123,123],white,green,white)
+     ##    printTK("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
             
      var pcol = ""
@@ -417,10 +466,9 @@ proc print*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
           else:
                 write(stdout,x.token)
         
-    
 
-proc printLn*[T](st:T , cols: varargs[string, `$`]) =
-     ## printLn
+proc printLnTK*[T](st:T , cols: varargs[string, `$`]) =
+     ## printLnTK
      ##
      ## displays colored tokenized strings and issues a newline when finished
      ## 
@@ -432,130 +480,92 @@ proc printLn*[T](st:T , cols: varargs[string, `$`]) =
      ## 
      ## 
      ## .. code-block:: nim
-     ##    printLn(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
-     ##    printLn("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
-     ##    printLn("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
-     ##    printLn("blah",green,white,red,cyan)    
-     ##    printLn("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
+     ##    printLnTK(@[123,456,789],@[clrainbow,white,red,cyan,yellow])
+     ##    printLnTK("{} {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,white,red,cyan)
+     ##    printLnTK("{} : {} {}  -->   {}".fmt(123,"Nice",456,768.5),green,brightwhite,clrainbow,red,cyan)
+     ##    printLnTK("blah",green,white,red,cyan)    
+     ##    printLnTK("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
-     print(st,cols)
+     printTK(st,cols)
      writeln(stdout,"")
 
+ 
+converter colconv(cx:string) :string = 
+     # converter so we can use the same color names for fore and background colors
+     # in print and printLn procs.
+     var bg : string = ""
+     case cx
+      of black  : bg  = bblack
+      of white  : bg  = bwhite
+      of green  : bg  = bgreen
+      of yellow : bg  = byellow
+      of cyan   : bg  = bcyan
+      of magenta: bg  = bmagenta
+      of red    : bg  = bred
+      of blue   : bg  = bblue
+      of brightred    : bg = bbrightred
+      of brightgreen  : bg = bbrightgreen 
+      of brightblue   : bg = bbrightblue  
+      of brightcyan   : bg = bbrightcyan  
+      of brightyellow : bg = bbrightyellow 
+      of brightwhite  : bg = bbrightwhite 
+      of brightmagenta: bg = bbrightmagenta 
+      of brightblack  : bg = bbrightblack
+     result = bg
+ 
 
 
-proc printLnBR*[T](astring:T,fg:ForegroundColor, bg:BackgroundColor) =
-    ## printLnBR  
+proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
+    ## printLn
     ## 
-    ## print a string/number in bright fg color and bright bg color and issue a new line 
+    ## similar to echo but with foregroundcolor and backgroundcolor
     ## 
-    ## Note : these proc uses the terminal color constants to specify fore and background color
+    ## selection.
     ## 
-    ## .. code-block:: nim
-    ##    import private
-    ##    printLnBR("This is the string ",fgWhite,bgBlack)
-    ##    printLnBB("This is the string ",fgBlue,bgYellow)
-    ##    printLnBF("This is the string ",fgGreen,bgBlack)
-    ##    doFinish()
+    ## see testPrintLn.nim for usage examples
     ## 
-    var gFG = ord(fg)
-    inc(gFG, 60)
-    var gBG = ord(bg)
-    inc(gBG, 60)
-    stdout.write("\e[" & $gFG & 'm' & "\e[" & $gBG & 'm' & $astring)
-    prxBCol
+    ## color names supported for font color:
+    ## 
+    ## white,red,green,blue,yellow,cyan,magenta,black,clrainbow
+    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
+    ## 
+    ## color names supported for background color:
+    ## 
+    ## white,red,green,blue,yellow,cyan,magenta,black
+    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
+    ## 
+    ## 
+  
+    if fg == clrainbow:
+        rainbow($astring)
+    else:  
+        let cbg = colconv(bg)
+        stdout.write(fg & cbg & $astring)
+        prxBCol
     writeln(stdout,"")
+    
 
-proc printBR*[T](astring:T,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
-    ## printBR  
-    ## 
-    ## print a string/number in bright fg color and bright bg color 
-    ## 
-    ## Note : these proc uses the terminal color constants to specify fore and background color
+proc print*[T](astring:T,fg:string = white , bg:string = black) =
+    ## print
     ##
-    ## .. code-block:: nim
-    ##    printBR("This is the string ",fgBlue,bgBlack)
-    ## 
-    var gFG = ord(fg)
-    inc(gFG, 60)
-    var gBG = ord(bg)
-    inc(gBG, 60)
-    stdout.write("\e[" & $gFG & 'm' & "\e[" & $gBG & 'm' & $astring)
+    ## same as printLn without new line
+    ##
+    ##
+    if fg == clrainbow:
+        rainbow($astring)
+    else:  
+        let cbg = colconv(bg)
+        stdout.write(fg & cbg & $astring)
     prxBCol
     
-
-
-proc printLnBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
-    ## printLnBF  
-    ## 
-    ## print a string/number in bright fg color  and  non bright bg color and issue a new line 
-    ## 
-    ## Note : these proc uses the terminal color constants to specify fore and background color 
-    ## 
-    ## .. code-block:: nim
-    ##    printLnBF("This is the string ",fgBlue)
-    ## 
-    setBackGroundColor(bg)
-    var gFG = ord(fg)
-    inc(gFG, 60)
-    stdout.write("\e[" & $gFg & 'm' & $astring)
-    prxBCol
-    writeln(stdout,"")
     
-
-proc printBF*[T](astring:T,fg:ForegroundColor = fgWhite,bg:BackgroundColor = bgBlack) =
-    ## printBF  
-    ## 
-    ## print a string/number in bright fg color  and non bright bg color
-    ## 
-    ## Note : these proc uses the terminal color constants to specify fore and background color
-    ##  
-    ## .. code-block:: nim
-    ##    printLnB("This is the string ",fgBlue,bgBlack)
-    ## 
-    setBackGroundColor(bg)
-    var gFG = ord(fg)
-    inc(gFG, 60)
-    stdout.write("\e[" & $gFG & 'm' & $astring)
-    prxBCol
-
-
-proc printLnBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
-    ## printLnBB  
-    ## 
-    ## print a string/number in non bright fg color and bright bg color and issue a new line 
-    ## 
-    ## .. code-block:: nim
-    ##    printLnBB("This is the string ",fgBlue,bgBlack)
-    ## 
-    setForeGroundColor(fg)
-    var gBG = ord(bg)
-    inc(gBG, 60)
-    stdout.write("\e[" & $gBG & 'm' & $astring)
-    prxBCol
-    writeln(stdout,"")
-
-proc printBB*[T](astring:T ,fg:ForegroundColor = fgWhite, bg:BackgroundColor = bgBlack) =
-    ## printBB  
-    ## 
-    ## print a string/number in non bright fg color and bright bg color 
-    ## 
-    ## .. code-block:: nim
-    ##    printBB("This is the string ",fgBlue,bgBlack)
-    ## 
-    setForeGroundColor(fg)
-    var gBG = ord(bg)
-    inc(gBG, 60)
-    stdout.write("\e[" & $gBG & 'm' & $astring)
-    prxBCol
-    
-
 proc printG*[T](s:T) = 
-     ## printg
+     ## printG
      ## 
      ## prints  a string/number in green 
      ## to print out seq types use print or printLn procs
      ## 
-     ## following single color print routines are available
+     ## following single color print routines are available for convenience
      ## 
      ## print<color>     ... prints string in said color no linefeed
      ## 
@@ -2500,7 +2510,7 @@ proc infoLine*() =
     printColStr(black," | ")
     printColStr(brightgreen,"Nim : ")
     printColStr(black,NimVersion & " | ")
-    printBF("private : ",fgCyan)
+    printColStr(cyan,"private : ")
     printColStr(black,PRIVATLIBVERSION)
     printColStr(black," | ")
     qqTop()

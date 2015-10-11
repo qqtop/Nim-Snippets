@@ -25,9 +25,7 @@
 ## 
 ## #####################################################################################
 
-
-import osproc, strutils,strfmt
-import os,parseopt2,strutils,parseutils
+import os,osproc, strutils,strfmt,parseopt2,parseutils
 import private
 
 
@@ -36,7 +34,7 @@ const usageString =
   """Usage  : sf searchdir searchstring 
          sf searchstring   --> searchdir is currentworking dir
               
-Example: sf /data4/NimStuff  cat  
+Example: sf /data4/NimStuff  money  
          sf Wuff 
 Options:
                        
@@ -87,7 +85,7 @@ if arg1 != "-h":
     var sep = " : " 
     echo()     
     msgy() do : echo "Search Results for : " & arg2 
-    echo aline  
+    hline()  
     for i in 0.. <rx.len:
           rxs = rxs & $rx[i] 
     

@@ -114,9 +114,10 @@ else:
         var sstrings :string="" 
         var xxs:string  
         for x in (0..len(strings)-1):
-            echo aline
+            hline()
             sstrings = strings[x].replace("(","").replace(")","")
-            msgg() do : echo "Forecast for $1 , $2  WOEID: $3 \n" % [acity,acountry,woeid]
+            #msgg() do : echo "Forecast for $1 , $2  WOEID: $3 \n" % [acity,acountry,woeid]
+            printLn("Forecast for $1 , $2  WOEID: $3 " % [acity,acountry,woeid],brightgreen)
             for xx in sstrings.split(","):
               
               xxs = strip(xx,true,false)

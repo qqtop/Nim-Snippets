@@ -89,7 +89,7 @@ proc showBrewerAll() =
             msgg() do : echo "$1 ColorSet $2" % [cst,$z]
             for x in 0.. <cstz.len:
                 msgw() do : echo ($cj[cst][$z][x])
-            echo aline
+            hline()
 
 
 
@@ -107,7 +107,7 @@ proc showBrewer(cst:string) =
             msgg() do : echo "$1 ColorSet $2" % [cst,$z]
             for x in 0.. <cstz.len:
                 msgw() do : echo ($cj[cst][$z][x])
-            echo aline
+            hline()
 
 
 echo()         

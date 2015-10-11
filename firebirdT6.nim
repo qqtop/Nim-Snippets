@@ -2,7 +2,8 @@ import os,times,terminal,strutils,parseutils,strfmt
 import private
 import python
 
-
+# Example code 
+# 
 # Connect to firebird 2.5.4 Superserver using python module  
 # and display data from the isocountry.fdb 
 
@@ -65,7 +66,7 @@ discard PyDict_SetItemString(main_dict, "from_nim", pyString)
 discard PyRun_SimpleString(pycode)
 
 msgy() do : echo "\nBack in Nim and Displaying python list\n"
-echo aline
+hline()
 let pyVariable = PyMapping_GetItemString(mainDict, "resl")
 var cc = 0
 var pyItem1 :cstring = ""
@@ -84,7 +85,7 @@ for x in 0.. <PySequence_Length(pyVariable):
       echo()
 
 echo()
-echo aline
+hline()
 Py_XDECREF(mainModule)
 Py_XDECREF(pyString)
 Py_XDECREF(pyVariable)

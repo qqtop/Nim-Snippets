@@ -153,10 +153,11 @@ var chirx = chiSquare(adata,bdata)
 msgy() do : echo "ChiSquare    [Nim]         : " , chirx["chi2"]
 # use returned value from python to calc prob % in Nim
 msgy() do : echo "Probability  [Nim]         : " , floatMe(chirx["prob"]) * 100,"%"
-echo aline
+hline()
 msgy() do : echo "Dict/Table test"
 echo "Anabel back to normal      : " , myDict(17,19)," Result calculated in Nim"
-echo aline & "\n\n"
+hline()
+decho(2)
 echo "Python Version             : " , Py_GetVersion()
 echo "Nim Version                : ", NimVersion
 msggb() do : write(stdout,"Programming by             : ")
@@ -164,6 +165,6 @@ rainbow("I come in code :) \n")
 
 Py_XDECREF(mainModule)  # do we need this ?
 Py_Finalize()
-echo aline
+hline()
 msgy() do : echo "Finished in Nim epochTime  : ",epochtime() - start," secs"
-echo aline
+hline()

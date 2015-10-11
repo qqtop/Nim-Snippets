@@ -11,28 +11,16 @@ var n = 1234567
 var f = 123.4567
 var l = @[1234,4567,654]
 
-printLnBR(s,fgWhite,bgBlack)
-printLnBR(n,fgWhite,bgBlack)
-printLnBR(f,fgWhite,bgBlack)
-printLnBR(l,fgWhite,bgBlack)
-decho(2)
-
-printLnBB(s,fgBlue,bgWhite)
-printLnBB(n,fgWhite,bgRed)
-printLnBB(f,fgWhite,bgBlack)
-printLnBB(l,fgWhite,bgBlack)
-decho(2)
-
-printLnBF(s,fgBlue,bgWhite)
-printLnBF(n,fgWhite,bgBlack)
-printLnBF(f,fgWhite,bgBlack)
-printLnBF(l,fgWhite,bgBlack)
+printLn(s,white,brightblack)
+printLn(n,white,brightblack)
+printLn(f,white,brightblack)
+printLn(l,white,brightblack)
 decho(2)
 
 printLnG(s)
 printLnGb(n)
 printLnC(f)
-printLnCb(l)
+printLnYb(l)
 decho(2)
 
 printLnRainbow(s,{})
@@ -41,8 +29,8 @@ printLnRainbow(f,{})
 printLnrainbow(l,{styleUnderscore})
 decho(2)
 
-printLn(s)
-printLn(s,green,brightred,blue)
+printLnTK(s)
+printLnTK(s,green,brightred,blue)
 decho(2)
 printColStr(green,s)
 decho(2)
@@ -52,11 +40,24 @@ printLnBiCol(s,"c",brightgreen,brightwhite)
 decho 2
 
 # note every item will be tokenized so we need more colors than strings passed in
-printLn("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightmagenta,clrainbow,brightblue,brightred)
+printLnTK("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightmagenta,clrainbow,brightblue,brightred)
 # all in one color
 printLnCb("{} {} {} {}".fmt(s,n,f,l))      
-# all in one color with new background, note printLnBR,printLnBB,printLnBF need terminal color constants
-printLnBR("{} {} {} {}".fmt(s,n,f,l),fgYellow,bgBlack)
+# all in one color with new background, note printLn,printLnBB,printLnBF need terminal color constants
+printLn("{} {} {} {}".fmt(s,n,f,l),brightyellow,brightblue)
+
+printLnTK(s & " wuff",black,brightgreen,clrainbow,yellow)  
+
+
+printLn(s,clrainbow,brightyellow)  
+
+
+printLnGb(s)
+decho(1)
+printLn(s,black,brightmagenta)
+printLn(s)
+
+
 
 
 doFinish()

@@ -8,7 +8,7 @@ proc gnuMe(j:int):string =
       rainbow("\n WWWWWW||WWWWWW\n  W W W||W W W \n       || \n     ( OO )__________  \n      /  |          \\ \n     /o o| Niminator  \\ \n     \\___/||_||__||_||-*  \n         || ||  || || \n         _||_|| _||_|| \n        (__|__|(__|__| ") 
       decho(2)
       printB(" Professional Gnu sightings :  ")
-      printLnCbonBlb($j)
+      printLn($j,brightwhite,brightblue)
       sleepy(0.15)
      
 

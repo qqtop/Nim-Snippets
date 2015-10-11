@@ -63,7 +63,7 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
       if zl.startswith(funcy):
                
         if funcy != "from" and funcy != "import":
-           printLnB aline
+           hlineLn(tw,brightblack)
         
         if zl.strip() == funcy:
            # this happens if we run into a block like
