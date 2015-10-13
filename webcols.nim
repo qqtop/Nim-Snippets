@@ -7,13 +7,15 @@ import strutils,json,private,rdstdin
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.1.0
+##   Version     : 0.5.0
 ##
 ##   ProjectStart: 2015-09-02
 ##
 ##   Compiler    : Nim 0.11.3
 ##
 ##   Description : webcols.nim parses colorset json data from  http://colorbrewer2.org/
+##
+##   Compile     : nim c webcols.nim
 ##
 ##   Requires    : private.nim
 ##
@@ -76,11 +78,34 @@ var cj = parseJson(colorjson)
 var cstz = cj["Spectral"]["3"]
 
 
+var allchars = "  "
+for x in IdentChars:
+    allchars = allchars & $char(x)
 
 proc display(Rz,Gz,Bz:string) = 
      # here we just write the letter A 
-     write(stdout,"\x1b[$1;$2;$3;$4;$5m$6\x1b[0m" % [$38,$2,$Rz,$Gz,$Bz," AAAABBBBCCCCDDDD0123456789"])
+     write(stdout,"\x1b[$1;$2;$3;$4;$5m$6\x1b[0m" % [$38,$2,$Rz,$Gz,$Bz,allchars])
      
+
+proc availableColorSets()=
+      echo()         
+      msgy() do : echo "Available Web ColorData from http://colorbrewer2.org/"
+      echo()
+
+      var c = 0
+      for x in 0.. <colset.len:
+        c += 1
+        if c < 12:
+          if colset[x] != "PuBuGn":    
+            write(stdout,colset[x] & " , ") 
+          else:
+            write(stdout,colset[x])
+        else:
+          writeln(stdout,colset[x]) 
+          c = 0
+
+      decho(2) 
+
 
 proc showBrewerAll() = 
     ## shows all rgb data from colorBrewer webcolor sets
@@ -103,65 +128,49 @@ proc showBrewerAll() =
                 zs = zs.replace(sub = "\"","")
                 var zss = zs.split(",")
                 display(zss[0],zss[1],zss[2])
-                printLn("           " & colorway,brightblack,black)    
+                printLn("           " & colorway,brightblack,black) 
+                sleepy(0.005)
             hline()
+            echo()
 
      
-proc showBrewer(cst:string) = 
-      ## shows all rgb data from colorBrewer2 webcolor sets for a specific colorset
-      ## 
-      superHeader(cst)
-      for z in 3.. <13:
-          try:
-              cstz = cj[cst][$z]
-          except:
-              cstz = nil
-          
-          if cstz != nil :
-            var ti = "$1 ColorSet : $2" % [cst,$z]
-            printLnBiCol(ti,":",brightgreen,brightyellow)
-            echo()
-            for x in 0.. <cstz.len:
-                var colorway = $cj[cst][$z][x]
-                var zs = colorway.replace(sub = "rgb(","")
-                zs = zs.replace(sub = ")","")
-                zs = zs.replace(sub = "\"","")
-                var zss = zs.split(",")
-                display(zss[0],zss[1],zss[2])
-                printLn("           " & colorway,brightblack,black)              
-            hline()
+proc showBrewer() = 
+    ## shows all rgb data from colorBrewer2 webcolor sets for a specific colorset
+    ## 
+      
+    while true:
+      
+      availableColorSets()
+      var cst = readlinefromStdin("Enter colorset name (Ctrl-C  to quit): ")
 
+      if cst != "":
+         msgb() do : echo "ColorData from http://colorbrewer2.org/"
+         superHeader("ColorBrewer2    : " & cst)
+         for z in 3.. <13:
+              try:
+                    cstz = cj[cst][$z]
+                    if isNil(cstz) == false :
+                          var ti = "$1 ColorSet : $2" % [cst,$z]
+                          printLnBiCol(ti,":",brightgreen,brightyellow)
+                          echo()
+                          for x in 0.. <cstz.len:
+                              var colorway = $cj[cst][$z][x]
+                              var zs = colorway.replace(sub = "rgb(","")
+                              zs = zs.replace(sub = ")","")
+                              zs = zs.replace(sub = "\"","")
+                              var zss = zs.split(",")
+                              display(zss[0],zss[1],zss[2])
+                              printLn("      " & colorway,brightblack,black)              
+                          hline()
+              
+              except:
+                  printLnRb("Invalid Colorset name entered.")
+                  break   
+                
 
-echo()         
-msgy() do : echo "Available Web ColorData from http://colorbrewer2.org/"
-echo()
+when isMainModule:
 
-showBrewerAll() 
-
-
-var c = 0
-for x in 0.. <colset.len:
-  c += 1
-  if c < 12:
-     if colset[x] != "PuBuGn":    
-       write(stdout,colset[x] & " , ") 
-     else:
-       write(stdout,colset[x])
-  else:
-     writeln(stdout,colset[x]) 
-     c = 0
-
-decho(2) 
-
-  
-
-var acst = readlinefromStdin("Enter desire colorset name : ")
-
-if acst != "":
-   showBrewer(acst)
-   msgb() do : echo "ColorData from http://colorbrewer2.org/"
-   
-
-   
-doFinish()
+      #showBrewerAll() 
+      showBrewer()
+      doFinish()
 
