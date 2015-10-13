@@ -89,8 +89,8 @@ proc display(Rz,Gz,Bz:string) =
 
 proc availableColorSets()=
       echo()         
-      msgy() do : echo "Available Web ColorData from http://colorbrewer2.org/"
-      echo()
+      printLnY("ColorData from http://colorbrewer2.org/")
+      hline()
 
       var c = 0
       for x in 0.. <colset.len:
@@ -139,15 +139,20 @@ proc showBrewer() =
     ## 
       
     while true:
-      
+      infoLine()
       availableColorSets()
-      var cst = readlinefromStdin("Enter colorset name (Ctrl-C  to quit): ")
+      var cst = ""
+      
+      printLn("Enter Colorset name (Ctrl-C  to quit)",brightgreen,black)
+      cst = readlinefromStdin("==> : ")
 
       if cst != "":
+         
          msgb() do : echo "ColorData from http://colorbrewer2.org/"
          superHeader("ColorBrewer2    : " & cst)
          for z in 3.. <13:
-              try:
+              
+                  if cst in colset:
                     cstz = cj[cst][$z]
                     if isNil(cstz) == false :
                           var ti = "$1 ColorSet : $2" % [cst,$z]
@@ -162,10 +167,10 @@ proc showBrewer() =
                               display(zss[0],zss[1],zss[2])
                               printLn("      " & colorway,brightblack,black)              
                           hline()
-              
-              except:
-                  printLnRb("Invalid Colorset name entered.")
-                  break   
+                  else:
+                    printLnRb("Invalid Colorset name entered.")
+                    break
+                 
                 
 
 when isMainModule:
