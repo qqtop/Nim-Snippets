@@ -261,7 +261,7 @@ const
       yellowgreen*          =  "\x1b[38;2;154;205;50m"
 
 
-let colorNames* = [
+let colorNames* = @[
       ("aliceblue", aliceblue),
       ("antiquewhite", antiquewhite),
       ("aqua", aqua),
@@ -277,7 +277,7 @@ let colorNames* = [
       ("burlywood", burlywood),
       ("cadetblue", cadetblue),
       ("chartreuse", chartreuse),
-      ("choate", chocolate),
+      ("chocolate", chocolate),
       ("coral", coral),
       ("cornflowerblue", cornflowerblue),
       ("cornsilk", cornsilk),
@@ -622,14 +622,16 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
 #   
 #   
   
-proc checkColor*(name: string): bool =
+proc checkColor*(colname: string): bool =
      ## returns true if `name` is a known color name 
-     for x in colorNames:
-       if x[0] == name: 
+     for x in  colorNames:
+       if x[0] == colname: 
           result = true
           break
        else:
           result = false
+  
+
 
 # output  horizontal lines
 
@@ -1244,27 +1246,16 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
               else  : msgw() do  : writestyled(substr,{styleUnknown})
       writeLine(stdout,"")
 
-
-
-proc tupleToStr*(xs: tuple): string =
-     ## tupleToStr
-     ##
-     ## tuple to string unpacker , returns a string
-     ##
-     ## code ex nim forum
-     ##
-     ## .. code-block:: nim
-     ##    echo tupleToStr((1,2))         # prints (1, 2)
-     ##    echo tupleToStr((3,4))         # prints (3, 4)
-     ##    echo tupleToStr(("A","B","C")) # prints (A, B, C)
-
-     result = "("
-     for x in xs.fields:
-       if result.len > 1:
-           result.add(", ")
-       result.add($x)
-     result.add(")")
-     
+  
+proc showColors*() =
+  ## showColors
+  ## 
+  ## display all colorNames in color !
+  ## 
+  for x in colorNames:
+     printLn(x[0],x[1],black)  # note x[1] is the color itself.
+  decho(2)   
+  
 
 # Var. date and time handling procs mainly to provide convenice for
 # date format yyyy-MM-dd handling
@@ -2025,7 +2016,26 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
       
 # Misc. routines 
          
-           
+  
+proc tupleToStr*(xs: tuple): string =
+     ## tupleToStr
+     ##
+     ## tuple to string unpacker , returns a string
+     ##
+     ## code ex nim forum
+     ##
+     ## .. code-block:: nim
+     ##    echo tupleToStr((1,2))         # prints (1, 2)
+     ##    echo tupleToStr((3,4))         # prints (3, 4)
+     ##    echo tupleToStr(("A","B","C")) # prints (A, B, C)
+
+     result = "("
+     for x in xs.fields:
+       if result.len > 1:
+           result.add(", ")
+       result.add($x)
+     result.add(")")
+              
 template loopy*[T](ite:T,st:stmt) =
      ## loopy
      ## 
