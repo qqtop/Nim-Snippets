@@ -113,10 +113,18 @@ const
       bbrightwhite*   = bbright(bgWhite)
       bbrightmagenta* = bbright(bgMagenta)
       bbrightblack*   = bbright(bgBlack)
-      # bclrainbow*   = "clrainbow"
-
-      pastelgreen*     =  "\x1b[38;2;179;226;205m"
-
+     
+      # Pastel color set 
+      
+      pastelgreen*       =  "\x1b[38;2;179;226;205m"
+      pastelorange*      =  "\x1b[38;2;253;205;172m"  
+      pastelblue*        =  "\x1b[38;2;203;213;232m"
+      pastelpink*        =  "\x1b[38;2;244;202;228m"
+      pastelyellowgreen* =  "\x1b[38;2;230;245;201m"
+      pastelyellow*      =  "\x1b[38;2;255;242;174m"    
+      pastelbeige*       =  "\x1b[38;2;241;226;204m"
+      pastelwhite*       =  "\x1b[38;2;204;204;204m"
+      
       # colors lifted from colors.nim
 
       aliceblue*            =  "\x1b[38;2;240;248;255m"
@@ -401,7 +409,15 @@ let colorNames* = @[
       ("white", white),
       ("whitesmoke", whitesmoke),
       ("yellow", yellow),
-      ("yellowgreen", yellowgreen)]
+      ("yellowgreen", yellowgreen),
+      ("pastelbeige",pastelbeige),
+      ("pastelblue",pastelblue),
+      ("pastelgreen",pastelgreen),
+      ("pastelorange",pastelorange),
+      ("pastelpink",pastelpink),
+      ("pastelwhite",pastelwhite),
+      ("pastelyellow",pastelyellow),
+      ("pastelyellowgreen",pastelyellowgreen)]
 
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
