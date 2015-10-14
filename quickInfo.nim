@@ -105,7 +105,7 @@ proc main() =
     fc = @["proc","template","converter","from","import"]
     showFunc(afile,fc)
     echo()
-    printLnB available
+    printLn(available,yellowgreen)
     
   echo()
   

@@ -17,10 +17,10 @@ printLn(f,white,brightblack)
 printLn(l,white,brightblack)
 decho(2)
 
-printLnG(s)
-printLnGb(n)
-printLnC(f)
-printLnYb(l)
+printLn(s,lime)
+printLn(n,brightgreen)
+printLn(f,chartreuse)
+printLn(l,rosybrown)
 decho(2)
 
 printLnRainbow(s,{})
@@ -42,7 +42,7 @@ decho 2
 # note every item will be tokenized so we need more colors than strings passed in
 printLnTK("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightmagenta,clrainbow,brightblue,brightred)
 # all in one color
-printLnCb("{} {} {} {}".fmt(s,n,f,l))      
+printLn("{} {} {} {}".fmt(s,n,f,l),greenyellow)      
 # all in one color with new background, note printLn,printLnBB,printLnBF need terminal color constants
 printLn("{} {} {} {}".fmt(s,n,f,l),brightyellow,brightblue)
 
@@ -52,11 +52,14 @@ printLnTK(s & " wuff",black,brightgreen,clrainbow,yellow)
 printLn(s,clrainbow,brightyellow)  
 
 
-printLnGb(s)
+printLn(s,lime)
 decho(1)
 printLn(s,black,brightmagenta)
 printLn(s)
 
+# even echo works with color
+
+echo(lightsalmon,"Yippie",lightblue,"Wow!",termwhite)
 
 
 

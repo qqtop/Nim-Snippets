@@ -86,7 +86,7 @@ proc getData2(theWord:string):JsonNode =
     except HttpRequestError:
        r = nil
        sleepy(1)
-       printLnR("Timeout 1 sec : Kateglo server was hit too fast")
+       printLn("Timeout 1 sec : Kateglo server was hit too fast",red)
        r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
 
     result = r
@@ -112,7 +112,7 @@ while true:
 
             echo()
             superHeader("Kateglo Indonesian - Indonesian Dictionary")
-            printLnBiCol("Dicari Kata    : " & aword,sep,brightcyan,brightgreen)
+            printLnBiCol("Dicari Kata    : " & aword,sep,brightcyan,rosybrown)
             echo()
             proc ss(jn:JsonNode):string =
                 # strip " from the string
@@ -123,26 +123,26 @@ while true:
             var c = 0
 
             proc defini(data:JsonNode) =
-                  printLnGb("Definitions")
+                  printLn("Definitions",yellowgreen)
                   echo()
                   for zd in data["kateglo"]["definition"]:
                       c += 1
-                      printLnBiCol("{:>7}{} {}".fmt(c,sep,ss(zd["phrase"])),":",brightcyan,green)
+                      printLnBiCol("{:>7}{} {}".fmt(c,sep,ss(zd["phrase"])),":",brightcyan,rosybrown)
                       if $ss(zd["def_text"]) == "null":
-                          printLnBiCol("{:>7}{} {}".fmt("Def",sep,"Nothing Found"),":",yellow,red)
+                          printLnBiCol("{:>7}{} {}".fmt("Def",sep,"Nothing Found"),":",lightcoral,red)
 
                       elif ss(zd["def_text"]).len > tw:
                             # for nicer display we need to splitlines
                             var oks = splitlines(wordwrap(ss(zd["def_text"]),tw-20))
                             #print the first line
-                            printLnBiCol("{:>7}{} {}".fmt("Def",sep,oks[0]),":",yellow,white)
+                            printLnBiCol("{:>7}{} {}".fmt("Def",sep,oks[0]),":",lightcoral,termwhite)
                             for x in 1.. <oks.len   :
                                 # here we pad 10 blaks on left
                                 oks[x] = align(oks[x],10 + oks[x].len)
-                                printLnColStr(white,"{}".fmt(oks[x]))
+                                printLnColStr(termwhite,"{}".fmt(oks[x]))
 
                       else:
-                            printLnBiCol("{:>7}{} {}".fmt("Def",sep,ss(zd["def_text"])),":",yellow,white)
+                            printLnBiCol("{:>7}{} {}".fmt("Def",sep,ss(zd["def_text"])),":",lightcoral,termwhite)
 
                       if ss(zd["sample"]) != "null":
                           # put the phrase into the place holders -- or ~ returned from kateglo
@@ -150,11 +150,11 @@ while true:
                           oksa = replace(oksa,"~",ss(zd["phrase"]))
                           var okxs = splitlines(wordwrap(oksa,tw-20))
                           #print the first line
-                          printLnBiCol("{:>7}{} {}".fmt("Sample",sep,okxs[0]),sep,yellow,white)
+                          printLnBiCol("{:>7}{} {}".fmt("Sample",sep,okxs[0]),sep,lightcoral,termwhite)
                           for x in 1.. <okxs.len   :
                             # here pad 10 blanks on left
                             okxs[x] = align(okxs[x],10 + okxs[x].len)
-                            printLnColStr(white,"{}".fmt(okxs[x]))
+                            printLnColStr(termwhite,"{}".fmt(okxs[x]))
                       hline(tw,black)
 
 
@@ -165,7 +165,7 @@ while true:
                       var maxsta = dx.len-1
                       if maxsta > 0:
                           if maxsta > 20: maxsta = 20  # limit data rows to abt 20
-                          printLnGb("Related Phrases")
+                          printLn("Related Phrases",yellowgreen)
                           echo()
                           var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
                           printStyled(mm,mm,yellow,{styleUnderscore})
@@ -185,15 +185,15 @@ while true:
                                     var phdx = phrdata["kateglo"]["translations"]
                                     if phdx.len > 0:
                                         trsin =  ss(phdx[0]["translation"])
-                                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($(zd+1),":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,yellow,white)
+                                        printLnBiCol("{:>4}{} {:<14}: {}".fmt($(zd+1),":",ss(dx[zd]["rel_type_name"]),ss(dx[zd]["related_phrase"])),sep,lightcoral,termwhite)
                                         var okxs = splitlines(wordwrap(trsin,tw - 40))
                                         # print trans first line
-                                        printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,cyan,white)
+                                        printLnBiCol("{:>20}{} {}".fmt("Trans",":",okxs[0]),sep,powderblue,termwhite)
                                         if okxs.len > 1:
                                             for x in 1.. <okxs.len :
                                                 # here pad 22 blanks on left
                                                 okxs[x] = align(okxs[x],22 + okxs[x].len)
-                                                printLnColStr(white,"{}".fmt(okxs[x]))
+                                                printLnColStr(termwhite,"{}".fmt(okxs[x]))
                             
                                   
 
@@ -206,7 +206,7 @@ while true:
                                 sleepy(0.5)
 
                               else:
-                                printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,yellow,white)
+                                printLnBiCol("{:>4}{} {:<14}: {}".fmt($zd,":",rtyp,rphr),sep,lightcoral,termwhite)
 
                             except:
                                    discard
@@ -218,10 +218,10 @@ while true:
 
             proc transl(data:JsonNode) =
                   var dx = data["kateglo"]["translations"]
-                  printLnGb("Translation")
+                  printLn("Translation",yellowgreen)
                   echo()
                   for zd in 0.. <dx.len:
-                      printLnBiCol("{:>8}{} {}".fmt(ss(dx[zd]["ref_source"]),":",ss(dx[zd]["translation"])),sep,yellow,white)
+                      printLnBiCol("{:>8}{} {}".fmt(ss(dx[zd]["ref_source"]),":",ss(dx[zd]["translation"])),sep,lightcoral,termwhite)
                   hline(tw,green)
 
 
@@ -231,11 +231,11 @@ while true:
                       var maxsta = dx.len-1
                       if maxsta > 0:
                           if maxsta > 20: maxsta = 20  # limit data to abt 20
-                          printLnGb("Proverbs")
+                          printLn("Proverbs",yellowgreen)
                           echo()
                           for zd in 0.. <dx.len:
-                              printLnBiCol("{:>4} Prov {} {}".fmt($(zd+1),":",ss(dx[zd]["proverb"])),sep,yellow,white)
-                              printLnBiCol("{:>4} Mean {} {}".fmt($(zd+1),":",ss(dx[zd]["meaning"])),sep,yellow,white)
+                              printLnBiCol("{:>4} Prov {} {}".fmt($(zd+1),":",ss(dx[zd]["proverb"])),sep,lightcoral,termwhite)
+                              printLnBiCol("{:>4} Mean {} {}".fmt($(zd+1),":",ss(dx[zd]["meaning"])),sep,lightcoral,termwhite)
                               hline(tw,black)
 
 

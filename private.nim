@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.8.8
+##   Version     : 0.8.9
 ##
 ##   ProjectStart: 2015-06-20
 ##
@@ -68,52 +68,341 @@ proc bbright(bg:BackgroundColor): string =
 
 
 const
-       # ForegroundColor Normal
-       
-       red*     = f(fgRed)
-       green*   = f(fgGreen)
-       blue*    = f(fgBlue)
-       cyan*    = f(fgCyan)
-       yellow*  = f(fgYellow)
-       white*   = f(fgWhite)
-       black*   = f(fgBlack)
-       magenta* = f(fgMagenta)
+      # Terminal ForegroundColor Normal
       
-       # ForegroundColor Bright
+      termred*     = f(fgRed)
+      termgreen*   = f(fgGreen)
+      termblue*    = f(fgBlue)
+      termcyan*    = f(fgCyan)
+      termyellow*  = f(fgYellow)
+      termwhite*   = f(fgWhite)
+      termblack*   = f(fgBlack)
+      termmagenta* = f(fgMagenta)
+      
+      # Terminal ForegroundColor Bright
        
-       brightred*     = fbright(fgRed)
-       brightgreen*   = fbright(fgGreen)
-       brightblue*    = fbright(fgBlue) 
-       brightcyan*    = fbright(fgCyan)
-       brightyellow*  = fbright(fgYellow)
-       brightwhite*   = fbright(fgWhite)
-       brightmagenta* = fbright(fgMagenta)
-       brightblack*   = fbright(fgBlack)
+      brightred*     = fbright(fgRed)
+      brightgreen*   = fbright(fgGreen)
+      brightblue*    = fbright(fgBlue) 
+      brightcyan*    = fbright(fgCyan)
+      brightyellow*  = fbright(fgYellow)
+      brightwhite*   = fbright(fgWhite)
+      brightmagenta* = fbright(fgMagenta)
+      brightblack*   = fbright(fgBlack)
        
-       clrainbow*   = "clrainbow"
+      clrainbow*   = "clrainbow"
        
-       # BackgroundColor Normal
+      # Terminal BackgroundColor Normal
 
-       bred*     = b(bgRed)
-       bgreen*   = b(bgGreen)
-       bblue*    = b(bgBlue)
-       bcyan*    = b(bgCyan)
-       byellow*  = b(bgYellow)
-       bwhite*   = b(bgWhite)
-       bblack*   = b(bgBlack)
-       bmagenta* = b(bgMagenta)  
+      bred*     = b(bgRed)
+      bgreen*   = b(bgGreen)
+      bblue*    = b(bgBlue)
+      bcyan*    = b(bgCyan)
+      byellow*  = b(bgYellow)
+      bwhite*   = b(bgWhite)
+      bblack*   = b(bgBlack)
+      bmagenta* = b(bgMagenta)  
       
-       # BackgroundColor Bright
+      # Terminal BackgroundColor Bright
       
-       bbrightred*     = bbright(bgRed)
-       bbrightgreen*   = bbright(bgGreen)
-       bbrightblue*    = bbright(bgBlue) 
-       bbrightcyan*    = bbright(bgCyan)
-       bbrightyellow*  = bbright(bgYellow)
-       bbrightwhite*   = bbright(bgWhite)
-       bbrightmagenta* = bbright(bgMagenta)
-       bbrightblack*   = bbright(bgBlack)
-       # bclrainbow*   = "clrainbow"
+      bbrightred*     = bbright(bgRed)
+      bbrightgreen*   = bbright(bgGreen)
+      bbrightblue*    = bbright(bgBlue) 
+      bbrightcyan*    = bbright(bgCyan)
+      bbrightyellow*  = bbright(bgYellow)
+      bbrightwhite*   = bbright(bgWhite)
+      bbrightmagenta* = bbright(bgMagenta)
+      bbrightblack*   = bbright(bgBlack)
+      # bclrainbow*   = "clrainbow"
+
+      pastelgreen*     =  "\x1b[38;2;179;226;205m"
+
+      # colors lifted from colors.nim
+
+      aliceblue*            =  "\x1b[38;2;240;248;255m"
+      antiquewhite*         =  "\x1b[38;2;250;235;215m"                                                    
+      aqua*                 =  "\x1b[38;2;0;255;255m"                                                      
+      aquamarine*           =  "\x1b[38;2;127;255;212m"                                                    
+      azure*                =  "\x1b[38;2;240;255;255m"                                                    
+      beige*                =  "\x1b[38;2;245;245;220m"                                                    
+      bisque*               =  "\x1b[38;2;255;228;196m"                                                    
+      black*                =  "\x1b[38;2;0;0;0m"                                                          
+      blanchedalmond*       =  "\x1b[38;2;255;235;205m"                                                    
+      blue*                 =  "\x1b[38;2;0;0;255m"                                                        
+      blueviolet*           =  "\x1b[38;2;138;43;226m"                                                     
+      brown*                =  "\x1b[38;2;165;42;42m"                                                      
+      burlywood*            =  "\x1b[38;2;222;184;135m"                                                    
+      cadetblue*            =  "\x1b[38;2;95;158;160m"                                                     
+      chartreuse*           =  "\x1b[38;2;127;255;0m"                                                      
+      chocolate*            =  "\x1b[38;2;210;105;30m"                                                     
+      coral*                =  "\x1b[38;2;255;127;80m"                                                     
+      cornflowerblue*       =  "\x1b[38;2;100;149;237m"                                                    
+      cornsilk*             =  "\x1b[38;2;255;248;220m"                                                    
+      crimson*              =  "\x1b[38;2;220;20;60m"                                                      
+      cyan*                 =  "\x1b[38;2;0;255;255m"                                                      
+      darkblue*             =  "\x1b[38;2;0;0;139m"                                                        
+      darkcyan*             =  "\x1b[38;2;0;139;139m"                                                      
+      darkgoldenrod*        =  "\x1b[38;2;184;134;11m"                                                     
+      darkgray*             =  "\x1b[38;2;169;169;169m"                                                    
+      darkgreen*            =  "\x1b[38;2;0;100;0m"                                                        
+      darkkhaki*            =  "\x1b[38;2;189;183;107m"                                                    
+      darkmagenta*          =  "\x1b[38;2;139;0;139m"                                                      
+      darkolivegreen*       =  "\x1b[38;2;85;107;47m"                                                      
+      darkorange*           =  "\x1b[38;2;255;140;0m"                                                      
+      darkorchid*           =  "\x1b[38;2;153;50;204m"                                                     
+      darkred*              =  "\x1b[38;2;139;0;0m"                                                        
+      darksalmon*           =  "\x1b[38;2;233;150;122m"                                                    
+      darkseagreen*         =  "\x1b[38;2;143;188;143m"                                                    
+      darkslateblue*        =  "\x1b[38;2;72;61;139m"                                                      
+      darkslategray*        =  "\x1b[38;2;47;79;79m"                                                       
+      darkturquoise*        =  "\x1b[38;2;0;206;209m"                                                      
+      darkviolet*           =  "\x1b[38;2;148;0;211m"                                                      
+      deeppink*             =  "\x1b[38;2;255;20;147m"                                                     
+      deepskyblue*          =  "\x1b[38;2;0;191;255m"                                                      
+      dimgray*              =  "\x1b[38;2;105;105;105m"                                                    
+      dodgerblue*           =  "\x1b[38;2;30;144;255m"                                                     
+      firebrick*            =  "\x1b[38;2;178;34;34m"                                                      
+      floralwhite*          =  "\x1b[38;2;255;250;240m"                                                    
+      forestgreen*          =  "\x1b[38;2;34;139;34m"                                                      
+      fuchsia*              =  "\x1b[38;2;255;0;255m"                                                      
+      gainsboro*            =  "\x1b[38;2;220;220;220m"                                                    
+      ghostwhite*           =  "\x1b[38;2;248;248;255m"                                                    
+      gold*                 =  "\x1b[38;2;255;215;0m"                                                      
+      goldenrod*            =  "\x1b[38;2;218;165;32m"                                                     
+      gray*                 =  "\x1b[38;2;128;128;128m"                                                    
+      green*                =  "\x1b[38;2;0;128;0m"                                                        
+      greenyellow*          =  "\x1b[38;2;173;255;47m"                                                     
+      honeydew*             =  "\x1b[38;2;240;255;240m"                                                    
+      hotpink*              =  "\x1b[38;2;255;105;180m"                                                    
+      indianred*            =  "\x1b[38;2;205;92;92m"                                                      
+      indigo*               =  "\x1b[38;2;75;0;130m"                                                       
+      ivory*                =  "\x1b[38;2;255;255;240m"                                                    
+      khaki*                =  "\x1b[38;2;240;230;140m"                                                    
+      lavender*             =  "\x1b[38;2;230;230;250m"                                                    
+      lavenderblush*        =  "\x1b[38;2;255;240;245m"                                                    
+      lawngreen*            =  "\x1b[38;2;124;252;0m"                                                      
+      lemonchiffon*         =  "\x1b[38;2;255;250;205m"                                                    
+      lightblue*            =  "\x1b[38;2;173;216;230m"                                                    
+      lightcoral*           =  "\x1b[38;2;240;128;128m"                                                    
+      lightcyan*            =  "\x1b[38;2;224;255;255m"                                                    
+      lightgoldenrodyellow* =  "\x1b[38;2;250;250;210m"                                                   
+      lightgrey*            =  "\x1b[38;2;211;211;211m"                                                    
+      lightgreen*           =  "\x1b[38;2;144;238;144m"                                                    
+      lightpink*            =  "\x1b[38;2;255;182;193m"                                                    
+      lightsalmon*          =  "\x1b[38;2;255;160;122m"                                                    
+      lightseagreen*        =  "\x1b[38;2;32;178;170m"                                                     
+      lightskyblue*         =  "\x1b[38;2;135;206;250m"                                                    
+      lightslategray*       =  "\x1b[38;2;119;136;153m"                                                    
+      lightsteelblue*       =  "\x1b[38;2;176;196;222m"                                                    
+      lightyellow*          =  "\x1b[38;2;255;255;224m"                                                    
+      lime*                 =  "\x1b[38;2;0;255;0m"                                                        
+      limegreen*            =  "\x1b[38;2;50;205;50m"                                                      
+      linen*                =  "\x1b[38;2;250;240;230m"                                                    
+      magenta*              =  "\x1b[38;2;255;0;255m"                                                      
+      maroon*               =  "\x1b[38;2;128;0;0m"                                                        
+      mediumaquamarine*     =  "\x1b[38;2;102;205;170m"                                                    
+      mediumblue*           =  "\x1b[38;2;0;0;205m"                                                        
+      mediumorchid*         =  "\x1b[38;2;186;85;211m"                                                     
+      mediumpurple*         =  "\x1b[38;2;147;112;216m"                                                    
+      mediumseagreen*       =  "\x1b[38;2;60;179;113m"                                                     
+      mediumslateblue*      =  "\x1b[38;2;123;104;238m"                                                    
+      mediumspringgreen*    =  "\x1b[38;2;0;250;154m"                                                      
+      mediumturquoise*      =  "\x1b[38;2;72;209;204m"                                                     
+      mediumvioletred*      =  "\x1b[38;2;199;21;133m"                                                     
+      midnightblue*         =  "\x1b[38;2;25;25;112m"                                                      
+      mintcream*            =  "\x1b[38;2;245;255;250m"                                                    
+      mistyrose*            =  "\x1b[38;2;255;228;225m"                                                    
+      moccasin*             =  "\x1b[38;2;255;228;181m"                                                    
+      navajowhite*          =  "\x1b[38;2;255;222;173m"                                                    
+      navy*                 =  "\x1b[38;2;0;0;128m"                                                        
+      oldlace*              =  "\x1b[38;2;253;245;230m"                                                    
+      olive*                =  "\x1b[38;2;128;128;0m"                                                      
+      olivedrab*            =  "\x1b[38;2;107;142;35m"                                                     
+      orange*               =  "\x1b[38;2;255;165;0m"                                                      
+      orangered*            =  "\x1b[38;2;255;69;0m"                                                       
+      orchid*               =  "\x1b[38;2;218;112;214m"                                                    
+      palegoldenrod*        =  "\x1b[38;2;238;232;170m"                                                    
+      palegreen*            =  "\x1b[38;2;152;251;152m"                                                    
+      paleturquoise*        =  "\x1b[38;2;175;238;238m"                                                    
+      palevioletred*        =  "\x1b[38;2;216;112;147m"                                                    
+      papayawhip*           =  "\x1b[38;2;255;239;213m"                                                    
+      peachpuff*            =  "\x1b[38;2;255;218;185m"                                                    
+      peru*                 =  "\x1b[38;2;205;133;63m"                                                     
+      pink*                 =  "\x1b[38;2;255;192;203m"                                                    
+      plum*                 =  "\x1b[38;2;221;160;221m"                                                    
+      powderblue*           =  "\x1b[38;2;176;224;230m"                                                    
+      purple*               =  "\x1b[38;2;128;0;128m"                                                      
+      red*                  =  "\x1b[38;2;255;0;0m"                                                        
+      rosybrown*            =  "\x1b[38;2;188;143;143m"                                                    
+      royalblue*            =  "\x1b[38;2;65;105;225m"                                                     
+      saddlebrown*          =  "\x1b[38;2;139;69;19m"                                                      
+      salmon*               =  "\x1b[38;2;250;128;114m"                                                    
+      sandybrown*           =  "\x1b[38;2;244;164;96m"                                                     
+      seagreen*             =  "\x1b[38;2;46;139;87m"                                                      
+      seashell*             =  "\x1b[38;2;255;245;238m"                                                    
+      sienna*               =  "\x1b[38;2;160;82;45m"                                                      
+      silver*               =  "\x1b[38;2;192;192;192m"                                                    
+      skyblue*              =  "\x1b[38;2;135;206;235m"                                                    
+      slateblue*            =  "\x1b[38;2;106;90;205m"                                                     
+      slategray*            =  "\x1b[38;2;112;128;144m"                                                    
+      snow*                 =  "\x1b[38;2;255;250;250m"                                                    
+      springgreen*          =  "\x1b[38;2;0;255;127m"                                                      
+      steelblue*            =  "\x1b[38;2;70;130;180m"                                                     
+      tan*                  =  "\x1b[38;2;210;180;140m"                                                    
+      teal*                 =  "\x1b[38;2;0;128;128m"                                                      
+      thistle*              =  "\x1b[38;2;216;191;216m"                                                    
+      tomato*               =  "\x1b[38;2;255;99;71m"                                                      
+      turquoise*            =  "\x1b[38;2;64;224;208m"                                                     
+      violet*               =  "\x1b[38;2;238;130;238m"                                                    
+      wheat*                =  "\x1b[38;2;245;222;179m"
+      white*                =  "\x1b[38;2;255;255;255m"    # same as brightwhite
+      whitesmoke*           =  "\x1b[38;2;245;245;245m"
+      yellow*               =  "\x1b[38;2;255;255;0m"
+      yellowgreen*          =  "\x1b[38;2;154;205;50m"
+
+
+let colorNames* = [
+      ("aliceblue", aliceblue),
+      ("antiquewhite", antiquewhite),
+      ("aqua", aqua),
+      ("aquamarine", aquamarine),
+      ("azure", azure),
+      ("beige", beige),
+      ("bisque", bisque),
+      ("black", black),
+      ("blanchedalmond", blanchedalmond),
+      ("blue", blue),
+      ("blueviolet", blueviolet),
+      ("brown", brown),
+      ("burlywood", burlywood),
+      ("cadetblue", cadetblue),
+      ("chartreuse", chartreuse),
+      ("choate", chocolate),
+      ("coral", coral),
+      ("cornflowerblue", cornflowerblue),
+      ("cornsilk", cornsilk),
+      ("crimson", crimson),
+      ("cyan", cyan),
+      ("darkblue", darkblue),
+      ("darkcyan", darkcyan),
+      ("darkgoldenrod", darkgoldenrod),
+      ("darkgray", darkgray),
+      ("darkgreen", darkgreen),
+      ("darkkhaki", darkkhaki),
+      ("darkmagenta", darkmagenta),
+      ("darkolivegreen", darkolivegreen),
+      ("darkorange", darkorange),
+      ("darkorchid", darkorchid),
+      ("darkred", darkred),
+      ("darksalmon", darksalmon),
+      ("darkseagreen", darkseagreen),
+      ("darkslateblue", darkslateblue),
+      ("darkslategray", darkslategray),
+      ("darkturquoise", darkturquoise),
+      ("darkviolet", darkviolet),
+      ("deeppink", deeppink),
+      ("deepskyblue", deepskyblue),
+      ("dimgray", dimgray),
+      ("dodgerblue", dodgerblue),
+      ("firebrick", firebrick),
+      ("floralwhite", floralwhite),
+      ("forestgreen", forestgreen),
+      ("fuchsia", fuchsia),
+      ("gainsboro", gainsboro),
+      ("ghostwhite", ghostwhite),
+      ("gold", gold),
+      ("goldenrod", goldenrod),
+      ("gray", gray),
+      ("green", green),
+      ("greenyellow", greenyellow),
+      ("honeydew", honeydew),
+      ("hotpink", hotpink),
+      ("indianred", indianred),
+      ("indigo", indigo),
+      ("ivory", ivory),
+      ("khaki", khaki),
+      ("lavender", lavender),
+      ("lavenderblush", lavenderblush),
+      ("lawngreen", lawngreen),
+      ("lemonchiffon", lemonchiffon),
+      ("lightblue", lightblue),
+      ("lightcoral", lightcoral),
+      ("lightcyan", lightcyan),
+      ("lightgoldenrodyellow", lightgoldenrodyellow),
+      ("lightgrey", lightgrey),
+      ("lightgreen", lightgreen),
+      ("lightpink", lightpink),
+      ("lightsalmon", lightsalmon),
+      ("lightseagreen", lightseagreen),
+      ("lightskyblue", lightskyblue),
+      ("lightslategray", lightslategray),
+      ("lightsteelblue", lightsteelblue),
+      ("lightyellow", lightyellow),
+      ("lime", lime),
+      ("limegreen", limegreen),
+      ("linen", linen),
+      ("magenta", magenta),
+      ("maroon", maroon),
+      ("mediumaquamarine", mediumaquamarine),
+      ("mediumblue", mediumblue),
+      ("mediumorchid", mediumorchid),
+      ("mediumpurple", mediumpurple),
+      ("mediumseagreen", mediumseagreen),
+      ("mediumslateblue", mediumslateblue),
+      ("mediumspringgreen", mediumspringgreen),
+      ("mediumturquoise", mediumturquoise),
+      ("mediumvioletred", mediumvioletred),
+      ("midnightblue", midnightblue),
+      ("mintcream", mintcream),
+      ("mistyrose", mistyrose),
+      ("moccasin", moccasin),
+      ("navajowhite", navajowhite),
+      ("navy", navy),
+      ("oldlace", oldlace),
+      ("olive", olive),
+      ("olivedrab", olivedrab),
+      ("orange", orange),
+      ("orangered", orangered),
+      ("orchid", orchid),
+      ("palegoldenrod", palegoldenrod),
+      ("palegreen", palegreen),
+      ("paleturquoise", paleturquoise),
+      ("palevioletred", palevioletred),
+      ("papayawhip", papayawhip),
+      ("peachpuff", peachpuff),
+      ("peru", peru),
+      ("pink", pink),
+      ("plum", plum),
+      ("powderblue", powderblue),
+      ("purple", purple),
+      ("red", red),
+      ("rosybrown", rosybrown),
+      ("royalblue", royalblue),
+      ("saddlebrown", saddlebrown),
+      ("salmon", salmon),
+      ("sandybrown", sandybrown),
+      ("seagreen", seagreen),
+      ("seashell", seashell),
+      ("sienna", sienna),
+      ("silver", silver),
+      ("skyblue", skyblue),
+      ("slateblue", slateblue),
+      ("slategray", slategray),
+      ("snow", snow),
+      ("springgreen", springgreen),
+      ("steelblue", steelblue),
+      ("tan", tan),
+      ("teal", teal),
+      ("thistle", thistle),
+      ("tomato", tomato),
+      ("turquoise", turquoise),
+      ("violet", violet),
+      ("wheat", wheat),
+      ("white", white),
+      ("whitesmoke", whitesmoke),
+      ("yellow", yellow),
+      ("yellowgreen", yellowgreen)]
+
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -143,8 +432,8 @@ when defined(Linux):
 # forward declarations
 proc printColStr*(colstr:string,astr:string)  ## forward declaration
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
-proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
-proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") ## forward declaration
+proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") ## forward declaration
+proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") ## forward declaration
 proc hline*(n:int = tw,col:string = white) ## forward declaration
 proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 proc rainbow*[T](s : T)
@@ -318,6 +607,30 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
+  
+# proc intensity*(a: Color, f: float): Color = 
+#   ## lifted from color.nim  still needs to be adapted
+#   ## returns `a` with intensity `f`. `f` should be a float from 0.0 (completely
+#   ## dark) to 1.0 (full color intensity).
+#   var r = toInt(toFloat(a.int shr 16 and 0xff) * f)
+#   var g = toInt(toFloat(a.int shr 8 and 0xff) * f)
+#   var b = toInt(toFloat(a.int and 0xff) * f)
+#   if r >% 255: r = 255
+#   if g >% 255: g = 255
+#   if b >% 255: b = 255
+#   result = rawRGB(r, g, b)
+#   
+#   
+  
+proc checkColor*(name: string): bool =
+     ## returns true if `name` is a known color name 
+     for x in colorNames:
+       if x[0] == name: 
+          result = true
+          break
+       else:
+          result = false
+
 # output  horizontal lines
 
 proc hline*(n:int = tw,col:string = white) =
@@ -421,6 +734,81 @@ proc clearup*(x:int = 80) =
    curup(x)
 
 
+ 
+converter colconv(cx:string) : string = 
+     # converter so we can use the same terminal color names for
+     # fore- and background colors in print and printLn procs.
+     var bg : string = ""
+     case cx
+      of black        : bg = bblack
+      of white        : bg = bwhite
+      of green        : bg = bgreen
+      of yellow       : bg = byellow
+      of cyan         : bg = bcyan
+      of magenta      : bg = bmagenta
+      of red          : bg = bred
+      of blue         : bg = bblue
+      of brightred    : bg = bbrightred
+      of brightgreen  : bg = bbrightgreen 
+      of brightblue   : bg = bbrightblue  
+      of brightcyan   : bg = bbrightcyan  
+      of brightyellow : bg = bbrightyellow 
+      of brightwhite  : bg = bbrightwhite 
+      of brightmagenta: bg = bbrightmagenta 
+      of brightblack  : bg = bbrightblack
+      of gray         : bg = gray
+      else            : bg = bblack # default
+     result = bg
+ 
+
+proc print*[T](astring:T,fg:string = white , bg:string = black) =
+    ## print
+    ##
+    ## same as printLn without new line
+    ##
+    ##
+    case fg 
+      of clrainbow: rainbow($astring)
+      else:  stdout.write(fg & colconv(bg) & $astring)
+    prxBCol()
+    
+
+proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
+    ## printLn
+    ## 
+    ## similar to echo but with foregroundcolor and backgroundcolor
+    ## 
+    ## selection.
+    ## 
+    ## see testPrintLn.nim for usage examples
+    ## 
+    ## all colornames are supported for font color:
+    ## 
+    ## color names supported for background color:
+    ## 
+    ## white,red,green,blue,yellow,cyan,magenta,black
+    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
+    ## 
+    ## 
+    ## As a side effect we also can do this now:
+    ## 
+    ## echo(yellowgreen,"aha nice",termwhite) 
+    ## 
+    ## that is we print the string in yellowgreen , but need to reset the color manually
+    ## 
+    ## if next line does not have this color requirement.
+    ## 
+    ## 
+  
+    case  fg 
+       of clrainbow:  rainbow($astring)
+       else:  
+           stdout.write(fg & colconv(bg) & $astring)
+           prxBCol()
+    stdout.writeLine("")
+    
+
+
 # Var. convenience procs for colorised data output
 # these procs have similar functionality  
 # print and printLn tokenize strings for selective coloring if required
@@ -460,7 +848,7 @@ proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
                 else :
                     pcol = white 
                     
-                printColStr(pcol,x.token)
+                print(x.token,pcol)
                 c += 1
               
           else:
@@ -488,346 +876,8 @@ proc printLnTK*[T](st:T , cols: varargs[string, `$`]) =
      ##
      printTK(st,cols)
      writeLine(stdout,"")
-
- 
-converter colconv(cx:string) : string = 
-     # converter so we can use the same color names for fore and background colors
-     # in print and printLn procs.
-     var bg : string = ""
-     case cx
-      of black        : bg = bblack
-      of white        : bg = bwhite
-      of green        : bg = bgreen
-      of yellow       : bg = byellow
-      of cyan         : bg = bcyan
-      of magenta      : bg = bmagenta
-      of red          : bg = bred
-      of blue         : bg = bblue
-      of brightred    : bg = bbrightred
-      of brightgreen  : bg = bbrightgreen 
-      of brightblue   : bg = bbrightblue  
-      of brightcyan   : bg = bbrightcyan  
-      of brightyellow : bg = bbrightyellow 
-      of brightwhite  : bg = bbrightwhite 
-      of brightmagenta: bg = bbrightmagenta 
-      of brightblack  : bg = bbrightblack
-      else            : bg = bblack # default
-     result = bg
- 
-
-
-proc print*[T](astring:T,fg:string = white , bg:string = black) =
-    ## print
-    ##
-    ## same as printLn without new line
-    ##
-    ##
-    if fg == clrainbow:
-        rainbow($astring)
-    else:  
-        stdout.write(fg & colconv(bg) & $astring)
-    prxBCol
-    
-
-proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
-    ## printLn
-    ## 
-    ## similar to echo but with foregroundcolor and backgroundcolor
-    ## 
-    ## selection.
-    ## 
-    ## see testPrintLn.nim for usage examples
-    ## 
-    ## color names supported for font color:
-    ## 
-    ## white,red,green,blue,yellow,cyan,magenta,black,clrainbow
-    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
-    ## 
-    ## color names supported for background color:
-    ## 
-    ## white,red,green,blue,yellow,cyan,magenta,black
-    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
-    ## 
-    ## 
-  
-    if fg == clrainbow:
-        rainbow($astring)
-    else:  
-        stdout.write(fg & colconv(bg) & $astring)
-        prxBCol
-    stdout.writeLine("")
-    
-
-   
-proc printG*[T](s:T) = 
-     ## printG
-     ## 
-     ## prints  a string/number in green 
-     ## to print out seq types use print or printLn procs
-     ## 
-     ## following single color print routines are available for convenience
-     ## 
-     ## print<color>     ... prints string in said color no linefeed
-     ## 
-     ## print<color>b    ... prints string in said color bright no linefeed
-     ## 
-     ## printLn<color>   ... prints string in said color with linefeed
-     ##
-     ## printLn<color>b  ... prints string in said color bright with linefeed
-     ##
-     ## 
-     ## colors :  g green, r red, y yellow, c  cyan, w  white, b black ,bl blue , m magenta
-     ## 
-     ##           and bright types : types : gb,rb,yb,cb,wb,blb,mb 
-     ##            
-     ## 
-     ## .. code-block:: nim
-     ##    var s = "color"
-     ##    printLnG(s)
-     ##    printLnGb(s)  
-     ##    printLnR(s)  
-     ##    printLnRb(s)
-     ##    printLnC(s)
-     ##    printLnCb(s)
-     ##    printLnW(s)
-     ##    printLnWb(s)
-     ##    printLnB(s)
-     ##    printLnY(s)
-     ##    printLnYb(s)
-     ##    printLnM(s)
-     ##    printLnMb(s)
-     ##    printLnBl(s)
-     ##    printLnBlb(s)
-     ##
-     ##    printLnBlonW(s)  # print blue on white  
-     ##
-     ##
-     ##    printB(s)
-     ##    printG(s)
-     ##    
-     ##    
-     ## .. code-block:: nim
-     ##    import private,strutils,strfmt
-     ##    printGb("{:<13}{}".fmt("abc : ","23e2323"))   
-     ##    
-     msgg() do: write(stdout,s)
-
-
-proc printGb*[T](s:T) = 
-     ## printGb
-     ## 
-     ## 
-     msggb() do: write(stdout,s)
-
-
-
-proc printLnG*[T](s:T) = 
-     ## printLnG
-     ## 
-     ## prints a string in green and issues a newline
-     ## 
-     msgg() do: writeLine(stdout,s)
-     
-
-
-proc printLnGb*[T](s:T) = 
-     ## printLnGb
-     ## 
-     ## prints a string in bright green and issues a newline
-     ## 
-     msggb() do: writeLine(stdout,s)
-     
-
-
-proc printR*[T](s:T) = 
-     ## printR 
-     ## 
-     ## 
-     msgr() do: write(stdout,s)
-
-
-proc printRb*[T](s:T) = 
-     ## printRb 
-     ## 
-     ## 
-     msgrb() do: write(stdout,s)
-
-
-proc printLnR*[T](s:T) = 
-     ## printLnR
-     ##
-     ##
-     msgr() do: writeLine(stdout,s)  
-     
-
-proc printLnRb*[T](s:T) = 
-     ## printLnRb
-     ##
-     ##
-     msgrb() do: writeLine(stdout,s)       
      
      
-
-proc printY*[T](s:T) = 
-     ## printY
-     ## 
-     ## 
-     msgy() do: write(stdout,s)
-
-
-proc printYb*[T](s:T) = 
-     ## printY
-     ## 
-     ## 
-     msgyb() do: write(stdout,s)
-
-
-proc printLnY*[T](s:T) = 
-     ## printLnY
-     ## 
-     ## 
-     msgy() do: writeLine(stdout,s)
-
-
-proc printLnYb*[T](s:T) = 
-     ## printLnYb
-     ## 
-     ## 
-     msgyb() do: writeLine(stdout,s)
-
-
-     
-proc printC*[T](s:T) = 
-     ## printC
-     ## 
-     ## 
-     msgc() do: write(stdout,s)
-
-
-     
-proc printCb*[T](s:T) = 
-     ## printCb
-     ## 
-     ## 
-     msgcb() do: write(stdout,s)
-
-
-proc printLnC*[T](s:T) = 
-     ## printLnC
-     ## 
-     ## 
-     msgc() do: writeLine(stdout,s)     
-
-
-proc printLnCb*[T](s:T) = 
-     ## printLnCb
-     ## 
-     ## 
-     msgcb() do: writeLine(stdout,s)
-
-
-proc printW*[T](s:T) = 
-     ## printW
-     ## 
-     ## 
-     msgw() do: write(stdout,s)
-
-
-proc printWb*[T](s:T) = 
-     ## printWb
-     ## 
-     ## 
-     msgwb() do: write(stdout,s)
-
-
-proc printLnW*[T](s:T) = 
-     ## printLnw
-     ## 
-     ## 
-     msgw() do: writeLine(stdout,s)     
-
-
-proc printLnWb*[T](s:T) = 
-     ## printLnWb
-     ## 
-     ## 
-     msgwb() do: writeLine(stdout,s)
-
-
-proc printB*[T](s:T) = 
-     ## printB   black
-     ## 
-     ## 
-     msgb() do: write(stdout,s)
-
-
-proc printLnB*[T](s:T) = 
-     ## printLnB   grey
-     ## 
-     ## 
-     msgb() do: writeLine(stdout,s)     
-
-
-
-proc printBl*[T](s:T) = 
-     ## printBl  darkblue
-     ## 
-     ## 
-     msgbl() do: write(stdout,s)
-
-
-proc printBlb*[T](s:T) = 
-     ## printBlb  brightblue
-     ## 
-     ## 
-     msgblb() do: write(stdout,s)
-
-
-proc printLnBl*[T](s:T) = 
-     ## printLnBl  darkblue
-     ## 
-     ## 
-     msgbl() do: writeLine(stdout,s)
-
-
-proc printLnBlb*[T](s:T) = 
-     ## printLnBlb  brightblue
-     ## 
-     ## 
-     msgblb() do: writeLine(stdout,s)
-
-
-
-proc printM*[T](s:T) = 
-     ## printM magenta
-     ## 
-     ## 
-     msgM() do: write(stdout,s)
-
-
-
-proc printMb*[T](s:T) = 
-     ## printMb  brightmagenta
-     ## 
-     ## 
-     msgMb() do: write(stdout,s)
-
-
-
-proc printLnM*[T](s:T) = 
-     ## printLnBl  magenta
-     ## 
-     ## 
-     msgM() do: writeLine(stdout,s)
-
-
-proc printLnMb*[T](s:T) = 
-     ## printLnBlb  brightmagenta
-     ## 
-     ## 
-     msgMb() do: writeLine(stdout,s)
-
-
 
 proc rainbow*[T](s : T) =
     ## rainbow
@@ -927,6 +977,7 @@ proc printLnRainbow*[T](s : T,astyle:set[Style]) =
 
 
 proc printColStr*(colstr:string,astr:string) =
+     
       ## printColStr
       ##
       ## prints a string with a named color in colstr
@@ -938,25 +989,7 @@ proc printColStr*(colstr:string,astr:string) =
       ## .. code-block:: nim
       ##    printColStr(green,"Nice, it is in green !")
       ##
-
-      case colstr
-      of green  : msgg() do  : write(stdout,astr)
-      of red    : msgr() do  : write(stdout,astr)
-      of cyan   : msgc() do  : write(stdout,astr)
-      of yellow : msgy() do  : write(stdout,astr)
-      of white  : msgw() do  : write(stdout,astr)
-      of black  : msgb() do  : write(stdout,astr)
-      of blue   : msgbl() do : write(stdout,astr)
-      of magenta: msgm() do  : write(stdout,astr)
-      of brightgreen : msggb() do : write(stdout,astr)
-      of brightwhite : msgwb() do : write(stdout,astr)
-      of brightyellow: msgyb() do : write(stdout,astr)
-      of brightcyan  : msgcb() do : write(stdout,astr)
-      of brightred   : msgrb() do : write(stdout,astr)
-      of brightblue  : msgblb() do : write(stdout,astr)
-      of brightmagenta: msgmb() do : write(stdout,astr)
-      of clrainbow   : rainbow(astr)
-      else  : msgw() do  : write(stdout,astr)
+      print(astr,colstr)
 
 
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
@@ -973,30 +1006,10 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ##
 
     for vastr in mvastr:
-      case colstr
-      of green  : msgg() do  : writeLine(stdout,vastr)
-      of red    : msgr() do  : writeLine(stdout,vastr)
-      of cyan   : msgc() do  : writeLine(stdout,vastr)
-      of yellow : msgy() do  : writeLine(stdout,vastr)
-      of white  : msgw() do  : writeLine(stdout,vastr)
-      of black  : msgb() do  : writeLine(stdout,vastr)
-      of blue   : msgbl() do : writeLine(stdout,vastr)
-      of magenta: msgm() do  : writeLine(stdout,vastr)
-      of brightgreen : msggb() do  : writeLine(stdout,vastr)
-      of brightwhite : msgwb() do  : writeLine(stdout,vastr)
-      of brightyellow: msgyb() do  : writeLine(stdout,vastr)
-      of brightcyan  : msgcb() do  : writeLine(stdout,vastr)
-      of brightred   : msgrb() do  : writeLine(stdout,vastr)
-      of brightblue  : msgblb() do : writeLine(stdout,vastr)
-      of brightmagenta: msgmb() do : writeLine(stdout,vastr)
-      of clrainbow   :
-                       rainbow(vastr)
-                       echo()
-      else  : msgw() do  : writeLine(stdout,vastr)
+        printLn(vastr,colstr)
 
 
-
-proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
+proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") =
      ## printBiCol
      ##
      ## echos a line in 2 colors based on a seperators first occurance
@@ -1020,12 +1033,12 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string 
        for x in 2.. <z.len:
           z[1] = z[1] & sep & z[x]
      
-     printColStr(colLeft,z[0] & sep)
-     printColStr(colRight,z[1])  
+     print(z[0] & sep,colLeft)
+     print(z[1],colRight)  
      
 
 
-proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:string = "white") =
+proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:string = "termwhite") =
      ## printLnBiCol
      ##
      ## same as printBiCol but issues a new line
@@ -1048,13 +1061,13 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellow" ,colRight:strin
      if z.len > 2:
        for x in 2.. <z.len:
           z[1] = z[1] & sep & z[x]
-     
-     printColStr(colLeft,z[0] & sep)
-     printLnColStr(colRight,z[1])  
+           
+     print(z[0] & sep,colLeft)
+     printLn(z[1],colRight)  
      
 
 
-proc printHl*(s:string,substr:string,col:string) =
+proc printHl*(s:string,substr:string,col:string = "termwhite") =
       ## printHl
       ##
       ## print and highlight all appearances of a char or substring of a string
@@ -1074,24 +1087,32 @@ proc printHl*(s:string,substr:string,col:string) =
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
           if x != rx.high:
-              case col
-              of green  : msgg() do  : write(stdout,substr)
-              of red    : msgr() do  : write(stdout,substr)
-              of cyan   : msgc() do  : write(stdout,substr)
-              of yellow : msgy() do  : write(stdout,substr)
-              of white  : msgw() do  : write(stdout,substr)
-              of black  : msgb() do  : write(stdout,substr)
-              of blue   : msgbl() do : write(stdout,substr)
-              of magenta: msgm() do  : write(stdout,substr)
-              of brightgreen : msggb() do : write(stdout,substr)
-              of brightwhite : msgwb() do : write(stdout,substr)
-              of brightyellow: msgyb() do : write(stdout,substr)
-              of brightcyan  : msgcb() do : write(stdout,substr)
-              of brightred   : msgrb() do : write(stdout,substr)
-              of brightblue  : msgblb() do : write(stdout,substr)
-              of brightmagenta: msgmb() do : write(stdout,substr)
-              of clrainbow   : rainbow(substr)
-              else  : msgw() do  : write(stdout,substr)
+             print(substr,col)
+
+
+proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
+      ## printHl
+      ##
+      ## print and highlight all appearances of a char or substring of a string
+      ##
+      ## with a certain color and issue a new line
+      ##
+      ## .. code-block:: nim
+      ##    printHl("HELLO THIS IS A TEST","T",green)
+      ##
+      ## this would highlight all T in green
+      ##
+      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
+      ## 
+      ##                    brightred,brightcyan,brightyellow,clrainbow
+ 
+      var rx = s.split(substr)
+      for x in rx.low.. rx.high:
+          writestyled(rx[x],{})
+          if x != rx.high:
+             print(substr,col)
+      writeln(stdout,"")
+
 
 
 proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
@@ -1221,20 +1242,17 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
 
 
 
-
-
-
-proc printTuple*(xs: tuple): string =
-     ## printTuple
+proc tupleToStr*(xs: tuple): string =
+     ## tupleToStr
      ##
-     ## tuple printer , returns a string
+     ## tuple to string unpacker , returns a string
      ##
      ## code ex nim forum
      ##
      ## .. code-block:: nim
-     ##    echo printTuple((1,2))         # prints (1, 2)
-     ##    echo printTuple((3,4))         # prints (3, 4)
-     ##    echo printTuple(("A","B","C")) # prints (A, B, C)
+     ##    echo tupleToStr((1,2))         # prints (1, 2)
+     ##    echo tupleToStr((3,4))         # prints (3, 4)
+     ##    echo tupleToStr(("A","B","C")) # prints (A, B, C)
 
      result = "("
      for x in xs.fields:
@@ -1242,7 +1260,7 @@ proc printTuple*(xs: tuple): string =
            result.add(", ")
        result.add($x)
      result.add(")")
-
+     
 
 # Var. date and time handling procs mainly to provide convenice for
 # date format yyyy-MM-dd handling
@@ -1542,7 +1560,7 @@ proc getNextMonday*(adate:string):string =
     #var n:WeekDay
     var ndatestr = ""
     if isNil(adate) == true :
-        printLnR "Error received a date with value : nil"
+        print("Error received a date with value : nil",red)
     else:
         
         if validdate(adate) == true:  
@@ -1597,15 +1615,15 @@ proc superHeader*(bstring:string) =
           astring = astring & " "
        mddl = mddl + 1
 
-  let pdl = repeat("#",mddl)
+  let pdl = repeat("▒",mddl)
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
   echo ()
-  msgy() do : writeLine(stdout,pdl)
-  msgy() do : write(stdout,"# ")
-  msgw() do : write(stdout,astring)
-  msgy() do : writeLine(stdout," #")
-  msgy() do : writeLine(stdout,pdl)
+  printLn(pdl,yellowgreen)
+  print("▒ ",yellowgreen)
+  print(astring)
+  printLn(" ▒",yellowgreen)
+  printLn(pdl,yellowgreen)
   echo ()
 
 
@@ -1650,7 +1668,7 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
             astring = astring & " "
          mddl = mddl + 1
 
-    let pdl = repeat("#",mddl)
+    let pdl = repeat("▒",mddl)
     # now show it with the framing in yellow and text in white
     # really want to have a terminal color checker to avoid invisible lines
     echo ()
@@ -1693,11 +1711,11 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # draw everything
     frameline(pdl)
     #left marker
-    framemarker("# ")
+    framemarker("▒ ")
     # header message sring
     headermessage(astring)
     # right marker
-    framemarker(" #")
+    framemarker(" ▒")
     # we need a new line
     echo()
     # bottom frame line
@@ -1763,7 +1781,7 @@ proc getWanIp*():string =
       z = z.replace(sub = '"' ,' ')
       z = z.strip()
    except:
-       printLnR("Check Heroku Status : https://status.heroku.com")
+       print("Check Heroku Status : https://status.heroku.com",red)
        try:
          opendefaultbrowser("https://status.heroku.com")
        except:
@@ -1776,8 +1794,8 @@ proc showWanIp*() =
      ## 
      ## show your current wan ip
      ## 
-     printBiCol("Current Wan Ip      : " & getwanip(),":",yellow,black)
-         
+     printBiCol("Current Wan Ip  : " & getwanip(),":",yellowgreen,gray)
+ 
 
 proc getIpInfo*(ip:string):JsonNode =
      ## getIpInfo
@@ -1813,11 +1831,11 @@ proc showIpInfo*(ip:string) =
       ## 
       let jz = getIpInfo(ip)
       decho(2)
-      msgg() do: echo "Ip-Info for " & ip
+      printLn("Ip-Info for " & ip,lightsteelblue)
       msgy() do: dline(40)
       for x in jz.getfields():
           echo "{:<15} : {}".fmt($x.key,$x.val)
-      msgy() do : echo "{:<15} : {}".fmt("Source","ip-api.com")
+      printLnBiCol("{:<15} : {}".fmt("Source","ip-api.com"),":",yellowgreen,salmon)
 
 
 
@@ -1854,7 +1872,7 @@ proc getHosts*(dm:string):seq[string] =
           var ss =s.split(",")
           for x in 0.. <ss.len:
               rx.add(ss[x])
-              #msgy() do: echo ss[x]
+              
         else:
           rx = @[]
     except:     
@@ -1882,10 +1900,10 @@ proc showHosts*(dm:string) =
     msgg() do: echo "Hosts Data for " & dm
     var z = getHosts(dm)
     if z.len < 1:
-         msgr() do : echo "Nothing found or not resolved"
+         printLn("Nothing found or not resolved",red)
     else:
        for x in z:
-         echo x
+         printLn(x)
 
 
 # Convenience procs for random data creation and handling
@@ -1925,7 +1943,7 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
          z.add(getRandomInt(mi,ma))
       result = z   
     else:
-      printLnR("Error : Wrong parameters for min , max ")
+      print("Error : Wrong parameters for min , max ",red)
 
 
 proc ff*(zz:float,n:int64 = 5):string =
@@ -2002,45 +2020,18 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
       
       
 # Misc. routines 
-
-
-
-proc loopy*[T](ite:T,col:string = white,sep:string = " ") =
+         
+           
+template loopy*[T](ite:T,st:stmt) =
      ## loopy
      ## 
-     ## the lazy programmers quick for-loop display
-     ## 
-     ## Todo : passing other than simple arrays,seqs or strings
-     ##        like iterators or code blocks
-     ## 
-     ## Example for loopy and loopLn
-     ## 
-     ## .. code-block:: nim
-     ##    var z = 0.. 10      
-     ##    loopy(z,sep=",")  
-     ##    decho()
-     ##    loopyLn("hello world")
-     ##    loopy("hello world",black,"")
-     ##    decho()
-     ##    loopyLn(z,yellow)
-     ##    loopy(z,brightblue)
-     ##    decho()
-     ##    loopyLn([1,2,3,4],green)
-     ##    loopy(z,brightyellow)
-     ## 
-     for lv in ite:
-        printColStr(col,$lv & sep)
-           
-           
-proc loopyLn*[T](ite:T,col:string = white,sep:string = " ") =
-     ## loopyLn
-     ## 
-     ## the lazy programmers quick for-loop display with each item on a new line !   
-     ## 
-     ## Examples see loopy
-     ## 
-     for lv in ite:
-        printLnColStr(col,$lv & sep)
+     ## the lazy programmers quick for-loop template
+     ##
+     ## ..code-block:: nim            
+     ##    var z = 0.. 100
+     ##    loopy(z,printLnTK("The house",brightwhite,brightblack))
+     for x in ite:
+       st
                  
 
 proc harmonics*(n:int64):float64 =
@@ -2063,7 +2054,7 @@ proc harmonics*(n:int64):float64 =
         result = h
 
      else:
-         msgr() do : echo "Harmonics here defined for positive n only"
+         printLn("Harmonics here defined for positive n only",red)
          #result = -1
 
 
@@ -2100,12 +2091,12 @@ proc showStats*(x:Runningstat) =
     ##    doFinish()
     ## 
     var sep = ":"
-    printLnBiCol("Sum     : " & ff(x.sum),sep,yellow,white)
-    printLnBiCol("Var     : " & ff(x.variance),sep,yellow,white)
-    printLnBiCol("Mean    : " & ff(x.mean),sep,yellow,white)
-    printLnBiCol("Std     : " & ff(x.standardDeviation),sep,yellow,white)
-    printLnBiCol("Min     : " & ff(x.min),sep,yellow,white)
-    printLnBiCol("Max     : " & ff(x.max),sep,yellow,white)
+    printLnBiCol("Sum     : " & ff(x.sum),sep,yellowgreen,white)
+    printLnBiCol("Var     : " & ff(x.variance),sep,yellowgreen,white)
+    printLnBiCol("Mean    : " & ff(x.mean),sep,yellowgreen,white)
+    printLnBiCol("Std     : " & ff(x.standardDeviation),sep,yellowgreen,white)
+    printLnBiCol("Min     : " & ff(x.min),sep,yellowgreen,white)
+    printLnBiCol("Max     : " & ff(x.max),sep,yellowgreen,white)
     
 
 
@@ -2117,11 +2108,11 @@ proc newDir*(dirname:string) =
   if not existsDir(dirname):
         try:
            createDir(dirname)
-           printLnG("Directory " & dirname & " created ok")
+           printLn("Directory " & dirname & " created ok",green)
         except OSError:   
-           printLnR(dirname & " creation failed. Check permissions.")
+           printLn(dirname & " creation failed. Check permissions.",red)
   else:
-      printLnR("Directory " & dirname & " already exists !")
+      printLn("Directory " & dirname & " already exists !",red)
 
 
 
@@ -2134,7 +2125,7 @@ proc remDir*(dirname:string) =
   ## 
   
   if dirname == "/home" or dirname == "/" :
-       printLnRB("Directory " & dirname & " removal not allowed !")
+       printLn("Directory " & dirname & " removal not allowed !",brightred)
      
   else:
     
@@ -2142,11 +2133,11 @@ proc remDir*(dirname:string) =
           
           try:
               removeDir(dirname)
-              printLnG("Directory " & dirname & " deleted ok")
+              printLn("Directory " & dirname & " deleted ok",yellowgreen)
           except OSError:
-              printLnR("Directory " & dirname & " deletion failed")
+              printLn("Directory " & dirname & " deletion failed",red)
       else:
-              printLnR("Directory " & dirname & " does not exists !")
+              printLn("Directory " & dirname & " does not exists !",red)
 
 
 
@@ -2425,10 +2416,10 @@ proc qqTop*() =
   ##
   ## prints qqTop in custom color
   ## 
-  printC("qq")
-  printGb("T")
-  printRb("o")
-  printC("p")
+  print("qq",cyan)
+  print("T",brightgreen)
+  print("o",brightred)
+  print("p",cyan)
 
   
 
@@ -2443,59 +2434,59 @@ proc doInfo*() =
   let modTime = getLastModificationTime(filename)
   let sep = ":"
   superHeader("Information for file " & filename & " and System")
-  printLnBiCol("Last compilation on           : " & CompileDate &  " at " & CompileTime,sep,green,black)
+  printLnBiCol("Last compilation on           : " & CompileDate &  " at " & CompileTime,sep,green,brightblack)
   # this only makes sense for non executable files
-  #printLnBiCol("Last access time to file      : " & filename & " " & $(fromSeconds(int(getLastAccessTime(filename)))),sep,green,black)
-  printLnBiCol("Last modificaton time of file : " & filename & " " & $(fromSeconds(int(modTime))),sep,green,black)
-  printLnBiCol("Local TimeZone                : " & $(getTzName()),sep,green,black)
-  printLnBiCol("Offset from UTC  in secs      : " & $(getTimeZone()),sep,green,black)
-  printLnBiCol("Now                           : " & getDateStr() & " " & getClockStr(),sep,green,black)
-  printLnBiCol("Local Time                    : " & $getLocalTime(getTime()),sep,green,black)
-  printLnBiCol("GMT                           : " & $getGMTime(getTime()),sep,green,black)
-  printLnBiCol("Environment Info              : " & getEnv("HOME"),sep,green,black)
-  printLnBiCol("File exists                   : " & $(existsFile filename),sep,green,black)
-  printLnBiCol("Dir exists                    : " & $(existsDir "/"),sep,green,black)
-  printLnBiCol("AppDir                        : " & getAppDir(),sep,green,black)
-  printLnBiCol("App File Name                 : " & getAppFilename(),sep,green,black)
-  printLnBiCol("User home  dir                : " & getHomeDir(),sep,green,black)
-  printLnBiCol("Config Dir                    : " & getConfigDir(),sep,green,black)
-  printLnBiCol("Current Dir                   : " & getCurrentDir(),sep,green,black)
+  #printLnBiCol("Last access time to file      : " & filename & " " & $(fromSeconds(int(getLastAccessTime(filename)))),sep,green,brightblack)
+  printLnBiCol("Last modificaton time of file : " & filename & " " & $(fromSeconds(int(modTime))),sep,green,brightblack)
+  printLnBiCol("Local TimeZone                : " & $(getTzName()),sep,green,brightblack)
+  printLnBiCol("Offset from UTC  in secs      : " & $(getTimeZone()),sep,green,brightblack)
+  printLnBiCol("Now                           : " & getDateStr() & " " & getClockStr(),sep,green,brightblack)
+  printLnBiCol("Local Time                    : " & $getLocalTime(getTime()),sep,green,brightblack)
+  printLnBiCol("GMT                           : " & $getGMTime(getTime()),sep,green,brightblack)
+  printLnBiCol("Environment Info              : " & getEnv("HOME"),sep,green,brightblack)
+  printLnBiCol("File exists                   : " & $(existsFile filename),sep,green,brightblack)
+  printLnBiCol("Dir exists                    : " & $(existsDir "/"),sep,green,brightblack)
+  printLnBiCol("AppDir                        : " & getAppDir(),sep,green,brightblack)
+  printLnBiCol("App File Name                 : " & getAppFilename(),sep,green,brightblack)
+  printLnBiCol("User home  dir                : " & getHomeDir(),sep,green,brightblack)
+  printLnBiCol("Config Dir                    : " & getConfigDir(),sep,green,brightblack)
+  printLnBiCol("Current Dir                   : " & getCurrentDir(),sep,green,brightblack)
   let fi = getFileInfo(filename)
-  printLnBiCol("File Id                       : " & $(fi.id.device) ,sep,green,black)
-  printLnBiCol("File No.                      : " & $(fi.id.file),sep,green,black)
-  printLnBiCol("Kind                          : " & $(fi.kind),sep,green,black)
-  printLnBiCol("Size                          : " & $(float(fi.size)/ float(1000)) & " kb",sep,green,black)
-  printLnBiCol("File Permissions              : ",sep,green,black)
+  printLnBiCol("File Id                       : " & $(fi.id.device) ,sep,green,brightblack)
+  printLnBiCol("File No.                      : " & $(fi.id.file),sep,green,brightblack)
+  printLnBiCol("Kind                          : " & $(fi.kind),sep,green,brightblack)
+  printLnBiCol("Size                          : " & $(float(fi.size)/ float(1000)) & " kb",sep,green,brightblack)
+  printLnBiCol("File Permissions              : ",sep,green,brightblack)
   for pp in fi.permissions:
-      printLnBiCol("                              : " & $pp,sep,green,black)
-  printLnBiCol("Link Count                    : " & $(fi.linkCount),sep,green,black)
+      printLnBiCol("                              : " & $pp,sep,green,brightblack)
+  printLnBiCol("Link Count                    : " & $(fi.linkCount),sep,green,brightblack)
   # these only make sense for non executable files
-  #printLnBiCol("Last Access                   : " & $(fi.lastAccessTime),sep,green,black)
-  #printLnBiCol("Last Write                    : " & $(fi.lastWriteTime),sep,green,black)
-  printLnBiCol("Creation                      : " & $(fi.creationTime),sep,green,black)
+  #printLnBiCol("Last Access                   : " & $(fi.lastAccessTime),sep,green,brightblack)
+  #printLnBiCol("Last Write                    : " & $(fi.lastWriteTime),sep,green,brightblack)
+  printLnBiCol("Creation                      : " & $(fi.creationTime),sep,green,brightblack)
 
   when defined windows:
-        printLnBiCol("System                        : Windows ..... Really ??",sep,red,black) 
+        printLnBiCol("System                        : Windows ..... Really ??",sep,red,brightblack) 
   elif defined linux:
         printLnBiCol("System                        : Running on Linux" ,sep,brightcyan,green)
   else:
-        printLnBiCol("System                        : Interesting Choice" ,sep,green,black)
+        printLnBiCol("System                        : Interesting Choice" ,sep,green,brightblack)
 
   when defined x86:
-        printLnBiCol("Code specifics                : x86" ,sep,green,black)
+        printLnBiCol("Code specifics                : x86" ,sep,green,brightblack)
 
   elif defined amd64:
-        printLnBiCol("Code specifics                : amd86" ,sep,green,black)
+        printLnBiCol("Code specifics                : amd86" ,sep,green,brightblack)
   else:
-        printLnBiCol("Code specifics                : generic" ,sep,green,black)
+        printLnBiCol("Code specifics                : generic" ,sep,green,brightblack)
 
-  printLnBiCol("Nim Version                   : " & $NimMajor & "." & $NimMinor & "." & $NimPatch,sep,green,black) 
-  printLnBiCol("Processor count               : " & $countProcessors(),sep,green,black)
-  printBiCol("OS                            : "& hostOS,sep,green,black)
-  printBiCol(" | CPU: "& hostCPU,sep,green,black)
-  printLnBiCol(" | cpuEndian: "& $cpuEndian,sep,green,black)
+  printLnBiCol("Nim Version                   : " & $NimMajor & "." & $NimMinor & "." & $NimPatch,sep,green,brightblack) 
+  printLnBiCol("Processor count               : " & $countProcessors(),sep,green,brightblack)
+  printBiCol("OS                            : "& hostOS,sep,green,brightblack)
+  printBiCol(" | CPU: "& hostCPU,sep,green,brightblack)
+  printLnBiCol(" | cpuEndian: "& $cpuEndian,sep,green,brightblack)
   let pd = getpid()
-  printLnBiCol("Current pid                   : " & $pd,sep,green,black)
+  printLnBiCol("Current pid                   : " & $pd,sep,green,brightblack)
   
 
 
@@ -2505,14 +2496,14 @@ proc infoLine*() =
     ## prints some info for current application
     ## 
     hlineLn()
-    printColStr(brightyellow,"{:<14}".fmt("Application :"))
-    printColStr(black,extractFileName(getAppFilename()))
-    printColStr(black," | ")
+    print("{:<14}".fmt("Application :"),yellowgreen)
+    printColStr(brightblack,extractFileName(getAppFilename()))
+    printColStr(brightblack," | ")
     printColStr(brightgreen,"Nim : ")
-    printColStr(black,NimVersion & " | ")
-    printColStr(cyan,"private : ")
-    printColStr(black,PRIVATLIBVERSION)
-    printColStr(black," | ")
+    printColStr(brightblack,NimVersion & " | ")
+    printColStr(peru,"private : ")
+    printColStr(brightblack,PRIVATLIBVERSION)
+    printColStr(brightblack," | ")
     qqTop()
     
     
@@ -2536,9 +2527,9 @@ proc doFinish*() =
     
     # version 3
     infoLine()
-    printLnColStr(black," - " & year(getDateStr())) 
-    printColStr(yellow,"{:<14}".fmt("Elapsed     : "))
-    printLnColStr(black,"{:<.3f} {}".fmt(epochtime() - private.start,"secs"))
+    printLnColStr(brightblack," - " & year(getDateStr())) 
+    printColStr(yellowgreen,"{:<14}".fmt("Elapsed     : "))
+    printLn("{:<.3f} {}".fmt(epochtime() - private.start,"secs"),goldenrod)
     echo()
     quit 0
 
@@ -2568,7 +2559,7 @@ proc handler*() {.noconv.} =
     echo "private Version         : ", PRIVATLIBVERSION
     echo "Nim Version             : ", NimVersion
     printColStr(yellow,"{:<14}".fmt("Elapsed     : "))
-    printLnColStr(black,"{:<.3f} {}".fmt(epochtime() - private.start,"secs"))
+    printLnColStr(brightblack,"{:<.3f} {}".fmt(epochtime() - private.start,"secs"))
     echo()
     rainbow("Have a Nice Day !")  ## change or add custom messages as required
     decho(2)

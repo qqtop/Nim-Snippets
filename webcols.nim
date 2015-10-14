@@ -76,20 +76,19 @@ var colset = @["Spectral","RdYlGn","RdBu","PiYG","PRGn","RdYlBu","BrBG","RdGy","
 
 var cj = parseJson(colorjson)
 var cstz = cj["Spectral"]["3"]
-
-
 var allchars = "  "
+
 for x in IdentChars:
     allchars = allchars & $char(x)
 
 proc display(Rz,Gz,Bz:string) = 
      # here we just write the letter A 
-     write(stdout,"\x1b[$1;$2;$3;$4;$5m$6\x1b[0m" % [$38,$2,$Rz,$Gz,$Bz,allchars])
-     
+     #write(stdout,"\x1b[$1;$2;$3;$4;$5m$6\x1b[0m" % [$38,$2,$Rz,$Gz,$Bz,allchars])
+     write(stdout,"\x1b[$1;$2;$3;$4;$5m$6\x1b[0m" % [$38,$2,$Rz,$Gz,$Bz,repeat("▒",tw-30)])
 
-proc availableColorSets()=
+proc availableColorSets() =
       echo()         
-      printLnY("ColorData from http://colorbrewer2.org/")
+      printLn("ColorData from http://colorbrewer2.org/",yellowgreen)
       hline()
 
       var c = 0
@@ -103,7 +102,6 @@ proc availableColorSets()=
         else:
           writeln(stdout,colset[x]) 
           c = 0
-
       decho(2) 
 
 
@@ -168,14 +166,14 @@ proc showBrewer() =
                               printLn("      " & colorway,brightblack,black)              
                           hline()
                   else:
-                    printLnRb("Invalid Colorset name entered.")
+                    printLn("Invalid Colorset name entered.",red)
                     break
                  
                 
 
 when isMainModule:
 
-      #showBrewerAll() 
+      showBrewerAll() 
       showBrewer()
       doFinish()
 

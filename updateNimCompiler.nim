@@ -49,7 +49,7 @@ proc checkBuildStatus(bss:string):bool =
       for x in 0.. <lcb:
         cb = $(jobj["-1"]["text"].getElems[x])
         if x == 1 and cb == """"successful"""":
-           printGb("Build Status : Success. Updating compiler")
+           print("Build Status : Success. Updating compiler",lime)
            result = true
         elif x == 0 and cb == """"warnings"""":
            printLnBiCol("Build Status Warnings    : " & cb,":")
@@ -57,14 +57,11 @@ proc checkBuildStatus(bss:string):bool =
         elif x == 0 and cb == """"failure"""":
            printLnBiCol("Build Status Failure     : " & cb,":")
            result = false
-#         else :
-#            printLnBiCol("Build Status Failure     : failed",":")
-#            result = false 
           
   
 proc byebye() =
     echo() 
-    printG(usageString)
+    print(usageString,termgreen)
     quit(QuitFailure)
 
 
