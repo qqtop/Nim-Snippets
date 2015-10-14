@@ -792,7 +792,11 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## 
     ## As a side effect we also can do this now:
     ## 
-    ## echo(yellowgreen,"aha nice",termwhite) 
+    ## ..code-block:: nim
+    ##   echo(yellowgreen,"aha nice",termwhite) 
+    ##   echo(rosybrown)
+    ##   echo("grizzly bear")
+    ##   echo(termwhite)  # reset to usual terminal white color
     ## 
     ## that is we print the string in yellowgreen , but need to reset the color manually
     ## 
@@ -2028,8 +2032,8 @@ template loopy*[T](ite:T,st:stmt) =
      ## the lazy programmers quick for-loop template
      ##
      ## ..code-block:: nim            
-     ##    var z = 0.. 100
-     ##    loopy(z,printLnTK("The house",brightwhite,brightblack))
+     ##     loopy(0.. 100,printLnTK("The house is in the back",brightwhite,brightblack,salmon,yellowgreen))
+     ##     
      for x in ite:
        st
                  
