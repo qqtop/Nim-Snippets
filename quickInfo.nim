@@ -63,14 +63,16 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
       if zl.startswith(funcy):
                
         if funcy != "from" and funcy != "import":
+           echo()
            hlineLn(tw,brightblack)
+           
         
-        if zl.strip() == funcy:
+        if zl.strip(true,true) == funcy:
            # this happens if we run into a block like
            # import
            #    blah1,blah2
            # 
-           printColStr(black,funcy & "  block not shown")
+           printLn(funcy & "  block not shown",tomato)
           
         else:   
            printBiCol(zl,funcy & " ",brightyellow,green)              
