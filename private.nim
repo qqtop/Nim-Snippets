@@ -1083,9 +1083,15 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:s
      if z.len > 2:
        for x in 2.. <z.len:
           z[1] = z[1] & sep & z[x]
-           
-     print(z[0] & sep,colLeft)
-     printLn(z[1],colRight)  
+     
+     try:
+        print(z[0] & sep,colLeft)
+     except:
+        discard
+     try:   
+        printLn(z[1],colRight)  
+     except:
+        discard
      
 
 
@@ -1686,38 +1692,15 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
 
     # frame line
     proc frameline(pdl:string) =
-        case frmcol
-        of  green : msgg()  do : writestyled(pdl ,{})
-        of  yellow: msgy()  do : writestyled(pdl ,{})
-        of  cyan  : msgc()  do : writestyled(pdl ,{})
-        of  red   : msgr()  do : writestyled(pdl ,{})
-        of  white : msgwb() do : writestyled(pdl ,{})
-        of  black : msgb()  do : writestyled(pdl ,{})
-        of  clrainbow : rainbow(pdl)
-        else: msgw() do : writestyled(pdl ,{})
+        print(pdl,frmcol)
         echo()
 
     proc framemarker(am:string) =
-        case frmcol
-        of  green : msgg()  do : writestyled(am ,{})
-        of  yellow: msgy()  do : writestyled(am ,{})
-        of  cyan  : msgc()  do : writestyled(am ,{})
-        of  red   : msgr()  do : writestyled(am ,{})
-        of  white : msgwb() do : writestyled(am ,{})
-        of  black : msgb()  do : writestyled(am ,{})
-        of  clrainbow : rainbow(am)
-        else: msgy() do : writestyled(am ,{})
-
+        print(am,frmcol)
+        
     proc headermessage(astring:string)  =
-        case strcol
-        of green  : msgg()  do : writestyled(astring ,{styleBright})
-        of yellow : msgy()  do : writestyled(astring ,{styleBright})
-        of cyan   : msgc()  do : writestyled(astring ,{styleBright})
-        of red    : msgr()  do : writestyled(astring ,{styleBright})
-        of white  : msgwb() do : writestyled(astring ,{styleBright})
-        of black  : msgb()  do : writestyled(pdl ,{})
-        of clrainbow : rainbow(astring)
-        else: msgw() do : writestyled(astring ,{})
+        print(astring,strcol)
+        
 
     # draw everything
     frameline(pdl)

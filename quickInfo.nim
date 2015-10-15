@@ -8,7 +8,7 @@ from memfiles import open, lines
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.2.0
+##   Version     : 0.7.0
 ##
 ##   ProjectStart: 2015-08-26
 ##
@@ -42,13 +42,13 @@ from memfiles import open, lines
 ##
 
 
-const QUICKINFOVERSION = 0.6 
+const QUICKINFOVERSION = 0.7 
 const available = "Available : proc,template,converter,var,let,const,type,from,import"
 
  
 proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter","var","let","const","type","from","import"]) =
-  superHeader("Info for : " & fname & $funcs,white,yellow)
-  echo()
+  superHeader("Info for : " & fname & $funcs,white,tomato)
+  decho(2)
   var file = memfiles.open(fname, fmRead)
   for line in memfiles.lines(file):  
     
@@ -62,7 +62,7 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
               
       if zl.startswith(funcy):
                
-        if funcy != "from" and funcy != "import":
+        if funcy != "from" or funcy != "import":
            echo()
            hlineLn(tw,brightblack)
            
@@ -72,14 +72,12 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
            # import
            #    blah1,blah2
            # 
-           printLn(funcy & "  block not shown",tomato)
+           printLn(funcy & "  intended block not shown",tomato)
           
         else:   
-           printBiCol(zl,funcy & " ",brightyellow,green)              
-           echo()  
-      
-      
-    
+           printBiCol(zl,funcy & " ",greenyellow,steelblue) 
+            
+
 
 proc main() =
   
@@ -106,8 +104,8 @@ proc main() =
     # use a default with most used
     fc = @["proc","template","converter","from","import"]
     showFunc(afile,fc)
-    echo()
-    printLn(available,yellowgreen)
+    decho(2)
+    printLn(available,rosybrown)
     
   echo()
   
