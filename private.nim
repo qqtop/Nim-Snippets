@@ -48,11 +48,11 @@ type
 const PRIVATLIBVERSION* = "0.8.8"
   
   
-proc f(fg:ForegroundColor):string =
+proc getfg(fg:ForegroundColor):string =
     var gFG = ord(fg)
     result = "\e[" & $gFG & 'm'
     
-proc b(bg:BackgroundColor):string =
+proc getbg(bg:BackgroundColor):string =
     var gBG = ord(bg)
     result = "\e[" & $gBG & 'm'
 
@@ -70,14 +70,14 @@ proc bbright(bg:BackgroundColor): string =
 const
       # Terminal ForegroundColor Normal
       
-      termred*     = f(fgRed)
-      termgreen*   = f(fgGreen)
-      termblue*    = f(fgBlue)
-      termcyan*    = f(fgCyan)
-      termyellow*  = f(fgYellow)
-      termwhite*   = f(fgWhite)
-      termblack*   = f(fgBlack)
-      termmagenta* = f(fgMagenta)
+      termred*     = getfg(fgRed)
+      termgreen*   = getfg(fgGreen)
+      termblue*    = getfg(fgBlue)
+      termcyan*    = getfg(fgCyan)
+      termyellow*  = getfg(fgYellow)
+      termwhite*   = getfg(fgWhite)
+      termblack*   = getfg(fgBlack)
+      termmagenta* = getfg(fgMagenta)
       
       # Terminal ForegroundColor Bright
        
@@ -90,18 +90,18 @@ const
       brightmagenta* = fbright(fgMagenta)
       brightblack*   = fbright(fgBlack)
        
-      clrainbow*   = "clrainbow"
+      clrainbow*   = "clrainbow" 
        
       # Terminal BackgroundColor Normal
 
-      bred*     = b(bgRed)
-      bgreen*   = b(bgGreen)
-      bblue*    = b(bgBlue)
-      bcyan*    = b(bgCyan)
-      byellow*  = b(bgYellow)
-      bwhite*   = b(bgWhite)
-      bblack*   = b(bgBlack)
-      bmagenta* = b(bgMagenta)  
+      bred*     = getbg(bgRed)
+      bgreen*   = getbg(bgGreen)
+      bblue*    = getbg(bgBlue)
+      bcyan*    = getbg(bgCyan)
+      byellow*  = getbg(bgYellow)
+      bwhite*   = getbg(bgWhite)
+      bblack*   = getbg(bgBlack)
+      bmagenta* = getbg(bgMagenta)  
       
       # Terminal BackgroundColor Bright
       
@@ -457,24 +457,25 @@ proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) ## forward declar
 proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) ## forward declaration
 
 
-# macros
-# lifted from terminal.nim
+
+# procs lifted from terminal.nim as they are not exported from there
 proc styledEchoProcessArg(s: string) = write stdout, s
 proc styledEchoProcessArg(style: Style) = setStyle({style})
 proc styledEchoProcessArg(style: set[Style]) = setStyle style
 proc styledEchoProcessArg(color: ForegroundColor) = setForegroundColor color
 proc styledEchoProcessArg(color: BackgroundColor) = setBackgroundColor color
 
+# macros
+
 macro styledEchoPrint*(m: varargs[expr]): stmt =
-  ## lifted from terminal.nim
-  ## and removed new line 
+  ## lifted from terminal.nim and removed new line 
   ## used in printStyled
   ## 
   let m = callsite()
   result = newNimNode(nnkStmtList)
 
   for i in countup(1, m.len - 1):
-    result.add(newCall(bindSym"styledEchoProcessArg", m[i]))
+      result.add(newCall(bindSym"styledEchoProcessArg", m[i]))
 
   result.add(newCall(bindSym"write", bindSym"stdout", newStrLitNode("")))
   result.add(newCall(bindSym"resetAttributes"))
@@ -482,12 +483,15 @@ macro styledEchoPrint*(m: varargs[expr]): stmt =
 
 # templates
 
+
 template msgg*(code: stmt): stmt =
       ## msgX templates
       ## convenience templates for colored text output
       ## the assumption is that the terminal is white text and black background
       ## naming of the templates is like msg+color so msgy => yellow
       ## use like : msgg() do : echo "How nice, it's in green"
+      ## these templates have now been superceded by various print procs
+      ## but still maybe usefull from time to time.
 
       setForeGroundColor(fgGreen)
       code
@@ -649,23 +653,12 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          quit()
 
 
-  
-# proc intensity*(a: Color, f: float): Color = 
-#   ## lifted from color.nim  still needs to be adapted
-#   ## returns `a` with intensity `f`. `f` should be a float from 0.0 (completely
-#   ## dark) to 1.0 (full color intensity).
-#   var r = toInt(toFloat(a.int shr 16 and 0xff) * f)
-#   var g = toInt(toFloat(a.int shr 8 and 0xff) * f)
-#   var b = toInt(toFloat(a.int and 0xff) * f)
-#   if r >% 255: r = 255
-#   if g >% 255: g = 255
-#   if b >% 255: b = 255
-#   result = rawRGB(r, g, b)
-#   
-#   
-  
 proc checkColor*(colname: string): bool =
-     ## returns true if `name` is a known color name 
+     ## checkColor
+     ## 
+     ## returns true if colname is a known color name , obviously
+     ## 
+     ## 
      for x in  colorNames:
        if x[0] == colname: 
           result = true
@@ -673,7 +666,6 @@ proc checkColor*(colname: string): bool =
        else:
           result = false
   
-
 
 # output  horizontal lines
 
@@ -956,8 +948,6 @@ proc rainbow*[T](s : T) =
        print(astr[x],colorNames[c][1],black)
        
 
-
-
 proc printRainbow*[T](s : T,astyle:set[Style]) =
     ## printRainbow
     ##
@@ -969,29 +959,15 @@ proc printRainbow*[T](s : T,astyle:set[Style]) =
     ##    printRainBow("WoW So Nice",{styleUnderScore})
     ##    printRainBow("  --> No Style",{}) 
     ##
-      
+    
     var astr = $s
     var c = 0
-    var a = toSeq(1.. 13)
+    var a = toSeq(1.. <colorNames.len)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
-       case c
-        of 1  : msgg() do  : writestyled($astr[x],astyle)
-        of 2  : msgr() do  : writestyled($astr[x],astyle)
-        of 3  : msgc() do  : writestyled($astr[x],astyle)
-        of 4  : msgy() do  : writestyled($astr[x],astyle)
-        of 5  : msggb() do : writestyled($astr[x],astyle)
-        of 6  : msgr() do  : writestyled($astr[x],astyle)
-        of 7  : msgwb() do : writestyled($astr[x],astyle)
-        of 8  : msgc() do  : writestyled($astr[x],astyle)
-        of 9  : msgyb() do : writestyled($astr[x],astyle)
-        of 10 : msgrb() do : writestyled($astr[x],astyle)
-        of 11 : msgcb() do : writestyled($astr[x],astyle)
-        of 12 : msgmb() do : writestyled($astr[x],astyle)
-        else  : msgw() do  : writestyled($astr[x],astyle)
-
-
-
+       printStyled($astr[x],"",colorNames[c][1],astyle)
+    
+    
 proc printLnRainbow*[T](s : T,astyle:set[Style]) =
     ## printLnRainbow
     ##
@@ -1005,26 +981,8 @@ proc printLnRainbow*[T](s : T,astyle:set[Style]) =
     ##    printLnRainBow("WoW So Nice",{styleUnderScore})
     ##    printLnRainBow("Aha --> No Style",{}) 
     ##
-    var astr = $s 
-    var c = 0
-    var a = toSeq(1.. 13)
-    for x in 0.. <astr.len:
-       c = a[randomInt(a.len)]
-       case c
-        of 1  : msgg() do  : writestyled($astr[x],astyle)
-        of 2  : msgr() do  : writestyled($astr[x],astyle)
-        of 3  : msgc() do  : writestyled($astr[x],astyle)
-        of 4  : msgy() do  : writestyled($astr[x],astyle)
-        of 5  : msggb() do : writestyled($astr[x],astyle)
-        of 6  : msgr() do  : writestyled($astr[x],astyle)
-        of 7  : msgwb() do : writestyled($astr[x],astyle)
-        of 8  : msgc() do  : writestyled($astr[x],astyle)
-        of 9  : msgyb() do : writestyled($astr[x],astyle)
-        of 10 : msgrb() do : writestyled($astr[x],astyle)
-        of 11 : msgcb() do : writestyled($astr[x],astyle)
-        of 12 : msgmb() do : writestyled($astr[x],astyle)
-        else  : msgw() do  : writestyled($astr[x],astyle)
-    echo()
+    printRainBow(s,astyle)  
+    writeln(stdout,"")
     
 
 
@@ -1084,7 +1042,6 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:st
      if z.len > 2:
        for x in 2.. <z.len:
           z[1] = z[1] & sep & z[x]
-     
      print(z[0] & sep,colLeft)
      print(z[1],colRight)  
      
@@ -1151,16 +1108,11 @@ proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
       ## this would highlight all T in yellowgreen
       ##
      
- 
-      var rx = s.split(substr)
-      for x in rx.low.. rx.high:
-          writestyled(rx[x],{})
-          if x != rx.high:
-             print(substr,col)
+      printHl(s,substr,col)
       writeln(stdout,"")
 
 
-proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) =
+proc printStyledSimple*[T](astr:T,fg:string,astyle:set[Style]) =
    ## printStyledsimple
    ## 
    ## an extended version of writestyled to enable colors
@@ -1213,7 +1165,7 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
                   of clrainbow   : printRainbow(substr,astyle)
                   else: styledEchoPrint(col,astyle,substr,termwhite) 
       else:
-          printStyledsimple(s,col,astyle)
+          printStyledSimple(s,col,astyle)
 
       
 
@@ -2034,7 +1986,7 @@ template loopy*[T](ite:T,st:stmt) =
      ## the lazy programmers quick for-loop template
      ##
      ## ..code-block:: nim            
-     ##     loopy(0.. 100,printLnTK("The house is in the back",brightwhite,brightblack,salmon,yellowgreen))
+     ##     loopy(0.. 100,printLnTK("The house is in the back.",brightwhite,brightblack,salmon,yellowgreen))
      ##     
      for x in ite:
        st
@@ -2361,7 +2313,7 @@ proc fastsplit*(s: string, sep: char): seq[string] =
   ## 
   ##  code by jehan lifted from Nim Forum
   ##  
-  ## for best results compile prog with : nim cc -d:release --gc:markandsweep 
+  ## maybe best results compile prog with : nim cc -d:release --gc:markandsweep 
   ## 
   ## seperator must be a char type
   ## 
@@ -2427,7 +2379,6 @@ proc qqTop*() =
   print("o",brightred)
   print("p",cyan)
 
-  
 
 proc doInfo*() =
   ## doInfo
@@ -2523,15 +2474,6 @@ proc doFinish*() =
     ## and should be the last line of the application
     ##
     decho(2)
-    
-    # version 1
-    #msgb() do : echo "{:<15}{} | {}{} | {}{} - {}".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"qqTop private : ", PRIVATLIBVERSION,year(getDateStr()))
-    
-    # version 2
-    #msgb() do : write(stdout,"{:<15}{} | {}{} | {}{} - {} | ".fmt("Application : ",getAppFilename(),"Nim : ",NimVersion,"private : ", PRIVATLIBVERSION,year(getDateStr())))
-    #qqTop()
-    
-    # version 3
     infoLine()
     printLnColStr(brightblack," - " & year(getDateStr())) 
     printColStr(yellowgreen,"{:<14}".fmt("Elapsed     : "))
