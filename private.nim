@@ -830,11 +830,13 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## 
     ## As a side effect we also can do this now:
     ## 
+    ## 
     ## ..code-block:: nim
     ##   echo(yellowgreen,"aha nice",termwhite) 
     ##   echo(rosybrown)
     ##   echo("grizzly bear")
     ##   echo(termwhite)  # reset to usual terminal white color
+    ## 
     ## 
     ## that is we print the string in yellowgreen , but need to reset the color manually
     ## 
@@ -868,6 +870,7 @@ proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## NOTE : this proc does not play well with Nimborg/high_level.nim
      ##        if using nimborg have another module with all nimborg related
      ##        processing there and import procs from this module into the main prog.
+     ##     
      ##         
      ## .. code-block:: nim
      ##    import private,strfmt
@@ -1053,6 +1056,8 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:s
      ## same as printBiCol but issues a new line
      ## 
      ## .. code-block:: nim
+     ##    import private,strutils,strfmt
+     ##       
      ##    for x  in 0.. <3:     
      ##       # here use default colors for left and right side of the seperator     
      ##       printLnBiCol("Test $1  : Ok this was $1 : what" % $x,":")
