@@ -37,7 +37,7 @@
 
 import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
-
+import macros
 
 type
      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
@@ -452,7 +452,33 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:st
 proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") ## forward declaration
 proc hline*(n:int = tw,col:string = white) ## forward declaration
 proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
-proc rainbow*[T](s : T)
+proc rainbow*[T](s : T)  ## forward declaration
+proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) ## forward declaration
+proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) ## forward declaration
+
+
+# macros
+# lifted from terminal.nim
+proc styledEchoProcessArg(s: string) = write stdout, s
+proc styledEchoProcessArg(style: Style) = setStyle({style})
+proc styledEchoProcessArg(style: set[Style]) = setStyle style
+proc styledEchoProcessArg(color: ForegroundColor) = setForegroundColor color
+proc styledEchoProcessArg(color: BackgroundColor) = setBackgroundColor color
+
+macro styledEchoPrint*(m: varargs[expr]): stmt =
+  ## lifted from terminal.nim
+  ## and removed new line 
+  ## used in printStyled
+  ## 
+  let m = callsite()
+  result = newNimNode(nnkStmtList)
+
+  for i in countup(1, m.len - 1):
+    result.add(newCall(bindSym"styledEchoProcessArg", m[i]))
+
+  result.add(newCall(bindSym"write", bindSym"stdout", newStrLitNode("")))
+  result.add(newCall(bindSym"resetAttributes"))
+
 
 # templates
 
@@ -784,6 +810,8 @@ proc print*[T](astring:T,fg:string = white , bg:string = black) =
     ##
     ## same as printLn without new line
     ##
+    ## for extended colorset background colors use printStyled with styleReverse
+    ## 
     ##
     case fg 
       of clrainbow: rainbow($astring)
@@ -849,7 +877,6 @@ proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##        if using nimborg have another module with all nimborg related
      ##        processing there and import procs from this module into the main prog.
      ##         
-     ## 
      ## .. code-block:: nim
      ##    import private,strfmt
      ##    printTK("test",@[clrainbow,white,red,cyan,yellow])
@@ -859,6 +886,19 @@ proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##    printTK(@[123,123,123],white,green,white)
      ##    printTK("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
+     ##
+     ## another way to achieve a similar effect is to us the build in
+     ## styledEcho template directly like so:
+     ##
+     ## .. code-block:: nim
+     ##    styledEcho(green,"Nice ","try ",pastelgreen,"1234 ",steelblue," yep blue")
+     ##  
+     ## styledEcho also supports styles so this also works
+     ## 
+     ## .. code-block:: nim
+     ##    styledEcho(green,"Nice ","try ",pastelgreen,styleUnderscore,"1234 ",steelblue," yep blue")
+     ##  
+     ## 
             
      var pcol = ""
      var c = 0  
@@ -898,7 +938,7 @@ proc printLnTK*[T](st:T , cols: varargs[string, `$`]) =
      ##
      printTK(st,cols)
      writeLine(stdout,"")
-     
+   
      
 
 proc rainbow*[T](s : T) =
@@ -910,23 +950,12 @@ proc rainbow*[T](s : T) =
     ##
     var astr = $s
     var c = 0
-    var a = toSeq(1.. 13)
+    var a = toSeq(1.. <colorNames.len)
     for x in 0.. <astr.len:
        c = a[randomInt(a.len)]
-       case c
-        of 1  : msgg() do  : write(stdout,$astr[x])
-        of 2  : msgr() do  : write(stdout,$astr[x])
-        of 3  : msgc() do  : write(stdout,$astr[x])
-        of 4  : msgy() do  : write(stdout,$astr[x])
-        of 5  : msggb() do : write(stdout,$astr[x])
-        of 6  : msgr() do  : write(stdout,$astr[x])
-        of 7  : msgwb() do : write(stdout,$astr[x])
-        of 8  : msgc() do  : write(stdout,$astr[x])
-        of 9  : msgyb() do : write(stdout,$astr[x])
-        of 10 : msgrb() do : write(stdout,$astr[x])
-        of 11 : msgcb() do : write(stdout,$astr[x])
-        of 12 : msgmb() do : write(stdout,$astr[x])
-        else  : msgw() do  : write(stdout,$astr[x])
+       print(astr[x],colorNames[c][1],black)
+       
+
 
 
 proc printRainbow*[T](s : T,astyle:set[Style]) =
@@ -934,12 +963,13 @@ proc printRainbow*[T](s : T,astyle:set[Style]) =
     ##
     ## print multicolored string with styles , for available styles see printStyled
     ##
-    ## may not work with certain Rune
+    ## may not work with certain Rune and currently supports terminal colors only
     ##
     ## .. code-block:: nim
     ##    printRainBow("WoW So Nice",{styleUnderScore})
     ##    printRainBow("  --> No Style",{}) 
     ##
+      
     var astr = $s
     var c = 0
     var a = toSeq(1.. 13)
@@ -969,7 +999,7 @@ proc printLnRainbow*[T](s : T,astyle:set[Style]) =
     ## 
     ## and issues a new line
     ##
-    ## may not work with certain Rune
+    ## may not work with certain Rune and currently supports terminal colors only
     ##
     ## .. code-block:: nim
     ##    printLnRainBow("WoW So Nice",{styleUnderScore})
@@ -1082,17 +1112,10 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:s
      # in case sep occures multiple time we only consider the first one
      if z.len > 2:
        for x in 2.. <z.len:
-          z[1] = z[1] & sep & z[x]
-     
-     try:
-        print(z[0] & sep,colLeft)
-     except:
-        discard
-     try:   
-        printLn(z[1],colRight)  
-     except:
-        discard
-     
+           z[1] = z[1] & sep & z[x]
+     print(z[0] & sep,colLeft)
+     printLn(z[1],colRight)  
+          
 
 
 proc printHl*(s:string,substr:string,col:string = "termwhite") =
@@ -1107,10 +1130,7 @@ proc printHl*(s:string,substr:string,col:string = "termwhite") =
       ##
       ## this would highlight all T in green
       ##
-      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
-      ## 
-      ##                    brightred,brightcyan,brightyellow,clrainbow
- 
+   
       var rx = s.split(substr)
       for x in rx.low.. rx.high:
           writestyled(rx[x],{})
@@ -1126,13 +1146,11 @@ proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
       ## with a certain color and issue a new line
       ##
       ## .. code-block:: nim
-      ##    printHl("HELLO THIS IS A TEST","T",green)
+      ##    printHl("HELLO THIS IS A TEST","T",yellowgreen)
       ##
-      ## this would highlight all T in green
+      ## this would highlight all T in yellowgreen
       ##
-      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
-      ## 
-      ##                    brightred,brightcyan,brightyellow,clrainbow
+     
  
       var rx = s.split(substr)
       for x in rx.low.. rx.high:
@@ -1142,6 +1160,16 @@ proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
       writeln(stdout,"")
 
 
+proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) =
+   ## printStyledsimple
+   ## 
+   ## an extended version of writestyled to enable colors
+   ##
+   ## 
+   case fg 
+      of clrainbow   : printRainbow($astr,astyle)
+      else: styledEchoPrint(fg,astyle,$astr,termwhite)
+      
 
 proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ## printStyled
@@ -1159,7 +1187,7 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ## styleUnknown,               ## unknown
       ## styleUnderscore = 4,        ## underscored text
       ## styleBlink,                 ## blinking/bold text
-      ## styleReverse = 7,           ## unknown
+      ## styleReverse = 7,           ## reverses currentforground and backgroundcolor
       ## styleHidden                 ## hidden text
       ##
       ## with a certain color
@@ -1175,36 +1203,19 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ##    # this highlights all T in rainbow colors , no style is applied
       ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
       ##    
-      ##
-      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
-      ## 
-      ##                    brightred,brightcyan,brightyellow,clrainbow
-      ##                    
- 
-      var rx = s.split(substr)
-      for x in rx.low.. rx.high:
-          writestyled(rx[x],{})
-          if x != rx.high:
-              case col
-              of green  : msgg() do  : writestyled(substr,astyle)
-              of red    : msgr() do  : writestyled(substr,astyle)
-              of cyan   : msgc() do  : writestyled(substr,astyle)
-              of yellow : msgy() do  : writestyled(substr,astyle)
-              of white  : msgw() do  : writestyled(substr,astyle)
-              of black  : msgb() do  : writestyled(substr,astyle)
-              of blue   : msgbl() do : writestyled(substr,astyle)
-              of magenta: msgm() do  : writestyled(substr,astyle)
-              of brightgreen : msggb() do : writestyled(substr,astyle)
-              of brightwhite : msgwb() do : writestyled(substr,astyle)
-              of brightyellow: msgyb() do : writestyled(substr,astyle)
-              of brightcyan  : msgcb() do : writestyled(substr,astyle)
-              of brightred   : msgrb() do : writestyled(substr,astyle)
-              of brightblue  : msgblb() do : writestyled(substr,astyle)
-              of brightmagenta : msgmb() do : writestyled(substr,astyle)
-              of clrainbow   : printRainbow(substr,astyle)
-              else  : msgw() do  : writestyled(substr,{styleUnknown})
+                        
+      if substr.len > 0:
+          var rx = s.split(substr)
+          for x in rx.low.. rx.high:
+              writestyled(rx[x],{})
+              if x != rx.high:
+                case col 
+                  of clrainbow   : printRainbow(substr,astyle)
+                  else: styledEchoPrint(col,astyle,substr,termwhite) 
+      else:
+          printStyledsimple(s,col,astyle)
 
-
+      
 
 proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ## printLnStyled
@@ -1214,6 +1225,8 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ## to print and highlight all appearances of a substring of a string and issue a new line
       ##
       ## styles may and in some cases not have the desired effect
+      ## 
+      ## if substr == "" the color and style will be applied to the whole string s
       ## 
       ## available styles :
       ## 
@@ -1238,35 +1251,11 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ##    # this highlights all T in rainbow colors , no style is applied
       ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
       ##    
-      ##
-      ## available colors : green,yellow,cyan,red,white,black,brightgreen,brightwhite
-      ## 
-      ##                    brightred,brightcyan,brightyellow,clrainbow
+      ##   
       ##                    
- 
-      var rx = s.split(substr)
-      for x in rx.low.. rx.high:
-          writestyled(rx[x],{})
-          if x != rx.high:
-              case col
-              of green  : msgg() do  : writestyled(substr,astyle)
-              of red    : msgr() do  : writestyled(substr,astyle)
-              of cyan   : msgc() do  : writestyled(substr,astyle)
-              of yellow : msgy() do  : writestyled(substr,astyle)
-              of white  : msgw() do  : writestyled(substr,astyle)
-              of black  : msgb() do  : writestyled(substr,astyle)
-              of blue   : msgbl() do : writestyled(substr,astyle)
-              of magenta: msgm() do  : writestyled(substr,astyle)
-              of brightgreen : msggb() do : writestyled(substr,astyle)
-              of brightwhite : msgwb() do : writestyled(substr,astyle)
-              of brightyellow: msgyb() do : writestyled(substr,astyle)
-              of brightcyan  : msgcb() do : writestyled(substr,astyle)
-              of brightred   : msgrb() do : writestyled(substr,astyle)
-              of brightblue  : msgblb() do : writestyled(substr,astyle)
-              of brightmagenta : msgmb() do : writestyled(substr,astyle)
-              of clrainbow   : printRainbow(substr,astyle)
-              else  : msgw() do  : writestyled(substr,{styleUnknown})
+      printStyled(s,substr,col,astyle)
       writeLine(stdout,"")
+
 
   
 proc showColors*() =
@@ -1277,6 +1266,8 @@ proc showColors*() =
   for x in colorNames:
      printLn(x[0],x[1],black)  # note x[1] is the color itself.
   decho(2)   
+  
+  
   
 
 # Var. date and time handling procs mainly to provide convenice for
@@ -1482,6 +1473,7 @@ proc plusDays*(aDate:string,days:int):string =
    else:
       msgr() do : echo "Date error : ",aDate
       result = "Error"
+
 
 proc minusDays*(aDate:string,days:int):string =
    ## minusDays
@@ -2034,6 +2026,7 @@ proc tupleToStr*(xs: tuple): string =
            result.add(", ")
        result.add($x)
      result.add(")")
+     
               
 template loopy*[T](ite:T,st:stmt) =
      ## loopy
@@ -2578,6 +2571,7 @@ proc handler*() {.noconv.} =
     decho(2)
     system.addQuitProc(resetAttributes)
     quit(0)
+
 
 
 # putting decho here will put two blank lines before anyting else runs

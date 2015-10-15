@@ -45,22 +45,28 @@ printLnTK("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightm
 printLn("{} {} {} {}".fmt(s,n,f,l),greenyellow)      
 # all in one color with new background, note printLn,printLnBB,printLnBF need terminal color constants
 printLn("{} {} {} {}".fmt(s,n,f,l),brightyellow,brightblue)
-
 printLnTK(s & " wuff",black,brightgreen,clrainbow,yellow)  
 
-
 printLn(s,clrainbow,brightyellow)  
-
-
 printLn(s,lime)
 decho(1)
 printLn(s,black,brightmagenta)
 printLn(s)
 
-# even echo works with color
+# even echo works with color but not with style
+echo(lightsalmon,"Yippie ",lightblue,"Wow!",termwhite)
 
-echo(lightsalmon,"Yippie",lightblue,"Wow!",termwhite)
 
+printStyled("Nice try ","ic",yellowgreen,{styleUnderScore})
+printStyled("1234","23",lightseagreen,{stylereverse})
+printLnStyled(" greaaaat","a",salmon,{styleBlink})
+                            
+
+
+
+
+# show a full list of colorNames availabale
+#showColors()
 
 
 doFinish()
