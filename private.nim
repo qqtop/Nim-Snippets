@@ -882,7 +882,7 @@ proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ##    printTK("blah yep 1234      333122.12  [12,45] wahahahaha",@[green,brightred,black,yellow,cyan,clrainbow])
      ##
      ##
-     ## another way to achieve a similar effect is to us the build in
+     ## another way to achieve a similar effect is to use the build in
      ## styledEcho template directly like so:
      ##
      ## .. code-block:: nim
@@ -1028,6 +1028,8 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:st
      ## echos a line in 2 colors based on a seperators first occurance
      ## 
      ## .. code-block:: nim
+     ##    import private,strutils,strfmt
+     ##    
      ##    for x  in 0.. <3:     
      ##       # here use default colors for left and right side of the seperator     
      ##       printBiCol("Test $1  : Ok this was $1 : what" % $x,":")
