@@ -1229,12 +1229,11 @@ proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## 
       ## 
       ## ..code-block:: nim
-      ##   import private,strfmt
-      ##
-      ##   cecho(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
+      ##     import private,strfmt
+      ##     cecho(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
       ##   
       ## 
-      ## 
+       
       case col 
        of clrainbow : 
                 for x  in ggg:
@@ -1251,9 +1250,8 @@ proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## 
       ## 
       ## ..code-block:: nim
-      ##   import private,strutils
-      ##   
-      ##   cechoLn(steelblue,"We made it in $1 hours !" % $5)
+      ##     import private,strutils
+      ##     cechoLn(steelblue,"We made it in $1 hours !" % $5)
       ##
       ## 
       cecho(col,ggg)
