@@ -1145,21 +1145,29 @@ proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ##
       ## extended version of writestyled and printHl to allow color and styles
       ##
-      ## to print and highlight all appearances of a substring of a string
+      ## to print and highlight all appearances of a substring 
       ##
       ## styles may and in some cases not have the desired effect
       ## 
       ## available styles :
       ## 
       ## styleBright = 1,            ## bright text
+      ## 
       ## styleDim,                   ## dim text
+      ## 
       ## styleUnknown,               ## unknown
+      ## 
       ## styleUnderscore = 4,        ## underscored text
+      ## 
       ## styleBlink,                 ## blinking/bold text
+      ## 
       ## styleReverse = 7,           ## reverses currentforground and backgroundcolor
+      ## 
       ## styleHidden                 ## hidden text
+      ## 
       ##
       ## with a certain color
+      ##
       ##
       ## .. code-block:: nim
       ## 
@@ -1171,6 +1179,7 @@ proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ##
       ##    # this highlights all T in rainbow colors , no style is applied
       ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
+      ##
       ##    
       var s = $ss                  
       if substr.len > 0:
@@ -1191,23 +1200,10 @@ proc printLnStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ##
       ## extended version of writestyled and printHl to allow color and styles
       ##
-      ## to print and highlight all appearances of a substring of a string and issue a new line
+      ## to print and highlight all appearances of a substring and issue a new line
       ##
       ## styles may and in some cases not have the desired effect
-      ## 
-      ## if substr == "" the color and style will be applied to the whole string s
-      ## 
-      ## available styles :
-      ## 
-      ## styleBright = 1,            ## bright text
-      ## styleDim,                   ## dim text
-      ## styleUnknown,               ## unknown
-      ## styleUnderscore = 4,        ## underscored text
-      ## styleBlink,                 ## blinking/bold text
-      ## styleReverse = 7,           ## unknown
-      ## styleHidden                 ## hidden text
       ##
-      ## with a certain color
       ##
       ## .. code-block:: nim
       ## 
