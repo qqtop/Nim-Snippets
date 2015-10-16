@@ -826,6 +826,7 @@ proc print*[T](astring:T,fg:string = white , bg:string = black) =
     ##
     ## for extended colorset background colors use printStyled with styleReverse
     ## 
+    ## also see cecho 
     ##
     case fg 
       of clrainbow: rainbow($astring)
@@ -850,6 +851,7 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
     ## 
     ## 
+    ## 
     ## As a side effect we also can do this now:
     ## 
     ## 
@@ -864,7 +866,7 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## 
     ## if next line does not have this color requirement.
     ## 
-    ## even better use procs  cecho and cechoLn 
+    ## even better use procs  cecho and cechoLn  
     ## 
     ## 
   
@@ -1151,22 +1153,20 @@ proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ## 
       ## available styles :
       ## 
-      ## styleBright = 1,            ## bright text
+      ## styleBright = 1,            # bright text
       ## 
-      ## styleDim,                   ## dim text
+      ## styleDim,                   # dim text
       ## 
-      ## styleUnknown,               ## unknown
+      ## styleUnknown,               # unknown
       ## 
-      ## styleUnderscore = 4,        ## underscored text
+      ## styleUnderscore = 4,        # underscored text
       ## 
-      ## styleBlink,                 ## blinking/bold text
+      ## styleBlink,                 # blinking/bold text
       ## 
-      ## styleReverse = 7,           ## reverses currentforground and backgroundcolor
+      ## styleReverse = 7,           # reverses currentforground and backgroundcolor
       ## 
-      ## styleHidden                 ## hidden text
+      ## styleHidden                 # hidden text
       ## 
-      ##
-      ## with a certain color
       ##
       ##
       ## .. code-block:: nim
