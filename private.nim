@@ -453,8 +453,8 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:
 proc hline*(n:int = tw,col:string = white) ## forward declaration
 proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 proc rainbow*[T](s : T)  ## forward declaration
-proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) ## forward declaration
-proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) ## forward declaration
+proc printStyledsimple*[T](ss:T,fg:string,astyle:set[Style]) ## forward declaration
+proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) ## forward declaration
 proc print*[T](astring:T,fg:string = white , bg:string = black) 
 
 
@@ -1128,18 +1128,19 @@ proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
       writeln(stdout,"")
 
 
-proc printStyledSimple*[T](astr:T,fg:string,astyle:set[Style]) =
+proc printStyledSimple*[T](ss:T,fg:string,astyle:set[Style]) =
    ## printStyledsimple
    ## 
    ## an extended version of writestyled to enable colors
    ##
    ## 
+   var astr = $ss
    case fg 
       of clrainbow   : printRainbow($astr,astyle)
       else: styledEchoPrint(fg,astyle,$astr,termwhite)
       
 
-proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
+proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ## printStyled
       ##
       ## extended version of writestyled and printHl to allow color and styles
@@ -1171,7 +1172,7 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ##    # this highlights all T in rainbow colors , no style is applied
       ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
       ##    
-                        
+      var s = $ss                  
       if substr.len > 0:
           var rx = s.split(substr)
           for x in rx.low.. rx.high:
@@ -1185,7 +1186,7 @@ proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
 
       
 
-proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
+proc printLnStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ## printLnStyled
       ##
       ## extended version of writestyled and printHl to allow color and styles
@@ -1221,7 +1222,7 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       ##    
       ##   
       ##                    
-      printStyled(s,substr,col,astyle)
+      printStyled($ss,substr,col,astyle)
       writeLine(stdout,"")
 
 
