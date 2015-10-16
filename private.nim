@@ -455,7 +455,7 @@ proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 proc rainbow*[T](s : T)  ## forward declaration
 proc printStyledsimple*[T](astr:T,fg:string,astyle:set[Style]) ## forward declaration
 proc printStyled*(s:string,substr:string,col:string,astyle : set[Style] ) ## forward declaration
-
+proc print*[T](astring:T,fg:string = white , bg:string = black) 
 
 
 # procs lifted from terminal.nim as they are not exported from there
@@ -490,8 +490,15 @@ template msgg*(code: stmt): stmt =
       ## the assumption is that the terminal is white text and black background
       ## naming of the templates is like msg+color so msgy => yellow
       ## use like : msgg() do : echo "How nice, it's in green"
-      ## these templates have now been superceded by various print procs
-      ## but still maybe usefull from time to time.
+      ## these templates have by large been superceded by various print and echo procs
+      ## but are useful to have ins ome circumstances 
+      ## like draw a yellow line with width 40   
+      ## 
+      ## 
+      ## ..code-block:: nim
+      ##  msgy() do: dline(40) 
+      ##  
+      ##  
 
       setForeGroundColor(fgGreen)
       code
@@ -795,7 +802,22 @@ converter colconv(cx:string) : string =
       of gray         : bg = gray
       else            : bg = bblack # default
      result = bg
- 
+
+
+proc rainbow*[T](s : T) =
+    ## rainbow
+    ##
+    ## multicolored string
+    ##
+    ## may not work with certain Rune
+    ##
+    var astr = $s
+    var c = 0
+    var a = toSeq(1.. <colorNames.len)
+    for x in 0.. <astr.len:
+       c = a[randomInt(a.len)]
+       print(astr[x],colorNames[c][1],black)
+
 
 proc print*[T](astring:T,fg:string = white , bg:string = black) =
     ## print
@@ -841,6 +863,8 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## that is we print the string in yellowgreen , but need to reset the color manually
     ## 
     ## if next line does not have this color requirement.
+    ## 
+    ## even better use procs  cecho and cechoLn 
     ## 
     ## 
   
@@ -935,21 +959,6 @@ proc printLnTK*[T](st:T , cols: varargs[string, `$`]) =
      writeLine(stdout,"")
    
      
-
-proc rainbow*[T](s : T) =
-    ## rainbow
-    ##
-    ## multicolored string
-    ##
-    ## may not work with certain Rune
-    ##
-    var astr = $s
-    var c = 0
-    var a = toSeq(1.. <colorNames.len)
-    for x in 0.. <astr.len:
-       c = a[randomInt(a.len)]
-       print(astr[x],colorNames[c][1],black)
-       
 
 proc printRainbow*[T](s : T,astyle:set[Style]) =
     ## printRainbow
@@ -1216,6 +1225,43 @@ proc printLnStyled*(s:string,substr:string,col:string,astyle : set[Style] ) =
       writeLine(stdout,"")
 
 
+proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
+      ## cecho
+      ## 
+      ## color echo w/o new line
+      ## 
+      ## 
+      ## ..code-block:: nim
+      ##   import private,strfmt
+      ##
+      ##   cecho(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
+      ##   
+      ## 
+      ## 
+      case col 
+       of clrainbow : 
+                for x  in ggg:
+                     rainbow(x)
+       else:
+         write(stdout,col) 
+         write(stdout,ggg)
+      write(stdout,termwhite)
+
+proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
+      ## cechoLn
+      ##  
+      ## color echo with new line
+      ## 
+      ## 
+      ## ..code-block:: nim
+      ##   import private,strutils
+      ##   
+      ##   cechoLn(steelblue,"We made it in $1 hours !" % $5)
+      ##
+      ## 
+      cecho(col,ggg)
+      writeLn(stdout,"")
+
   
 proc showColors*() =
   ## showColors
@@ -1306,7 +1352,7 @@ proc intervalsecs*(startDate,endDate:string) : float =
           var isecs = esecs - ssecs
           result = isecs
       else:
-          msgr() do : echo  "Date error. : " &  startDate,"/",endDate," incorrect date found."
+          cechoLn(red,"Date error. : " &  startDate,"/",endDate," incorrect date found.")
           #result = -0.0
 
 proc intervalmins*(startDate,endDate:string) : float =
@@ -1370,7 +1416,7 @@ proc sleepy*[T:float|int](s:T) =
     while ee > epochtime():
         inc c
     # feedback line can be commented out
-    #msgr() do : echo "Loops during waiting for ",s,"secs : ",c
+    # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
 
 
 
@@ -1430,7 +1476,7 @@ proc plusDays*(aDate:string,days:int):string =
       rxs = fx(tifo + myinterval)
       result = rxs
    else:
-      msgr() do : echo "Date error : ",aDate
+      cechoLn(red,"Date error : ",aDate)
       result = "Error"
 
 
@@ -1452,7 +1498,7 @@ proc minusDays*(aDate:string,days:int):string =
       rxs = fx(tifo - myinterval)
       result = rxs
    else:
-      msgr() do : echo "Date error : ",aDate
+      cechoLn(red,"Date error : ",aDate)
       result = "Error"
 
 
@@ -1842,7 +1888,7 @@ proc showHosts*(dm:string) =
     ##    doFinish()
     ## 
     ## 
-    msgg() do: echo "Hosts Data for " & dm
+    cechoLn(yellowgreen,"Hosts Data for " & dm)
     var z = getHosts(dm)
     if z.len < 1:
          printLn("Nothing found or not resolved",red)
@@ -2161,7 +2207,7 @@ proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
         result = normalize(nw)   # return in lower case , cleaned up
 
     else:
-         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         cechoLn(red,"Error : minimum word length larger than maximum word length")
          result = ""
 
 
@@ -2188,7 +2234,7 @@ proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
         result = normalize(nw)   # return in lower case , cleaned up
     
     else: 
-         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         cechoLn(red,"Error : minimum word length larger than maximum word length")
          result = ""
  
 
@@ -2220,7 +2266,7 @@ proc newWord3*(minwl:int=3,maxwl:int = 10 ,nflag:bool = true):string =
            result = nw
         
     else:
-         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         cechoLn(red,"Error : minimum word length larger than maximum word length")
          result = ""
            
 
@@ -2247,7 +2293,7 @@ proc newHiragana*(minwl:int=3,maxwl:int = 10 ):string =
         result = nw
         
     else:
-         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         cechoLn(red,"Error : minimum word length larger than maximum word length")
          result = ""
            
         
@@ -2275,7 +2321,7 @@ proc newKatakana*(minwl:int=3,maxwl:int = 10 ):string =
         result = nw
         
     else:
-         msgr() do : echo "Error : minimum word length larger than maximum word length"
+         cechoLn(red,"Error : minimum word length larger than maximum word length")
          result = ""
            
 
@@ -2508,7 +2554,7 @@ proc handler*() {.noconv.} =
     eraseScreen()
     echo()
     hlineLn()
-    msgg() do: echo "Thank you for using     : ",getAppFilename()
+    cechoLn(yellowgreen,"Thank you for using     : ",getAppFilename())
     msgc() do: echo "{}{:<11}{:>9}".fmt("Last compilation on     : ",CompileDate ,CompileTime)
     hlineLn()
     echo "private Version         : ", PRIVATLIBVERSION
