@@ -1228,7 +1228,7 @@ proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## color echo w/o new line
       ## 
       ## 
-      ## ..code-block:: nim
+      ## .. code-block:: nim
       ##     import private,strfmt
       ##     cecho(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
       ##   
@@ -1249,7 +1249,7 @@ proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## color echo with new line
       ## 
       ## 
-      ## ..code-block:: nim
+      ## .. code-block:: nim
       ##     import private,strutils
       ##     cechoLn(steelblue,"We made it in $1 hours !" % $5)
       ##
