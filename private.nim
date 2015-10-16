@@ -1106,7 +1106,7 @@ proc printHl*(s:string,substr:string,col:string = "termwhite") =
    
       var rx = s.split(substr)
       for x in rx.low.. rx.high:
-          writestyled(rx[x],{})
+          print(rx[x])
           if x != rx.high:
              print(substr,col)
 
@@ -1270,7 +1270,7 @@ proc showColors*() =
   ## display all colorNames in color !
   ## 
   for x in colorNames:
-     printLn(x[0],x[1],black)  # note x[1] is the color itself.
+     printLn("{:<25} {}  {}  {} --> {}".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
   decho(2)   
   
   
@@ -1629,15 +1629,18 @@ proc superHeader*(bstring:string) =
        for x in 0.. <n:
           astring = astring & " "
        mddl = mddl + 1
-
-  let pdl = repeat("▒",mddl)
+  
+  # some framechars
+  #let framechar = "▒"
+  let framechar = "⌘"  
+  let pdl = repeat(framechar,mddl)  
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
   echo ()
   printLn(pdl,yellowgreen)
-  print("▒ ",yellowgreen)
+  print(framechar & " ",yellowgreen)
   print(astring)
-  printLn(" ▒",yellowgreen)
+  printLn(" " & framechar,yellowgreen)
   printLn(pdl,yellowgreen)
   echo ()
 
@@ -1683,7 +1686,8 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
             astring = astring & " "
          mddl = mddl + 1
 
-    let pdl = repeat("▒",mddl)
+    let framechar = "⌘"
+    let pdl = repeat(framechar,mddl)
     # now show it with the framing in yellow and text in white
     # really want to have a terminal color checker to avoid invisible lines
     echo ()
@@ -1703,11 +1707,11 @@ proc superHeader*(bstring:string,strcol:string,frmcol:string) =
     # draw everything
     frameline(pdl)
     #left marker
-    framemarker("▒ ")
+    framemarker(framechar & " ")
     # header message sring
     headermessage(astring)
     # right marker
-    framemarker(" ▒")
+    framemarker(" " & framechar)
     # we need a new line
     echo()
     # bottom frame line
@@ -2212,6 +2216,7 @@ proc newWord*(minwl:int=3,maxwl:int = 10 ):string =
          result = ""
 
 
+
 proc newWord2*(minwl:int=3,maxwl:int = 10 ):string =
     ## newWord2
     ##
@@ -2337,6 +2342,20 @@ proc iching*():seq[string] =
     result = ich
 
 
+
+proc ada*():seq[string] =
+    ## ada
+    ##
+    ## returns a seq containing ada language symbols
+    ##
+    var adx = newSeq[string]()
+    # s U+30A0–U+30FF.
+    for j in parsehexint("2300") .. parsehexint("23FF"):
+        adx.add($Rune(j))
+    result = adx
+    
+    
+    
 proc hiragana*():seq[string] =
     ## hiragana
     ##
