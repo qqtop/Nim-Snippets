@@ -73,7 +73,7 @@ printLnStyled("The dog blinks . ","dog",rosybrown,{styleUnderScore,styleBlink})
                             
 cecho(salmon,"Everyone and the cat likes fresh salmon. ")
 cecho(steelblue,"The dog disagrees here. ")
-cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"I think")
+cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"I think . ")
 
 # the system echo works too but needs color reset at the end, styleConstants also do not work
 # similar to the just introduced styledwrite and resetStyle 
@@ -86,11 +86,11 @@ echo(pastelyellow,int.high + abs(int.low))
 print("Everyone and the cat likes fresh salmon. ",salmon)
 print("The dog disagrees here. ",steelblue)
 printLn("Cannot please everyone.",greenyellow)
+msgblb() do : dline()
+decho(2)
 
 
-
+superHeader("Nim Colors ")
 # show a full list of colorNames availabale
 showColors()
-
-
 doFinish()

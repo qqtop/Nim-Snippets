@@ -1263,8 +1263,9 @@ proc showColors*() =
   ## display all colorNames in color !
   ## 
   for x in colorNames:
-     print("{:<23} {}  {}  {} --> {}".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
-     printLnStyled("  " & x[0],x[0],x[1],{styleReverse})
+     print("{:<23} {}  {}  {} --> {} ".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
+     printLnStyled("{:<23}".fmt("  " & x[0]),"{:<23}".fmt("  " & x[0]),x[1],{styleReverse})
+     
   decho(2)   
   
   
