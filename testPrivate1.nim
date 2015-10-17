@@ -15,9 +15,9 @@ var l = @[1234,4567,654]
 # background colors for print and println are standard terminal colors
 # to use other colors use printStyled or printLnStyled
 printLn(s,white,brightblack)
-printLn(n,white,brightblack)
-printLn(f,white,brightblack)
-printLn(l,white,green)
+printLn(n,white,red)
+printLn(f,white,blue)
+printLnStyled(l,$l,steelblue,{stylereverse})
 printLnStyled(f,$f,rosybrown,{stylereverse})
 
 decho(2)
@@ -69,13 +69,14 @@ printLnStyled("The dog blinks . ","dog",rosybrown,{styleUnderScore,styleBlink})
 
 
 # compare usage to achieve same output
-# diffrence between print and cecho procs is that cecho accepts varargs too
+# difference between print and cecho procs is that cecho accepts varargs too
                             
 cecho(salmon,"Everyone and the cat likes fresh salmon. ")
 cecho(steelblue,"The dog disagrees here. ")
-cechoLn(greenyellow,"Cannot please everyone.")
+cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"I think")
 
 # the system echo works too but needs color reset at the end, styleConstants also do not work
+# similar to the just introduced styledwrite and resetStyle 
 echo(salmon,"Everyone and the cat likes fresh salmon. ",steelblue,"The dog disagrees here. ",greenyellow,"Cannot please everyone.",termwhite,"")
 
 echo(pastelpink,"Yippie ",lightblue,"Wow!",termwhite,"")
