@@ -495,7 +495,7 @@ template msgg*(code: stmt): stmt =
       ## like draw a yellow line with width 40   
       ## 
       ## 
-      ## ..code-block:: nim
+      ## .. code-block:: nim
       ##  msgy() do: dline(40) 
       ##  
       ##  
@@ -2038,7 +2038,7 @@ template loopy*[T](ite:T,st:stmt) =
      ## 
      ## the lazy programmers quick for-loop template
      ##
-     ## ..code-block:: nim            
+     ## .. code-block:: nim            
      ##     loopy(0.. 100,printLnTK("The house is in the back.",brightwhite,brightblack,salmon,yellowgreen))
      ##     
      for x in ite:
