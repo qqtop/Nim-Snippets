@@ -45,7 +45,7 @@ type
      Pbg* = terminal.BackgroundColor
 
 
-const PRIVATLIBVERSION* = "0.8.8"
+const PRIVATLIBVERSION* = "0.8.9"
   
   
 proc getfg(fg:ForegroundColor):string =
