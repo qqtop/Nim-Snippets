@@ -448,8 +448,8 @@ when defined(Linux):
 # forward declarations
 proc printColStr*(colstr:string,astr:string)  ## forward declaration
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
-proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") ## forward declaration
-proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") ## forward declaration
+proc printBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) ## forward declaration
+proc printLnBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) ## forward declaration
 proc hline*(n:int = tw,col:string = white) ## forward declaration
 proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 proc rainbow*[T](s : T)  ## forward declaration
@@ -1033,7 +1033,7 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
         printLn(vastr,colstr)
 
 
-proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:string = "termwhite") =
+proc printBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) =
      ## printBiCol
      ##
      ## echos a line in 2 colors based on a seperators first occurance
@@ -1058,12 +1058,12 @@ proc printBiCol*(s:string,sep:string,colLeft:string = "yellowgreen" ,colRight:st
      if z.len > 2:
        for x in 2.. <z.len:
           z[1] = z[1] & sep & z[x]
-     print(z[0] & sep,colLeft)
-     print(z[1],colRight)  
+     print(z[0] & sep,colLeft,black)
+     print(z[1],colRight,black)  
      
 
 
-proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:string = "termwhite") =
+proc printLnBiCol*(s:string,sep:string, colLeft:string = yellowgreen, colRight:string = termwhite) =
      ## printLnBiCol
      ##
      ## same as printBiCol but issues a new line
@@ -1088,12 +1088,12 @@ proc printLnBiCol*(s:string,sep:string,colLeft:string = "yellowgreen",colRight:s
      if z.len > 2:
        for x in 2.. <z.len:
            z[1] = z[1] & sep & z[x]
-     print(z[0] & sep,colLeft)
-     printLn(z[1],colRight)  
+     print(z[0] & sep,colLeft,black)
+     printLn(z[1],colRight,black)  
           
 
 
-proc printHl*(s:string,substr:string,col:string = "termwhite") =
+proc printHl*(s:string,substr:string,col:string = termwhite) =
       ## printHl
       ##
       ## print and highlight all appearances of a char or substring of a string
@@ -1113,7 +1113,7 @@ proc printHl*(s:string,substr:string,col:string = "termwhite") =
              print(substr,col)
 
 
-proc printLnHl*(s:string,substr:string,col:string = "termwhite") =
+proc printLnHl*(s:string,substr:string,col:string = termwhite) =
       ## printHl
       ##
       ## print and highlight all appearances of a char or substring of a string

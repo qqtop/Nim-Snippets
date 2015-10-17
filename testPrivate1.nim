@@ -42,6 +42,7 @@ decho(1)
 printLnStyled(s,"t",clrainbow,{styleUnderScore,styleBlink})
 decho(2)
 printLnBiCol(s,"c",brightgreen,brightwhite)
+printLnBiCol(s,"c")  # default colors
 decho(2)
 
 # note every item will be tokenized so we need more colors than strings passed in
