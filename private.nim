@@ -848,25 +848,26 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## color names supported for background color:
     ## 
     ## white,red,green,blue,yellow,cyan,magenta,black
-    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,brightcyan,brightmagenta,brightblack
+    ## 
+    ## brightwhite,brightred,brightgreen,brightblue,brightyellow,
+    ## 
+    ## brightcyan,brightmagenta,brightblack
     ## 
     ## 
+    ## As a side effect we also can do this now :
     ## 
-    ## As a side effect we also can do this now:
     ## 
-    ## 
-    ## ..code-block:: nim
-    ##   echo(yellowgreen,"aha nice",termwhite) 
-    ##   echo(rosybrown)
-    ##   echo("grizzly bear")
-    ##   echo(termwhite)  # reset to usual terminal white color
+    ## .. code-block:: nim
+    ##    echo(yellowgreen,"aha nice",termwhite) 
+    ##    echo(rosybrown)
+    ##    echo("grizzly bear")
+    ##    echo(termwhite)  # reset to usual terminal white color
     ## 
     ## 
     ## that is we print the string in yellowgreen , but need to reset the color manually
     ## 
-    ## if next line does not have this color requirement.
     ## 
-    ## even better use procs  cecho and cechoLn  
+    ## even better use procs  cecho and cechoLn  below
     ## 
     ## 
   
@@ -883,8 +884,6 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
 # these procs have similar functionality  
 # print and printLn tokenize strings for selective coloring if required
 # and can be used for most standard echo like displaying jobs
-# printBR,printLnBR,printBF,printLnBF,printBB,printLnBB are mainly used for
-# output with bright foregroundcolor and or backgroundcolor requirements
 
 proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## printTK
