@@ -77,14 +77,18 @@ cechoLn(greenyellow,"Cannot please everyone.")
 # the system echo works too but needs color reset at the end, styleConstants also do not work
 echo(salmon,"Everyone and the cat likes fresh salmon. ",steelblue,"The dog disagrees here. ",greenyellow,"Cannot please everyone.",termwhite,"")
 
-echo(lightsalmon,"Yippie ",lightblue,"Wow!",termwhite,"")
-
+echo(pastelpink,"Yippie ",lightblue,"Wow!",termwhite,"")
+echo(pastelblue,int.high)
+echo(pastelgreen,int.low)
+echo(pastelyellow,int.high + abs(int.low))
 print("Everyone and the cat likes fresh salmon. ",salmon)
 print("The dog disagrees here. ",steelblue)
 printLn("Cannot please everyone.",greenyellow)
 
+
+
 # show a full list of colorNames availabale
-#showColors()
+showColors()
 
 
 doFinish()

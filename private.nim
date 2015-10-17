@@ -757,14 +757,14 @@ proc curUp*(x:int = 1) =
      ## curUp
      ## 
      ## mirrors terminal cursorUp
-     cursorUp(x)
+     cursorUp(stdout,x)
 
 
 proc curDn*(x:int = 1) = 
      ## curDn
      ##
      ## mirrors terminal cursorDown
-     cursorDown(x)
+     cursorDown(stdout,x)
 
 
 proc clearup*(x:int = 80) =
@@ -773,7 +773,7 @@ proc clearup*(x:int = 80) =
    ## a convenience proc to clear monitor
    ##
    
-   erasescreen()
+   erasescreen(stdout)
    curup(x)
 
 
@@ -1264,7 +1264,8 @@ proc showColors*() =
   ## display all colorNames in color !
   ## 
   for x in colorNames:
-     printLn("{:<25} {}  {}  {} --> {}".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
+     print("{:<23} {}  {}  {} --> {}".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
+     printLnStyled("  " & x[0],x[0],x[1],{styleReverse})
   decho(2)   
   
   
@@ -1504,6 +1505,7 @@ proc getFirstMondayYear*(ayear:string):string =
     ## returns date of first monday of any given year
     ## should be ok for the next years but after 2100-02-28 all bets are off
     ## 
+    ## 
     ## .. code-block:: nim
     ##    echo  getFirstMondayYear("2015")
     ##    
@@ -1740,7 +1742,7 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
               erasescreen()
               superheader($bb[0.. zz],strcol,frmcol)
               sleepy(0.05)
-              cursorup(80)
+              curup(80)
         if anim == true:
             for zz in countdown(bb.len,-1,1):
                   superheader($bb[0.. zz],strcol,frmcol)
