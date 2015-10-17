@@ -10,8 +10,7 @@ import python
 
 var sq1 = "select first 30 * from COUNTRY"
 
-eraseScreen()
-cursorUp(80)
+clearup()
 
 const pycode = """
 

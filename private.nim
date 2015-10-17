@@ -1904,17 +1904,26 @@ proc showHosts*(dm:string) =
 var rng = initMersenneTwister(urandom(2500))
 
 
-proc getRandomInt*(mi:int = 0,ma:int = 1_000_000_000):int =
+proc getRandomInt*(mi:int = 0,ma:int = int.high):int =
     ## getRandomInt
     ##
-    ## convenience proc so we do not need to import random
+    ## convenience proc so we do not need to import random in calling prog
     ##
-    ## in calling prog
+    ##
+    ## .. code-block:: nim
+    ##    import private,math
+    ##    var ps : Runningstat
+    ##    loopy(0.. 1000000,ps.push(getRandomInt(0,10000)))
+    ##    showStats(ps)
+    ##    doFinish()
+    ##    
+    ##    
+
 
     result = rng.randomInt(mi,ma + 1)
 
 
-proc createSeqInt*(n:int = 10,mi:int=0,ma:int=1_000_000_000) : seq[int] =
+proc createSeqInt*(n:int = 10,mi:int=0,ma:int=int.high) : seq[int] =
     ## createSeqInt
     ##
     ## convenience proc to create a seq of random int with
@@ -1985,13 +1994,13 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
   ## 
   ## 
   ## .. code-block:: nim
-  ##    import private,math  
+  ##    import private,math,strfmt  
   ##    # get randompoints in a circle
   ##    var crad:float = 1
   ##    for x in 0.. 100:
   ##       var k = getRandomPointInCircle(crad)
   ##       assert k[0] <= crad and k[1] <= crad
-  ##       echo k
+  ##       printLnBiCol("{:<25}  :  {}".fmt($k[0],$k[1]),":")
   ##    doFinish()
   ##    
   ##     
@@ -2036,7 +2045,7 @@ proc tupleToStr*(xs: tuple): string =
 template loopy*[T](ite:T,st:stmt) =
      ## loopy
      ## 
-     ## the lazy programmers quick for-loop template
+     ## the lazy programmer's quick for-loop template
      ##
      ## .. code-block:: nim            
      ##     loopy(0.. 100,printLnTK("The house is in the back.",brightwhite,brightblack,salmon,yellowgreen))
