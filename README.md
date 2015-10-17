@@ -12,7 +12,10 @@ Documentation for private.nim : http://qqtop.github.io/private.html
 
 Some output from testPrivat1
 
-![Image](../master/nimcolors.png?raw=true)
+![Image](../master/nimcolors3.png?raw=true)
+![Image](../master/nimcolors4.png?raw=true)
+![Image](../master/nimcolors5.png?raw=true)
+![Image](../master/nimcolors6.png?raw=true)
 
 
 Have Fun !
