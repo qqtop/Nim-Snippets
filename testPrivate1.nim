@@ -80,14 +80,58 @@ cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"I think . ")
 echo(salmon,"Everyone and the cat likes fresh salmon. ",steelblue,"The dog disagrees here. ",greenyellow,"Cannot please everyone.",termwhite,"")
 
 echo(pastelpink,"Yippie ",lightblue,"Wow!",termwhite,"")
-echo(pastelblue,int.high)
+echo()
+echo(pastelblue," ",int.high)
 echo(pastelgreen,int.low)
+msgy() do : dline(21)
 echo(pastelyellow,int.high + abs(int.low))
+echo()
 print("Everyone and the cat likes fresh salmon. ",salmon)
 print("The dog disagrees here. ",steelblue)
 printLn("Cannot please everyone.",greenyellow)
 msgblb() do : dline()
 decho(2)
+
+
+#### sierpcarpet small refreshed snippet I lifted from somewhere
+
+proc `^`*(base: int, exp: int): int =
+  var (base, exp) = (base, exp)
+  result = 1
+ 
+  while exp != 0:
+    if (exp and 1) != 0:
+      result *= base
+    exp = exp shr 1
+    base *= base
+ 
+proc inCarpet(x, y): bool =
+  var x = x
+  var y = y
+  while true:
+    if x == 0 or y == 0:
+      return true
+    if x mod 3 == 1 and y mod 3 == 1:
+      return false
+ 
+    x = x div 3
+    y = y div 3
+ 
+proc carpet(n) =
+  for i in 0 .. <(3^n):
+    for j in 0 .. <(3^n):
+      if inCarpet(i, j):
+        print("* ",clrainbow)
+      else:
+        printStyled("  ","",goldenrod,{stylereverse})
+    echo ""
+
+echo() 
+superHeader("Sierp Carpet in Multi Color - Sierp Carpet in Multi Color",clrainbow,lightsteelblue)
+echo()
+carpet(3)
+
+decho(3)
 
 
 superHeader("Nim Colors ")
