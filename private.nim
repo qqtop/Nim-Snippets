@@ -39,11 +39,10 @@ import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 import macros
 
-
 type
-     PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
-     Pfg*    = terminal.ForegroundColor
-     Pbg*    = terminal.BackgroundColor
+      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
+      #Pfg*    = terminal.ForegroundColor     # maybe not longer needed
+      #Pbg*    = terminal.BackgroundColor     # maybe not longer needed
 
 const PRIVATLIBVERSION* = "0.9.0"
   
@@ -2441,6 +2440,38 @@ proc splitty*(txt:string,sep:string):seq[string] =
         else:
              rx.add(z[xx])
    result = rx          
+
+
+
+# small demos
+
+proc flyNim*(astring:string = "Nim",col:string = red,tx:float = 0.08) =
+
+      ## flyNim
+      ## 
+      ## small animation demo
+      ## 
+      ## .. code-block:: nim
+      ##    flyNim(col = brightred)  
+      ##    flyNim(" Have a nice day !", col = hotpink,tx = 0.1)   
+      ## 
+
+      var twc = tw div 2
+      var asc = astring.len div 2
+      var sn = tw - astring.len
+      for x in 0.. twc-asc:
+        hline(x,yellowgreen)
+        if x < twc - asc :
+              printStyled("✈","",brightyellow,{styleBlink})
+              hlineln(2 * twc -1 - x,salmon)
+        else:
+              printStyled(astring,"",col,{styleBright})
+              hlineln(sn -x,salmon)
+        sleepy(tx)
+        curup(1)
+      echo()
+      
+
 
 
 # Info and handlers procs for quick information about
