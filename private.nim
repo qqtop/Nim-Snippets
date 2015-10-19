@@ -1503,44 +1503,44 @@ proc sleepy*[T:float|int](s:T) =
 
 
 proc printBigNumber*(bn:int,fgr:string = yellowgreen ,bgr:string = black) =
-        ## printBigNumber
-        ## 
-        ## prints an integer in big block font
-        ## 
-        ## .. code-block:: nim
-        ##    for x in 999900.. 1000504:
-        ##         clearup()
-        ##         printBigNumber(x)
-        ##         sleepy(0.008)
-        ##    echo()   
-        ##
-        ##    printBigNumber(23456345,blue)
-        ##
-        ## 
-        var anumber = $bn
-        var asn = newSeq[string]()
-        var printseq = newSeq[seq[string]]()
-        for x in anumber: asn.add($x)
-        #echo asn
-        for x in asn:
-          case  x 
-            of "0": printseq.add(number0)
-            of "1": printseq.add(number1)
-            of "2": printseq.add(number2)
-            of "3": printseq.add(number3)
-            of "4": printseq.add(number4)
-            of "5": printseq.add(number5)
-            of "6": printseq.add(number6)
-            of "7": printseq.add(number7)
-            of "8": printseq.add(number8)
-            of "9": printseq.add(number9)
-            of ":": printseq.add(colon)
-            else: discard
-              
-        for x in 0.. numberlen:
-           for y in 0.. <printseq.len:
-               print(" " & printseq[y][x],fgr,bgr)
-           echo()   
+    ## printBigNumber
+    ## 
+    ## prints an integer in big block font
+    ## 
+    ## .. code-block:: nim
+    ##    for x in 999900.. 1000504:
+    ##         clearup()
+    ##         printBigNumber(x)
+    ##         sleepy(0.008)
+    ##    echo()   
+    ##
+    ##    printBigNumber(23456345,blue)
+    ##
+    ## 
+    var anumber = $bn
+    var asn = newSeq[string]()
+    var printseq = newSeq[seq[string]]()
+    for x in anumber: asn.add($x)
+    #echo asn
+    for x in asn:
+      case  x 
+        of "0": printseq.add(number0)
+        of "1": printseq.add(number1)
+        of "2": printseq.add(number2)
+        of "3": printseq.add(number3)
+        of "4": printseq.add(number4)
+        of "5": printseq.add(number5)
+        of "6": printseq.add(number6)
+        of "7": printseq.add(number7)
+        of "8": printseq.add(number8)
+        of "9": printseq.add(number9)
+        of ":": printseq.add(colon)
+        else: discard
+          
+    for x in 0.. numberlen:
+        for y in 0.. <printseq.len:
+            print(" " & printseq[y][x],fgr,bgr)
+        echo()   
 
 
 proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
