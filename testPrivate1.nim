@@ -2,7 +2,7 @@
 ## testing for private.nim printLn and echo ... procs 
 
 
-import private,strfmt
+import private,strfmt,strutils
 
 
 superHeader("Testing var. print and echo procs from private.nim ")
@@ -81,14 +81,20 @@ echo(salmon,"Everyone and the cat likes fresh salmon. ",steelblue,"The dog disag
 
 echo(pastelpink,"Yippie ",lightblue,"Wow!",termwhite,"")
 echo()
+
 echo(pastelblue," ",int.high)
 echo(pastelgreen,int.low)
-msgy() do : dline(21)
+dlineLn(21,col = lime)
 echo(pastelyellow,int.high + abs(int.low))
 echo()
+
 print("Everyone and the cat likes fresh salmon. ",salmon)
 print("The dog disagrees here. ",steelblue)
 printLn("Cannot please everyone.",greenyellow)
+
+msgblb() do : dline()
+printLn(repeat("✈",tw),yellowgreen)
+
 msgblb() do : dline()
 decho(2)
 
@@ -137,4 +143,16 @@ decho(3)
 superHeader("Nim Colors ")
 # show a full list of colorNames availabale
 showColors()
+
+decho(2)
+
+var twc = tw div 2
+printLnBiCol("Terminalwidth   : " & $tw,":")
+printLnBiCol("Terminal Center : " & $twc,":")
+hline(twc,yellowgreen)
+printStyled("✈","",brightyellow,{styleBlink})
+hlineln(twc-1,salmon)
+
+
+
 doFinish()

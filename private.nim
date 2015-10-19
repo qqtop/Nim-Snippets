@@ -39,15 +39,15 @@ import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
 import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
 import macros
 
+
 type
      PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
-     Pfg* = terminal.ForegroundColor
-     Pbg* = terminal.BackgroundColor
+     Pfg*    = terminal.ForegroundColor
+     Pbg*    = terminal.BackgroundColor
 
+const PRIVATLIBVERSION* = "0.9.0"
+  
 
-const PRIVATLIBVERSION* = "0.8.9"
-  
-  
 proc getfg(fg:ForegroundColor):string =
     var gFG = ord(fg)
     result = "\e[" & $gFG & 'm'
@@ -125,7 +125,7 @@ const
       pastelbeige*       =  "\x1b[38;2;241;226;204m"
       pastelwhite*       =  "\x1b[38;2;204;204;204m"
       
-      # colors lifted from colors.nim
+      # colors lifted from colors.nim and massaged into rgb escape seqs
 
       aliceblue*            =  "\x1b[38;2;240;248;255m"
       antiquewhite*         =  "\x1b[38;2;250;235;215m"                                                    
@@ -269,6 +269,7 @@ const
       yellowgreen*          =  "\x1b[38;2;154;205;50m"
 
 
+# all colors except original terminal colors
 let colorNames* = @[
       ("aliceblue", aliceblue),
       ("antiquewhite", antiquewhite),
@@ -446,17 +447,17 @@ when defined(Linux):
 
 
 # forward declarations
+converter colconv(cx:string) : string
 proc printColStr*(colstr:string,astr:string)  ## forward declaration
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
 proc printBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) ## forward declaration
 proc printLnBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) ## forward declaration
-proc hline*(n:int = tw,col:string = white) ## forward declaration
-proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 proc rainbow*[T](s : T)  ## forward declaration
 proc printStyledsimple*[T](ss:T,fg:string,astyle:set[Style]) ## forward declaration
-proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) ## forward declaration
-proc print*[T](astring:T,fg:string = white , bg:string = black) 
-
+proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style]) ## forward declaration
+proc print*[T](astring:T,fgr:string = white , bgr:string = black) 
+proc hline*(n:int = tw,col:string = white) ## forward declaration
+proc hlineLn*(n:int = tw,col:string = white) ## forward declaration
 
 # procs lifted from terminal.nim as they are not exported from there
 proc styledEchoProcessArg(s: string) = write stdout, s
@@ -496,7 +497,7 @@ template msgg*(code: stmt): stmt =
       ## 
       ## 
       ## .. code-block:: nim
-      ##  msgy() do: dline(40) 
+      ##  msgy() do: echo "yellow" 
       ##  
       ##  
 
@@ -686,9 +687,9 @@ proc hline*(n:int = tw,col:string = white) =
      ## .. code-block:: nim
      ##    hline(30,green)
      ##     
-     for x in 0.. <n:
-         printColStr(col,"_")
      
+     printColStr(col,repeat("_",n))
+          
 
 
 proc hlineLn*(n:int = tw,col:string = white) =
@@ -701,43 +702,44 @@ proc hlineLn*(n:int = tw,col:string = white) =
      ## .. code-block:: nim
      ##    hlineLn(30,green)
      ##     
-     for x in 0.. <n:
-         printColStr(col,"_")
+     printColStr(col,repeat("_",n))
      writeLine(stdout,"") 
      
 
 
-proc dline*(n:int = tw,lt:string = "-") =
+proc dline*(n:int = tw,lt:string = "-",col:string = termwhite) =
      ## dline
      ## 
-     ## draw a line with given length in current terminal font color
+     ## draw a dashed line with given length in current terminal font color
      ## line char can be changed
      ## 
      ## .. code-block:: nim
      ##    dline(30)
      ##    dline(30,"/+") 
-     ## 
+     ##    dline(30,col= yellow)
      ## 
      if lt.len <= n:
-        writeLine(stdout,repeat(lt,n div lt.len))
-     
+         #writeLine(stdout,repeat(lt,n div lt.len))
+         printColStr(col,repeat(lt,n div lt.len))
      
 
-proc dlineLn*(n:int = tw,lt:string = "-") =
+proc dlineLn*(n:int = tw,lt:string = "-",col:string = termwhite) =
      ## dlineLn
      ## 
-     ## draw a line with given length in current terminal font color
+     ## draw a dashed line with given length in current terminal font color
      ## line char can be changed
      ## 
      ## and issue a new line
      ## 
      ## .. code-block:: nim
+     ##    dline(50,":",green)
      ##    dlineLn(30)
-     ##    dlineLn(30,"/+/") 
+     ##    dlineLn(30,"/+/")
+     ##    dlineLn(60,col = salmon) 
      ##
      if lt.len <= n:
-        writeLine(stdout,repeat(lt,n div lt.len))
-        
+         printColStr(col,repeat(lt,n div lt.len))
+     writeLine(stdout,"")   
  
 proc decho*(z:int = 1)  =
     ## decho
@@ -819,7 +821,7 @@ proc rainbow*[T](s : T) =
        print(astr[x],colorNames[c][1],black)
 
 
-proc print*[T](astring:T,fg:string = white , bg:string = black) =
+proc print*[T](astring:T,fgr:string = white , bgr:string = black) =
     ## print
     ##
     ## same as printLn without new line
@@ -828,13 +830,13 @@ proc print*[T](astring:T,fg:string = white , bg:string = black) =
     ## 
     ## also see cecho 
     ##
-    case fg 
+    case fgr 
       of clrainbow: rainbow($astring)
-      else:  stdout.write(fg & colconv(bg) & $astring)
+      else:  stdout.write(fgr & colconv(bgr) & $astring)
     prxBCol()
     
 
-proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
+proc printLn*[T](astring:T,fgr:string = white , bgr:string = black) =
     ## printLn
     ## 
     ## similar to echo but with foregroundcolor and backgroundcolor
@@ -870,12 +872,7 @@ proc printLn*[T](astring:T,fg:string = white , bg:string = black) =
     ## even better use procs  cecho and cechoLn  below
     ## 
     ## 
-  
-    case  fg 
-       of clrainbow:  rainbow($astring)
-       else:  
-           stdout.write(fg & colconv(bg) & $astring)
-           prxBCol()
+    print(astring,fgr,bgr)       
     stdout.writeLine("")
     
 
@@ -1224,14 +1221,15 @@ proc printLnStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
 proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## cecho
       ## 
-      ## color echo w/o new line
+      ## color echo w/o new line this also automically resets the color attribute
       ## 
       ## 
       ## .. code-block:: nim
       ##     import private,strfmt
-      ##     cecho(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
-      ##   
-      ## 
+      ##     cechoLn(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
+      ##     echo("ok")  # color resetted
+      ##     echo(salmon,"{:<10} : {} ==> {} --> {}".fmt("this ", "zzz ",123 ," color is something else"))
+      ##     echo("ok")  # still salmon
        
       case col 
        of clrainbow : 
@@ -1268,8 +1266,7 @@ proc showColors*() =
      
   decho(2)   
   
-  
-  
+ 
 
 # Var. date and time handling procs mainly to provide convenice for
 # date format yyyy-MM-dd handling
@@ -1824,7 +1821,7 @@ proc showIpInfo*(ip:string) =
       let jz = getIpInfo(ip)
       decho(2)
       printLn("Ip-Info for " & ip,lightsteelblue)
-      msgy() do: dline(40)
+      dline(40,col = yellow)
       for x in jz.getfields():
           echo "{:<15} : {}".fmt($x.key,$x.val)
       printLnBiCol("{:<15} : {}".fmt("Source","ip-api.com"),":",yellowgreen,salmon)
@@ -2597,7 +2594,8 @@ proc handler*() {.noconv.} =
 # putting decho here will put two blank lines before anyting else runs
 decho(2)
 # putting this here we can stop most programs which use this lib and get the
-# automatic exit messages
+# automatic exit messages , it may not work in tight loops involving execCMD or
+# waiting for readLine() inputs.
 setControlCHook(handler)
 # this will reset any color changes in the terminal
 # so no need for this line in the calling prog
