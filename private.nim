@@ -830,6 +830,7 @@ proc print*[T](astring:T,fgr:string = white , bgr:string = black) =
     ## 
     ## also see cecho 
     ##
+    ##
     case fgr 
       of clrainbow: rainbow($astring)
       else:  stdout.write(fgr & colconv(bgr) & $astring)
@@ -855,6 +856,10 @@ proc printLn*[T](astring:T,fgr:string = white , bgr:string = black) =
     ## 
     ## brightcyan,brightmagenta,brightblack
     ## 
+    ## .. code-block:: nim
+    ##    printLn("Yes ,  we made it.",clrainbow,brightyellow) # background has no effect with font in  clrainbow
+    ##    printLn("Yes ,  we made it.",green,brightyellow) 
+    ##
     ## 
     ## As a side effect we also can do this now :
     ## 
@@ -869,7 +874,7 @@ proc printLn*[T](astring:T,fgr:string = white , bgr:string = black) =
     ## that is we print the string in yellowgreen , but need to reset the color manually
     ## 
     ## 
-    ## even better use procs  cecho and cechoLn  below
+    ## also see cechoLn  
     ## 
     ## 
     print(astring,fgr,bgr)       
@@ -963,7 +968,7 @@ proc printRainbow*[T](s : T,astyle:set[Style]) =
     ##
     ## print multicolored string with styles , for available styles see printStyled
     ##
-    ## may not work with certain Rune and currently supports terminal colors only
+    ## may not work with certain Rune 
     ##
     ## .. code-block:: nim
     ##    printRainBow("WoW So Nice",{styleUnderScore})
@@ -985,7 +990,7 @@ proc printLnRainbow*[T](s : T,astyle:set[Style]) =
     ## 
     ## and issues a new line
     ##
-    ## may not work with certain Rune and currently supports terminal colors only
+    ## may not work with certain Rune 
     ##
     ## .. code-block:: nim
     ##    printLnRainBow("WoW So Nice",{styleUnderScore})
@@ -1002,12 +1007,9 @@ proc printColStr*(colstr:string,astr:string) =
       ##
       ## prints a string with a named color in colstr
       ##
-      ## colors : green,red,cyan,yellow,white,black,blue,magenta,clrainbow
-      ##
-      ##          brightgreen,brightred,brightcyan,brightyellow,brightwhite,brightblue,brightmagenta
-      ##
+    
       ## .. code-block:: nim
-      ##    printColStr(green,"Nice, it is in green !")
+      ##    printColStr(yellowgreen,"Nice, it is in yellowgreen !")
       ##
       print(astr,colstr)
 
@@ -1022,7 +1024,7 @@ proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) =
     ## and most everything passed in will be converted to string
     ##
     ## .. code-block:: nim
-    ##    printLnColStr green,"Nice try 1", 2.52234, @[4, 5, 6]
+    ##    printLnColStr lightsalmon,"Nice try 1", 2.52234, @[4, 5, 6]
     ##
 
     for vastr in mvastr:
