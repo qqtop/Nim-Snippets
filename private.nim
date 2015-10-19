@@ -268,6 +268,88 @@ const
       yellowgreen*          =  "\x1b[38;2;154;205;50m"
 
 
+
+
+
+const number0 =
+ @["██████"
+  ,"██  ██"
+  ,"██  ██"
+  ,"██  ██"
+  ,"██████"]
+  
+const number1 =
+ @["    ██"
+  ,"    ██"
+  ,"    ██"
+  ,"    ██"
+  ,"    ██"]
+const number2 =
+ @["██████"
+  ,"    ██"
+  ,"██████"
+  ,"██    "
+  ,"██████"]
+  
+const number3 =
+ @["██████"
+  ,"    ██"
+  ,"██████"
+  ,"    ██"
+  ,"██████"]
+  
+const number4 =
+ @["██  ██"
+  ,"██  ██"
+  ,"██████"
+  ,"    ██"
+  ,"    ██"]
+const number5 =
+ @["██████"
+  ,"██    "
+  ,"██████"
+  ,"    ██"
+  ,"██████"]
+  
+const number6 =
+ @["██████"
+  ,"██    "
+  ,"██████"
+  ,"██  ██"
+  ,"██████"]
+  
+const number7 =
+ @["██████"
+  ,"    ██"
+  ,"    ██"
+  ,"    ██"
+  ,"    ██"]
+  
+const number8 =
+ @["██████"
+  ,"██  ██"
+  ,"██████"
+  ,"██  ██"
+  ,"██████"]
+  
+const number9 =
+ @["██████"
+  ,"██  ██"
+  ,"██████"
+  ,"    ██"
+  ,"██████"]
+  
+ 
+
+const colon =
+ @["      "
+  ,"  ██  "
+  ,"      "
+  ,"  ██  "
+  ,"      "]
+
+const numberlen = 4
+
 # all colors except original terminal colors
 let colorNames* = @[
       ("aliceblue", aliceblue),
@@ -659,7 +741,14 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          printLnBiCol("Error : Cannot open file " & curFile,":",red,yellow)
          quit()
 
-
+# proc clear*() =
+#   ## clear
+#   ## 
+#   ## clear screen with escape seqs
+#   ## 
+#   print("\e[H\e[J") 
+#      
+   
 proc checkColor*(colname: string): bool =
      ## checkColor
      ## 
@@ -1413,6 +1502,45 @@ proc sleepy*[T:float|int](s:T) =
     # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
 
 
+proc printBigNumber*(bn:int,fgr:string = yellowgreen ,bgr:string = black) =
+        ## printBigNumber
+        ## 
+        ## prints an integer in big block font
+        ## 
+        ## .. code-block:: nim
+        ##    for x in 999900.. 1000504:
+        ##         clearup()
+        ##         printBigNumber(x)
+        ##         sleepy(0.008)
+        ##    echo()   
+        ##
+        ##    printBigNumber(23456345,blue)
+        ##
+        ## 
+        var anumber = $bn
+        var asn = newSeq[string]()
+        var printseq = newSeq[seq[string]]()
+        for x in anumber: asn.add($x)
+        #echo asn
+        for x in asn:
+          case  x 
+            of "0": printseq.add(number0)
+            of "1": printseq.add(number1)
+            of "2": printseq.add(number2)
+            of "3": printseq.add(number3)
+            of "4": printseq.add(number4)
+            of "5": printseq.add(number5)
+            of "6": printseq.add(number6)
+            of "7": printseq.add(number7)
+            of "8": printseq.add(number8)
+            of "9": printseq.add(number9)
+            of ":": printseq.add(colon)
+            else: discard
+              
+        for x in 0.. numberlen:
+           for y in 0.. <printseq.len:
+               print(" " & printseq[y][x],fgr,bgr)
+           echo()   
 
 
 proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
