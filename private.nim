@@ -350,6 +350,78 @@ const colon =
 
 const numberlen = 4
 
+
+const snumber0 = 
+  @["┌─┐",
+    "│ │",
+    "└─┘"]
+
+
+const snumber1 = 
+  @["  ╷",
+    "  │",
+    "  ╵"]
+  
+const snumber2 = 
+   @["╶─┐",
+     "┌─┘",
+     "└─╴"]
+   
+   
+const snumber3 =
+  @["╶─┐",
+    "╶─┤",
+    "╶─┘"]
+  
+const snumber4 = 
+  @["╷ ╷",
+    "└─┤",
+    "  ╵"]
+  
+const snumber5 = 
+  @["┌─╴",  
+    "└─┐",
+    "╶─┘"]
+
+const snumber6 = 
+  @["┌─╴",
+    "├─┐",
+    "└─┘"]
+  
+const snumber7 = 
+  @["╶─┐",  
+    "  │",
+    "  ╵"]
+  
+const snumber8 =
+  @["┌─┐",  
+    "├─┤",
+    "└─┘"]
+  
+const snumber9 = 
+  @["┌─┐",
+    "└─┤",
+    "╶─┘"] 
+  
+  
+const scolon =
+  @[" ╷",
+    " ╷",   
+    "  "]
+  
+  
+const scomma = 
+   @["  ",
+     "  ",
+     " ╷"]
+   
+const sdot = 
+   @["  ",
+     "  ",
+     " ."]
+
+const snumberlen = 2
+
 # all colors except original terminal colors
 let colorNames* = @[
       ("aliceblue", aliceblue),
@@ -1502,22 +1574,29 @@ proc sleepy*[T:float|int](s:T) =
     # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
 
 
-proc printBigNumber*(bn:int,fgr:string = yellowgreen ,bgr:string = black) =
+proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
     ## printBigNumber
     ## 
-    ## prints an integer in big block font
+    ## prints a string in big block font
+    ## 
+    ## available 1234567890:
+    ## 
+    ## 
+    ## usufull for big counter etc , a clock can also be build easily but
+    ## running in a tight while loop just uses up cpu cycles needlessly.
     ## 
     ## .. code-block:: nim
-    ##    for x in 999900.. 1000504:
+    ##    for x in 990.. 1005:
     ##         clearup()
-    ##         printBigNumber(x)
+    ##         printBigNumber($x)
     ##         sleepy(0.008)
-    ##    echo()   
     ##
-    ##    printBigNumber(23456345,blue)
+    ##    decho(5)   
+    ##    
+    ##    printBigNumber($23456345,steelblue)
     ##
     ## 
-    var anumber = $bn
+    
     var asn = newSeq[string]()
     var printseq = newSeq[seq[string]]()
     for x in anumber: asn.add($x)
@@ -1538,9 +1617,73 @@ proc printBigNumber*(bn:int,fgr:string = yellowgreen ,bgr:string = black) =
         else: discard
           
     for x in 0.. numberlen:
+        print repeat(" ",xpos) 
         for y in 0.. <printseq.len:
             print(" " & printseq[y][x],fgr,bgr)
         echo()   
+
+
+
+proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
+    ## printBigNumber
+    ## 
+    ## prints an string in big block font
+    ## 
+    ## available chars 123456780,.:
+    ## 
+    ## 
+    ## usufull for big counter etc , a clock can also be build easily but
+    ## running in a tight while loop just uses up cpu cycles needlessly.
+    ## 
+    ## .. code-block:: nim
+    ##    for x in 990.. 1005:
+    ##         clearup()
+    ##         printSlimNumber($x)
+    ##         sleepy(0.075)
+    ##    echo()   
+    ##
+    ##    printSlimNumber($23456345,blue)
+    ##    decho(2)
+    ##    printSlimNumber("1234567:345,23.789",fgr=salmon,xpos=20)
+    ##    decho(5)  
+    ##    import times
+    ##    printSlimNumber($getClockStr(),fgr=salmon,xpos=20)
+    ##    decho(5)
+    ## 
+    
+    var asn = newSeq[string]()
+    var printseq = newSeq[seq[string]]()
+    for x in anumber: asn.add($x)
+    #echo asn
+    for x in asn:
+      case  x 
+        of "0": printseq.add(snumber0)
+        of "1": printseq.add(snumber1)
+        of "2": printseq.add(snumber2)
+        of "3": printseq.add(snumber3)
+        of "4": printseq.add(snumber4)
+        of "5": printseq.add(snumber5)
+        of "6": printseq.add(snumber6)
+        of "7": printseq.add(snumber7)
+        of "8": printseq.add(snumber8)
+        of "9": printseq.add(snumber9)
+        of ":": printseq.add(scolon)
+        of ",": printseq.add(scomma)
+        of ".": printseq.add(sdot)
+        else: discard
+          
+    for x in 0.. snumberlen:
+        print repeat(" ",xpos) 
+        for y in 0.. <printseq.len:
+            print(" " & printseq[y][x],fgr,bgr)
+        echo()   
+
+
+
+
+
+
+
 
 
 proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
