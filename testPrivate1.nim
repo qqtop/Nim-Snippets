@@ -2,7 +2,7 @@
 ## testing for private.nim printLn and echo ... procs 
 
 
-import private,strfmt,strutils
+import private,strfmt,strutils,times
 
 
 superHeader("Testing var. print and echo procs from private.nim ")
@@ -139,6 +139,12 @@ carpet(3)
 
 decho(3)
 
+
+printSlimNumber($getClockStr(),white,green,xpos=18)
+decho(5)
+
+printBigNumber($getClockStr(),fgr=salmon,xpos=10)
+decho(5)
 
 superHeader("Nim Colors ")
 # show a full list of colorNames availabale
