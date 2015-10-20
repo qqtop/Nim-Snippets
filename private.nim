@@ -819,7 +819,11 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
 #   ## clear screen with escape seqs
 #   ## 
 #   print("\e[H\e[J") 
-#      
+# 
+
+
+# curl -s https://raw.githubusercontent.com/JohnMorales/dotfiles/master/colors/24-bit-color.sh | bash
+
    
 proc checkColor*(colname: string): bool =
      ## checkColor
@@ -1430,7 +1434,7 @@ proc showColors*() =
   
  
 
-# Var. date and time handling procs mainly to provide convenice for
+# Var. date and time handling procs mainly to provide convenience for
 # date format yyyy-MM-dd handling
 
 proc validdate*(adate:string):bool =
@@ -1625,9 +1629,9 @@ proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black
 
 
 proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
-    ## printBigNumber
+    ## printSlimNumber
     ## 
-    ## prints an string in big block font
+    ## prints an string in big slim font
     ## 
     ## available chars 123456780,.:
     ## 
@@ -2227,9 +2231,9 @@ proc ff*(zz:float,n:int64 = 5):string =
 proc getRandomFloat*():float =
     ## getRandomFloat
     ##
-    ## convenience proc so we do not need to import random
-    ##
-    ## in calling prog
+    ## convenience proc so we do not need to import random in calling prog
+    ## 
+    ## 
     result = rng.random()
 
 
@@ -2315,7 +2319,7 @@ proc tupleToStr*(xs: tuple): string =
 template loopy*[T](ite:T,st:stmt) =
      ## loopy
      ## 
-     ## the lazy programmer's quick for-loop template
+     ## the lazy programmer's quick simple for-loop template
      ##
      ## .. code-block:: nim            
      ##     loopy(0.. 100,printLnTK("The house is in the back.",brightwhite,brightblack,salmon,yellowgreen))
