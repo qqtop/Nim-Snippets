@@ -37,15 +37,18 @@ decho(2)
 printLnTK(s)
 printLnTK(s,green,brightred,blue)
 decho(1)
+
 printColStr(green,s)
 decho(1)
+
 printLnStyled(s,"t",clrainbow,{styleUnderScore,styleBlink})
 decho(2)
+
 printLnBiCol(s,"c",brightgreen,brightwhite)
 printLnBiCol(s,"c")  # default colors
 decho(2)
 
-# note every item will be tokenized so we need more colors than strings passed in
+# note : every item will be tokenized so we need more colors than strings passed in
 printLnTK("{} {} {} {}".fmt(s,n,f,l),brightgreen,brightcyan,brightyellow,brightmagenta,clrainbow,brightblue,brightred)
 
 printLnTK(s & " wuff",steelblue,brightgreen,clrainbow,yellow)  
@@ -58,11 +61,13 @@ printLn("{} {} {} {}".fmt(s,n,f,l),brightyellow,brightblue)
 printLn(s,clrainbow,brightyellow)  
 printLn(s,lime)
 decho(1)
+
 printLn(s,black,brightmagenta)
 printLn(s &  " ---> this is white")
 
 
 printLnStyled("Everyone and the cat likes fresh salmon.","the cat",yellowgreen,{styleUnderScore})
+decho(2)
 printStyled("123423456576782312345","23",lightseagreen,{stylereverse})
 echo()
 printLnStyled("The dog blinks . ","dog",rosybrown,{styleUnderScore,styleBlink})
@@ -73,7 +78,7 @@ printLnStyled("The dog blinks . ","dog",rosybrown,{styleUnderScore,styleBlink})
                             
 cecho(salmon,"Everyone and the cat likes fresh salmon. ")
 cecho(steelblue,"The dog disagrees here. ")
-cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"I think . ")
+cechoLn(greenyellow,"Cannot please everyone. ",pastelpink,"Indeed !")
 
 # the system echo works too but needs color reset at the end, styleConstants also do not work
 # similar to the just introduced styledwrite and resetStyle 
@@ -92,10 +97,12 @@ print("Everyone and the cat likes fresh salmon. ",salmon)
 print("The dog disagrees here. ",steelblue)
 printLn("Cannot please everyone.",greenyellow)
 
-msgblb() do : dline()
-printLn(repeat("✈",tw),yellowgreen)
+decho(2)
 
-msgblb() do : dline()
+dline() # white dashed line
+printLn(repeat("✈",tw),yellowgreen)
+dline(60,lt = "/+",truetomato) 
+printLn("  -->  truetomato",truetomato)
 decho(2)
 
 
@@ -140,7 +147,7 @@ carpet(3)
 decho(3)
 
 
-printSlimNumber($getClockStr(),white,green,xpos=18)
+printSlimNumber($getClockStr() & "  ",pastelpink,black,xpos=25)
 decho(5)
 
 printBigNumber($getClockStr(),fgr=salmon,xpos=10)
