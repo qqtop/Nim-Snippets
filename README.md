@@ -10,7 +10,7 @@ Documentation for private.nim : http://qqtop.github.io/private.html
 
 
 
-Some output from testPrivate1
+Screenshots from testPrivate1
 
 ![Image](../master/nimcolors7.png?raw=true)
 
@@ -22,5 +22,10 @@ Some output from testPrivate1
 
 ![Image](../master/nimcolors6.png?raw=true)
 
+
+
+Screenshots from updatNimCompiler
+
+![Image](../master/updatecompiler.png?raw=true)
 
 Have Fun !

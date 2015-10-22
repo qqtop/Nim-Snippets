@@ -57,7 +57,14 @@ proc checkBuildStatus(bss:string):bool =
         elif x == 0 and cb == """"failure"""":
            printLnBiCol("Build Status Failure     : " & cb,":")
            result = false
-          
+        elif x == 0 and cb == """"exception"""":
+           printLnBiCol("Build Status Exception   : " & cb,":")
+           result = false  
+        elif x == 0 :
+           printLnBiCol("Build Status             : " & cb,":")
+           result = false   
+           
+           
   
 proc byebye() =
     echo() 
