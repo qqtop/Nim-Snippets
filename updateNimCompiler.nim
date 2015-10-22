@@ -3,14 +3,14 @@ import os,strutils,parseopt2,strfmt,json,httpclient,private
 # Reinstall Nim Development version  only if build waterfall says successfull
 # suitable for linux 86_64 install only
 # we only update if build satus successful 
-# no update when build warnings or failure
+# no update when build warnings,exceptions or failure
 
 # under development
 
 ##############################################################
 # Change dirs as required
 
-var cp = "/data4/NimCompiler/"   # where it the compiler lives
+var cp     = "/data4/NimCompiler/"   # where it the compiler lives
 var bsjson = "/data4/NimStuff/buildstatus.json"  # path for tmp file download
 
 ##############################################################
@@ -44,25 +44,23 @@ proc checkBuildStatus(bss:string):bool =
       printLnBiCol("Builder Name             : " & jobj["-1"]["builderName"].getstr,":")
       var cb : string = ""
       var lcb = jobj["-1"]["text"].len
-      #echo "lcb : ",lcb
+     
       
       for x in 0.. <lcb:
         cb = $(jobj["-1"]["text"].getElems[x])
         if x == 1 and cb == """"successful"""":
-           print("Build Status : Success. Updating compiler",lime)
+           print("Build Status : Success.  ===> Updating compiler now !",lime)
            result = true
         elif x == 0 and cb == """"warnings"""":
-           printLnBiCol("Build Status Warnings    : " & cb,":")
+           printLnBiCol("Build Status Warnings    : " & cb,":",truetomato)
            result = false
         elif x == 0 and cb == """"failure"""":
-           printLnBiCol("Build Status Failure     : " & cb,":")
+           printLnBiCol("Build Status Failure     : " & cb,":",red)
            result = false
         elif x == 0 and cb == """"exception"""":
-           printLnBiCol("Build Status Exception   : " & cb,":")
+           printLnBiCol("Build Status Exception   : " & cb,":",truetomato)
            result = false  
-        elif x == 0 :
-           printLnBiCol("Build Status             : " & cb,":")
-           result = false   
+       
            
            
   
@@ -117,7 +115,7 @@ if checkBuildStatus(buildjson) == true :
 else:
   
   decho(2)
-  printLn(" Nim Waterfall BuildStatus : Warnings or Failed .  Try update later ",white,red)
+  printLn(" Nim Waterfall BuildStatus : Warnings,Exceptions or Failed .  Try update later ",white,red)
   decho(2)
     
 
