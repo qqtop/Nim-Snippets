@@ -11,7 +11,8 @@ import python
 var sq1 = "select first 30 * from COUNTRY"
 
 clearup()
-
+superHeader("Testing Firebird Super server connection")
+echo()
 const pycode = """
 
 import fdb
@@ -19,7 +20,7 @@ import fdb
 def connect_db(s):
     try:
 
-       acon = fdb.connect(dsn='127.0.0.1:/data5/dbmaster/ISOCOUNTRY.FDB', user='sysdba', password='xxxxxxxxx', charset='UTF-8')
+       acon = fdb.connect(dsn='127.0.0.1:/data5/dbmaster/ISOCOUNTRY.FDB', user='sysdba', password='xxxxxxx', charset='UTF-8')
        cur = acon.cursor()
        try:
          cur.execute(s)
@@ -56,7 +57,7 @@ for x in xrange(0,len(ares)):
 
 """
 
-msgy() do : echo "Visiting python to get the data"
+printLn(" ---> Visiting python to get the data",tomato)
 Py_Initialize()
 var mainModule = PyImport_ImportModule("__main__")
 var mainDict   = PyModule_GetDict(mainModule)
@@ -64,7 +65,7 @@ var pyString   = PyString_FromString(sq1)
 discard PyDict_SetItemString(main_dict, "from_nim", pyString)
 discard PyRun_SimpleString(pycode)
 
-msgy() do : echo "\nBack in Nim and Displaying python list\n"
+printLn(" ---> Back in Nim and Displaying python list",lime)
 hline()
 let pyVariable = PyMapping_GetItemString(mainDict, "resl")
 var cc = 0
@@ -76,16 +77,21 @@ for x in 0.. <PySequence_Length(pyVariable):
     inc c 
     var pyData  = PySequence_GetItem(pyVariable,x)
     pyItem1 =  PyString_AsString(pyData)
-    if c < 5 :
-      write(stdout,pyItem1)
-      write(stdout," , ")
+    if c == 1:
+      print($pyItem1 & " : ",steelblue)
+            
+    elif c < 4 :
+      print(pyItem1,yellowgreen)
+      print(" , ")
+    elif c < 5:
+      print(pyItem1,yellowgreen)
     else:
       c = 0
       echo()
 
-echo()
-hline()
+
 Py_XDECREF(mainModule)
 Py_XDECREF(pyString)
 Py_XDECREF(pyVariable)
 Py_Finalize()
+doFinish()
