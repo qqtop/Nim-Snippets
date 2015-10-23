@@ -15,7 +15,7 @@ var bsjson = "/data4/NimStuff/buildstatus.json"  # path for tmp file download
 
 ##############################################################
 
-let VERSION = "1.6"
+let VERSION = "1.7"
 
 clearup()
 
@@ -52,7 +52,7 @@ proc checkBuildStatus(bss:string):bool =
            print("Build Status : Success.  ===> Updating compiler now !",lime)
            result = true
         elif x == 0 and cb == """"warnings"""":
-           printLnBiCol("Build Status Warnings    : " & cb,":",truetomato)
+           printLnBiCol("Build Status Warnings    : " & cb,":",yellow)
            result = false
         elif x == 0 and cb == """"failure"""":
            printLnBiCol("Build Status Failure     : " & cb,":",red)
@@ -60,7 +60,9 @@ proc checkBuildStatus(bss:string):bool =
         elif x == 0 and cb == """"exception"""":
            printLnBiCol("Build Status Exception   : " & cb,":",truetomato)
            result = false  
-       
+        elif x == 0 and cb == """"retry"""":
+           printLnBiCol("Build Status Notice      : " & cb,":",magenta)
+           result = false  
            
            
   
