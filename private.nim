@@ -290,6 +290,7 @@ const number1 =
   ,"    ██"
   ,"    ██"
   ,"    ██"]
+ 
 const number2 =
  @["██████"
   ,"    ██"
@@ -310,6 +311,7 @@ const number4 =
   ,"██████"
   ,"    ██"
   ,"    ██"]
+ 
 const number5 =
  @["██████"
   ,"██    "
@@ -346,7 +348,6 @@ const number9 =
   ,"██████"]
   
  
-
 const colon =
  @["      "
   ,"  ██  "
@@ -2817,18 +2818,41 @@ proc centerNim*() =
 
 
 
+proc printNimSx*(col:string = yellowgreen, xpos: int = 1) = 
+   ## printNimSx
+   ## 
+   ## prints large Nim
+   ## 
+   ## 
+  
+   var maxpos = getTerminalWidth() - NIMX1.len + 20
+   for x in nimsx :
+        if xpos <= maxpos  :
+            print(repeat(" ",xpos) & x,col)
+        else:    
+            print(repeat(" ",maxpos) & x,col)
+            
+            
 proc movNim*() =
-    # moving NIM
+    ## moving NIM demo
+    ## 
+    ## .. code-block:: nim
+    ##    import private 
+    ##    printNimSx(yellowgreen,170)
+    ##    clearup()
+    ##    movNim()
+    ##    printNimSx(salmon)
+    ##    doFinish()
+    ##
     cleanScreen()
     for xpos in 1.. getTerminalWidth() - NIMX1.len + 20:
-      for x in nimsx :
         if float(xpos) mod 8 == 0.0:
-            print(repeat(" ",xpos) & x,red)
+            printNimSx(red,xpos)
             sleepy(0.08)
         else:
-          print(repeat(" ",xpos) & x,gray)
-      sleepy(0.05)
-      cleanScreen()
+          printNimSx(gray,xpos)
+        sleepy(0.05)
+        cleanScreen()
 
 
 # Info and handlers procs for quick information about
