@@ -123,6 +123,12 @@ const
       pastelyellow*      =  "\x1b[38;2;255;242;174m"    
       pastelbeige*       =  "\x1b[38;2;241;226;204m"
       pastelwhite*       =  "\x1b[38;2;204;204;204m"
+        
+        
+      # other colors of interest  
+      truetomato*         =   "\x1b[38;2;255;100;0m"
+
+        
       
       # colors lifted from colors.nim and massaged into rgb escape seqs
 
@@ -351,6 +357,17 @@ const colon =
 const numberlen = 4
 
 
+let NIMX1 = "██     █    ██    ███   ██\n"
+let NIMX2 = "██ █   █    ██    ██ █ █ █\n"
+let NIMX3 = "██  █  █    ██    ██  █  █\n"
+let NIMX4 = "██   █ █    ██    ██  █  █\n"
+let NIMX5 = "██     █    ██    ██     █\n\n"
+   
+
+var nimsx = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
+
+
+
 const snumber0 = 
   @["┌─┐",
     "│ │",
@@ -571,7 +588,8 @@ let colorNames* = @[
       ("pastelpink",pastelpink),
       ("pastelwhite",pastelwhite),
       ("pastelyellow",pastelyellow),
-      ("pastelyellowgreen",pastelyellowgreen)]
+      ("pastelyellowgreen",pastelyellowgreen),
+      ("truetomato",truetomato)]
 
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
@@ -813,16 +831,29 @@ template withFile*(f: expr, filename: string, mode: FileMode, body: stmt): stmt 
          printLnBiCol("Error : Cannot open file " & curFile,":",red,yellow)
          quit()
 
-# proc clear*() =
-#   ## clear
-#   ## 
-#   ## clear screen with escape seqs
-#   ## 
-#   print("\e[H\e[J") 
-# 
 
+proc cleanScreen*() =
+      ## cleanScreen
+      ## 
+      ## clear screen with escape seqs
+      ## 
+      ## similar to terminal.eraseScreen() but seems to clean the terminal window completely
+      ## 
+      write(stdout,"\e[H\e[J") 
+      
 
-# curl -s https://raw.githubusercontent.com/JohnMorales/dotfiles/master/colors/24-bit-color.sh | bash
+proc centerPos*(astring:string):string =
+     ## centerpos
+     ## 
+     ## tries to return the the string centered in a terminal ready for printing
+     ## 
+     ## .. code-block:: nim
+     ##    var s = "Hello I am centered" 
+     ##    printLn(centerpos(s),gray)
+     ## 
+     ## 
+     var xs = repeat(" ",getTerminalWidth() div 2 - astring.len div 2 - 1)
+     result = xs & astring
 
    
 proc checkColor*(colname: string): bool =
@@ -904,6 +935,7 @@ proc dlineLn*(n:int = tw,lt:string = "-",col:string = termwhite) =
      if lt.len <= n:
          printColStr(col,repeat(lt,n div lt.len))
      writeLine(stdout,"")   
+ 
  
 proc decho*(z:int = 1)  =
     ## decho
@@ -1411,6 +1443,11 @@ proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ##  
       ## color echo with new line
       ## 
+      ## so it is easy to color your output by just replacing
+      ## 
+      ## echo something  with   cechoLn yellowgreen,something
+      ## 
+      ## in your exisiting projects.
       ## 
       ## .. code-block:: nim
       ##     import private,strutils
@@ -1590,16 +1627,29 @@ proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black
     ## running in a tight while loop just uses up cpu cycles needlessly.
     ## 
     ## .. code-block:: nim
-    ##    for x in 990.. 1005:
-    ##         clearup()
+    ##    for x in 990.. 1105:
+    ##         cleanScreen()
     ##         printBigNumber($x)
     ##         sleepy(0.008)
     ##
-    ##    decho(5)   
+    ##    cleanScreen()   
     ##    
     ##    printBigNumber($23456345,steelblue)
     ##
-    ## 
+    ## .. code-block:: nim
+    ##    import private 
+    ##    for x in countdown(10,0):
+    ##         cleanScreen()
+    ##         if x == 5:
+    ##             for y in countup(10,25):
+    ##                 cleanScreen()
+    ##                 printBigNumber($y,tomato)
+    ##                 sleepy(0.5)
+    ##         cleanScreen()    
+    ##         printBigNumber($x)
+    ##         sleepy(1)
+    ##    doFinish()
+    
     
     var asn = newSeq[string]()
     var printseq = newSeq[seq[string]]()
@@ -1641,7 +1691,7 @@ proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = blac
     ## 
     ## .. code-block:: nim
     ##    for x in 990.. 1005:
-    ##         clearup()
+    ##         cleanScreen()
     ##         printSlimNumber($x)
     ##         sleepy(0.075)
     ##    echo()   
@@ -1649,8 +1699,10 @@ proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = blac
     ##    printSlimNumber($23456345,blue)
     ##    decho(2)
     ##    printSlimNumber("1234567:345,23.789",fgr=salmon,xpos=20)
-    ##    decho(5)  
+    ##    sleepy(1.5)  
     ##    import times
+    ##    cleanScreen()
+    ##    decho(2)
     ##    printSlimNumber($getClockStr(),fgr=salmon,xpos=20)
     ##    decho(5)
     ## 
@@ -1681,12 +1733,6 @@ proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = blac
         for y in 0.. <printseq.len:
             print(" " & printseq[y][x],fgr,bgr)
         echo()   
-
-
-
-
-
-
 
 
 
@@ -2001,18 +2047,18 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
   ##
   ## .. code-block:: nim
   ##    import private
-  ##    clearup()
+  ##    cleanScreen()
   ##    let bb = "NIM the system language for the future, which extends to as far as you need !!"
-  ##    superHeaderA(bb,white,red,true,3)
+  ##    superHeaderA(bb,white,red,true,1)
   ##    clearup(3)
-  ##    superheader("Ok That's it for Now !",clrainbow,"b")
+  ##    superheader("Ok That's it for Now !",salmon,yellowgreen)
   ##    doFinish()
   
   for am in 0..<animcount:
       for x in 0.. <1:
-        erasescreen()
+        cleanScreen()
         for zz in 0.. bb.len:
-              erasescreen()
+              cleanScreen()
               superheader($bb[0.. zz],strcol,frmcol)
               sleepy(0.05)
               curup(80)
@@ -2020,9 +2066,9 @@ proc superHeaderA*(bb:string = "",strcol:string = white,frmcol:string = green,an
             for zz in countdown(bb.len,-1,1):
                   superheader($bb[0.. zz],strcol,frmcol)
                   sleepy(0.1)
-                  clearup()
+                  cleanScreen()
         else:
-             clearup()
+             cleanScreen()
         sleepy(0.5)
         
   echo()
@@ -2218,6 +2264,16 @@ proc createSeqInt*(n:int = 10,mi:int=0,ma:int=int.high) : seq[int] =
       result = z   
     else:
       print("Error : Wrong parameters for min , max ",red)
+
+
+proc sum*[T](aseq: seq[T]): T = foldl(aseq, a + b)
+     ## sum
+     ## code per idea from http://rnduja.github.io/2015/10/21/scientific-nim/
+     ## 
+     ## 
+     ## returns sum of float or int seqs
+     ## 
+     ## 
 
 
 proc ff*(zz:float,n:int64 = 5):string =
@@ -2432,7 +2488,6 @@ proc remDir*(dirname:string) =
               printLn("Directory " & dirname & " deletion failed",red)
       else:
               printLn("Directory " & dirname & " does not exists !",red)
-
 
 
 
@@ -2720,7 +2775,8 @@ proc splitty*(txt:string,sep:string):seq[string] =
 
 # small demos
 
-proc flyNim*(astring:string = "Nim",col:string = red,tx:float = 0.08) =
+
+proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
 
       ## flyNim
       ## 
@@ -2731,22 +2787,48 @@ proc flyNim*(astring:string = "Nim",col:string = red,tx:float = 0.08) =
       ##    flyNim(" Have a nice day !", col = hotpink,tx = 0.1)   
       ## 
 
-      var twc = tw div 2
+      var twc = getTerminalWidth() div 2
       var asc = astring.len div 2
       var sn = tw - astring.len
       for x in 0.. twc-asc:
         hline(x,yellowgreen)
         if x < twc - asc :
               printStyled("✈","",brightyellow,{styleBlink})
-              hlineln(2 * twc -1 - x,salmon)
+              hlineln(getTerminalWidth() -1 - x,clrainbow)
         else:
-              printStyled(astring,"",col,{styleBright})
+              printStyled(astring,"",red,{styleBright})
               hlineln(sn -x,salmon)
         sleepy(tx)
-        curup(1)
+        curup(1) 
+        
       echo()
       
 
+proc centerNim*() = 
+   # test for centerpos
+   var b = " C,C++,Python,Rust,Scala,Fortran,Cobol,Go"  
+   cleanScreen()  
+   loopy(0.. 4, printLnStyled(centerpos(b),"",gray,{styleDim}))
+   sleepy(0.1)
+   echo()
+   printLnStyled(centerpos(repeat("Nim ",20)),"",red,{styleBright})
+   echo()
+   loopy(0.. 4, printLnStyled(centerpos(b),"",gray,{styleDim}))
+
+
+
+proc movNim*() =
+    # moving NIM
+    cleanScreen()
+    for xpos in 1.. getTerminalWidth() - NIMX1.len + 20:
+      for x in nimsx :
+        if float(xpos) mod 8 == 0.0:
+            print(repeat(" ",xpos) & x,red)
+            sleepy(0.08)
+        else:
+          print(repeat(" ",xpos) & x,gray)
+      sleepy(0.05)
+      cleanScreen()
 
 
 # Info and handlers procs for quick information about
