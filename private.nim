@@ -6,13 +6,13 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.9.0
+##   Version     : 0.9.1
 ##
 ##   ProjectStart: 2015-06-20
 ##
 ##   Compiler    : Nim 0.11.3 dev
 ##   
-##   OS          : Linux
+##   OS          : Linux  
 ##
 ##   Description : private.nim is a public library with a collection of simple procs and templates
 ##
@@ -32,19 +32,18 @@
 ##
 ##   Note        : may be improved at any time
 ##
-##   Required    : see imports for modules expected to be available
+##   Required    : see imports for modules currently expected to be available
 ##  
 
-import os,osproc,posix,terminal,math,unicode,times,tables,json,sets
-import sequtils,parseutils,strutils,random,strfmt,httpclient,rawsockets,browsers
-import macros
+import os,osproc,macros,posix,terminal,math,unicode,times,tables,json,sets
+import sequtils,parseutils,strutils,httpclient,rawsockets,browsers
+# imports based on modules available from nimble
+import random,strfmt
 
 type
       PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
-      #Pfg*    = terminal.ForegroundColor     # maybe not longer needed
-      #Pbg*    = terminal.BackgroundColor     # maybe not longer needed
 
-const PRIVATLIBVERSION* = "0.9.0"
+const PRIVATLIBVERSION* = "0.9.1"
   
 
 proc getfg(fg:ForegroundColor):string =
@@ -619,7 +618,7 @@ when defined(Linux):
 
 
 # forward declarations
-converter colconv(cx:string) : string
+converter colconv*(cx:string) : string
 proc printColStr*(colstr:string,astr:string)  ## forward declaration
 proc printLnColStr*(colstr:string,mvastr: varargs[string, `$`]) ## forward declaration
 proc printBiCol*(s:string,sep:string,colLeft:string = yellowgreen ,colRight:string = termwhite) ## forward declaration
@@ -977,7 +976,7 @@ proc clearup*(x:int = 80) =
 
 
  
-converter colconv(cx:string) : string = 
+converter colconv*(cx:string) : string = 
      # converter so we can use the same terminal color names for
      # fore- and background colors in print and printLn procs.
      var bg : string = ""
@@ -1080,9 +1079,58 @@ proc printLn*[T](astring:T,fgr:string = white , bgr:string = black) =
 
 
 # Var. convenience procs for colorised data output
-# these procs have similar functionality  
-# print and printLn tokenize strings for selective coloring if required
+# these procs have similar functionality 
+# printPos and printLnPos allow x positional placement and work same print and printLn
+# printTK and printLnTK tokenize strings for selective coloring if required
 # and can be used for most standard echo like displaying jobs
+      
+proc printPos*[T](astring:T,fgr:string = white , bgr:string = black,xpos = -1,fitLine = true) =
+    ## print
+    ##
+    ## same as print but allows positioning
+    ##
+    ## fitLine = true will try to write the text into the current line irrespective of xpos 
+    ##
+    ##
+    var xp = ""
+    if xpos > 0:
+       xp = repeat(" ",xpos)
+    else:
+       xp = ""
+        
+    if (xp & $astring).len >= tw:
+      # force to write on same line within in terminal whatever the xpos says
+      if fitLine == true:
+            xp = repeat(" ",tw - ($astring).len)
+       
+    case fgr 
+      of clrainbow: rainbow(xp & $astring)
+      else:  stdout.write(xp & fgr & colconv(bgr) & $astring)
+    prxBCol()
+    
+
+proc printLnPos*[T](astring:T,fgr:string = white , bgr:string = black,xpos = -1,fitLine = true) =
+     ## printLnPos
+     ## 
+     ## same as printPos but with new line
+     ## 
+     ## .. code-block:: nim
+     ##      printLnPos("This is nice",xpos=30)
+     ##      printLnPos("This is nice",lime)
+     ##      printLnPos("This is nice",bgr = red,xpos = 135,fitLine = false)
+     ##      printLnPos("This is nice",bgr = green,xpos = 135,fitLine = true) 
+     ##      printLnPos("This is nice", clrainbow,xpos = tw div 2 -10)  
+     ##
+          
+     printPos(astring,fgr,bgr,xpos,fitLine)
+     writeln(stdout,"")
+
+
+
+
+
+
+
 
 proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## printTK
