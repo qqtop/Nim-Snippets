@@ -949,7 +949,7 @@ proc decho*(z:int = 1)  =
         writeLine(stdout,"")
 
 
-# simple navigation
+# simple navigation mostly mirrors terminal.nim functions
 
 proc curUp*(x:int = 1) =
      ## curUp
@@ -965,16 +965,41 @@ proc curDn*(x:int = 1) =
      cursorDown(stdout,x)
 
 
+proc curBk*(x:int = 1) = 
+     ## curBkn
+     ##
+     ## mirrors terminal cursorBackward
+     cursorBackward(stdout,x)
+
+
+proc curFw*(x:int = 1) = 
+     ## curFw
+     ##
+     ## mirrors terminal cursorForward
+     cursorForward(stdout,x)
+
+
+proc curSet*(x:int) = 
+     ## curSet
+     ##
+     ## mirrors terminal setCursorXPos
+     setCursorXPos(stdout,x)
+
 proc clearup*(x:int = 80) =
    ## clearup
    ## 
-   ## a convenience proc to clear monitor
+   ## a convenience proc to clear monitor x rows
    ##
-   
    erasescreen(stdout)
    curup(x)
 
 
+proc clearLine*() =
+     ## clearLine
+     ##
+     ## mirrors terminal eraseLine
+     eraseLine() 
+ 
  
 converter colconv*(cx:string) : string = 
      # converter so we can use the same terminal color names for
@@ -2436,7 +2461,17 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
       
       
 # Misc. routines 
-         
+ 
+ 
+proc centerMark*(showpos :bool = false) =
+  ## centerMark
+  ## 
+  ## draws a red dot in the middle of the screen xpos only
+  ## and also can show pos 
+  ## 
+  print(centerpos("."),truetomato)
+  if showpos == true:  print "x" & $(tw/2) 
+ 
   
 proc tupleToStr*(xs: tuple): string =
      ## tupleToStr
@@ -2861,6 +2896,61 @@ proc splitty*(txt:string,sep:string):seq[string] =
 
 # small demos
 
+proc futureIsNim*(posx:int = 0) = 
+      ## futureIsNim
+      ## 
+      ## demo example of a box drawn with doty procs and 2 text lines
+      ## 
+      ## max xpos = 20
+      ## 
+      ## .. code-block:: nim
+      ##    import private
+      ##    cleanScreen()
+      ##    for x in 0.. 10:
+      ##        centerMark()
+      ##        echo()
+      ##        sleepy(0.1)
+      ##    flyNim()
+      ##    futureisnim(25)
+           
+      var xpos = 0
+      if posx > 20 : 
+         xpos = 20
+      else:
+         xpos = posx   
+      decho(2)
+      # topline
+      print(repeat(" ",xpos))
+      dotyLn(30,red)
+      # sidelines
+      
+      for x in 0.. <5:
+         print(repeat(" ",xpos))
+         doty(1,red)
+         print(repeat(" ",49))
+         dotyLn(1,red)
+         
+      #bottomline
+      print(repeat(" ",xpos))
+      dotyLn(30,red)  
+      # move up to position to write the text lines
+      curup(5)
+      print(repeat(" ",xpos))
+      doty(1,red)
+      printPos(" ",clrainbow,xpos = 20)
+      doty(1,lime)
+      doty(1,tomato)
+      print(" Nim",salmon)
+      doty(1,tomato)
+      doty(1,lime)
+      # 2nd text line
+      curdn(1)
+      print(repeat(" ",xpos))
+      #doty(1,red)
+      curSet(xpos + 17)
+      printPos("The future is now !",steelblue,xpos = -40)
+      curdn(5)
+
 
 proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
 
@@ -2940,7 +3030,7 @@ proc movNim*() =
         cleanScreen()
 
 
-# Info and handlers procs for quick information about
+# Info and handlers procs for quick information
 
 
 proc qqTop*() =

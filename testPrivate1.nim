@@ -162,10 +162,15 @@ decho(2)
 var twc = tw div 2
 printLnBiCol("Terminalwidth   : " & $tw,":")
 printLnBiCol("Terminal Center : " & $twc,":")
-hline(twc,yellowgreen)
-printStyled("✈","",brightyellow,{styleBlink})
-hlineln(twc-1,salmon)
 
+cleanScreen()
+for x in 0.. 10:
+    centerMark()
+    echo()
+    sleepy(0.1)
+
+flyNim()
+futureisnim(25)
 
 
 doFinish()
