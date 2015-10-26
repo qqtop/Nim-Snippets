@@ -1127,11 +1127,6 @@ proc printLnPos*[T](astring:T,fgr:string = white , bgr:string = black,xpos = -1,
 
 
 
-
-
-
-
-
 proc printTK*[T](st:T , cols: varargs[string, `$`] = @[white] ) =
      ## printTK
      ##
@@ -1518,6 +1513,47 @@ proc showColors*() =
      
   decho(2)   
   
+
+proc doty*(d:int,col:string = white, bgr = black) =
+     ## doty
+     ## 
+     ## prints number d of ⏺  style dots in given fore/background color
+     ## 
+     ## each dot is of char length 3
+     ## 
+     ## .. code-block:: nimble
+     ##      import private
+     ##      printLnBiCol("Test for  :  doty\n",":",truetomato,lime)
+     ##      dotyLn(22 ,lime)
+     ##      dotyLn(18 ,salmon,blue)
+     ##      
+     ##      
+     ## color clrainbow is not supported and will be in white
+     ## 
+    
+     var astr = $(repeat("⏺",(float(d) * 1.714285714).int))
+     if col == clrainbow:
+        print(astring = astr,white,bgr) 
+     else:
+        print(astring = astr,col,bgr) 
+     
+     
+proc dotyLn*(d:int,col:string = white, bgr = black) =
+     ## dotyLn
+     ## 
+     ## prints number d of ⏺  style dots given fore/background color and issues new line
+     ## 
+     ## each dot is of char length 3
+     ## 
+     ## color clrainbow is not supported and will be in white
+     ## 
+     ## 
+     doty(d,col,bgr)
+     writeLine(stdout,"")
+          
+
+
+
  
 
 # Var. date and time handling procs mainly to provide convenience for
@@ -1997,6 +2033,7 @@ proc superHeader*(bstring:string) =
   # some framechars
   #let framechar = "▒"
   let framechar = "⌘"  
+  #let framechar = "⏺"  
   let pdl = repeat(framechar,mddl)  
   # now show it with the framing in yellow and text in white
   # really want a terminal color checker to avoid invisible lines
