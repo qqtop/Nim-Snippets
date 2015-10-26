@@ -2880,10 +2880,10 @@ proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
         hline(x,yellowgreen)
         if x < twc - asc :
               printStyled("✈","",brightyellow,{styleBlink})
-              hlineln(getTerminalWidth() -1 - x,clrainbow)
+              hlineln(getTerminalWidth() - 1 - x,clrainbow)
         else:
               printStyled(astring,"",red,{styleBright})
-              hlineln(sn -x,salmon)
+              hlineln(sn - x,salmon)
         sleepy(tx)
         curup(1) 
         
