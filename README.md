@@ -22,7 +22,7 @@ Screenshots from testPrivate1
 
 ![Image](../master/nimcolors6.png?raw=true)
 
-
+![Image](../master/nimcolors10.png?raw=true)
 
 Screenshots from updatNimCompiler
 

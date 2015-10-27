@@ -1,5 +1,5 @@
 
-## testing for private.nim printLn and echo ... procs 
+## rough testing for private.nim printLn and echo ... procs 
 
 
 import private,strfmt,strutils,times
@@ -106,7 +106,7 @@ printLn("  -->  truetomato",truetomato)
 decho(2)
 
 
-#### sierpcarpet small refreshed snippet I lifted from somewhere
+#### sierpcarpet small snippet I lifted from somewhere and improved
 
 proc `^`*(base: int, exp: int): int =
   var (base, exp) = (base, exp)
@@ -136,7 +136,8 @@ proc carpet(n) =
       if inCarpet(i, j):
         print("* ",clrainbow)
       else:
-        printStyled("  ","",goldenrod,{stylereverse})
+        printStyled("  ","",truetomato,{stylereverse})
+        
     echo ""
 
 echo() 
@@ -171,6 +172,41 @@ for x in 0.. 10:
 
 flyNim()
 futureisnim(25)
+
+
+proc demoNDLine() =
+  ## demo Numbered dots line
+  ## 
+  ## test with var. terminal widths , styleBlink maynot work with some terminals
+  ## 
+  ## like terminator
+  ## 
+  curup(1)
+  var c = (tw.float / 2.76666).int 
+  for x in 0.. <c:
+    if x == c div 2 :
+      printStyled($x,$x,lime,{styleBlink})
+    else:  
+      printStyled($x,$x,goldenrod,{styleBright})  
+    curdn(1)
+    curbk(1)
+    if x == c div 2 :
+       printStyled(".",".",lime,{styleBright,styleBlink})
+    else:
+       print(".",truetomato)
+    curup(1)
+    curfw(1)
+    
+
+decho(3)
+demoNDLine()
+decho(2)
+
+sleepy(3.5)
+   
+movNim()   
+
+randomCards() 
 
 
 doFinish()

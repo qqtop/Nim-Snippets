@@ -592,6 +592,41 @@ let colorNames* = @[
       ("truetomato",truetomato)]
 
 
+
+let cards* = @[
+ "🂡" ,"🂱" ,"🃁" ,"🃑", 
+ "🂢" ,"🂲" ,"🃂" ,"🃒",
+ "🂣" ,"🂳" ,"🃃" ,"🃓", 
+ "🂤" ,"🂴" ,"🃄" ,"🃔", 
+ "🂥" ,"🂵" ,"🃅" ,"🃕", 
+ "🂦" ,"🂶" ,"🃆" ,"🃖", 
+ "🂧" ,"🂷" ,"🃇" ,"🃗", 
+ "🂨" ,"🂸" ,"🃈" ,"🃘", 
+ "🂩" ,"🂹" ,"🃉" ,"🃙", 
+ "🂪" ,"🂺" ,"🃊" ,"🃚", 
+ "🂫" ,"🂻" ,"🃋" ,"🃛", 
+ "🂬" ,"🂼" ,"🃌" ,"🃜",    
+ "🂭" ,"🂽" ,"🃍" ,"🃝", 
+ "🂮" ,"🂾" ,"🃎" ,"🃞",
+ "🂠" ,"🂿" ,"🃏" ,"🃟"] 
+
+let rxCol = toSeq(colorNames.low.. colornames.high)
+
+proc randCol*(): string = 
+   ## randCol
+   ## 
+   ## get a randomcolor from colorNames
+   ## 
+   ## .. code-block:: nim
+   ##    
+   ##    loopy(0..5,printLn("Hello Random Color",randCol()))
+   ##    
+   ##    
+   result = colornames[rxCol.randomChoice()][1]
+
+
+
+
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
 converter toTwInt(x: cushort): int = result = int(x)
@@ -1000,6 +1035,18 @@ proc clearLine*() =
      ## mirrors terminal eraseLine
      eraseLine() 
  
+
+
+proc sleepy*[T:float|int](s:T) =
+    # s is in seconds
+    let ss = epochtime()
+    let ee = ss + s.float
+    var c = 0
+    while ee > epochtime():
+        inc c
+    # feedback line can be commented out
+    # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
+
  
 converter colconv*(cx:string) : string = 
      # converter so we can use the same terminal color names for
@@ -1506,6 +1553,7 @@ proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
          write(stdout,col) 
          write(stdout,ggg)
       write(stdout,termwhite)
+      
 
 proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## cechoLn
@@ -1535,7 +1583,7 @@ proc showColors*() =
   for x in colorNames:
      print("{:<23} {}  {}  {} --> {} ".fmt(x[0] , repeat("▒",10), repeat("⌘",10) ,"ABCD abcd 1234567890"," Nim Colors " ),x[1],black)  # note x[1] is the color itself.
      printLnStyled("{:<23}".fmt("  " & x[0]),"{:<23}".fmt("  " & x[0]),x[1],{styleReverse})
-     
+     sleepy(0.05)
   decho(2)   
   
 
@@ -1711,18 +1759,6 @@ proc compareDates*(startDate,endDate:string) : int =
           result = -1
      else:
           result = -2
-
-
-
-proc sleepy*[T:float|int](s:T) =
-    # s is in seconds
-    let ss = epochtime()
-    let ee = ss + s.float
-    var c = 0
-    while ee > epochtime():
-        inc c
-    # feedback line can be commented out
-    # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
 
 
 proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
@@ -3009,7 +3045,9 @@ proc printNimSx*(col:string = yellowgreen, xpos: int = 1) =
             
             
 proc movNim*() =
-    ## moving NIM demo
+    ## movNim
+    ## 
+    ## Demo moving Nim
     ## 
     ## .. code-block:: nim
     ##    import private 
@@ -3028,6 +3066,21 @@ proc movNim*() =
           printNimSx(gray,xpos)
         sleepy(0.05)
         cleanScreen()
+
+
+
+proc randomCards*() =
+   ## randomCards
+   ## 
+   ## Demo for colorful cards deck ...
+
+   let chc = toSeq(0.. <60)
+   for z in 0.. <30:
+      for zz in 0.. <tw div 2 - 1:
+          print cards[chc.randomChoice()],randCol()
+      writeLine(stdout,"") 
+    
+
 
 
 # Info and handlers procs for quick information
