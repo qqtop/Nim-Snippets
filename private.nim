@@ -10,7 +10,7 @@
 ##
 ##   ProjectStart: 2015-06-20
 ##
-##   Compiler    : Nim 0.11.3 dev
+##   Compiler    : Nim 0.12.0 dev
 ##   
 ##   OS          : Linux  
 ##
@@ -591,7 +591,7 @@ let colorNames* = @[
       ("pastelyellowgreen",pastelyellowgreen),
       ("truetomato",truetomato)]
 
-
+let rxCol = toSeq(colorNames.low.. colorNames.high) ## index into colorNames
 
 let cards* = @[
  "🂡" ,"🂱" ,"🃁" ,"🃑", 
@@ -610,7 +610,7 @@ let cards* = @[
  "🂮" ,"🂾" ,"🃎" ,"🃞",
  "🂠" ,"🂿" ,"🃏" ,"🃟"] 
 
-let rxCol = toSeq(colorNames.low.. colornames.high)
+let rxCards* = toSeq(cards.low.. cards.high) ## index into cards
 
 proc randCol*(): string = 
    ## randCol
@@ -618,7 +618,7 @@ proc randCol*(): string =
    ## get a randomcolor from colorNames
    ## 
    ## .. code-block:: nim
-   ##    
+   ##    # print a string 6 times in a random color selected from colorNames
    ##    loopy(0..5,printLn("Hello Random Color",randCol()))
    ##    
    ##    
@@ -649,8 +649,8 @@ when defined(Linux):
         ioctl(0, TIOCGWINSZ, addr size)
         result = toTwInt(size.col)
 
-    var tw* = getTerminalWidth()   ## terminalwidth available in tw
-
+   
+    template tw* : int = getTerminalwidth() ## latest terminalwidth always available in tw
 
 # forward declarations
 converter colconv*(cx:string) : string
@@ -887,7 +887,7 @@ proc centerPos*(astring:string):string =
      ##    printLn(centerpos(s),gray)
      ## 
      ## 
-     var xs = repeat(" ",getTerminalWidth() div 2 - astring.len div 2 - 1)
+     var xs = repeat(" ",tw div 2 - astring.len div 2 - 1)
      result = xs & astring
 
    
@@ -1014,19 +1014,28 @@ proc curFw*(x:int = 1) =
      cursorForward(stdout,x)
 
 
-proc curSet*(x:int) = 
-     ## curSet
+proc curSetx*(x:int) = 
+     ## curSetx
      ##
      ## mirrors terminal setCursorXPos
      setCursorXPos(stdout,x)
+     
+proc curSet*(x:int,y:int) = 
+     ## curSet
+     ##
+     ## mirrors terminal setCursorPos
+     ## 
+     ## 
+     setCursorPos(x,y)     
+     
 
 proc clearup*(x:int = 80) =
-   ## clearup
-   ## 
-   ## a convenience proc to clear monitor x rows
-   ##
-   erasescreen(stdout)
-   curup(x)
+     ## clearup
+     ## 
+     ## a convenience proc to clear monitor x rows
+     ##
+     erasescreen(stdout)
+     curup(x)
 
 
 proc clearLine*() =
@@ -1038,12 +1047,16 @@ proc clearLine*() =
 
 
 proc sleepy*[T:float|int](s:T) =
-    # s is in seconds
+    ## sleepy
+    ## 
+    ## imitates sleep but in seconds
+    ##
     let ss = epochtime()
     let ee = ss + s.float
-    var c = 0
+    var c:bool = false
     while ee > epochtime():
-        inc c
+        c = false
+    c = true
     # feedback line can be commented out
     # cechoLn(red,"Loops during waiting for ",s,"secs : ",c)
 
@@ -1164,20 +1177,19 @@ proc printPos*[T](astring:T,fgr:string = white , bgr:string = black,xpos = -1,fi
     ## fitLine = true will try to write the text into the current line irrespective of xpos 
     ##
     ##
-    var xp = ""
     if xpos > 0:
-       xp = repeat(" ",xpos)
+        setCursorxpos(xpos)
     else:
-       xp = ""
+        setCursorxpos(0)  
         
-    if (xp & $astring).len >= tw:
+    if ($astring).len + xpos >= tw:
       # force to write on same line within in terminal whatever the xpos says
       if fitLine == true:
-            xp = repeat(" ",tw - ($astring).len)
+            setCursorXPos(tw - ($astring).len) 
        
     case fgr 
-      of clrainbow: rainbow(xp & $astring)
-      else:  stdout.write(xp & fgr & colconv(bgr) & $astring)
+      of clrainbow: rainbow($astring)
+      else:  stdout.write(fgr & colconv(bgr) & $astring)
     prxBCol()
     
 
@@ -2497,6 +2509,19 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
       
       
 # Misc. routines 
+
+
+proc getCard*():auto = 
+  ## getCard
+  ## 
+  ## gets a random card from the Cards seq
+  ## 
+  ## .. code-block:: nim
+  ##    import private
+  ##    printPos(getCard(),randCol(),xpos = tw div 2)  # get card and print in random color at xpos
+  ##    doFinish()
+  ## 
+  cards[rxCards.randomChoice()] 
  
  
 proc centerMark*(showpos :bool = false) =
@@ -2932,7 +2957,7 @@ proc splitty*(txt:string,sep:string):seq[string] =
 
 # small demos
 
-proc futureIsNim*(posx:int = 0) = 
+proc futureIsNimDemo*(posx:int = 0) = 
       ## futureIsNim
       ## 
       ## demo example of a box drawn with doty procs and 2 text lines
@@ -2956,24 +2981,24 @@ proc futureIsNim*(posx:int = 0) =
          xpos = posx   
       decho(2)
       # topline
-      print(repeat(" ",xpos))
+      curSetx(xpos)
       dotyLn(30,red)
       # sidelines
       
       for x in 0.. <5:
-         print(repeat(" ",xpos))
+         curSetx(xpos)
          doty(1,red)
          print(repeat(" ",49))
          dotyLn(1,red)
          
       #bottomline
-      print(repeat(" ",xpos))
+      curSetx(xpos)
       dotyLn(30,red)  
       # move up to position to write the text lines
       curup(5)
-      print(repeat(" ",xpos))
+      curSetx(xpos)
       doty(1,red)
-      printPos(" ",clrainbow,xpos = 20)
+      printPos(" ",clrainbow,xpos = xpos + 20)
       doty(1,lime)
       doty(1,tomato)
       print(" Nim",salmon)
@@ -2981,10 +3006,10 @@ proc futureIsNim*(posx:int = 0) =
       doty(1,lime)
       # 2nd text line
       curdn(1)
-      print(repeat(" ",xpos))
+      curSetx(xpos)
       #doty(1,red)
-      curSet(xpos + 17)
-      printPos("The future is now !",steelblue,xpos = -40)
+      curSetx(xpos + 17)
+      print("The future is now !",steelblue)
       curdn(5)
 
 
@@ -2999,14 +3024,14 @@ proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
       ##    flyNim(" Have a nice day !", col = hotpink,tx = 0.1)   
       ## 
 
-      var twc = getTerminalWidth() div 2
+      var twc = tw div 2
       var asc = astring.len div 2
       var sn = tw - astring.len
       for x in 0.. twc-asc:
         hline(x,yellowgreen)
         if x < twc - asc :
               printStyled("✈","",brightyellow,{styleBlink})
-              hlineln(getTerminalWidth() - 1 - x,clrainbow)
+              hlineln(tw - 1 - x,clrainbow)
         else:
               printStyled(astring,"",red,{styleBright})
               hlineln(sn - x,salmon)
@@ -3036,7 +3061,7 @@ proc printNimSx*(col:string = yellowgreen, xpos: int = 1) =
    ## 
    ## 
   
-   var maxpos = getTerminalWidth() - NIMX1.len + 20
+   var maxpos = tw - NIMX1.len + 20
    for x in nimsx :
         if xpos <= maxpos  :
             print(repeat(" ",xpos) & x,col)
@@ -3051,33 +3076,41 @@ proc movNim*() =
     ## 
     ## .. code-block:: nim
     ##    import private 
-    ##    printNimSx(yellowgreen,170)
-    ##    clearup()
+    ##    decho(5)
     ##    movNim()
     ##    printNimSx(salmon)
+    ##    printNimSx(lime,55)
     ##    doFinish()
     ##
     cleanScreen()
-    for xpos in 1.. getTerminalWidth() - NIMX1.len + 20:
+    for xpos in 1.. tw - NIMX1.len + 20:
         if float(xpos) mod 8 == 0.0:
             printNimSx(red,xpos)
-            sleepy(0.08)
+            sleepy(0.025)
         else:
           printNimSx(gray,xpos)
-        sleepy(0.05)
+        sleepy(0.025)
+        cleanScreen()
+
+    for xpos in countdown(tw - NIMX1.len + 20 ,1,1):
+        if float(xpos) mod 8 == 0.0:
+            printNimSx(red,xpos)
+            sleepy(0.025)
+        else:
+          printNimSx(gray,xpos)
+        sleepy(0.025)
         cleanScreen()
 
 
 
-proc randomCards*() =
+proc randomCardsDemo*() =
    ## randomCards
    ## 
    ## Demo for colorful cards deck ...
-
-   let chc = toSeq(0.. <60)
+   decho(2)
    for z in 0.. <30:
       for zz in 0.. <tw div 2 - 1:
-          print cards[chc.randomChoice()],randCol()
+          print cards[rxCards.randomChoice()],randCol()
       writeLine(stdout,"") 
     
 

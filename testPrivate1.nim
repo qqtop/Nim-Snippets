@@ -171,7 +171,7 @@ for x in 0.. 10:
     sleepy(0.1)
 
 flyNim()
-futureisnim(25)
+futureisnimDemo(25)
 
 
 proc demoNDLine() =
@@ -206,7 +206,7 @@ sleepy(3.5)
    
 movNim()   
 
-randomCards() 
+randomCardsDemo() 
 
 
 doFinish()
