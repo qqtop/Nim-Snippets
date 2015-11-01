@@ -27,6 +27,10 @@
 ##   Docs        : http://qqtop.github.io/private.html
 ##
 ##   Tested      : on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17  
+##   
+##   Related     : privateDemo.nim   repository for some demos
+##   
+##                 privateTest.nim   rough test for procs and demos
 ##
 ##   Programming : qqTop
 ##
@@ -43,7 +47,7 @@ import random,strfmt
 type
       PStyle* = terminal.Style  ## make terminal style constants available in the calling prog
 
-const PRIVATLIBVERSION* = "0.9.1"
+const PRIVATLIBVERSION* = "0.9.2"
   
 
 proc getfg(fg:ForegroundColor):string =
@@ -364,7 +368,7 @@ let NIMX3 = "██  █  █    ██    ██  █  █\n"
 let NIMX4 = "██   █ █    ██    ██  █  █\n"
 let NIMX5 = "██     █    ██    ██     █\n\n"
 
-let nimsx = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
+let nimsx* = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
 
 
 # slim numbers use with printSlimNumber
@@ -900,18 +904,20 @@ proc cleanScreen*() =
       write(stdout,"\e[H\e[J") 
       
 
-proc centerPos*(astring:string):string =
+proc centerPos*(astring:string) =
      ## centerpos
      ## 
-     ## tries to return the the string centered in a terminal ready for printing
+     ## tries to move cursor so that string is centered when printing
      ## 
      ## .. code-block:: nim
      ##    var s = "Hello I am centered" 
-     ##    printLn(centerpos(s),gray)
+     ##    centerPos(s)   
+     ##    printLn(s,gray)
      ## 
      ## 
-     var xs = repeat(" ",tw div 2 - astring.len div 2 - 1)
-     result = xs & astring
+     #var xs = repeat(" ",tw div 2 - astring.len div 2 - 1)
+     setCursorXPos(stdout,tw div 2 - astring.len div 2 - 1)
+     
 
    
 proc checkColor*(colname: string): bool =
@@ -2104,7 +2110,7 @@ proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black
         else: discard
           
     for x in 0.. numberlen:
-        print repeat(" ",xpos) 
+        curSetx(xpos) 
         for y in 0.. <printseq.len:
             print(" " & printseq[y][x],fgr,bgr)
         echo()   
@@ -2166,7 +2172,7 @@ proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = blac
         else: discard
           
     for x in 0.. snumberlen:
-        print repeat(" ",xpos) 
+        curSetx(xpos) 
         for y in 0.. <printseq.len:
             print(" " & printseq[y][x],fgr,bgr)
         writeLine(stdout,"")   
@@ -2631,7 +2637,8 @@ proc centerMark*(showpos :bool = false) =
   ## draws a red dot in the middle of the screen xpos only
   ## and also can show pos 
   ## 
-  print(centerpos("."),truetomato)
+  centerPos(".")
+  print(".",truetomato)
   if showpos == true:  print "x" & $(tw/2) 
  
   
@@ -3067,180 +3074,6 @@ proc showTerminalSize*() =
       ## 
       cechoLn(yellowgreen,"Terminal : " & lime & " W " & white & $tw & red & " x" & lime & " H " & white & $th)
 
-
-
-
-
-# small demos
-
-proc futureIsNimDemo*(posx:int = 0) = 
-      ## futureIsNim
-      ## 
-      ## demo example of a box drawn with doty procs and 2 text lines
-      ## 
-      ## max xpos = 20
-      ## 
-      ## .. code-block:: nim
-      ##    import private
-      ##    cleanScreen()
-      ##    for x in 0.. 10:
-      ##        centerMark()
-      ##        echo()
-      ##        sleepy(0.1)
-      ##    flyNimDemo()
-      ##    futureIsNimDemo(25)
-           
-      var xpos = posx 
-      if xpos > 35:
-         xpos = 35
-         
-      drawRect(7,29 ,frhLine = widedot,frvLine = wideDot , frCol = randCol(),xpos = xpos)
-     
-      curup(5)
-      curSetx(xpos)
-      doty(1,red)
-      printPos(" ",clrainbow,xpos = xpos + 20)
-      doty(1,lime)
-      doty(1,tomato)
-      print(" Nim",salmon)
-      doty(1,tomato)
-      doty(1,lime)
-      # 2nd text line
-      curdn(1)
-      curSetx(xpos)
-      #doty(1,red)
-      curSetx(xpos + 17)
-      print("The future is now !",steelblue)
-      curdn(5)
-
-
-
-proc flyNimDemo*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
-
-      ## flyNim
-      ## 
-      ## small animation demo
-      ## 
-      ## .. code-block:: nim
-      ##    flyNimDemo(col = brightred)  
-      ##    flyNimDemo(" Have a nice day !", col = hotpink,tx = 0.1)   
-      ## 
-
-      var twc = tw div 2
-      var asc = astring.len div 2
-      var sn = tw - astring.len
-      for x in 0.. twc-asc:
-        hline(x,yellowgreen)
-        if x < twc - asc :
-              printStyled("✈","",brightyellow,{styleBlink})
-              hlineln(tw - 1 - x,clrainbow)
-        else:
-              printStyled(astring,"",red,{styleBright})
-              hlineln(sn - x,salmon)
-        sleepy(tx)
-        curup(1) 
-        
-      echo()
-      
-
-proc centerNimDemo*() = 
-   # test for centerpos
-   var b = " C,C++,Python,Rust,Scala,Fortran,Cobol,Go"  
-   cleanScreen()  
-   loopy(0.. 4, printLnStyled(centerpos(b),"",gray,{styleDim}))
-   sleepy(0.1)
-   echo()
-   printLnStyled(centerpos(repeat("Nim ",20)),"",red,{styleBright})
-   echo()
-   loopy(0.. 4, printLnStyled(centerpos(b),"",gray,{styleDim}))
-
-
-
-proc printNimSx*(col:string = yellowgreen, xpos: int = 1) = 
-   ## printNimSx
-   ## 
-   ## prints large Nim
-   ## 
-   ## 
-  
-   var maxpos = tw - NIMX1.len + 20
-   for x in nimsx :
-        if xpos <= maxpos  :
-            print(repeat(" ",xpos) & x,col)
-        else:    
-            print(repeat(" ",maxpos) & x,col)
-            
-            
-proc movNimDemo*() =
-    ## movNim
-    ## 
-    ## Demo moving Nim
-    ## 
-    ## .. code-block:: nim
-    ##    import private 
-    ##    decho(5)
-    ##    movNimDemo()
-    ##    printNimSx(salmon)
-    ##    printNimSx(lime,55)
-    ##    doFinish()
-    ##
-    cleanScreen()
-    for xpos in 1.. tw - NIMX1.len + 20:
-        if float(xpos) mod 8 == 0.0:
-            printNimSx(red,xpos)
-            sleepy(0.025)
-        else:
-          printNimSx(gray,xpos)
-        sleepy(0.025)
-        cleanScreen()
-
-    for xpos in countdown(tw - NIMX1.len + 20 ,1,1):
-        if float(xpos) mod 8 == 0.0:
-            printNimSx(red,xpos)
-            sleepy(0.025)
-        else:
-          printNimSx(gray,xpos)
-        sleepy(0.025)
-        cleanScreen()
-
-
-
-proc randomCardsDemo*() =
-   ## randomCards
-   ## 
-   ## Demo for colorful cards deck ...
-   decho(2)
-   for z in 0.. <th -3:
-      for zz in 0.. <tw div 2 - 1:
-          print cards[rxCards.randomChoice()],randCol()
-      writeLine(stdout,"") 
-    
-
-
-proc ndlLineDemo*() =
-  ## demoNDLine
-  ## 
-  ## Numbered dots line demo
-  ## 
-  ## test with bash terminal only , styleBlink may not work with some terminals
-  ## 
-  ## 
-  curup(1)
-  var c = (tw.float / 2.76666).int 
-  for x in 0.. <c:
-      if x == c div 2 :
-        printStyled($x,$x,lime,{styleBlink})
-      else:  
-        printStyled($x,$x,goldenrod,{styleBright})  
-      curdn(1)
-      curbk(1)
-      if x == c div 2 :
-        printStyled(".",".",lime,{styleBright,styleBlink})
-      else:
-        print(".",truetomato)
-      curup(1)
-      curfw(1)
-  decho(2)
 
 
 

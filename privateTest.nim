@@ -1,11 +1,12 @@
 
-## rough testing for private.nim printLn and echo ... procs 
+## privateTest.nim
+## rough testing for private.nim 
 
 
-import private,strfmt,strutils,times
+import private,privateDemo,strfmt,strutils,times
 
+superHeader("Testing print and echo procs from private.nim and run demos")
 
-superHeader("Testing var. print and echo procs from private.nim ")
 var s = "Test color string"
 var n = 1234567
 var f = 123.4567
@@ -105,45 +106,10 @@ dline(60,lt = "/+",truetomato)
 printLn("  -->  truetomato",truetomato)
 decho(2)
 
-
-#### sierpcarpet small snippet I lifted from somewhere and improved
-
-proc `^`*(base: int, exp: int): int =
-  var (base, exp) = (base, exp)
-  result = 1
- 
-  while exp != 0:
-    if (exp and 1) != 0:
-      result *= base
-    exp = exp shr 1
-    base *= base
- 
-proc inCarpet(x, y): bool =
-  var x = x
-  var y = y
-  while true:
-    if x == 0 or y == 0:
-      return true
-    if x mod 3 == 1 and y mod 3 == 1:
-      return false
- 
-    x = x div 3
-    y = y div 3
- 
-proc carpet(n) =
-  for i in 0 .. <(3^n):
-    for j in 0 .. <(3^n):
-      if inCarpet(i, j):
-        print("* ",clrainbow)
-      else:
-        printStyled("  ","",truetomato,{stylereverse})
-        
-    echo ""
-
 echo() 
 superHeader("Sierp Carpet in Multi Color - Sierp Carpet in Multi Color",clrainbow,lightsteelblue)
 echo()
-carpet(3)
+sierpCarpetDemo(3)
 
 decho(3)
 
@@ -157,12 +123,7 @@ decho(5)
 superHeader("Nim Colors ")
 # show a full list of colorNames availabale
 showColors()
-
 decho(2)
-
-var twc = tw div 2
-printLnBiCol("Terminalwidth   : " & $tw,":")
-printLnBiCol("Terminal Center : " & $twc,":")
 
 cleanScreen()
 for x in 0.. 10:
@@ -172,32 +133,27 @@ for x in 0.. 10:
 
 flyNimDemo()
 
-futureisnimDemo(25)
+futureIsNimDemo(25)
 
 decho(3)
-ndlLineDemo()
+ndLineDemo()
 decho(2)
-
 sleepy(3.5)
    
 movNimDemo()   
 
-
 clearUp(18)
 curSet()
-drawRect(15,24,frhLine = "+",frvLine = wideDot , frCol = randCol(),xpos = 8)
-curup(12)
-drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 10,blink = true)
-curup(12)
-drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 35,blink = true)
-curup(10)
-drawRect(6,14,frhLine = "~",frvLine = "$" , frCol = randCol(),xpos = 70,blink = true)
-
+drawRectDemo()
 decho(5)  
 sleepy(3)
 
 decho(3)
-randomCardsDemo() 
+randomCardsClockDemo() 
 
+decho(2)
+var twc = tw div 2
+showTerminalSize()
+printLnBiCol("Terminal Center : " & $twc,":")
 
 doFinish()
