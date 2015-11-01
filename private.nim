@@ -6,7 +6,7 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.9.1
+##   Version     : 0.9.2
 ##
 ##   ProjectStart: 2015-06-20
 ##
