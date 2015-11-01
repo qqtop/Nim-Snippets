@@ -672,7 +672,7 @@ when defined(Linux):
         result = toTwInt(size.row)
 
    
-    template th* : int = getTerminalheight() ## latest terminalwidth always available in th
+    template th* : int = getTerminalheight() ## latest terminalheight always available in th
 
 
 # forward declarations
