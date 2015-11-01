@@ -3087,8 +3087,8 @@ proc futureIsNimDemo*(posx:int = 0) =
       ##        centerMark()
       ##        echo()
       ##        sleepy(0.1)
-      ##    flyNim()
-      ##    futureisnim(25)
+      ##    flyNimDemo()
+      ##    futureIsNimDemo(25)
            
       var xpos = posx 
       if xpos > 35:
@@ -3122,8 +3122,8 @@ proc flyNimDemo*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
       ## small animation demo
       ## 
       ## .. code-block:: nim
-      ##    flyNim(col = brightred)  
-      ##    flyNim(" Have a nice day !", col = hotpink,tx = 0.1)   
+      ##    flyNimDemo(col = brightred)  
+      ##    flyNimDemo(" Have a nice day !", col = hotpink,tx = 0.1)   
       ## 
 
       var twc = tw div 2
@@ -3179,7 +3179,7 @@ proc movNimDemo*() =
     ## .. code-block:: nim
     ##    import private 
     ##    decho(5)
-    ##    movNim()
+    ##    movNimDemo()
     ##    printNimSx(salmon)
     ##    printNimSx(lime,55)
     ##    doFinish()
