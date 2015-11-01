@@ -273,8 +273,8 @@ const
       yellowgreen*          =  "\x1b[38;2;154;205;50m"
 
 
-
-
+# a big block number set
+#  use with printBigNumber
 
 const number0 =
  @["██████"
@@ -356,17 +356,18 @@ const colon =
 
 const numberlen = 4
 
+# big nim block letters
 
 let NIMX1 = "██     █    ██    ███   ██\n"
 let NIMX2 = "██ █   █    ██    ██ █ █ █\n"
 let NIMX3 = "██  █  █    ██    ██  █  █\n"
 let NIMX4 = "██   █ █    ██    ██  █  █\n"
 let NIMX5 = "██     █    ██    ██     █\n\n"
-   
 
-var nimsx = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
+let nimsx = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
 
 
+# slim numbers use with printSlimNumber
 
 const snumber0 = 
   @["┌─┐",
@@ -383,7 +384,6 @@ const snumber2 =
    @["╶─┐",
      "┌─┘",
      "└─╴"]
-   
    
 const snumber3 =
   @["╶─┐",
@@ -438,6 +438,11 @@ const sdot =
      " ."]
 
 const snumberlen = 2
+
+
+
+const wideDot* = "⏺ "
+
 
 # all colors except original terminal colors
 let colorNames* = @[
@@ -591,7 +596,7 @@ let colorNames* = @[
       ("pastelyellowgreen",pastelyellowgreen),
       ("truetomato",truetomato)]
 
-let rxCol = toSeq(colorNames.low.. colorNames.high) ## index into colorNames
+let rxCol* = toSeq(colorNames.low.. colorNames.high) ## index into colorNames
 
 let cards* = @[
  "🂡" ,"🂱" ,"🃁" ,"🃑", 
@@ -635,9 +640,7 @@ when defined(Linux):
     proc getTerminalWidth*() : int =
         ## getTerminalWidth
         ##
-        ## utility to easily draw correctly sized lines on linux terminals
-        ##
-        ## and get linux terminal width
+        ## and get linux terminal width in columns
         ##
         
         type WinSize = object
@@ -651,6 +654,26 @@ when defined(Linux):
 
    
     template tw* : int = getTerminalwidth() ## latest terminalwidth always available in tw
+
+
+    proc getTerminalHeight*() : int =
+        ## getTerminalHeight
+        ##
+        ## get linux terminal height in rows
+        ##
+        
+        type WinSize = object
+          row, col, xpixel, ypixel: cushort
+        const TIOCGWINSZ = 0x5413
+        proc ioctl(fd: cint, request: culong, argp: pointer)
+          {.importc, header: "<sys/ioctl.h>".}
+        var size: WinSize
+        ioctl(0, TIOCGWINSZ, addr size)
+        result = toTwInt(size.row)
+
+   
+    template th* : int = getTerminalheight() ## latest terminalwidth always available in th
+
 
 # forward declarations
 converter colconv*(cx:string) : string
@@ -1020,7 +1043,7 @@ proc curSetx*(x:int) =
      ## mirrors terminal setCursorXPos
      setCursorXPos(stdout,x)
      
-proc curSet*(x:int,y:int) = 
+proc curSet*(x:int = 0,y:int = 0) = 
      ## curSet
      ##
      ## mirrors terminal setCursorPos
@@ -1604,19 +1627,19 @@ proc doty*(d:int,col:string = white, bgr = black) =
      ## 
      ## prints number d of ⏺  style dots in given fore/background color
      ## 
-     ## each dot is of char length 3
+     ## each dot is of char length 4 added a space in the back to avoid half drawn dots
      ## 
      ## .. code-block:: nimble
      ##      import private
      ##      printLnBiCol("Test for  :  doty\n",":",truetomato,lime)
      ##      dotyLn(22 ,lime)
      ##      dotyLn(18 ,salmon,blue)
-     ##      
+     ##      dotyLn(tw div 2,red)  # full line
      ##      
      ## color clrainbow is not supported and will be in white
      ## 
     
-     var astr = $(repeat("⏺",(float(d) * 1.714285714).int))
+     var astr = $(repeat(wideDot,d))
      if col == clrainbow:
         print(astring = astr,white,bgr) 
      else:
@@ -1628,7 +1651,7 @@ proc dotyLn*(d:int,col:string = white, bgr = black) =
      ## 
      ## prints number d of ⏺  style dots given fore/background color and issues new line
      ## 
-     ## each dot is of char length 3
+     ## each dot is of char length 4
      ## 
      ## color clrainbow is not supported and will be in white
      ## 
@@ -1637,6 +1660,78 @@ proc dotyLn*(d:int,col:string = white, bgr = black) =
      writeLine(stdout,"")
           
 
+      
+proc printDotPos*(xpos:int,dotCol:string,blink:bool) = 
+      ## printDotPos
+      ##
+      ## prints a widedot at xpos in col dotCol and may blink ... 
+      ##
+
+      curSetx(xpos)
+      if blink == true:  
+        printStyled(wideDot,wideDot,dotCol,{styleBlink})
+      else:   
+        printStyled(wideDot,wideDot,dotCol,{})
+        
+       
+proc drawRect*(h:int = 0 ,w:int = 3, frhLine:string = "_", frVLine:string = "|",frCol:string = darkgreen,dotCol = truetomato,xpos:int = 1,blink:bool = false) =
+      ## drawRect
+      ## 
+      ## a simple proc to draw a rectangle with corners marked with widedots. 
+      ## widedots are of len 4.
+      ## 
+      ## 
+      ## h  height
+      ## w  width
+      ## frhLine framechar horizontal
+      ## frVLine framechar vertical
+      ## frCol   color of line
+      ## dotCol  color of corner dotCol
+      ## xpos    topleft start position
+      ## blink   true or false to blink the dots
+      ## 
+      ## 
+      ## .. code-block:: nim
+      ##    import private
+      ##    clearUp(18)
+      ##    curSet()
+      ##    drawRect(15,24,frhLine = "+",frvLine = wideDot , frCol = randCol(),xpos = 8)
+      ##    curup(12)
+      ##    drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 10,blink = true)
+      ##    curup(12)
+      ##    drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 35,blink = true)
+      ##    curup(10)
+      ##    drawRect(6,14,frhLine = "~",frvLine = "$" , frCol = randCol(),xpos = 70,blink = true)
+      ##    decho(5)  
+      ##    doFinish()
+      ## 
+      ## 
+      
+      # topline
+      printDotPos(xpos,dotCol,blink)
+      print(repeat(frhLine,w-1),frcol)
+      if frhLine == widedot:
+            printDotPos(xpos + w * 2 -1 ,dotCol,blink)
+      else:
+            printDotPos(xpos + w,dotCol,blink)
+      writeLine(stdout,"")
+      # sidelines
+      for x in 2.. h:
+         printPos(frVLine,frcol,xpos = xpos)
+         if frhLine == widedot:
+             printPos(frVLine,frcol,xpos = xpos + w * 2 -1)
+         else:    
+              printPos(frVLine,frcol,xpos = xpos + w)
+         writeLine(stdout,"")
+      # bottom line
+      printDotPos(xpos,dotCol,blink)
+      print(repeat(frhLine,w-1),frcol)
+      if frhLine == widedot:
+            printDotPos(xpos + w * 2 -1 ,dotCol,blink)
+      else:
+            printDotPos(xpos + w,dotCol,blink)
+            
+      writeLine(stdout,"")
 
 
  
@@ -1771,127 +1866,6 @@ proc compareDates*(startDate,endDate:string) : int =
           result = -1
      else:
           result = -2
-
-
-proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
-    ## printBigNumber
-    ## 
-    ## prints a string in big block font
-    ## 
-    ## available 1234567890:
-    ## 
-    ## 
-    ## usufull for big counter etc , a clock can also be build easily but
-    ## running in a tight while loop just uses up cpu cycles needlessly.
-    ## 
-    ## .. code-block:: nim
-    ##    for x in 990.. 1105:
-    ##         cleanScreen()
-    ##         printBigNumber($x)
-    ##         sleepy(0.008)
-    ##
-    ##    cleanScreen()   
-    ##    
-    ##    printBigNumber($23456345,steelblue)
-    ##
-    ## .. code-block:: nim
-    ##    import private 
-    ##    for x in countdown(10,0):
-    ##         cleanScreen()
-    ##         if x == 5:
-    ##             for y in countup(10,25):
-    ##                 cleanScreen()
-    ##                 printBigNumber($y,tomato)
-    ##                 sleepy(0.5)
-    ##         cleanScreen()    
-    ##         printBigNumber($x)
-    ##         sleepy(1)
-    ##    doFinish()
-    
-    
-    var asn = newSeq[string]()
-    var printseq = newSeq[seq[string]]()
-    for x in anumber: asn.add($x)
-    #echo asn
-    for x in asn:
-      case  x 
-        of "0": printseq.add(number0)
-        of "1": printseq.add(number1)
-        of "2": printseq.add(number2)
-        of "3": printseq.add(number3)
-        of "4": printseq.add(number4)
-        of "5": printseq.add(number5)
-        of "6": printseq.add(number6)
-        of "7": printseq.add(number7)
-        of "8": printseq.add(number8)
-        of "9": printseq.add(number9)
-        of ":": printseq.add(colon)
-        else: discard
-          
-    for x in 0.. numberlen:
-        print repeat(" ",xpos) 
-        for y in 0.. <printseq.len:
-            print(" " & printseq[y][x],fgr,bgr)
-        echo()   
-
-
-
-proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
-    ## printSlimNumber
-    ## 
-    ## prints an string in big slim font
-    ## 
-    ## available chars 123456780,.:
-    ## 
-    ## 
-    ## usufull for big counter etc , a clock can also be build easily but
-    ## running in a tight while loop just uses up cpu cycles needlessly.
-    ## 
-    ## .. code-block:: nim
-    ##    for x in 990.. 1005:
-    ##         cleanScreen()
-    ##         printSlimNumber($x)
-    ##         sleepy(0.075)
-    ##    echo()   
-    ##
-    ##    printSlimNumber($23456345,blue)
-    ##    decho(2)
-    ##    printSlimNumber("1234567:345,23.789",fgr=salmon,xpos=20)
-    ##    sleepy(1.5)  
-    ##    import times
-    ##    cleanScreen()
-    ##    decho(2)
-    ##    printSlimNumber($getClockStr(),fgr=salmon,xpos=20)
-    ##    decho(5)
-    ## 
-    
-    var asn = newSeq[string]()
-    var printseq = newSeq[seq[string]]()
-    for x in anumber: asn.add($x)
-    #echo asn
-    for x in asn:
-      case  x 
-        of "0": printseq.add(snumber0)
-        of "1": printseq.add(snumber1)
-        of "2": printseq.add(snumber2)
-        of "3": printseq.add(snumber3)
-        of "4": printseq.add(snumber4)
-        of "5": printseq.add(snumber5)
-        of "6": printseq.add(snumber6)
-        of "7": printseq.add(snumber7)
-        of "8": printseq.add(snumber8)
-        of "9": printseq.add(snumber9)
-        of ":": printseq.add(scolon)
-        of ",": printseq.add(scomma)
-        of ".": printseq.add(sdot)
-        else: discard
-          
-    for x in 0.. snumberlen:
-        print repeat(" ",xpos) 
-        for y in 0.. <printseq.len:
-            print(" " & printseq[y][x],fgr,bgr)
-        echo()   
-
 
 
 proc dayOfWeekJulianA*(day, month, year: int): WeekDay =
@@ -2070,6 +2044,133 @@ proc getNextMonday*(adate:string):string =
                     ndatestr = plusDays(ndatestr,1)  
                 else:
                     result = ndatestr  
+
+
+# large font printing, numbers are implemented  
+
+proc printBigNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
+    ## printBigNumber
+    ## 
+    ## prints a string in big block font
+    ## 
+    ## available 1234567890:
+    ## 
+    ## 
+    ## usufull for big counter etc , a clock can also be build easily but
+    ## running in a tight while loop just uses up cpu cycles needlessly.
+    ## 
+    ## .. code-block:: nim
+    ##    for x in 990.. 1105:
+    ##         cleanScreen()
+    ##         printBigNumber($x)
+    ##         sleepy(0.008)
+    ##
+    ##    cleanScreen()   
+    ##    
+    ##    printBigNumber($23456345,steelblue)
+    ##
+    ## .. code-block:: nim
+    ##    import private 
+    ##    for x in countdown(10,0):
+    ##         cleanScreen()
+    ##         if x == 5:
+    ##             for y in countup(10,25):
+    ##                 cleanScreen()
+    ##                 printBigNumber($y,tomato)
+    ##                 sleepy(0.5)
+    ##         cleanScreen()    
+    ##         printBigNumber($x)
+    ##         sleepy(1)
+    ##    doFinish()
+    
+    
+    var asn = newSeq[string]()
+    var printseq = newSeq[seq[string]]()
+    for x in anumber: asn.add($x)
+    #echo asn
+    for x in asn:
+      case  x 
+        of "0": printseq.add(number0)
+        of "1": printseq.add(number1)
+        of "2": printseq.add(number2)
+        of "3": printseq.add(number3)
+        of "4": printseq.add(number4)
+        of "5": printseq.add(number5)
+        of "6": printseq.add(number6)
+        of "7": printseq.add(number7)
+        of "8": printseq.add(number8)
+        of "9": printseq.add(number9)
+        of ":": printseq.add(colon)
+        else: discard
+          
+    for x in 0.. numberlen:
+        print repeat(" ",xpos) 
+        for y in 0.. <printseq.len:
+            print(" " & printseq[y][x],fgr,bgr)
+        echo()   
+
+
+
+proc printSlimNumber*(anumber:string,fgr:string = yellowgreen ,bgr:string = black,xpos:int = 1) =
+    ## printSlimNumber
+    ## 
+    ## prints an string in big slim font
+    ## 
+    ## available chars 123456780,.:
+    ## 
+    ## 
+    ## usufull for big counter etc , a clock can also be build easily but
+    ## running in a tight while loop just uses up cpu cycles needlessly.
+    ## 
+    ## .. code-block:: nim
+    ##    for x in 990.. 1005:
+    ##         cleanScreen()
+    ##         printSlimNumber($x)
+    ##         sleepy(0.075)
+    ##    echo()   
+    ##
+    ##    printSlimNumber($23456345,blue)
+    ##    decho(2)
+    ##    printSlimNumber("1234567:345,23.789",fgr=salmon,xpos=20)
+    ##    sleepy(1.5)  
+    ##    import times
+    ##    cleanScreen()
+    ##    decho(2)
+    ##    printSlimNumber($getClockStr(),fgr=salmon,xpos=20)
+    ##    decho(5)
+    ## 
+    ##    for x in rxCol:
+    ##       printSlimNumber($x,colorNames[x][1])    
+    ##       curup(3)
+    ##       sleepy(0.05)
+    ##    curdn(3)  
+    
+    var asn = newSeq[string]()
+    var printseq = newSeq[seq[string]]()
+    for x in anumber: asn.add($x)
+    for x in asn:
+      case  x 
+        of "0": printseq.add(snumber0)
+        of "1": printseq.add(snumber1)
+        of "2": printseq.add(snumber2)
+        of "3": printseq.add(snumber3)
+        of "4": printseq.add(snumber4)
+        of "5": printseq.add(snumber5)
+        of "6": printseq.add(snumber6)
+        of "7": printseq.add(snumber7)
+        of "8": printseq.add(snumber8)
+        of "9": printseq.add(snumber9)
+        of ":": printseq.add(scolon)
+        of ",": printseq.add(scomma)
+        of ".": printseq.add(sdot)
+        else: discard
+          
+    for x in 0.. snumberlen:
+        print repeat(" ",xpos) 
+        for y in 0.. <printseq.len:
+            print(" " & printseq[y][x],fgr,bgr)
+        writeLine(stdout,"")   
+
 
 
 # Framed headers with var. colorising options
@@ -2954,6 +3055,21 @@ proc splitty*(txt:string,sep:string):seq[string] =
    result = rx          
 
 
+proc showTerminalSize*() =
+      ## showTerminalSize
+      ## 
+      ## displays current terminal dimensions
+      ## 
+      ## width is always available via tw
+      ## 
+      ## height is always available via th
+      ## 
+      ## 
+      cechoLn(yellowgreen,"Terminal : " & lime & " W " & white & $tw & red & " x" & lime & " H " & white & $th)
+
+
+
+
 
 # small demos
 
@@ -2974,27 +3090,12 @@ proc futureIsNimDemo*(posx:int = 0) =
       ##    flyNim()
       ##    futureisnim(25)
            
-      var xpos = 0
-      if posx > 20 : 
-         xpos = 20
-      else:
-         xpos = posx   
-      decho(2)
-      # topline
-      curSetx(xpos)
-      dotyLn(30,red)
-      # sidelines
-      
-      for x in 0.. <5:
-         curSetx(xpos)
-         doty(1,red)
-         print(repeat(" ",49))
-         dotyLn(1,red)
+      var xpos = posx 
+      if xpos > 35:
+         xpos = 35
          
-      #bottomline
-      curSetx(xpos)
-      dotyLn(30,red)  
-      # move up to position to write the text lines
+      drawRect(7,29 ,frhLine = widedot,frvLine = wideDot , frCol = randCol(),xpos = xpos)
+     
       curup(5)
       curSetx(xpos)
       doty(1,red)
@@ -3013,7 +3114,8 @@ proc futureIsNimDemo*(posx:int = 0) =
       curdn(5)
 
 
-proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
+
+proc flyNimDemo*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
 
       ## flyNim
       ## 
@@ -3041,7 +3143,7 @@ proc flyNim*(astring:string = "Fly Nim",col:string = red,tx:float = 0.08) =
       echo()
       
 
-proc centerNim*() = 
+proc centerNimDemo*() = 
    # test for centerpos
    var b = " C,C++,Python,Rust,Scala,Fortran,Cobol,Go"  
    cleanScreen()  
@@ -3069,7 +3171,7 @@ proc printNimSx*(col:string = yellowgreen, xpos: int = 1) =
             print(repeat(" ",maxpos) & x,col)
             
             
-proc movNim*() =
+proc movNimDemo*() =
     ## movNim
     ## 
     ## Demo moving Nim
@@ -3108,11 +3210,37 @@ proc randomCardsDemo*() =
    ## 
    ## Demo for colorful cards deck ...
    decho(2)
-   for z in 0.. <30:
+   for z in 0.. <th -3:
       for zz in 0.. <tw div 2 - 1:
           print cards[rxCards.randomChoice()],randCol()
       writeLine(stdout,"") 
     
+
+
+proc ndlLineDemo*() =
+  ## demoNDLine
+  ## 
+  ## Numbered dots line demo
+  ## 
+  ## test with bash terminal only , styleBlink may not work with some terminals
+  ## 
+  ## 
+  curup(1)
+  var c = (tw.float / 2.76666).int 
+  for x in 0.. <c:
+      if x == c div 2 :
+        printStyled($x,$x,lime,{styleBlink})
+      else:  
+        printStyled($x,$x,goldenrod,{styleBright})  
+      curdn(1)
+      curbk(1)
+      if x == c div 2 :
+        printStyled(".",".",lime,{styleBright,styleBlink})
+      else:
+        print(".",truetomato)
+      curup(1)
+      curfw(1)
+  decho(2)
 
 
 

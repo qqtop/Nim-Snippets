@@ -170,42 +170,33 @@ for x in 0.. 10:
     echo()
     sleepy(0.1)
 
-flyNim()
+flyNimDemo()
+
 futureisnimDemo(25)
 
-
-proc demoNDLine() =
-  ## demo Numbered dots line
-  ## 
-  ## test with var. terminal widths , styleBlink maynot work with some terminals
-  ## 
-  ## like terminator
-  ## 
-  curup(1)
-  var c = (tw.float / 2.76666).int 
-  for x in 0.. <c:
-    if x == c div 2 :
-      printStyled($x,$x,lime,{styleBlink})
-    else:  
-      printStyled($x,$x,goldenrod,{styleBright})  
-    curdn(1)
-    curbk(1)
-    if x == c div 2 :
-       printStyled(".",".",lime,{styleBright,styleBlink})
-    else:
-       print(".",truetomato)
-    curup(1)
-    curfw(1)
-    
-
 decho(3)
-demoNDLine()
+ndlLineDemo()
 decho(2)
 
 sleepy(3.5)
    
-movNim()   
+movNimDemo()   
 
+
+clearUp(18)
+curSet()
+drawRect(15,24,frhLine = "+",frvLine = wideDot , frCol = randCol(),xpos = 8)
+curup(12)
+drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 10,blink = true)
+curup(12)
+drawRect(9,20,frhLine = "=",frvLine = wideDot , frCol = randCol(),xpos = 35,blink = true)
+curup(10)
+drawRect(6,14,frhLine = "~",frvLine = "$" , frCol = randCol(),xpos = 70,blink = true)
+
+decho(5)  
+sleepy(3)
+
+decho(3)
 randomCardsDemo() 
 
 
