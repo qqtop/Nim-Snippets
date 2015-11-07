@@ -278,7 +278,7 @@ const
 
 
 # a big block number set
-#  use with printBigNumber
+#  can be used with printBigNumber
 
 const number0 =
  @["██████"
@@ -360,7 +360,7 @@ const colon =
 
 const numberlen = 4
 
-# big nim block letters
+# big NIM in block letters
 
 let NIMX1 = "██     █    ██    ███   ██\n"
 let NIMX2 = "██ █   █    ██    ██ █ █ █\n"
@@ -371,7 +371,7 @@ let NIMX5 = "██     █    ██    ██     █\n\n"
 let nimsx* = @[NIMX1,NIMX2,NIMX3,NIMX4,NIMX5]
 
 
-# slim numbers use with printSlimNumber
+# slim numbers can be used with printSlimNumber
 
 const snumber0 = 
   @["┌─┐",
@@ -385,9 +385,9 @@ const snumber1 =
     "  ╵"]
   
 const snumber2 = 
-   @["╶─┐",
-     "┌─┘",
-     "└─╴"]
+  @["╶─┐",
+    "┌─┘",
+    "└─╴"]
    
 const snumber3 =
   @["╶─┐",
@@ -444,7 +444,48 @@ const sdot =
 const snumberlen = 2
 
 
+# emojis  
+# mileage here may vary depending on whatever your system supports
 
+const 
+    # emoji len 3
+    check*              =  "\xE2\x9C\x93"
+    xmark*              =  "\xE2\x9C\x98"
+    heart*              =  "\xE2\x9D\xA4"
+    sun*                =  "\xE2\x98\x80"
+    star*               =  "\xE2\x98\x85"
+    darkstar*           =  "\xE2\x98\x86"
+    umbrella*           =  "\xE2\x98\x82"
+    flag*               =  "\xE2\x9A\x91"
+    snowflake*          =  "\xE2\x9D\x84"
+    music*              =  "\xE2\x99\xAB"
+    scissors*           =  "\xE2\x9C\x82"
+    trademark*          =  "\xE2\x84\xA2"
+    copyright*          =  "\xC2\xA9"
+    roof*               =  "\xEF\xA3\xBF"
+    skull*              =  "\xE2\x98\xA0"
+    smile*              =  "\xE2\x98\xBA"
+    # emoji len 4  
+    smiley*             =  "😃"
+    innocent*           =  "😇"
+    lol*                =  "😂"
+    tongue*             =  "😛"
+    blush*              =  "😊"
+    sad*                =  "😟"
+    cry*                =  "😢"
+    rage*               =  "😡"
+    cat*                =  "😺"
+    kitty*              =  "🐱"
+    monkey*             =  "🐵"
+    cow*                =  "🐮"
+
+
+let emojis* = @[check,xmark,heart,sun,star,darkstar,umbrella,flag,snowflake,music,scissors,
+               trademark,copyright,roof,skull,smile,smiley,innocent,lol,tongue,blush,
+               sad,cry,rage,cat,kitty,monkey,cow]
+
+
+# may or may not be available on all systems
 const wideDot* = "⏺ "
 
 
@@ -621,7 +662,7 @@ let cards* = @[
 
 let rxCards* = toSeq(cards.low.. cards.high) ## index into cards
 
-proc randCol*(): string = 
+template randCol*: string = colornames[rxCol.randomChoice()][1]
    ## randCol
    ## 
    ## get a randomcolor from colorNames
@@ -631,10 +672,7 @@ proc randCol*(): string =
    ##    loopy(0..5,printLn("Hello Random Color",randCol()))
    ##    
    ##    
-   result = colornames[rxCol.randomChoice()][1]
-
-
-
+  
 
 let start* = epochTime()  ##  check execution timing with one line see doFinish
 
@@ -1015,41 +1053,41 @@ proc decho*(z:int = 1)  =
 
 # simple navigation mostly mirrors terminal.nim functions
 
-proc curUp*(x:int = 1) =
+template curUp*(x:int = 1) =
      ## curUp
      ## 
      ## mirrors terminal cursorUp
      cursorUp(stdout,x)
 
 
-proc curDn*(x:int = 1) = 
+template curDn*(x:int = 1) = 
      ## curDn
      ##
      ## mirrors terminal cursorDown
      cursorDown(stdout,x)
 
 
-proc curBk*(x:int = 1) = 
+template curBk*(x:int = 1) = 
      ## curBkn
      ##
      ## mirrors terminal cursorBackward
      cursorBackward(stdout,x)
 
 
-proc curFw*(x:int = 1) = 
+template curFw*(x:int = 1) = 
      ## curFw
      ##
      ## mirrors terminal cursorForward
      cursorForward(stdout,x)
 
 
-proc curSetx*(x:int) = 
+template curSetx*(x:int) = 
      ## curSetx
      ##
      ## mirrors terminal setCursorXPos
      setCursorXPos(stdout,x)
      
-proc curSet*(x:int = 0,y:int = 0) = 
+template curSet*(x:int = 0,y:int = 0) = 
      ## curSet
      ##
      ## mirrors terminal setCursorPos
@@ -1058,7 +1096,7 @@ proc curSet*(x:int = 0,y:int = 0) =
      setCursorPos(x,y)     
      
 
-proc clearup*(x:int = 80) =
+template clearup*(x:int = 80) =
      ## clearup
      ## 
      ## a convenience proc to clear monitor x rows
@@ -1067,7 +1105,7 @@ proc clearup*(x:int = 80) =
      curup(x)
 
 
-proc clearLine*() =
+template clearLine*() =
      ## clearLine
      ##
      ## mirrors terminal eraseLine
@@ -1131,7 +1169,7 @@ proc rainbow*[T](s : T) =
        print(astr[x],colorNames[c][1],black)
 
 
-proc print*[T](astring:T,fgr:string = white , bgr:string = black) =
+proc print*[T](astring:T,fgr:string = white , bgr:string = black )=
     ## print
     ##
     ## same as printLn without new line
@@ -1147,7 +1185,7 @@ proc print*[T](astring:T,fgr:string = white , bgr:string = black) =
     prxBCol()
     
 
-proc printLn*[T](astring:T,fgr:string = white , bgr:string = black) =
+proc printLn*[T](astring:T,fgr:string = white , bgr:string = black)  =
     ## printLn
     ## 
     ## similar to echo but with foregroundcolor and backgroundcolor
@@ -1493,7 +1531,7 @@ proc printStyledSimple*[T](ss:T,fg:string,astyle:set[Style]) =
       else: styledEchoPrint(fg,astyle,$astr,termwhite)
       
 
-proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
+proc printStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] )  =
       ## printStyled
       ##
       ## extended version of writestyled and printHl to allow color and styles
@@ -1573,7 +1611,7 @@ proc printLnStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       writeLine(stdout,"")
 
 
-proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
+proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] )  =
       ## cecho
       ## 
       ## color echo w/o new line this also automically resets the color attribute
@@ -1596,7 +1634,7 @@ proc cecho*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       write(stdout,termwhite)
       
 
-proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
+proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] )  =
       ## cechoLn
       ##  
       ## color echo with new line
@@ -1614,6 +1652,7 @@ proc cechoLn*(col:string,ggg: varargs[string, `$`] = @[""] ) =
       ## 
       cecho(col,ggg)
       writeLn(stdout,"")
+
 
   
 proc showColors*() =
@@ -1635,6 +1674,8 @@ proc doty*(d:int,col:string = white, bgr = black) =
      ## 
      ## each dot is of char length 4 added a space in the back to avoid half drawn dots
      ## 
+     ## if it is available on your system otherwise a rectangle may be shown
+     ## 
      ## .. code-block:: nimble
      ##      import private
      ##      printLnBiCol("Test for  :  doty\n",":",truetomato,lime)
@@ -1655,7 +1696,7 @@ proc doty*(d:int,col:string = white, bgr = black) =
 proc dotyLn*(d:int,col:string = white, bgr = black) =
      ## dotyLn
      ## 
-     ## prints number d of ⏺  style dots given fore/background color and issues new line
+     ## prints number d of ⏺  style widedots given fore/background color and issues new line
      ## 
      ## each dot is of char length 4
      ## 
@@ -2618,7 +2659,7 @@ proc getRandomPointInCircle*(radius:float) : seq[float] =
 # Misc. routines 
 
 
-proc getCard*():auto = 
+template getCard* :auto = 
   ## getCard
   ## 
   ## gets a random card from the Cards seq
@@ -2672,31 +2713,6 @@ template loopy*[T](ite:T,st:stmt) =
      ##     
      for x in ite:
        st
-                 
-
-proc harmonics*(n:int64):float64 =
-     ## harmonics
-     ##
-     ## returns a float containing sum of 1 + 1/2 + 1/3 + 1/n
-     ##
-     var hn = 0.0
-     var h = 0.0
-     
-     if n == 0:
-       result = 0.0
-
-     elif n > 0:
-
-        h = 0.0
-        for x in 1.. n:
-           hn = 1.0 / x.float64
-           h = h + hn
-        result = h
-
-     else:
-         printLn("Harmonics here defined for positive n only",red)
-         #result = -1
-
 
 
 proc shift*[T](x: var seq[T], zz: Natural = 0): T =

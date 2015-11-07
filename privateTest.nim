@@ -1,9 +1,12 @@
 
 ## privateTest.nim
+## 
 ## rough testing for private.nim 
+## 
+## best run in a large console window
 
 
-import private,privateDemo,strfmt,strutils,times
+import private,privateDemo,strfmt,strutils,sequtils,times,random
 
 superHeader("Testing print and echo procs from private.nim and run demos")
 
@@ -150,6 +153,70 @@ sleepy(3)
 
 decho(3)
 randomCardsClockDemo() 
+
+decho(2)
+
+# testing emojis
+
+printLn(heart & " Nim " & heart,red)    
+print(smile,randcol())  
+print(copyright,randcol())
+print(trademark,randcol())  
+print(roof,lime)
+print(snowflake,randcol())  
+print(music,lime)
+print(xmark,randcol())  
+print(check,randcol())
+print(scissors,randcol())  
+print(darkstar,randcol())
+print(star,randcol())  
+print(umbrella,randcol())
+print(flag,randcol())  
+print(skull,randcol())
+print(heart,red)  
+
+println(sun,randcol())
+print(innocent,randcol())
+print(lol,randcol())
+print(smiley,randcol())
+print(tongue,randcol())
+print(blush,randcol())
+print(sad,randcol())
+print(cry,randcol())
+print(rage,randcol())
+print(cat,randcol())
+print(kitty,randcol())
+print(monkey,randcol())
+printLn(cow,randcol())
+
+happyemojis()
+sleepy(2)
+
+
+proc printNimSxR*(col:string = yellowgreen, xpos: int = 1) = 
+   ## printNimSx
+   ## 
+   ## prints large Nim
+   ## 
+   ## 
+  
+   var maxpos = tw - nimsx[0].len + 20
+   for x in nimsx :
+        if xpos <= maxpos  :
+            print(repeat(" ",xpos) & x,randcol())
+        else:    
+            print(repeat(" ",maxpos) & x,randcol())
+            
+
+for x in 0 .. 10:
+   cleanscreen()
+   curset()
+   decho(toSeq(1.. th - 8).randomchoice())
+   printNimsxR(randcol(),xpos = toSeq(0.. tw - 20).randomchoice())
+   sleepy(1)
+   curup(6)
+
+
 
 decho(2)
 var twc = tw div 2

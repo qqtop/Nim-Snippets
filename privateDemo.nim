@@ -1,4 +1,4 @@
-import private,strutils,random,times
+import private,strutils,strfmt,random,times
 
 ## small demos repository for var. procs in private
 ## this file is imported by privateTest.nim to actually run the demos
@@ -176,7 +176,18 @@ proc randomCardsClockDemo*() =
     curdn(th)
 
 
-
+proc happyEmojis*() =
+  ## happyEmojis
+  ## 
+  ## lists implemented emojis if available in your system
+  ## 
+  
+  decho(2)
+  cechoLn(lime & emojis[7] & yellowgreen & " Happy Emojis " & lime & emojis[7])
+  echo()
+  for x in 0.. <emojis.len:
+      printLnBiCol("{:<4} : {}".fmt($x,emojis[x]),":",white,randcol())
+  decho(2)
 
 
 
@@ -262,4 +273,11 @@ proc drawRectDemo*() =
 
 
 
-
+proc wideDotFieldDemo()=
+  ## wideDotFieldDemo
+  ## 
+  ## draws random col widedots
+  ## 
+  for x in 0.. 1000:
+      loopy(1.. tw div 2, doty(1,randcol()))
+      echo()       
