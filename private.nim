@@ -26,9 +26,10 @@
 ##
 ##   Docs        : http://qqtop.github.io/private.html
 ##
-##   Tested      : on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17  
+##   Tested      :  on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17  
 ##   
 ##   Related     : 
+##   
 ##                 privateDemo.nim  demos repository 
 ##   
 ##   
