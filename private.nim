@@ -32,9 +32,9 @@
 ##   
 ##   Related     : 
 ##   
-##                * demos : __   privateDemo.nim   
+##                * demos : privateDemo.nim   
 ##   
-##                * tests : __   privateTest.nim  
+##                * tests : privateTest.nim  
 ##                 
 ##
 ##   Programming : qqTop
