@@ -491,8 +491,7 @@ let emojis* = @[check,xmark,heart,sun,star,darkstar,umbrella,flag,snowflake,musi
 
 
 # may or may not be available on all systems
-const wideDot* = "⏺ "
-
+const wideDot* = "\xE2\x9A\xAB" & " "
 
 # all colors except original terminal colors
 let colorNames* = @[
