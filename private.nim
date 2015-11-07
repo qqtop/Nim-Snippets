@@ -14,7 +14,9 @@
 ##   
 ##   OS          : Linux  
 ##
-##   Description : private.nim is a public library with a collection of simple procs and templates
+##   Description :
+##   
+##                 private.nim is a public library with a collection of simple procs and templates
 ##
 ##                 for easy colored display in a linux terminal , date handling and more
 ##
@@ -30,10 +32,9 @@
 ##   
 ##   Related     : 
 ##   
-##                 privateDemo.nim  demos repository 
+##                * demos :    privateDemo.nim   
 ##   
-##   
-##                 privateTest.nim  rough test for procs and demos
+##                * tests :    privateTest.nim  
 ##                 
 ##
 ##   Programming : qqTop
