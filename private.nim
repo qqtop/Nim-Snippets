@@ -34,7 +34,7 @@
 ##   
 ##                * demos :    privateDemo.nim   
 ##   
-##                * tests &nbsp;&nbsp; :    privateTest.nim  
+##                * tests :computer: :    privateTest.nim  
 ##                 
 ##
 ##   Programming : qqTop
