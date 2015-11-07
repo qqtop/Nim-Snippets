@@ -28,9 +28,12 @@
 ##
 ##   Tested      : on Ubuntu 14.04 , OpenSuse 13.2 , Mint 17  
 ##   
-##   Related     : privateDemo.nim   repository for some demos
+##   Related     : 
+##                 privateDemo.nim  demos repository 
 ##   
-##                 privateTest.nim   rough test for procs and demos
+##   
+##                 privateTest.nim  rough test for procs and demos
+##                 
 ##
 ##   Programming : qqTop
 ##
@@ -1503,14 +1506,14 @@ proc printHl*(s:string,substr:string,col:string = termwhite) =
 
 
 proc printLnHl*(s:string,substr:string,col:string = termwhite) =
-      ## printHl
+      ## printLnHl
       ##
       ## print and highlight all appearances of a char or substring of a string
       ##
       ## with a certain color and issue a new line
       ##
       ## .. code-block:: nim
-      ##    printHl("HELLO THIS IS A TEST","T",yellowgreen)
+      ##    printLnHl("HELLO THIS IS A TEST","T",yellowgreen)
       ##
       ## this would highlight all T in yellowgreen
       ##
@@ -1597,13 +1600,13 @@ proc printLnStyled*[T](ss:T,substr:string,col:string,astyle : set[Style] ) =
       ## .. code-block:: nim
       ## 
       ##    # this highlights all T in green and underscore them
-      ##    printStyled("HELLO THIS IS A TEST","T",green,{styleUnderScore})
+      ##    printLnStyled("HELLO THIS IS A TEST","T",green,{styleUnderScore})
       ##    
       ##    # this highlights all T in rainbow colors underscore and blink them
-      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{styleUnderScore,styleBlink})
+      ##    printLnStyled("HELLO THIS IS A TEST","T",clrainbow,{styleUnderScore,styleBlink})
       ##
       ##    # this highlights all T in rainbow colors , no style is applied
-      ##    printStyled("HELLO THIS IS A TEST","T",clrainbow,{})
+      ##    printLnStyled("HELLO THIS IS A TEST","T",clrainbow,{})
       ##    
       ##   
       ##                    
