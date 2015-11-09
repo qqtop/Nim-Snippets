@@ -1,4 +1,4 @@
-import os,strutils,sequtils,yahooweather,strfmt, private
+import os,strutils,sequtils,yahooweather,strfmt, cx
 
 ##   Program     : weather.nim
 ##
@@ -18,7 +18,7 @@ import os,strutils,sequtils,yahooweather,strfmt, private
 ##                 
 ##                 which can be found at :  http://woeid.rosselliot.co.nz/lookup
 ##                 
-##   Requires    : private.nim      
+##   Requires    : cx.nim      
 ##   
 ##   Compile     : nim c weather
 ##                 

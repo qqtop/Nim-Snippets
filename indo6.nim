@@ -1,5 +1,5 @@
 import "/Nimborg/high_level.nim"
-import private
+import cx
 import os,osproc,strutils,parseutils,strfmt,rdstdin
 
 

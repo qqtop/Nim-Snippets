@@ -1,4 +1,4 @@
-import os,math,strutils,strfmt,private
+import os,math,strutils,strfmt,cx
 
 ## parse /proc/net/dev to see what's happening on the interface
 ## 

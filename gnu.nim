@@ -1,4 +1,4 @@
-import private,strutils
+import cx,strutils
 
 # The absolute must have gnu !
 

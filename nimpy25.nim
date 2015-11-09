@@ -6,7 +6,7 @@
 # Compiler    : Nim 0.11.3
 # Description : Moving data between Nim and python
 #               Execute python script embedded in Nim calculating chisquare
-#               and some more tests , now using private lib for nicer look
+#               and some more tests , now using cx lib for nicer look
 #
 # Tested on   : Linux with python 2.7.8 and libs numpy,scipy             
 # ProjectStart: 2015-02-22
@@ -26,7 +26,7 @@ import strutils
 import parseutils
 import python
 import times
-import private
+import cx
 
 # init some test data float seq
 

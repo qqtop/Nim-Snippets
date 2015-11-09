@@ -1,4 +1,4 @@
-import os,strutils,parseopt2,strfmt,json,httpclient,private
+import os,strutils,parseopt2,strfmt,json,httpclient,cx
 
 # Reinstall Nim Development version  only if build waterfall says successfull
 # suitable for linux 86_64 install only

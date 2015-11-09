@@ -1,4 +1,4 @@
-import strutils,json,private,rdstdin
+import strutils,json,cx,rdstdin
 
 ##
 ##   Program     : webcols.nim
@@ -17,7 +17,7 @@ import strutils,json,private,rdstdin
 ##
 ##   Compile     : nim c webcols.nim
 ##
-##   Requires    : private.nim
+##   Requires    : cx.nim
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##

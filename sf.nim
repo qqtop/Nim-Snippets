@@ -26,7 +26,7 @@
 ## #####################################################################################
 
 import os,osproc, strutils,strfmt,parseopt2,parseutils
-import private
+import cx
 
 
 const VERSION = "1.0"

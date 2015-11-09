@@ -1,4 +1,4 @@
-import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
+import os,cx,httpclient,json,strfmt,strutils,sets,rdstdin
 
 ##
 ##   Program     : kateglo2.nim
@@ -46,7 +46,7 @@ import os,private,httpclient,json,strfmt,strutils,sets,rdstdin
 ##                 shows when numbering has holes .
 ##
 ##
-##   Requires    : private.nim
+##   Requires    : cx.nim
 ##
 ##
 ##   Project     : https://github.com/qqtop/Nim-Snippets

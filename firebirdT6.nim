@@ -1,5 +1,5 @@
 import os,times,terminal,strutils,parseutils,strfmt
-import private
+import cx
 import python
 
 # Example code 

@@ -1,4 +1,4 @@
-import os,strutils,private
+import os,strutils,cx
 from memfiles import open, lines
 
 ##
@@ -28,7 +28,7 @@ from memfiles import open, lines
 ##                 
 ##                        quickInfo somefile.nim proc templat
 ##                 
-##   Requires    : private.nim 
+##   Requires    : cx.nim 
 ##   
 ##                 
 ##   Project     : https://github.com/qqtop/Nim-Snippets

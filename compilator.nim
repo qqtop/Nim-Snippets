@@ -8,7 +8,7 @@
 # 
 # 
 
-import os,private,strutils,osproc,strfmt
+import os,cx,strutils,osproc,strfmt
 
 # change below if there are different compiler settings required
 var cc = "nim -d:release --opt:speed --hints:off --verbosity:0 -w:off c " 
