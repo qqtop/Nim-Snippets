@@ -11,7 +11,7 @@ import strutils,json,cx,rdstdin
 ##
 ##   ProjectStart: 2015-09-02
 ##
-##   Compiler    : Nim 0.11.3
+##   Compiler    : Nim 0.12.1
 ##
 ##   Description : webcols.nim parses colorset json data from  http://colorbrewer2.org/
 ##
