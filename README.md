@@ -5,7 +5,7 @@ Collection of experiments , short programs and libraries in Nim
 Tested on linux only.
 
 
-For color utilities see https://github.com/qqtop/NimCx 
+For cx color utilities see https://github.com/qqtop/NimCx 
 
 Screenshot from updatNimCompiler
 
