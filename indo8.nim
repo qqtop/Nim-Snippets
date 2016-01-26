@@ -125,7 +125,7 @@ var oldswitch = "d"
 var acmd = ""
 var help = ""
 var bflag : bool = true
-let okswitch = ["","d","p","e","ev","ep","ej","ejp","dj","djp","a","av","v","ac","k","z","h","q"]
+let okswitch = ["","d","e","ev","ep","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","h","q"]
 
   
 var oldword  = ""     # holds last input word/kata
@@ -153,7 +153,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBicol("{}".fmt("Switches: d,p,e,ep,v,ev,ej,ejp,dj,djp,a,av,ac,k,z,h=help,q=quit"),":")
+        printBicol("{}".fmt("Switches: d,p,e,ep,v,ev,ej,ejp,dj,djp,a,av,ac,acp,,p,k,z,h=help,q=quit"),":")
         echo()
         print("_________^",red)
         hlineln(tw-10,pastelgreen)  
@@ -292,7 +292,17 @@ while fin == false:
                         acmd = "trans -b -w $1 -t zh "  % $tw & quoteshellposix(readLineFromStdin(curlang &  "    : "))
                      else:
                         acmd = "trans -b -w $1 -t zh "  % $tw & quoteshellposix(katax)
-                        dowordx(katax)          
+                        dowordx(katax)   
+                        
+          of "acp"  : 
+                     curlang= "Any"
+                     if cflag == false:
+                        acmd = "trans -b -p -w $1 -t zh "  % $tw & quoteshellposix(readLineFromStdin(curlang &  "    : "))
+                     else:
+                        acmd = "trans -b -p -w $1 -t zh "  % $tw & quoteshellposix(katax)
+                        dowordx(katax)                 
+                        
+                        
                         
           of "k"   :
                      if cflag == false:
@@ -301,7 +311,7 @@ while fin == false:
                         acmd = "trans -d -w $1 "  % $tw & quoteshellposix(katax)
                         dowordx(katax)
                         
-          of "h"   : help = "d   indonesian english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj   indo japanese,english\ndj   indo japanese,english voice\na   any language to english\nav  any language to english verbose\nac   any language to chinese\nk   Dictionary Mode\nh   help\nq   Quit" 
+          of "h"   : help = "d   indonesian english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj   indo japanese,english\ndj   indo japanese,english voice\na   any language to english\nav  any language to english verbose\nac   any language to chinese\nacp   any language to chinese voice\nk   Dictionary Mode\nh   help\nq   Quit" 
            
           of "q"   : doFinish() 
           
