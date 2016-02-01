@@ -16,13 +16,15 @@ import cx, pythonize
 #          
 #          switches ending with p play voice from google
 #  
-# Tested:  nim 0.13.0 
+# Tested:  nim 0.13.1 
 # 
 # Requires :
 # 
 #           https://github.com/soimort/translate-shell
 #
 #           gnu awk
+#
+#           a working mecab (japanese lexer) installation callable via python
 #
 #           kateglo3 (optional) 
 #           
@@ -39,6 +41,59 @@ import cx, pythonize
 #
 # now using cx.nim to handle most color printing tasks
 #
+#
+# 
+# 
+# 
+# A rough receipe for installing mecab 0.996 from  https://github.com/taku910/mecab
+# 
+# tested for :
+# 
+# openSuse13.2
+# opensuseLeap42.1 
+# 
+#  
+#    sudo zypper install git     # if not installed already
+# 
+#    git clone https://github.com/taku910/mecab.git
+# 
+# make a link to jumadic:
+# 
+#    ln -s --/mecab-jumandic/matrix.def
+# 
+# make sure you have a full gcc installation or the configure run below may complain   
+# 
+#    cp configure.in mecab-ipadic.spec.in
+#    ./configure --with-charset="utf-8"
+# 
+#    
+# manually change the MakeFile to refelect correct path to mecab-dict-index: /usr/local/lib/mecab/dic
+# if below still not ok try with path /usr/local/lib64/mecab/dic ...
+# 
+# created missing dir  /usr/local/lib/mecab/dic/ipadic
+# and copy as root from your local ipadic directory to the /usr/local/lib/mecab/dic/ipadic :
+# 
+#   unk.dic
+#   dicrc 
+#   char.bin
+#   left-id.def
+#   pos-id.def
+#   rewrite.def
+#   right-id.def
+#   matrix.bin
+#   sys.dic
+# 
+# 
+# then try 
+# 
+#    make
+#    sudo make install
+#
+#  you will also need to install the mecab.py for how to see the python directory
+#  of the downloaded package.
+#
+
+
 
 let i7file = "/dev/shm/indo7q.txt"    # change path as required keep filename
   
@@ -64,7 +119,7 @@ proc getidrec(idx:string|int):seq[string] =
         idmax = id
         
      for x in 1.. id:
-        var  yu = recBuff[x-1] 
+        var  yu = recBuff[x - 1] 
         if yu[0] == $idmax:
            result = yu
   
@@ -94,7 +149,7 @@ proc showHist(n:int = idd) =
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
             
-   dlineln(tw-1,"-",pastelgreen)
+   dlineln(tw - 1,"-",pastelgreen)
      
     
    
@@ -156,7 +211,7 @@ proc showTop()=
         printBicol("{}".fmt("Switches: d,p,e,ep,v,ev,ej,ejp,dj,djp,a,av,ac,acp,,p,k,z,h=help,q=quit"),":")
         echo()
         print("_________^",red)
-        hlineln(tw-10,pastelgreen)  
+        hlineln(tw - 10,pastelgreen)  
 
 proc doMecab(b:string) =
         pythonEnvironment["text"] = b
