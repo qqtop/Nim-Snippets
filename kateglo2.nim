@@ -139,7 +139,7 @@ while true:
                             for x in 1.. <oks.len   :
                                 # here we pad 10 blaks on left
                                 oks[x] = align(oks[x],10 + oks[x].len)
-                                printLnColStr(termwhite,"{}".fmt(oks[x]))
+                                printLn("{}".fmt(oks[x]),termwhite)
 
                       else:
                             printLnBiCol("{:>7}{} {}".fmt("Def",sep,ss(zd["def_text"])),":",lightcoral,termwhite)
@@ -154,7 +154,7 @@ while true:
                           for x in 1.. <okxs.len   :
                             # here pad 10 blanks on left
                             okxs[x] = align(okxs[x],10 + okxs[x].len)
-                            printLnColStr(termwhite,"{}".fmt(okxs[x]))
+                            printLn("{}".fmt(okxs[x]),termwhite)
                       hline(tw,black)
 
 
@@ -171,17 +171,17 @@ while true:
                           printStyled(mm,mm,yellow,{styleUnderscore})
                           decho(2)
                           for zd in 0.. <maxsta:
-                            try:  
+                            try:
                               var trsin = ""
                               var rphr = ss(dx[zd]["related_phrase"])
                               var rtyp = ss(dx[zd]["rel_type_name"])
                               if rtyp == "Sinonim" or rtyp == "Turunan" or rtyp == "Antonim":
                                 # TODO : check that we only pass a single word rather than a phrase
                                 #        to avoid errors and slow down
-                                
+
                                 var phrdata = getData2(rphr)
                                 if wflag2 == false:
-                                  
+
                                     var phdx = phrdata["kateglo"]["translations"]
                                     if phdx.len > 0:
                                         trsin =  ss(phdx[0]["translation"])
@@ -193,9 +193,9 @@ while true:
                                             for x in 1.. <okxs.len :
                                                 # here pad 22 blanks on left
                                                 okxs[x] = align(okxs[x],22 + okxs[x].len)
-                                                printLnColStr(termwhite,"{}".fmt(okxs[x]))
-                            
-                                  
+                                                printLn("{}".fmt(okxs[x]),termwhite)
+
+
 
 
                                 # need a sleep here or we hit the kateglo server too hard
@@ -210,7 +210,7 @@ while true:
 
                             except:
                                    discard
- 
+
 
                     except:
                       discard

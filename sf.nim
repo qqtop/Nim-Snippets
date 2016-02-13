@@ -7,7 +7,7 @@
 ## 
 ## ProjectStart: 2015-03-11
 ## 
-## Compiler    : Nim 0.11.3 
+## Compiler    : Nim 0.13.1 
 ## 
 ## Description : speed find , executes a bash find grep string command
 ## 
@@ -19,7 +19,7 @@
 ## 
 ##               so arg maybe sf blahdir search me now
 ##               
-## Last Tested : 2015-08-29
+## Last Tested : 2016-02-13
 ## 
 ## Programming : Alien2
 ## 
@@ -91,8 +91,8 @@ if arg1 != "-h":
     
     let rxss = rxs.fastsplit('\L')
     for x in 0.. <rxss.len-1:
-       printColStr(yellow,"{:<7}: ".fmt($x))
-       printLnColStr(green,rxss[x])
+       print("{:<7}: ".fmt($x),yellow)
+       printLn(rxss[x],yellowgreen)
    
 
 doFinish()

@@ -134,8 +134,8 @@ else:
                       var wxs = split(str,": ")
                       if wxs[0].strip() != "link" and wxs[0].strip() != "htmlDescription":
                           try:
-                            printColStr(yellow,"{:<15}".fmt(wxs[0].strip().capitalize()))
-                            printLnColStr(green,"{:<}".fmt(wxs[1].strip()))
+                            print("{:<15}".fmt(wxs[0].strip().capitalize()),yellow)
+                            printLn("{:<}".fmt(wxs[1].strip()),greenyellow)
                           except:
                             echo()
                     

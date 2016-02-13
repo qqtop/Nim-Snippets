@@ -10,7 +10,7 @@ import os,math,strutils,strfmt,cx
 ## 
 ## License : MIT opensource
 ## 
-## VERSION : 0.5
+## VERSION : 0.6
 
 
 type
@@ -73,64 +73,72 @@ while 1 == 1:
      var pps2     = (wpkt.float - lwpkt.float)
       
      clearup()  # comment this out for full history
-     
      # do not change format string
      var pdn = "{:<8}: rx {:>7.2f} Mbps {:>7.2f} MiB/s {:>7.2f} pps  tx {:>7.2f} Mbps {:>7.2f} MiB/s {:>7.2f} pps".fmt(name,mbps1,mib1,pps1,mbps2,mib2,pps2)
      var aseq = newSeq[string]()
-     
+     drawbox(2,pdn.len + 15)
+     curup(2)
      # tokenize the formated string   
      for word in tokenize(pdn):
               aseq.add(word.token)
           
      # now display values > 0.01 in color       
-     printColStr(brightred,aseq[0])
-     #printColStr(white,aseq[1]) 
-     printColStr(white,aseq[4])
-     printColStr(white,aseq[5])
+     print(aseq[0] & " ",brightred,xpos = 3)
+     print(aseq[4],white)
+     print(aseq[5],white)
      if mbps1 > 0.01 :
-         printColStr(cyan,aseq[6])
+         print(aseq[6],cyan)
      else:
-         printColStr(white,aseq[6])
-     printColStr(white,aseq[7])
-     printColStr(white,aseq[8])
-     printColStr(white,aseq[9])
+         print(aseq[6],white)
+     print(" | ",greenyellow)      
+     print(aseq[7],white)
+     print(aseq[8],white)
+     print(aseq[9],white)
      if mib1 > 0.01 :
-         printColStr(green,aseq[10])
+         print(aseq[10],green)
      else:
-         printColStr(white,aseq[10])
-     printColStr(white,aseq[11])
-     printColStr(white,aseq[12])
-     printColStr(white,aseq[13])
+         print(aseq[10],white)
+     print(" | ",greenyellow)      
+     print(aseq[11],white)
+     print(aseq[12],white)
+     print(aseq[13],white)
      if pps1 > 0.01 :
-         printColStr(yellow,aseq[14])
+         print(aseq[14],yellow)
      else:
-         printColStr(white,aseq[14])
-     printColStr(white,aseq[15])
-     printColStr(white,aseq[16])
-     printColStr(white,aseq[17])
-     printColStr(white,aseq[18])
-     printColStr(white,aseq[19])
+         print(aseq[14],white)
+    
+     print(aseq[15],white)
+    
+     print(" | ",greenyellow)  
+    
+     print(aseq[16],white)
+     print(aseq[17],white)
+     print(aseq[18],white)
+     print(aseq[19],white)
      if mbps2 > 0.01 :
-         printColStr(cyan ,aseq[20])
+         print(aseq[20],cyan)
      else:
-         printColStr(white,aseq[20])
-     printColStr(white,aseq[21])
-     printColStr(white,aseq[22])
-     printColStr(white,aseq[23])
+         print(aseq[20],white)
+     print(" | ",greenyellow)  
+     print(aseq[21],white)
+     print(aseq[22],white)
+     print(aseq[23],white)
      if mib2 > 0.01 :
-         printColStr(green,aseq[24])
+         print(aseq[24],green)
      else:
-         printColStr(white,aseq[24])
-     printColStr(white,aseq[25])
-     printColStr(white,aseq[26])
-     printColStr(white,aseq[27])
-     if pps2 > 0.01 :
-         printColStr(yellow ,aseq[28])
-     else:
-         printColStr(white , aseq[28])
-     printColStr(white,aseq[29])
-     printColStr(white,aseq[30])
+         print(aseq[24],white)
+     print(" | ",greenyellow)  
+     print(aseq[25],white)
+     print(aseq[26],white)
+     print(aseq[27],white)
      
+     if pps2 > 0.01 :
+         print(aseq[28],yellow)
+     else:
+         print(aseq[28],white)
+      
+     print(aseq[29],white)
+     print(aseq[30] ,white)
      echo()
  
      lrbytes  = rbytes

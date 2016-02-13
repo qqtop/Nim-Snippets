@@ -58,14 +58,13 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
       var zl = fields[fields.low].strip()
       
       if zl.endswith("=") :
-              delete(zl,zl.len -1 , zl.len)
+              delete(zl,zl.len - 1 , zl.len)
               
       if zl.startswith(funcy):
                
         if funcy != "from" or funcy != "import":
            echo()
            hlineLn(tw,brightblack)
-           
         
         if zl.strip(true,true) == funcy:
            # this happens if we run into a block like
