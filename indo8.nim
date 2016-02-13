@@ -389,7 +389,7 @@ while fin == false:
                     if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                         echo()
                         doMecab(rx)
-                        println("         " & nimhira,pastelblue)
+                        println("         " & nimhira,pastelgreen)
                     
                 else:
                         printLn(mediumspringgreen & "Trans" & dodgerblue & "  : " & termwhite)
@@ -403,10 +403,10 @@ while fin == false:
                             if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                 if rxl.len == 2:
                                       doMecab(rxline)
-                                      println("         " & nimhira,pastelblue)
+                                      println("         " & nimhira,pastelgreen)
                                 else:      
                                       doMecab(rxline)
-                                      println("  " & nimhira,pastelblue) 
+                                      println("  " & nimhira,pastelgreen) 
                          
           else:
                 println(acmd,truetomato) 
