@@ -7,7 +7,7 @@ Tested on linux only.
 
 For cx color utilities see https://github.com/qqtop/NimCx 
 
-Screenshot from updatNimCompiler
+Screenshot from updateNimCompiler
 
 ![Image](../master/updatecompiler.png?raw=true)
 

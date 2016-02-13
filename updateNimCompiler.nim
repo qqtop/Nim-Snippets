@@ -1,8 +1,8 @@
 import os,strutils,parseopt2,strfmt,json,httpclient,cx
 
-# Reinstall Nim Development version  only if build waterfall says successfull
+# Reinstall Nim Development branch only if build waterfall says success
 # suitable for linux 86_64 install only
-# we only update if build satus successful 
+# we only update if build status is : Success 
 # no update when build warnings,exceptions or failure
 
 # under development
@@ -10,12 +10,12 @@ import os,strutils,parseopt2,strfmt,json,httpclient,cx
 ##############################################################
 # Change dirs as required
 
-var cp     = "/data4/NimCompiler/"   # where it the compiler lives
+var cp     = "/data4/NimCompiler/"               # where it the compiler lives
 var bsjson = "/data4/NimStuff/buildstatus.json"  # path for tmp file download
 
 ##############################################################
 
-let VERSION = "1.7"
+let VERSION = "1.8.2"
 
 clearup()
 
@@ -23,19 +23,19 @@ const usageString = """Usage: updateNimCompiler [OPTIONS] /myinstall/path/
   
 Options:
                         Default Path /data4/NimCompiler/
-                        Example : updateNimCompiler -i /myinstall/path/ 
-                        this path must exist, 
+                        Example : updateNimCompiler -i:/myinstall/path/    # --> path must exist
                         
+    -v --version        print version and exit                    
     -h --help           print this help menu
     -i --install        install to path specified
+    -j --tmpfile        path for tmp file download default is current working directory
+    
 """  
 
-var inCommands: seq[string] = @[]
-inCommands.add(cp)  
 
-var iflag = false  
+ 
 
-var buildjson = "http://buildbot.nim-lang.org/json/builders/linux-x64-builder/builds?select=-1"
+let buildjson = "http://buildbot.nim-lang.org/json/builders/linux-x64-builder/builds?select=-1"
   
 proc checkBuildStatus(bss:string):bool =
       
@@ -49,7 +49,7 @@ proc checkBuildStatus(bss:string):bool =
       for x in 0.. <lcb:
         cb = $(jobj["-1"]["text"].getElems[x])
         if x == 1 and cb == """"successful"""":
-           print("Build Status : Success.  ===> Updating compiler now !",lime)
+           printLnBiCol("Build Status             : Success.  ===> Updating compiler now !",lime)
            result = true
         elif x == 0 and cb == """"warnings"""":
            printLnBiCol("Build Status Warnings    : " & cb,":",yellow)
@@ -71,23 +71,32 @@ proc byebye() =
     print(usageString,termgreen)
     quit(QuitFailure)
 
-
+var filename = ""  
 for kind, key, val in getopt():
     case kind
     of cmdArgument:
-        inCommands.add(key)
+        #inCommands.add(key)
+        filename =  key
        
     of cmdShortOption, cmdLongOption:
        case key
-       of  "install","i" : iflag = true
-       of  "help", "h"   : byebye()
+       of  "version","v" :  
+                           echo() 
+                           printLnBiCol("updateNimCompiler Version : " & VERSION)
+                           infoline()
+                           echo()
+                           quit(0)
+       of  "install","i" :  cp     = $val     #iflag = true
+       of  "tmpfile","j" :  
+                            bsjson = $val
+                            if bsjson.endswith("/"):
+                                bsjson = $val & "buildstatus.json"
+                            else:
+                                bsjson = $val & "/buildstatus.json"
+                      
+       of  "help"   ,"h" :  byebye()
        else: discard
     of cmdEnd: discard
-    
-if iflag == true:
-  cp = $inCommands[1]
-else:
-  cp = $inCommands[0]  
 
 
 if not dirExists(cp):
@@ -106,13 +115,27 @@ if checkBuildStatus(buildjson) == true :
     
     discard os.execShellCmd("rm -rf Nim") 
     discard os.execShellCmd("git clone git://github.com/Araq/Nim.git")
-    setcurrentdir(cp&"Nim")
+    case  cp.endswith("/") 
+      of true : setcurrentdir(cp&"Nim")
+      of false: setcurrentdir(cp&"/Nim")
     discard os.execShellCmd("git clone --depth 1 git://github.com/nim-lang/csources")
-    setcurrentdir(cp&"Nim/csources")
+    case  cp.endswith("/") 
+      of true : setcurrentdir(cp&"Nim/csources")
+      of false: setcurrentdir(cp&"/Nim/csources")
     discard os.execShellCmd("sh build.sh")
-    setcurrentdir(cp&"Nim")
+    case  cp.endswith("/") 
+      of true : setcurrentdir(cp&"Nim")
+      of false: setcurrentdir(cp&"/Nim")
     discard os.execShellCmd("bin/nim c koch")
     discard os.execShellCmd("./koch boot -d:release")
+
+    # we come to here the compiler was build ok
+    decho(2)
+    println("The nim compiler build was successful and is now in. ")
+    case  cp.endswith("/") 
+      of true : println(cp & "Nim/bin",yellowgreen)
+      of false: println(cp & "/Nim/bin",yellowgreen)
+     
 
 else:
   
