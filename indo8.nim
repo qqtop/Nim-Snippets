@@ -151,7 +151,7 @@ proc showHist(n:int = idd) =
             
    dlineln(tw - 1,"-",pastelgreen)
      
-    
+# some procs currently unused , but maybe handy in future   
    
 proc showHistSingle(n:int) =
        var rx = getidrec(n)
@@ -180,7 +180,7 @@ var oldswitch = "d"
 var acmd = ""
 var help = ""
 var bflag : bool = true
-let okswitch = ["","d","e","ev","ep","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","h","q"]
+let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","h","q"]
 
   
 var oldword  = ""     # holds last input word/kata
@@ -208,7 +208,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBicol("{}".fmt("Switches: d,p,e,ep,v,ev,ej,ejp,dj,djp,a,av,ac,acp,,p,k,z,h=help,q=quit"),":")
+        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,h=help,q=quit"),":")
         echo()
         print("_________^",red)
         hlineln(tw - 10,pastelgreen)  
@@ -251,6 +251,13 @@ while fin == false:
                      else:
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
                         dokatax(katax)
+                        
+          of "dr"  :
+                     curlang = "Ind"  
+                     acmd = "trans -b -w $1 -s id -t en "  % $tw   % $tw & quoteshellposix(oldtrans)
+                     dowordx(oldtrans)                
+                        
+                        
           of "e"   :
             
                     curlang = "Eng"
@@ -267,6 +274,12 @@ while fin == false:
                      else:
                         acmd = "trans -b -p -w $1 -s en -t id "  % $tw & quoteshellposix(katax)
                         dowordx(katax)
+                        
+                        
+          of "er"  :
+                     curlang = "Eng"  
+                     acmd = "trans -b -w $1 -s en -t id "  % $tw   % $tw & quoteshellposix(oldtrans)
+                     dowordx(oldtrans)   
 
           of "v"   : 
                      curlang = "Ind"
@@ -366,7 +379,7 @@ while fin == false:
                         acmd = "trans -d -w $1 "  % $tw & quoteshellposix(katax)
                         dowordx(katax)
                         
-          of "h"   : help = "d   indonesian english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj   indo japanese,english\ndj   indo japanese,english voice\na   any language to english\nav  any language to english verbose\nac   any language to chinese\nacp   any language to chinese voice\nk   Dictionary Mode\nh   help\nq   Quit" 
+          of "h"   : help = "d   indonesian english\ndr  translate last sentence back into english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\ner  translate last sentence back into indonesian\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj  indo japanese,english\ndjp indo japanese,english voice\na   any language to english\nav  any language to english verbose\nac  any language to chinese\nacp any language to chinese voice\nk   Dictionary Mode\nh   help\nq   Quit" 
            
           of "q"   : doFinish() 
           
@@ -374,7 +387,31 @@ while fin == false:
       
                 
         if switch == "h":
-              println(help)
+             echo()
+             printlnbicol("indo8:   Switches Information",":",salmon,greenyellow)
+             hlineln(60,"_")
+             echo()
+             printlnbicol("d    :   indonesian english")
+             printlnbicol("dr   :   translate last sentence to english")
+             printlnbicol("dj   :   indo japanese,english")
+             printlnbicol("djp  :   indo japanese,english voice")
+             printlnbicol("v    :   indonesian english verbose")
+             printlnbicol("p    :   any language english with voice for both, verbose")
+             printlnbicol("e    :   english indonesian")
+             printlnbicol("ep   :   english indonesian voice")
+             printlnbicol("er   :   translate last sentence to indonesian")
+             printlnbicol("ev   :   english indonesian verbose")
+             printlnbicol("ej   :   english japanese")
+             printlnbicol("ejp  :   english japanese voice")
+             printlnbicol("a    :   any language to english")
+             printlnbicol("av   :   any language to english verbose")
+             printlnbicol("ac   :   any language to chinese")
+             printlnbicol("acp  :   any language to chinese voice")
+             printlnbicol("k    :   Dictionary Mode")
+             printlnbicol("h    :   help")
+             printlnbicol("q    :   Quit")
+             hlineln(60,"_")
+             echo()
         else: 
           if bflag == true and hflag==false:
              var rx = execProcess(acmd).strip()
@@ -389,7 +426,7 @@ while fin == false:
                     if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                         echo()
                         doMecab(rx)
-                        println("         " & nimhira,pastelgreen)
+                        println(nimhira,pastelgreen,xpos = 10)
                     
                 else:
                         printLn(mediumspringgreen & "Trans" & dodgerblue & "  : " & termwhite)
@@ -403,10 +440,10 @@ while fin == false:
                             if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                 if rxl.len == 2:
                                       doMecab(rxline)
-                                      println("         " & nimhira,pastelgreen)
+                                      println(nimhira,pastelgreen,xpos = 10)
                                 else:      
                                       doMecab(rxline)
-                                      println("  " & nimhira,pastelgreen) 
+                                      println(nimhira,pastelgreen,xpos = 3) 
                          
           else:
                 println(acmd,truetomato) 
@@ -416,7 +453,6 @@ while fin == false:
            # only allow good switches 
            oldswitch = switch
       
-        
         switch = nil
         katax = ""
       
