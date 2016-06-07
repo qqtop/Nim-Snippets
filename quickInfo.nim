@@ -43,10 +43,10 @@ from memfiles import open, lines
 
 
 const QUICKINFOVERSION = 0.7 
-const available = "Available : proc,template,converter,var,let,const,type,from,import"
+const available = "Available : proc,template,macro,converter,var,let,const,type,from,import"
 
  
-proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter","var","let","const","type","from","import"]) =
+proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","macro","converter","var","let","const","type","from","import"]) =
   superHeader("Info for : " & fname & $funcs,white,tomato)
   decho(2)
   var file = memfiles.open(fname, fmRead)
@@ -75,7 +75,13 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","converter
           
         else:   
            printBiCol(zl,funcy & " ",greenyellow,steelblue) 
-            
+           echo()
+    
+    
+    if strip(line,true,false).startswith("##") and strip(line,true,true) != "##":
+             var ss = split(line,"##")
+             printlnbicol("comm : " & ss[1],peru,white)
+ 
 
 
 proc main() =

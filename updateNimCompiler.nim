@@ -37,6 +37,7 @@ Options:
 
 let buildjson = "http://buildbot.nim-lang.org/json/builders/linux-x64-builder/builds?select=-1"
   
+  
 proc checkBuildStatus(bss:string):bool =
       
       downloadFile(bss,bsjson)
@@ -44,8 +45,6 @@ proc checkBuildStatus(bss:string):bool =
       printLnBiCol("Builder Name             : " & jobj["-1"]["builderName"].getstr,":")
       var cb : string = ""
       var lcb = jobj["-1"]["text"].len
-     
-      
       for x in 0.. <lcb:
         cb = $(jobj["-1"]["text"].getElems[x])
         if x == 1 and cb == """"successful"""":

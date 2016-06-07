@@ -180,7 +180,7 @@ var oldswitch = "d"
 var acmd = ""
 var help = ""
 var bflag : bool = true
-let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","h","q"]
+let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","cb","h","q"]
 
   
 var oldword  = ""     # holds last input word/kata
@@ -208,7 +208,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,h=help,q=quit"),":")
+        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
         echo()
         print("_________^",red)
         hlineln(tw - 10,pastelgreen)  
@@ -242,7 +242,19 @@ while fin == false:
                         idd = parseInt(idds)
                      except:
                         discard
-                   
+          
+          
+          of "cb"  :
+                     curlang = "Ind"
+                     if cflag == false:
+                        var cpc = checkclip()
+                        acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(cpc)
+                        print("ClipB  : ", greenyellow)
+                        println(cpc,powderblue,xpos = 9)
+                     else:
+                        acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
+                        dokatax(katax)
+          
         
           of "d"   : 
                      curlang = "Ind"
@@ -408,6 +420,7 @@ while fin == false:
              printlnbicol("ac   :   any language to chinese")
              printlnbicol("acp  :   any language to chinese voice")
              printlnbicol("k    :   Dictionary Mode")
+             printlnbicol("cb   :   AutoclipBoard Mode")     
              printlnbicol("h    :   help")
              printlnbicol("q    :   Quit")
              hlineln(60,"_")
