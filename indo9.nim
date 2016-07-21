@@ -180,7 +180,13 @@ proc doClip(ms:int = 100) {.async.} =
             stopflag = false
             curup(1)
             printlnBiCol(rightarrow & " Status : ok" & spaces(6),":",greenyellow,skyblue,xpos = 30)
-            
+         
+         
+         elif cp.startswith(".Quit") == true :  
+            curup(1)
+            printlnBiCol(rightarrow & " Status : exiting" & spaces(6),":",greenyellow,salmon,xpos = 30)
+            quit(0) 
+         
             
          else : discard 
          
@@ -234,7 +240,8 @@ proc doClip(ms:int = 100) {.async.} =
                                                 println(nimhira,pastelgreen,xpos = 3) 
                           echo()
                           hlineln(80,truetomato)
-                          printlnBiCol(".Start | .Stop","|",lime,truetomato)
+                          printBiCol(".Start | .Stop ","|",lime,truetomato)
+                          println("| .Quit ",yellow)
                           
                           
                 else:
