@@ -205,10 +205,23 @@ proc createFbTable*(atabledata:string) =
   # create a table in current database
   pythonEnvironment["tabledata"] = atabledata
   execPython("""  
-  # "recreate table T (PK integer, C1 integer)"  
 acon.execute_immediate(tabledata) 
 acon.commit()
   """)
+
+
+proc droptable*(dtable:string) =
+  # convenince function to drop a table
+  pythonEnvironment["dtable"] = dtable
+  execPython("""
+try:
+ ds = "drop table %s" % str(dtable)
+ acon.execute_immediate(ds)
+ print "\nCould not drop %s table\n" % dtable 
+except:
+    print "\n%s table dropped successfully\n" % dtable   
+  """) 
+
 
 
 # below can be accessed after connectFdb has been run on any database
