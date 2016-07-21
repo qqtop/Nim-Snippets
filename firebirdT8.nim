@@ -2,7 +2,7 @@ import cx,firebird
 
 # MASTER EXAMPLE FOR firebird.nim testing
 
-var password = "fb050628"  # <<==== your password if needed otherwise set to ""
+var password = "yourfirebirdpassword"  # <<==== your password if needed otherwise set to ""
 
 
 
