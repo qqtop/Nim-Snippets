@@ -11,14 +11,14 @@
 # Todo        : 
 # Pastebin    : 
 # Tested on   : 2016-07-21 against firebird 3.0 Super-Server
-# Last        : 2016-07-21
+# Last        : 2016-08-08
 # 
 # Programming : qqTop
 # 
 # #####################################################################################
 # #####################################################################################
 ## nim lib which calls python firebird database driver fdb for easy firebird connection
-## todo: backup ,meta data backup , better connection handling
+## todo: backup ,meta data backup , improve connection handling
 ## Note : Do not change indentation for var. python code
 
 import cx, pythonize
@@ -58,7 +58,7 @@ var odsversion* = "SELECT RDB$GET_CONTEXT('SYSTEM','ENGINE_VERSION') FROM RDB$DA
 
 
 # query to get server time for reference only not much use inside nim
-var servertime* = "select current_date, current_timestamp from rdb$database"
+var servertime* = "select  current_timestamp from rdb$database"
 # query to get best current time and day for reference only not much use inside nim
 var currenttime* = "select cast('now' as timestamp) from rdb$database"
 var currentday*  = "select cast('today' as date) from rdb$database"
@@ -309,6 +309,37 @@ proc closecons*() =
 acon.commit()
 acon.close()
    """)
+  
+
+
+# some utility queries for dispaly only
+
+proc showRowCount*() =
+   println("Rows count for all tables in current database ",salmon)
+   doFbShow(fdbquery(countall))
+
+
+
+proc showOds*() = 
+   print("ODS Version : ",peru)
+   doFbShow(fdbquery(odsversion))
+
+
+proc showServerTime*() =
+   print("ServerTime  : ")
+   var zwt = fdbquery(servertime)
+   var nwt = ($(zwt.res[0][0..5])).replace("@[datetime.datetime(","").replace("]","")
+   echo nwt
+
+
+proc showCurrentTime*() =
+   print("CurrentTime : ")
+   var zwt = fdbquery(currenttime)
+   var nwt = ($(zwt.res[0][0..5])).replace("@[datetime.datetime(","").replace("]","")
+   echo nwt
+
+
+
 
 ############
        
