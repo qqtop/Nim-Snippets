@@ -180,7 +180,7 @@ var oldswitch = "d"
 var acmd = ""
 var help = ""
 var bflag : bool = true
-let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","a","av","v","ac","acp","p","k","z","cb","h","q"]
+let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","jd","jdp","a","av","v","ac","acp","p","k","z","cb","h","q"]
 
   
 var oldword  = ""     # holds last input word/kata
@@ -208,7 +208,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
+        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,jd,jdp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
         echo()
         print("_________^",red)
         hlineln(tw - 10,pastelgreen)  
@@ -255,7 +255,7 @@ while fin == false:
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
                         dokatax(katax)
           
-        
+       
           of "d"   : 
                      curlang = "Ind"
                      if cflag == false:
@@ -341,6 +341,26 @@ while fin == false:
                         acmd = "trans -b -p -w $1 -s id -t ja+en "  % $tw & quoteshellposix(katax)
                         dowordx(katax)      
           
+          
+          of "jd"  : 
+                     curlang = "Jap"
+                     if cflag == false:
+                        acmd = "trans -b -w $1 -s ja -t ja+id+en "  % $tw & quoteshellposix(readLineFromStdin(curlang &  "    : "))
+                     else:
+                        acmd = "trans -b -w $1 -s ja -t ja+id+en "  % $tw & quoteshellposix(katax)
+                        dowordx(katax)
+          
+          
+          
+          of "jdp" :
+                     curlang = "Jap"
+                     if cflag == false:
+                        acmd = "trans -b -p -w $1 -s ja -t ja+id+en "  % $tw & quoteshellposix(readLineFromStdin(curlang &  "    : "))
+                     else:
+                        acmd = "trans -b -p -w $1 -s ja -t ja+id+en "  % $tw & quoteshellposix(katax)
+                        dowordx(katax) 
+          
+          
           of "a"   : 
                      curlang= "Any"
                      if cflag == false:
@@ -391,7 +411,7 @@ while fin == false:
                         acmd = "trans -d -w $1 "  % $tw & quoteshellposix(katax)
                         dowordx(katax)
                         
-          of "h"   : help = "d   indonesian english\ndr  translate last sentence back into english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\ner  translate last sentence back into indonesian\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj  indo japanese,english\ndjp indo japanese,english voice\na   any language to english\nav  any language to english verbose\nac  any language to chinese\nacp any language to chinese voice\nk   Dictionary Mode\nh   help\nq   Quit" 
+          of "h"   : help = "d   indonesian english\ndr  translate last sentence back into english\np   any language english with voice for both, verbosed\nv   indonesian english verbose\ne   english indonesian\nep  english indonesian voice\ner  translate last sentence back into indonesian\nev  english indonesian verbose\nej  english japanese\nejp english japanese voice\ndj  indo japanese,english\ndjp indo japanese,english voice\njd indo,english\njdp  indo,english voice\na   any language to english\nav  any language to english verbose\nac  any language to chinese\nacp any language to chinese voice\nk   Dictionary Mode\nh   help\nq   Quit" 
            
           of "q"   : doFinish() 
           
@@ -406,7 +426,7 @@ while fin == false:
              printlnbicol("d    :   indonesian english")
              printlnbicol("dr   :   translate last sentence to english")
              printlnbicol("dj   :   indo japanese,english")
-             printlnbicol("djp  :   indo japanese,english voice")
+             printlnbicol("djp  :   indo japanese,english,japanese voice")
              printlnbicol("v    :   indonesian english verbose")
              printlnbicol("p    :   any language english with voice for both, verbose")
              printlnbicol("e    :   english indonesian")
@@ -415,6 +435,8 @@ while fin == false:
              printlnbicol("ev   :   english indonesian verbose")
              printlnbicol("ej   :   english japanese")
              printlnbicol("ejp  :   english japanese voice")
+             printlnbicol("jd   :   indonesian english ")
+             printlnbicol("jdp  :   indonesian english japanese voice")           
              printlnbicol("a    :   any language to english")
              printlnbicol("av   :   any language to english verbose")
              printlnbicol("ac   :   any language to chinese")
@@ -450,13 +472,24 @@ while fin == false:
                             else:
                                 # in case of many lines we provide a bit more space
                                 println(rxline,yellowgreen,xpos = 2)
-                            if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
+                            if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp" :
                                 if rxl.len == 2:
                                       doMecab(rxline)
                                       println(nimhira,pastelgreen,xpos = 10)
                                 else:      
                                       doMecab(rxline)
-                                      println(nimhira,pastelgreen,xpos = 3) 
+                                      println(nimhira,pastelgreen,xpos = 2) 
+                            
+                            # Note that we get double lines back as there is no way
+                            # to know when a new language translation starts
+                            if switch == "jd" or switch == "jdp":
+                                if rxl.len == 2:
+                                      doMecab(rxline)
+                                      println(nimhira,pastelgreen,xpos = 10)
+                                else:  
+                                      doMecab(rxline)
+                                      println(truetomato & rightarrow & pastelblue & nimhira & white,pastelblue,xpos = 1)
+                              
                          
           else:
                 println(acmd,truetomato) 

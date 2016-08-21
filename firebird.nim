@@ -2,16 +2,17 @@
 # Program     : firebird.nim  
 # Status      : Development 
 # License     : MIT opensource  
-# Version     : 0.0.2
+# Version     : 0.0.3
 # Compiler    : Nim 0.14.3
-# Description : conveniently access firebird database via python from nim
-#               
+# Description : Conveniently access firebird database via python from nim
+#               Needs a firebird installation and the python fdb.py driver installed 
+#               ( pip install fdb )
 #                      
 # ProjectStart: 2016-06-03
 # Todo        : 
 # Pastebin    : 
 # Tested on   : 2016-07-21 against firebird 3.0 Super-Server
-# Last        : 2016-08-08
+# Last        : 2016-08-21
 # 
 # Programming : qqTop
 # 
@@ -19,6 +20,7 @@
 # #####################################################################################
 ## nim lib which calls python firebird database driver fdb for easy firebird connection
 ## todo: backup ,meta data backup , improve connection handling
+## 
 ## Note : Do not change indentation for var. python code
 
 import cx, pythonize
@@ -28,7 +30,7 @@ type
 
 
 execPython("""
-import os,fdb
+import os,fdb,re
 from fdb import services
 """)
 
@@ -55,7 +57,6 @@ END
 
 # query to get odsversion for a firebird database version 2.1 and later
 var odsversion* = "SELECT RDB$GET_CONTEXT('SYSTEM','ENGINE_VERSION') FROM RDB$DATABASE"
-
 
 # query to get server time for reference only not much use inside nim
 var servertime* = "select  current_timestamp from rdb$database"
@@ -140,6 +141,12 @@ except:
        pass
 acon.commit()       
 res1 = str(res0)
+# trying to clean up a bit removeing newlines etc if  possible
+# remove if not ok
+# That will replace any new line that is not followed by a newline or a tab with a space
+#res1 = re.sub(r"\n(?=[^\n\t])", " ", res1)  
+res1 = re.sub(r'(?<!\n)\n(?![\n\t])', ' ', res1.replace('\r', ''))
+
      """) 
      
      var cur0 = pythonEnvironment["res1"].depythonify(string)
@@ -179,6 +186,96 @@ proc doFbShow* [T](z:T) =
           inc c    
     echo()   
   
+
+
+
+proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen) =
+  # a pretty viewer for firebird select query results
+  # attempt of a generic display routine
+  # works ok for well behaved result sets , but may mess up
+  # for memo fields and long lines with with special chars
+  # 
+   
+  # we get a Tfb object containing cursor results
+  
+  var nxpos = xpos
+  var ws = 2        # spacing adjuster for columns
+  var res = z.res   # now the result are in res
+  var reslen = res.len
+  var maxcolwidth = newSeq[int]()
+
+  block myblock1:
+    for row in 0.. <reslen:
+       for item in 0.. <res[row].len:
+         maxcolwidth.add(0)
+       break myblock1  
+  
+  for row in 0.. <reslen:
+      #println(res[row],lime)
+      # we need to find the max width of the colums returned
+      # so run over each row and record max width of each item
+      var cols = res[row].len # how many cols has the cursor
+      for item in 0.. <cols:
+         if res[row][item].len > maxcolwidth[item]:
+            maxcolwidth[item] = res[row][item].len
+        
+ 
+  for row in 0.. <reslen:    
+      # display the row w/o column marker
+      var newokitem = ""
+      for item in 0.. <res[row].len:
+         if maxcolwidth[item] + nxpos + 3 > tw - 2:
+            # longline handling
+            
+            var longitem = wordwrap(res[row][item], tw - nxpos - ws)
+            var slongitem = longitem.wordwrap(maxcolwidth[item] + ws).split("\n")
+            
+            for aitem in 0.. <slongitem.len:
+                var sokitem = slongitem[aitem]
+                sokitem = sokitem.strip(true,true)
+                if sokitem.contains(IdentChars):
+                   while sokitem.contains(spaces(2)):
+                       sokitem = sokitem.replace(spaces(2),"")
+                              
+                   var ssokitem = splitLines(sokitem)
+                   for ss in 0.. <ssokitem.len:
+                       var ss1 = replace(ssokitem[ss],"\n"," ")  # this does not always work
+                       cleanstring(ss1)                    
+                       println(dodgerblue & rightarrow & lightgrey & ss1,xpos = nxpos)
+                
+                # try to put blue end marker indicating end of longitem
+                if slongitem.high == aitem :
+                    if nxpos + maxcolwidth[item] > tw - 2:
+                        println("|",lightskyblue,xpos = tw - 2)
+                    else:
+                        println("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
+                else:
+                    #echo()
+                    discard 
+         
+         else:
+            # standard length handling
+            var okitem = res[row][item]
+                      
+                       
+            if okitem.contains(IdentChars): 
+             
+              okitem = okitem.replace("\n"," ")
+              okitem = okitem.strip(true,true)
+              print(okitem,col,xpos = nxpos)
+              nxpos = nxpos + maxcolwidth[item] + ws         
+     
+              # try put green standard length item marker
+              if maxcolwidth.high == item:
+                    discard
+              else:    
+                    print("|",lime,xpos = nxpos)
+                    nxpos = nxpos + 1
+                    discard  
+      
+      nxpos = xpos
+      echo()
+    
 
 
 proc createFbDatabase*(dsn:string,auser:string,apassword:string) = 
