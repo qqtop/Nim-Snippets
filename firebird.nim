@@ -11,7 +11,7 @@
 # ProjectStart: 2016-06-03
 # Todo        : 
 # Pastebin    : 
-# Tested on   : 2016-07-21 against firebird 3.0 Super-Server
+# Tested on   : 2016-07-21 against firebird 3.0 Super-Server  with python 2.7.x
 # Last        : 2016-08-21
 # 
 # Programming : qqTop
@@ -70,8 +70,19 @@ template cleanString* (m:string) =
   m = m.replace("u'","").replace("'","\"").replace("u\"","\"")                             
   m = unquote(m)
   m = m.strip()
+  
+proc clearup*(s:string):string = 
+  var okitem = s 
+  while okitem.contains(spaces(2)):
+      okitem = okitem.replace(spaces(2),spaces(1))  
+ 
+  if okitem.endswith(","):
+        okitem.removesuffix(",")
+  
+  result = okitem.strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\n"," ")
+              
 
-
+  
 proc connectFdb*(ahost:string,auser:string,apassword:string,acharset:string = "UTF-8") =
   # makes connection acon and creates a cursor named cur
   pythonEnvironment["ahost"] = ahost
@@ -189,7 +200,7 @@ proc doFbShow* [T](z:T) =
 
 
 
-proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen) =
+proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
   # a pretty viewer for firebird select query results
   # attempt of a generic display routine
   # works ok for well behaved result sets , but may mess up
@@ -211,37 +222,59 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen) =
        break myblock1  
   
   for row in 0.. <reslen:
-      #println(res[row],lime)
       # we need to find the max width of the colums returned
-      # so run over each row and record max width of each item
+      # so run over each row and record max width of each item and save into maxcolwidth
+      
       var cols = res[row].len # how many cols has the cursor
       for item in 0.. <cols:
          if res[row][item].len > maxcolwidth[item]:
-            maxcolwidth[item] = res[row][item].len
+                 maxcolwidth[item] = res[row][item].len
         
  
   for row in 0.. <reslen:    
       # display the row w/o column marker
-      var newokitem = ""
+      
+      var sokitem = ""
       for item in 0.. <res[row].len:
          if maxcolwidth[item] + nxpos + 3 > tw - 2:
+      
             # longline handling
-            
             var longitem = wordwrap(res[row][item], tw - nxpos - ws)
             var slongitem = longitem.wordwrap(maxcolwidth[item] + ws).split("\n")
             
             for aitem in 0.. <slongitem.len:
-                var sokitem = slongitem[aitem]
-                sokitem = sokitem.strip(true,true)
+                sokitem = slongitem[aitem].strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\c"," ").replace($'\x0D'," ").replace($'\x0A'," ").replace("\n"," ")
                 if sokitem.contains(IdentChars):
-                   while sokitem.contains(spaces(2)):
-                       sokitem = sokitem.replace(spaces(2),"")
+                   # try to remove any emtylines and whitespace
+                                          
                               
                    var ssokitem = splitLines(sokitem)
-                   for ss in 0.. <ssokitem.len:
-                       var ss1 = replace(ssokitem[ss],"\n"," ")  # this does not always work
-                       cleanstring(ss1)                    
-                       println(dodgerblue & rightarrow & lightgrey & ss1,xpos = nxpos)
+                   
+                   if ssokitem.len == 1 and ssokitem[0] != "None":
+                      cleanstring(ssokitem[0]) 
+
+                     
+                      if ssokitem[0].startswith("\n"):
+                           delete(ssokitem[0],1,2)
+                      
+                      while ssokitem[0].contains("\n"):
+                         ssokitem[0] = ssokitem[0].replace("\n"," ")
+                         
+                      
+                      while ssokitem[0].contains(spaces(2)):
+                         ssokitem[0] = ssokitem[0].replace(spaces(2)," ")
+                      
+                      while ssokitem[0].endswith(spaces(1)):
+                              removeSuffix(ssokitem[0]," ")
+                      
+                                             
+                      while ssokitem[0].endswith("\n"):
+                           removeSuffix(ssokitem[0],"\n")
+        
+                      ssokitem[0] = ssokitem[0].strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\n"," ")
+                      println(dodgerblue & rightarrow & lightgrey & ssokitem[0],xpos = nxpos - 1)
+                     
+                     
                 
                 # try to put blue end marker indicating end of longitem
                 if slongitem.high == aitem :
@@ -250,25 +283,33 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen) =
                     else:
                         println("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
                 else:
-                    #echo()
                     discard 
          
          else:
             # standard length handling
             var okitem = res[row][item]
-                      
-                       
+              
             if okitem.contains(IdentChars): 
-             
-              okitem = okitem.replace("\n"," ")
+                          
+              while okitem.contains("\n"):
+                okitem = okitem.replace("\n"," ")
+                
+              while okitem.contains(spaces(2)):
+                  okitem = okitem.replace(spaces(2),spaces(1))  
+            
+              if okitem.endswith(","):
+                   okitem.removesuffix(",")
+              
               okitem = okitem.strip(true,true)
+                      
               print(okitem,col,xpos = nxpos)
               nxpos = nxpos + maxcolwidth[item] + ws         
      
               # try put green standard length item marker
               if maxcolwidth.high == item:
                     discard
-              else:    
+              else:  
+                 if sep == true:
                     print("|",lime,xpos = nxpos)
                     nxpos = nxpos + 1
                     discard  
@@ -324,7 +365,7 @@ except:
 # below can be accessed after connectFdb has been run on any database
  
 proc alltables*() =
-    printlnStyled("\nTables in Db ","Tables in Db ", salmon,{styleUnderScore})
+    printLn("\nTables in Db ", salmon,styled = {styleUnderScore},substr = "Tables in Db ")
     echo()
     let allt = fdbquery("select rdb$relation_name from rdb$relations where rdb$view_blr is null and (rdb$system_flag is null or rdb$system_flag = 0)")   
     for x in 0.. <allt.res.len:
@@ -333,7 +374,7 @@ proc alltables*() =
  
                                
 proc allviews*() =
-    printlnStyled("\nViews in Db ","Views in Db ", salmon,{styleUnderScore})
+    printLn("\nViews in Db ", salmon,styled = {styleUnderScore},substr = "Views in Db ")
     echo()
     let allv = fdbquery("select rdb$relation_name from rdb$relations where rdb$view_blr is not null and (rdb$system_flag is null or rdb$system_flag = 0)")  
     for x in 0.. <allv.res.len:
@@ -341,14 +382,14 @@ proc allviews*() =
           echo xx.replace(",","").strip()
  
 proc allindexes*() =  
-   printlnStyled("\nIndexes in Db ","Indexes in Db ", salmon,{styleUnderScore})
+   printLn("\nIndexes in Db ", salmon,styled = {styleUnderScore}, substr = "Indexes in Db ")
    println(rightarrow & "Name, UniqueFlag, Table, Field",dodgerblue)
    echo()
    doFbShow(fdbquery("select i.rdb$index_name,i.rdb$unique_flag,i.rdb$relation_name, s.rdb$field_name from rdb$indices i, rdb$index_segments s where  i.rdb$index_name=s.rdb$index_name and  i.rdb$index_name not like 'RDB$%'"))
   
    
 proc allgenerators*() = 
-   printLnStyled("\nGenerators in current Database ","Generators in current Database ", salmon,{styleUnderScore})
+   printLn("\nGenerators in current Database ", salmon,styled = {styleUnderScore}, substr = "Generators in current Database ")
    echo()
    doFbShow(fdbquery("select rdb$generator_name from  rdb$generators where rdb$system_flag is null"))
 
@@ -364,13 +405,13 @@ usxs = str(usx)
  
 proc secusers*() = 
      # the newer fb3 related user query
-     printLnStyled("\nSecusers  Authentication","Secusers  Authentication", salmon,{styleUnderScore})
+     printLn("\nSecusers  Authentication", salmon,styled = {styleUnderScore},substr = "Secusers  Authentication")
      echo()
      doFbShow(fdbquery("select SEC$USER_NAME, SEC$PLUGIN from sec$users")) 
  
   
 proc allinfo*() =
-    printLnStyled("\nCurrent Connection Information for Database ","Current Connection Information for Database ", salmon,{styleUnderScore})
+    printLn("\nCurrent Connection Information for Database ", salmon,styled = {styleUnderScore},substr = "Current Connection Information for Database ")
     echo()
     execPython("""
 buf = acon.database_info(fdb.isc_info_db_id, 's')
@@ -434,8 +475,6 @@ proc showCurrentTime*() =
    var zwt = fdbquery(currenttime)
    var nwt = ($(zwt.res[0][0..5])).replace("@[datetime.datetime(","").replace("]","")
    echo nwt
-
-
 
 
 ############
