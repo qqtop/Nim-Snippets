@@ -9,7 +9,7 @@
 ##
 ##   ProjectStart: 2015-08-26
 ##
-##   Latest      : 2016-06-19
+##   Latest      : 2016-08-31
 ##
 ##   Compiler    : Nim 0.14.3
 ##
@@ -20,8 +20,8 @@
 ##                
 ##   Compile     : nim c -d:release  quickInfo
 ##                
-##   Run         : quickInfo somefile.nim      
-##                 
+##   Run         : quickInfo somefile.nim  proc template    
+##                 quickInfo somefile.nim  |grep printBiCol
 ##                                       
 ##   Requires    : cx.nim 
 ##   
@@ -93,16 +93,20 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","macro","c
            printBiCol(zl,funcy & " ",greenyellow,steelblue) 
            echo()
            inc shown
-    
-    if strip(line,true,false).startswith("##") and strip(line,true,true) != "##":
-             var ss = split(line,"##")
-             
-             if ss[1].strip(true,false).startswith(".. code-block"):
-                printlnbicol("com:" & ss[1],":",peru,yellowgreen)
-             else:                      
-                printlnbicol("com:" & ss[1],":",peru,white)
  
-
+ 
+# this part needs work , want ot display the help sections like ## blah 
+#    # if blflag == true ==> we get the correct headers but no context
+#    # if false we get a mess as this part does not know when comments are finished
+#     if strip(line,true,false).startswith("##") and strip(line,true,true) != "##" and blflag == false:
+#              var ss = split(line,"##")
+#              
+#              if ss[1].strip(true,false).startswith(".. code-block"):
+#                 printlnbicol("com:" & ss[1],":",peru,yellowgreen)
+#              else:                      
+#                 printlnbicol("com:" & ss[1],":",peru,white)
+ 
+           
 
 proc main() =
   
@@ -111,7 +115,13 @@ proc main() =
   # use self as default file 
   var afile = "quickInfo.nim"  
   # use a default with most used
-  fc = @["proc","template","converter","from","import","type"]
+  
+  
+  if cp.len > 1:
+    for x in 2.. cp.len():
+       fc.add(paramStr(x))
+  else:
+       fc = @["proc","template","converter","from","import","type"]
   
     
   if cp.len == 0 and not fileExists(afile) == true:
