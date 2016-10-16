@@ -12,7 +12,7 @@
 # Todo        : 
 # Pastebin    : 
 # Tested on   : 2016-07-21 against firebird 3.0 Super-Server  with python 2.7.x
-# Last        : 2016-08-21
+# Last        : 2016-10-16
 # 
 # Programming : qqTop
 # 
@@ -81,6 +81,22 @@ proc clearup*(s:string):string =
   
   result = okitem.strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\n"," ")
               
+
+template localDsn*(s:string):string = 
+  ## localDsn
+  ## 
+  ## creates the dns part of a firebird connection string for local databases
+  ## 
+  ## passed on the pathtodb  e.g. data4/mydbdir/myfile.fdb
+  ## 
+  ## 
+  var z = ""
+  if s != "":
+      z = "inet://" & localip() & "//" & s
+  else:
+      println("Error : no database path specified ",red)
+      println("""Usage : localDsn("datadir/my.fdb")""",red)
+  z
 
   
 proc connectFdb*(ahost:string,auser:string,apassword:string,acharset:string = "UTF-8") =
