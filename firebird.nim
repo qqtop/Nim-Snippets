@@ -2,8 +2,8 @@
 # Program     : firebird.nim  
 # Status      : Development 
 # License     : MIT opensource  
-# Version     : 0.0.3
-# Compiler    : Nim 0.14.3
+# Version     : 0.0.4
+# Compiler    : Nim 0.15.3
 # Description : Conveniently access firebird database via python from nim
 #               Needs a firebird installation and the python fdb.py driver installed 
 #               ( pip install fdb )
@@ -12,7 +12,7 @@
 # Todo        : 
 # Pastebin    : 
 # Tested on   : 2016-07-21 against firebird 3.0 Super-Server  with python 2.7.x
-# Last        : 2016-10-16
+# Last        : 2016-12-09
 # 
 # Programming : qqTop
 # 
@@ -23,7 +23,7 @@
 ## 
 ## Note : Do not change indentation for var. python code
 
-import cx, pythonize
+import cx, pythonize , rdstdin,osproc , hashes
 
 type
   Tfb* = tuple[res:seq[seq[string]]] 
@@ -152,6 +152,49 @@ proc showServerInfo*(spassword:string) =
        printlnBiCol(" Connected         : " & pythonEnvironment["sadn"].depythonify(string),":") 
     execPython("con2.close()")
 
+proc hashE2*() = 
+     var zz = readLineFromStdin("Create hash for a string : ")
+     echo hash(zz)
+
+proc getFbPassword*():string =
+     ## getFbPassword
+     ## 
+     ## prompts user for the firebird password
+     ##  
+     # here we can do a double entry lock
+     # using a hash for the cryptfile consider this for a mobile solution
+     # create a hash for your password with hashE2   
+     result = ""
+     let zz = readPasswordFromStdin("Enter Database Password : ")
+     let syst = execCmdEX("uname -m")
+     if $syst.output == "x86_64":
+        if hash(zz) == -4550309748678904198 :  # 64
+          curup(1)
+          printlnBiCol("Hash 64 Status   : ok . Access granted at " & $localTime() & ".")
+          echo()
+          result = zz
+        else:
+            echo()
+            printlnBiCol("Hash 64 Status   : failed",":",red)
+            printlnBiCol("Access denied at : " & $localTime() & ".",":",red)
+            println("Exiting ...",salmon)
+            doFinish()
+            
+          
+     else:     
+        if hash(zz) == hash(-696674300) :  # 32
+                curup(1)
+                printlnBiCol("Hash 32 Status   : ok . Access granted at " & $localTime() & ".")
+                echo()
+                result = zz
+        else:
+                echo()
+                printlnBiCol("Hash 32 Status   : failed",":",red)
+                printlnBiCol("Access denied at : " & $localTime() & ".",":",red)
+                println("Exiting ...",salmon)
+                doFinish()
+
+      
   
 
 proc fdbquery*(qs:string): Tfb =
@@ -423,7 +466,8 @@ proc secusers*() =
      # the newer fb3 related user query
      printLn("\nSecusers  Authentication", salmon,styled = {styleUnderScore},substr = "Secusers  Authentication")
      echo()
-     doFbShow(fdbquery("select SEC$USER_NAME, SEC$PLUGIN from sec$users")) 
+     doFbShow(fdbquery("select SEC$USER_NAME, SEC$PLUGIN from sec$users"))
+     
  
   
 proc allinfo*() =
@@ -456,22 +500,23 @@ for un in acon.db_info(fdb.isc_info_user_names):
 print '\n'        
     """)
    
-
+proc allcolumns*() =
+   printLn("\nColumns", salmon,styled = {styleUnderScore},substr = "Columns")
+   echo()
+   doFbShow(fdbquery("select f.rdb$relation_name, f.rdb$field_name from rdb$relation_fields f join rdb$relations r on f.rdb$relation_name = r.rdb$relation_name and r.rdb$view_blr is null and (r.rdb$system_flag is null or r.rdb$system_flag = 0) order by 1, f.rdb$field_position"))
+     
 proc closecons*() =
    # close down current database connection
    execPython("""
 acon.commit()
 acon.close()
-   """)
-  
-
+   """)  
 
 # some utility queries for dispaly only
 
 proc showRowCount*() =
    println("Rows count for all tables in current database ",salmon)
    doFbShow(fdbquery(countall))
-
 
 
 proc showOds*() = 
