@@ -4,13 +4,14 @@ import cx,os, httpclient,net,strutils
 # 
 # search KBBI from the terminal
 # 
-# Last   : 2016-012-11
+# Kamus Besar Bahasa Indonesia Pusat Bahasa Edisi IV
+# 
+# Last   : 2016-12-17
 # 
 # Status : ok
 # 
 # Usage  : kbbi mimpi
 # 
-# Note   : default word if nothing entered on command line is : cinta
 # 
 # 
 
@@ -47,35 +48,35 @@ try:
                   println("Description",yellowgreen)
                   var x11 = x1.split("; (")
                   for xx in x11:
-                    if xx.contains("(1)") or xx.startswith("(1)"):
-                       if xx.startswith("("): println(xx.strip())
-                       else: println("(" & xx.strip())
-                    else:
-                      if x11[0].contains("(1)") or xx.startswith("(1)"):
-                          println("(" & xx.strip()) 
+                      if xx.contains("(1)") or xx.startswith("(1)"):
+                        if xx.startswith("("): println(xx.strip())
+                        else: println("(" & xx.strip())
                       else:
-                          println(xx.strip())
+                        if x11[0].contains("(1)") or xx.startswith("(1)"):
+                            println("(" & xx.strip()) 
+                        else:
+                            println(xx.strip())
                         
                   echo()
                 
            elif x1.contains("keywords"):
                 x1 = x1.split("keywords")[1]  
                 if x1.contains("content="):
-                  x1 = x1.split("""" content="""")[1]
-                  removeSuffix(x1,'>')
-                  removeSuffix(x1,"/")
-                  x1 = x1.strip()
-                  removeSuffix(x1,'"')
-                  println("Keywords",yellowgreen)
-                  println(x1.split(", definisi")[0])
-                  echo()      
+                    x1 = x1.split("""" content="""")[1]
+                    removeSuffix(x1,'>')
+                    removeSuffix(x1,"/")
+                    x1 = x1.strip()
+                    removeSuffix(x1,'"')
+                    println("Keywords",yellowgreen)
+                    println(x1.split(", definisi")[0])
+                    echo()      
                 
            else: x1 = ""
            
     
     if x.startswith("<a href='/entri/"):
       var x2 = x.split("<a href='/entri/")[1] 
-      printlnBiCol("Kata Gabungan : " & x2.split("'>")[0] )
+      printLnBiCol("Kata Gabungan : " & x2.split("'>")[0] )
   
 except ValueError:
     echo "Value error" & getCurrentExceptionMsg()
