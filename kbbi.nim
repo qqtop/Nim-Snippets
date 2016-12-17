@@ -17,8 +17,8 @@ import cx,os, httpclient,net,strutils
 
 var ct:string = ""
 if paramCount() < 1:
-  println("No word to lookup provided",red)
-  println("Usage: kbbi makanan")
+  println("Tidak ada kata untuk menelusur tersedia ",red)
+  printlnBiCol("Cara pakai: kbbi makanan")
   doFinish()
 else:  
   ct = paramStr(1)
@@ -27,7 +27,7 @@ else:
 var htmlsource =""
 htmlsource = "http://kbbi4.portalbahasa.com/entri/" & ct
 
-hdx(printlnBiCol("Pencarian KBBI kata : " & ct,":",skyblue,salmon,styled={styleUnderscore}))
+hdx(printlnBiCol("Mencari kata : " & ct,":",skyblue,salmon,styled={styleUnderscore}))
 
 try: 
   var nct = newHttpClient(timeout = 8000)
@@ -36,7 +36,7 @@ try:
   for x in ctl:
     
     if x.contains("<meta name="):
-           var x1 = x.split("<meta name=") [1] 
+           var x1 = x.split("<meta name=")[1] 
            if x1.contains("description"):
                 x1 = x1.split("description")[1]
                 if x1.contains("content="):
