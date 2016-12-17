@@ -15,7 +15,7 @@ import cx,os, httpclient,net,strutils
 # 
 # 
 
-var ct:string = ""
+var ct = ""
 if paramCount() < 1:
   println("Tidak ada kata untuk menelusur tersedia ",red)
   printlnBiCol("Cara pakai: kbbi makanan")
