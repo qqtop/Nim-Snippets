@@ -13,9 +13,11 @@ import cx,os, httpclient,net,strutils
 # Usage  : kbbi mimpi
 # 
 # 
-# 
 
 var ct = ""
+var htmlsource = ""
+var nct = newHttpClient(timeout = 8000)  
+  
 if paramCount() < 1:
   println("Tidak ada kata untuk menelusur tersedia ",red)
   printlnBiCol("Cara pakai: kbbi makanan")
@@ -23,18 +25,14 @@ if paramCount() < 1:
 else:  
   ct = paramStr(1)
 
-    
-var htmlsource =""
 htmlsource = "http://kbbi4.portalbahasa.com/entri/" & ct
 
 hdx(printlnBiCol("Mencari kata : " & ct,":",skyblue,salmon,styled={styleUnderscore}))
 
-try: 
-  var nct = newHttpClient(timeout = 8000)
+try:  
   ct = nct.getContent(htmlsource)
   var ctl = ct.splitLines()
-  for x in ctl:
-    
+  for x in ctl:    
     if x.contains("<meta name="):
            var x1 = x.split("<meta name=")[1] 
            if x1.contains("description"):
@@ -75,8 +73,8 @@ try:
            
     
     if x.startswith("<a href='/entri/"):
-      var x2 = x.split("<a href='/entri/")[1] 
-      printLnBiCol("Kata Gabungan : " & x2.split("'>")[0] )
+       var x2 = x.split("<a href='/entri/")[1] 
+       printLnBiCol("Kata Gabungan : " & x2.split("'>")[0] )
   
 except ValueError:
     echo "Value error" & getCurrentExceptionMsg()
