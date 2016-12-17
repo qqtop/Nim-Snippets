@@ -2,7 +2,7 @@ import cx,os, httpclient,net,strutils
 
 # kbbi.nim
 # 
-# search KBBI from the terminal
+# search KBBI Edisi IV from the terminal
 # 
 # Kamus Besar Bahasa Indonesia Pusat Bahasa Edisi IV
 # 
