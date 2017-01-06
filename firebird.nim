@@ -11,8 +11,8 @@
 # ProjectStart: 2016-06-03
 # Todo        : 
 # Pastebin    : 
-# Tested on   : 2016-07-21 against firebird 3.0 Super-Server  with python 2.7.x
-# Last        : 2016-12-09
+# Tested on   : 2017-01-06 against firebird 3.0 Super-Server  with python 2.7.x
+# Last        : 2017-01-06
 # 
 # Programming : qqTop
 # 
@@ -23,7 +23,7 @@
 ## 
 ## Note : Do not change indentation for var. python code
 
-import cx, pythonize , rdstdin,osproc , hashes
+import cx, pythonize , rdstdin, osproc , hashes
 
 type
   Tfb* = tuple[res:seq[seq[string]]] 
@@ -167,7 +167,8 @@ proc getFbPassword*():string =
      result = ""
      let zz = readPasswordFromStdin("Enter Database Password : ")
      let syst = execCmdEX("uname -m")
-     if $syst.output == "x86_64":
+     #echo syst.output
+     if syst.output.startswith("x86_64") :
         if hash(zz) == -4550309748678904198 :  # 64
           curup(1)
           printlnBiCol("Hash 64 Status   : ok . Access granted at " & $localTime() & ".")
@@ -194,7 +195,27 @@ proc getFbPassword*():string =
                 println("Exiting ...",salmon)
                 doFinish()
 
-      
+proc fbUnload*[T](z:T):string =
+  # unpack the cursor into comma delimited fields per row
+  var cursortext = ""
+  for x in z.res:
+        var c = 1
+        for b in x:
+            var b0 = b
+            if b0.contains(spaces(3)):
+                b0 = b0.replace(spaces(3),"")  # remove triple spaces anywhere 
+            if c != x.len():
+                cursortext = cursortext & b0 & ", "
+            else:
+                if b.endswith(",") or b.endswith(", ") == true:
+                   var b1 = b0.strip()
+                   b1.removesuffix(",")
+                   cursortext = cursortext & b1
+                else:
+                   cursortext = cursortext & b0.wordwrap(tw - 10)
+            inc c
+        cursortext = cursortext & "\n" 
+  result = cursortext      
   
 
 proc fdbquery*(qs:string): Tfb =
@@ -237,7 +258,6 @@ res1 = re.sub(r'(?<!\n)\n(?![\n\t])', ' ', res1.replace('\r', ''))
 
 proc doFbShow* [T](z:T) =
   # a quick viewer for firebird select query results
-  
   for x in z.res:
     var c = 1
     for b in x:
@@ -256,7 +276,28 @@ proc doFbShow* [T](z:T) =
           inc c    
     echo()   
   
-
+proc doFbExport* [T](z:T,filename:string) =
+  # a quick exporter for firebird select query results
+  let fn = filename
+  var f: File
+  if open(f, fn, fmAppend):
+   for x in z.res:
+     var c = 1
+     for b in x:
+          var b0 = b
+          if b0.contains(spaces(3)):
+             b0 = b0.replace(spaces(3),"")  # remove triple spaces anywhere 
+          if c != x.len():
+            f.write(b0 & ", ")
+          else:
+            if b.endswith(",") or b.endswith(", ") == true:
+               var b1 = b0.strip()
+               b1.removesuffix(",")
+               f.writeline(b1)
+            else:
+               f.writeline(b0.wordwrap(tw - 10))
+          inc c    
+     echo()   
 
 
 proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
@@ -288,8 +329,7 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
       for item in 0.. <cols:
          if res[row][item].len > maxcolwidth[item]:
                  maxcolwidth[item] = res[row][item].len
-        
- 
+   
   for row in 0.. <reslen:    
       # display the row w/o column marker
       
@@ -390,7 +430,7 @@ def newdatabase(dsn,auser,apassword):
     try:
       cx = fdb.connect(dsn=dsn , user=auser, password=apassword)
     except:
-      cx = fdb.create_database("create database '%s' user '%s' password '%s'" % (dsn,auser,apassword))  
+      cx = fdb.create_database("create database '%s' user '%s' password '%s' page_size 8192 " % (dsn,auser,apassword))  
       cx.commit()
       cx.close()
     return cx 
