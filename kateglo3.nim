@@ -66,7 +66,7 @@
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
 ##
-##   Tested      : on linux only 2015-09-20
+##   Tested      : on linux only 2017-01-14
 ##
 ##
 ##   Programming : qqTop
@@ -270,7 +270,7 @@ disp.register(monitor,proc (m: FSMonitor, ev: MonitorEvent) =
                                     echo()
                                     tc += 2
                                     var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
-                                    printStyled(mm,mm,yellow,{styleUnderscore})
+                                    print(mm,mm,yellow,styled = {styleUnderscore})
                                     decho(2)
                                     tc += 3
                                     for zd in 0.. <maxsta:

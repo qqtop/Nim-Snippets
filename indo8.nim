@@ -1,5 +1,4 @@
 import os,osproc,strutils,parseutils,math,strfmt,rdstdin
-
 import cx, pythonize
 
 # indo8
@@ -16,17 +15,21 @@ import cx, pythonize
 #          
 #          switches ending with p play voice from google
 #  
-# Tested:  nim 0.13.1 
+# Tested:  nim 0.16.0
 # 
 # Requires :
 # 
+#           python 2.7.x  because pythonize requires it
+#
+#           mplayer       to play the voice output
+#
 #           https://github.com/soimort/translate-shell
 #
 #           gnu awk
 #
 #           a working mecab (japanese lexer) installation callable via python
 #
-#           kateglo3 (optional) 
+#           kateglo3 (optional) running in another terminal 
 #           
 #           if kateglo3 is available any indonesian word entered in indo8 will
 #           
@@ -46,12 +49,13 @@ import cx, pythonize
 # 
 # 
 # A rough receipe for installing mecab 0.996 from  https://github.com/taku910/mecab
-# 
+# this may be different for your system and only as a guide .
+
 # tested for :
 # 
 # openSuse13.2
 # opensuseLeap42.1 
-# 
+# openSuse Tumbleweed
 #  
 #    sudo zypper install git     # if not installed already
 # 
@@ -93,11 +97,8 @@ import cx, pythonize
 #  of the downloaded package.
 #
 
-
-
 let i7file = "/dev/shm/indo7q.txt"    # change path as required keep filename
-  
-  
+
 var VERSION = "1.6.5"
 setControlCHook(handler)
 
@@ -111,7 +112,6 @@ proc addrec(sw:string,kata:string,trn:string) =
     inc id
     recBuff.add(@[$id,sw,kata,trn])
 
-
 proc getidrec(idx:string|int):seq[string] =
      ## get a record from recBuff based on id
      var idmax = idx
@@ -122,8 +122,7 @@ proc getidrec(idx:string|int):seq[string] =
         var  yu = recBuff[x - 1] 
         if yu[0] == $idmax:
            result = yu
-  
-  
+
 proc showHist(n:int = idd) =
    ## show last n records in recBuff
    # for better aligned display we first get the length of the longest rec in recBuff
@@ -141,10 +140,10 @@ proc showHist(n:int = idd) =
      for x in 1.. id:      
        var rx = getidrec(x)
        println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
-       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
+       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite & rx[3])) 
     
    else :
-        for x in id-n+1.. id: 
+        for x in (id - n + 1).. id: 
             var rx = getidrec(x)
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
@@ -168,11 +167,9 @@ proc getidkata(idx:string|int):string =
      ## get last kata of a certain record in recBuff
      result = getidrec(idx)[2]
 
-   
 proc getidtrans(idx:string|int):string =
      ## get last trans of a certain record in recBuff
      result = getidrec(idx)[3]
-
 
 var fin :bool = false
 var switch    = "d" # default set to indonesian:english
@@ -182,10 +179,9 @@ var help = ""
 var bflag : bool = true
 let okswitch = ["","d","dr","e","ev","ep","er","ej","ejp","dj","djp","jd","jdp","a","av","v","ac","acp","p","k","z","cb","h","q"]
 
-  
 var oldword  = ""     # holds last input word/kata
 var oldtrans = ""     # holds the last trans if single line
-var oldrxl   = @[""]  # holds last trans if multiple lines
+var oldrxl   = newSeq[string]()  # holds last trans if multiple lines
 
 var cflag : bool = false
 var hflag : bool = false
@@ -203,7 +199,6 @@ proc dokatax(akatax:string) =
 proc dowordx(akatax:string) =
      printLn(dodgerblue & curlang & "    : " & termwhite & akatax)
      
-     
 proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
@@ -218,12 +213,13 @@ proc doMecab(b:string) =
         execPython("mecab = MeCab.Tagger('-Oyomi')")
         execPython("kata  = mecab.parse(text)")
         nimkata = pythonEnvironment["kata"].depythonify(string)
-        execPython("hira = kata2hira(kata)")
+        execPython("hira = jaconv.kata2hira(kata.encode('utf-8').strip())")
         nimhira = pythonEnvironment["hira"].depythonify(string)
 
 # set up for japanese
-execPython("import MeCab")
-execPython("from jcconv import kata2hira")
+execPython("# coding: utf-8")
+execPython("import MeCab , jaconv")   # new jaconv  pip2 installed
+#execPython("from jcconv import kata2hira")
 
 while fin == false:
         showtop()
@@ -449,6 +445,8 @@ while fin == false:
              echo()
         else: 
           if bflag == true and hflag==false:
+             # consider to use a seq of acmd to iterate over to be more selective in what to output
+             # during multiple language translations and mecab ... not yet implemented
              var rx = execProcess(acmd).strip()
              if zflag == false:
                 oldtrans = $rx      # save these values for redisplaying later
@@ -493,8 +491,7 @@ while fin == false:
                          
           else:
                 println(acmd,truetomato) 
-            
-               
+                          
         if switch in okswitch:
            # only allow good switches 
            oldswitch = switch
