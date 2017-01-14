@@ -12,11 +12,11 @@ import os,cx,httpclient,json,strfmt,strutils,sets,rdstdin
 ##                 http://creativecommons.org/licenses/by-nc-sa/3.0/
 ##                 for other than personal use visit kateglo.com
 ##
-##   Version     : 0.5.0
+##   Version     : 0.7.0
 ##
 ##   ProjectStart: 2015-09-06
 ##
-##   Compiler    : Nim 0.11.3  https://github.com/nim-lang/Nim
+##   Compiler    : Nim 0.16.0  https://github.com/nim-lang/Nim
 ##
 ##   Description : Indonesian - Indonesian  Dictionary
 ##
@@ -25,13 +25,13 @@ import os,cx,httpclient,json,strfmt,strutils,sets,rdstdin
 ##                 with english translation
 ##
 ##
-##                 compile:  nim c kateglo2
+##                 compile:  nim c -d:release kateglo2
 ##
 ##                 run    :  kateglo2
 ##
 ##
 ##
-##                 to stop this program : Ctrl-C
+##                 to stop this program : Ctrl-C   or enter word : quit
 ##
 ##
 ##
@@ -52,7 +52,7 @@ import os,cx,httpclient,json,strfmt,strutils,sets,rdstdin
 ##   Project     : https://github.com/qqtop/Nim-Snippets
 ##
 ##
-##   Tested      : on linux only 2015-09-25
+##   Tested      : on linux only 2017-01-14
 ##
 ##
 ##   Programming : qqTop
@@ -63,8 +63,9 @@ var wflag2:bool = false
 
 proc getData(theWord:string):JsonNode =
     var r:JsonNode
+    var zcli = newHttpClient(timeout = 1000)
     try:
-       r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
+       r = parseJson(zcli.getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
     except JsonParsingError:
        msgr() do : echo "Word " & theWord & "  not defined in kateglo."
        msgr() do : echo "Maybe misspelled or not a root word."
@@ -75,9 +76,9 @@ proc getData(theWord:string):JsonNode =
 
 proc getData2(theWord:string):JsonNode =
     var r:JsonNode
-
+    var zcli = newHttpClient(timeout = 1000)
     try:
-       r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
+       r = parseJson(zcli.getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
 
     except JsonParsingError:
        r = nil
@@ -87,10 +88,9 @@ proc getData2(theWord:string):JsonNode =
        r = nil
        sleepy(1)
        printLn("Timeout 1 sec : Kateglo server was hit too fast",red)
-       r = parseJson(getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
+       r = parseJson(zcli.getContent("http://kateglo.com/api.php?format=json&phrase=" & theWord))
 
     result = r
-
 
 
 var aword = ""
@@ -104,6 +104,8 @@ while true:
       msgc() do: echo "..."
       echo()
       aword = readLineFromStdin("Kata : ")
+      if aword == "quit":
+        doFinish()
 
       let data = getData(aword)
       let sep = ":"
@@ -168,7 +170,7 @@ while true:
                           printLn("Related Phrases",yellowgreen)
                           echo()
                           var mm = "{:>5} {:<14} {}".fmt("No.","Type","Phrase")
-                          printStyled(mm,mm,yellow,{styleUnderscore})
+                          print(mm,mm,yellow,styled = {styleUnderscore})
                           decho(2)
                           for zd in 0.. <maxsta:
                             try:
