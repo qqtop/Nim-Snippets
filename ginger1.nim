@@ -40,10 +40,10 @@ proc dance() =
     var l = random_legs()
    
     var xpos = randomChoice(wd)
-    println(head(),fgr = randcol(),xpos = xpos)
-    println(arms[a],fgr = randcol(),xpos = xpos)
-    println(abdomen(),fgr = randcol(),xpos = xpos)
-    println(legs[l],fgr = randcol(),xpos = xpos)
+    printLn(head(),fgr = randcol(),xpos = xpos)
+    printLn(arms[a],fgr = randcol(),xpos = xpos)
+    printLn(abdomen(),fgr = randcol(),xpos = xpos)
+    printLn(legs[l],fgr = randcol(),xpos = xpos)
  
 proc main() {.async.} = 
   while true :
@@ -67,9 +67,9 @@ while true:
     try:
       runForever()
     except:
-       println("Error occured : ",red)
-       println(getCurrentExceptionMsg(),red)
-       println("Trying to restart loop",peru)
+       printLn("Error occured : ",red)
+       printLn(getCurrentExceptionMsg(),red)
+       printLn("Trying to restart loop",peru)
 
 curdn(th - 8)
 

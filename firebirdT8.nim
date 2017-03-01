@@ -11,12 +11,12 @@ connectFdb("192.168.2.4:isocountry3","sysdba", password,"UTF-8") # network conn 
 #connectFdb("isocountry3","sysdba", "","UTF-8") # embedded connection no password maybe ok  
 
 decho(2)
-println("isocountry example",yellowgreen)
+printLn("isocountry example",yellowgreen)
 
 
 proc doit(n:int) =  
  for x in 1.. n:
-  println("Run : " & rightarrow & spaces(2) & $x,dodgerblue) 
+  printLn("Run : " & rightarrow & spaces(2) & $x,dodgerblue) 
   #ISO NAME PRINTABLE_NAME ISO3 NUMCODE 
   let z = fdbquery("select first 5 iso,NAME, PRINTABLE_NAME, ISO3, NUMCODE  from COUNTRY order by rand()")
   doFbShow(z) 

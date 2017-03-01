@@ -62,7 +62,7 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","macro","c
           elif strip(line,true,false).startswith("##")  == true:
             discard
           else:
-            println(line)  
+            printLn(line)  
         
     let fields = line.fastsplit('\t')
     for funcy in funcs:
@@ -102,9 +102,9 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","macro","c
 #              var ss = split(line,"##")
 #              
 #              if ss[1].strip(true,false).startswith(".. code-block"):
-#                 printlnbicol("com:" & ss[1],":",peru,yellowgreen)
+#                 printLnBiCol("com:" & ss[1],":",peru,yellowgreen)
 #              else:                      
-#                 printlnbicol("com:" & ss[1],":",peru,white)
+#                 printLnBiCol("com:" & ss[1],":",peru,white)
  
            
 
@@ -125,8 +125,8 @@ proc main() =
   
     
   if cp.len == 0 and not fileExists(afile) == true:
-      println("quickInfo -  needs a nim file as first parameter",red)
-      println("quickInfo somefile.nim")
+      printLn("quickInfo -  needs a nim file as first parameter",red)
+      printLn("quickInfo somefile.nim")
       doFinish()
   
     
@@ -139,9 +139,9 @@ proc main() =
   showFunc(afile,fc)
  
   decho(3)
-  printlnbicol("Shown items : " & $shown)
-  printlnbicol("File        : " & afile)
-  println(available,rosybrown)
+  printLnBiCol("Shown items : " & $shown)
+  printLnBiCol("File        : " & afile)
+  printLn(available,rosybrown)
  
 
 main()

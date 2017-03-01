@@ -19,15 +19,15 @@ var htmlsource = ""
 var nct = newHttpClient(timeout = 8000)  
   
 if paramCount() < 1:
-  println("Tidak ada kata untuk menelusur tersedia ",red)
-  printlnBiCol("Cara pakai: kbbi makanan")
+  printLn("Tidak ada kata untuk menelusur tersedia ",red)
+  printLnBiCol("Cara pakai: kbbi makanan")
   doFinish()
 else:  
   ct = paramStr(1)
 
 htmlsource = "http://kbbi4.portalbahasa.com/entri/" & ct
 
-hdx(printlnBiCol("Mencari kata : " & ct,":",skyblue,salmon,styled={styleUnderscore}))
+hdx(printLnBiCol("Mencari kata : " & ct,":",skyblue,salmon,styled={styleUnderscore}))
 
 try:  
   ct = nct.getContent(htmlsource)
@@ -43,17 +43,17 @@ try:
                   removeSuffix(x1,"/")
                   x1 = x1.strip()
                   removeSuffix(x1,'"')
-                  println("Description",yellowgreen)
+                  printLn("Description",yellowgreen)
                   var x11 = x1.split("; (")
                   for xx in x11:
                       if xx.contains("(1)") or xx.startswith("(1)"):
-                        if xx.startswith("("): println(xx.strip())
-                        else: println("(" & xx.strip())
+                        if xx.startswith("("): printLn(xx.strip())
+                        else: printLn("(" & xx.strip())
                       else:
                         if x11[0].contains("(1)") or xx.startswith("(1)"):
-                            println("(" & xx.strip()) 
+                            printLn("(" & xx.strip()) 
                         else:
-                            println(xx.strip())
+                            printLn(xx.strip())
                         
                   echo()
                 
@@ -65,8 +65,8 @@ try:
                     removeSuffix(x1,"/")
                     x1 = x1.strip()
                     removeSuffix(x1,'"')
-                    println("Keywords",yellowgreen)
-                    println(x1.split(", definisi")[0])
+                    printLn("Keywords",yellowgreen)
+                    printLn(x1.split(", definisi")[0])
                     echo()      
                 
            else: x1 = ""
@@ -91,7 +91,7 @@ except  ProtocolError:
 except :
     echo "Exception" & getCurrentExceptionMsg()
 finally:
-  println("\n Selesai pencarian kamus KBBI",peru)   
+  printLn("\n Selesai pencarian kamus KBBI",peru)   
                   
 doFinish()                  
                   

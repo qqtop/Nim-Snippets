@@ -94,8 +94,8 @@ template localDsn*(s:string):string =
   if s != "":
       z = "inet://" & localip() & "//" & s
   else:
-      println("Error : no database path specified ",red)
-      println("""Usage : localDsn("datadir/my.fdb")""",red)
+      printLn("Error : no database path specified ",red)
+      printLn("""Usage : localDsn("datadir/my.fdb")""",red)
   z
 
   
@@ -113,7 +113,7 @@ proc showServerInfo*(spassword:string) =
     
     pythonEnvironment["spassword"] = spassword
     decho(3)
-    println(" Firebird Server Information",peru)
+    printLn(" Firebird Server Information",peru)
     dlineln(55)
     echo()
     execPython("con2 = fdb.services.connect('','sysdba',spassword)")
@@ -149,7 +149,7 @@ proc showServerInfo*(spassword:string) =
     for x in 0.. <adnl:
        pythonEnvironment["ax"] = x
        execPython("sadn = str(adn[ax])")
-       printlnBiCol(" Connected         : " & pythonEnvironment["sadn"].depythonify(string),":") 
+       printLnBiCol(" Connected         : " & pythonEnvironment["sadn"].depythonify(string),":") 
     execPython("con2.close()")
 
 proc hashE2*() = 
@@ -171,28 +171,28 @@ proc getFbPassword*():string =
      if syst.output.startswith("x86_64") :
         if hash(zz) == -4550309748678904198 :  # 64
           curup(1)
-          printlnBiCol("Hash 64 Status   : ok . Access granted at " & $localTime() & ".")
+          printLnBiCol("Hash 64 Status   : ok . Access granted at " & $localTime() & ".")
           echo()
           result = zz
         else:
             echo()
-            printlnBiCol("Hash 64 Status   : failed",":",red)
-            printlnBiCol("Access denied at : " & $localTime() & ".",":",red)
-            println("Exiting ...",salmon)
+            printLnBiCol("Hash 64 Status   : failed",":",red)
+            printLnBiCol("Access denied at : " & $localTime() & ".",":",red)
+            printLn("Exiting ...",salmon)
             doFinish()
             
           
      else:     
         if hash(zz) == hash(-696674300) :  # 32
                 curup(1)
-                printlnBiCol("Hash 32 Status   : ok . Access granted at " & $localTime() & ".")
+                printLnBiCol("Hash 32 Status   : ok . Access granted at " & $localTime() & ".")
                 echo()
                 result = zz
         else:
                 echo()
-                printlnBiCol("Hash 32 Status   : failed",":",red)
-                printlnBiCol("Access denied at : " & $localTime() & ".",":",red)
-                println("Exiting ...",salmon)
+                printLnBiCol("Hash 32 Status   : failed",":",red)
+                printLnBiCol("Access denied at : " & $localTime() & ".",":",red)
+                printLn("Exiting ...",salmon)
                 doFinish()
 
 proc fbUnload*[T](z:T):string =
@@ -270,9 +270,9 @@ proc doFbShow* [T](z:T) =
             if b.endswith(",") or b.endswith(", ") == true:
                var b1 = b0.strip()
                b1.removesuffix(",")
-               println(b1,rosybrown)
+               printLn(b1,rosybrown)
             else:
-               println(b0.wordwrap(tw - 10))
+               printLn(b0.wordwrap(tw - 10))
           inc c    
     echo()   
   
@@ -371,16 +371,16 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
                            removeSuffix(ssokitem[0],"\n")
         
                       ssokitem[0] = ssokitem[0].strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\n"," ")
-                      println(dodgerblue & rightarrow & lightgrey & ssokitem[0],xpos = nxpos - 1)
+                      printLn(dodgerblue & rightarrow & lightgrey & ssokitem[0],xpos = nxpos - 1)
                      
                      
                 
                 # try to put blue end marker indicating end of longitem
                 if slongitem.high == aitem :
                     if nxpos + maxcolwidth[item] > tw - 2:
-                        println("|",lightskyblue,xpos = tw - 2)
+                        printLn("|",lightskyblue,xpos = tw - 2)
                     else:
-                        println("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
+                        printLn("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
                 else:
                     discard 
          
@@ -482,7 +482,7 @@ proc allviews*() =
  
 proc allindexes*() =  
    printLn("\nIndexes in Db ", salmon,styled = {styleUnderScore}, substr = "Indexes in Db ")
-   println(rightarrow & "Name, UniqueFlag, Table, Field",dodgerblue)
+   printLn(rightarrow & "Name, UniqueFlag, Table, Field",dodgerblue)
    echo()
    doFbShow(fdbquery("select i.rdb$index_name,i.rdb$unique_flag,i.rdb$relation_name, s.rdb$field_name from rdb$indices i, rdb$index_segments s where  i.rdb$index_name=s.rdb$index_name and  i.rdb$index_name not like 'RDB$%'"))
   
@@ -499,7 +499,7 @@ usx = acon.db_info(fdb.isc_info_user_names)
 usxs = str(usx)
      """)
      var usx = pythonEnvironment["usxs"].depythonify(string)
-     printlnBiCol("Users : " & usx)
+     printLnBiCol("Users : " & usx)
    
  
 proc secusers*() = 
@@ -555,7 +555,7 @@ acon.close()
 # some utility queries for dispaly only
 
 proc showRowCount*() =
-   println("Rows count for all tables in current database ",salmon)
+   printLn("Rows count for all tables in current database ",salmon)
    doFbShow(fdbquery(countall))
 
 
