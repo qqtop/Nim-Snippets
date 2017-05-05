@@ -1,14 +1,11 @@
 # Nim-Snippets
 
-Collection of experiments , short programs and libraries in Nim
+Collection of experiments , trials , short programs and libraries in Nim
 
-Tested on linux only.
+For linux only.
 
 
 For cx color utilities see https://github.com/qqtop/NimCx 
 
-Screenshot from updateNimCompiler
-
-![Image](../master/updatecompiler.png?raw=true)
 
 Have Fun !

@@ -68,14 +68,14 @@ proc showHist(n:int = idd) =
    if id < n:
      for x in 1.. id:      
        var rx = getidrec(x)
-       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
-       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
+       printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
+       printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
     
    else :
         for x in id-n+1.. id: 
             var rx = getidrec(x)
-            println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
-            println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
+            printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
+            printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
             
    dlineln(tw - 1,"-",pastelgreen)
      
@@ -83,7 +83,7 @@ proc showHist(n:int = idd) =
 proc showHistSingle(n:int) =
        var rx = getidrec(n)
        var xpos = tw - 10 - rx[0].len - rx[1].len - rx[2].len
-       println("{:>4} {:<4} {:<50} {}".fmt(yellowgreen & rx[0],termwhite & rx[1],truetomato & rx[2], termwhite & rx[3]),xpos = xpos)
+       printLn("{:>4} {:<4} {:<50} {}".fmt(yellowgreen & rx[0],termwhite & rx[1],truetomato & rx[2], termwhite & rx[3]),xpos = xpos)
     
   
 proc getidswitch(idx:string|int):string =
@@ -144,7 +144,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
+        printBiCol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
         echo()
         print("_________^",red)
         hlineln(tw - 10,pastelgreen)  
@@ -173,18 +173,18 @@ proc doClip(ms:int = 100) {.async.} =
          if cp.startswith(".Stop") == true and stopflag == false :  
             stopflag = true
             curup(1)
-            printlnBiCol(rightarrow & " Status : stopped",":",greenyellow,red,xpos = 30)           
+            printLnBiCol(rightarrow & " Status : stopped",":",greenyellow,red,xpos = 30)           
             
          
          elif cp.startswith(".Start") == true and stopflag == true:  
             stopflag = false
             curup(1)
-            printlnBiCol(rightarrow & " Status : ok" & spaces(6),":",greenyellow,skyblue,xpos = 30)
+            printLnBiCol(rightarrow & " Status : ok" & spaces(6),":",greenyellow,skyblue,xpos = 30)
          
          
          elif cp.startswith(".Quit") == true :  
             curup(1)
-            printlnBiCol(rightarrow & " Status : exiting" & spaces(6),":",greenyellow,salmon,xpos = 30)
+            printLnBiCol(rightarrow & " Status : exiting" & spaces(6),":",greenyellow,salmon,xpos = 30)
             quit(0) 
          
             
@@ -202,7 +202,7 @@ proc doClip(ms:int = 100) {.async.} =
                       echo()
                       print(greenyellow & "ClipB" & dodgerblue & "  : " & termwhite)
                       for cpline in cpl:
-                          println(cpline,powderblue,xpos = 10)                  
+                          printLn(cpline,powderblue,xpos = 10)                  
                       oldcpl = cpl
                 await sleepAsync(ms)
                                                            
@@ -223,29 +223,29 @@ proc doClip(ms:int = 100) {.async.} =
                               if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                   echo()
                                   doMecab(rx)
-                                  println(nimhira,pastelgreen,xpos = 10)
+                                  printLn(nimhira,pastelgreen,xpos = 10)
                               
                           else:
                                   printLn(mediumspringgreen & "Trans" & dodgerblue & "  : " & termwhite)
                                   for rxline in rxl:
                                       
-                                      println(rxline,yellowgreen,xpos = 10)
+                                      printLn(rxline,yellowgreen,xpos = 10)
                                       
                                       if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                           if rxl.len == 2:
                                                 doMecab(rxline)
-                                                println(nimhira,pastelgreen,xpos = 10)
+                                                printLn(nimhira,pastelgreen,xpos = 10)
                                           else:      
                                                 doMecab(rxline)
-                                                println(nimhira,pastelgreen,xpos = 3) 
+                                                printLn(nimhira,pastelgreen,xpos = 3) 
                           echo()
                           hlineln(80,truetomato)
                           printBiCol(".Start | .Stop ","|",lime,truetomato)
-                          println("| .Quit ",yellow)
+                          printLn("| .Quit ",yellow)
                           
                           
                 else:
-                        println(acmd,truetomato) 
+                        printLn(acmd,truetomato) 
               
                    
                  

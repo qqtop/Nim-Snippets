@@ -10,7 +10,7 @@ import cx,math,rdstdin,osproc
 
 
 
-hdx(println("Welcome to quickMortgage ",randcol()))
+hdx(printLn("Welcome to quickMortgage ",randcol()))
 echo()
 
 var principal = 0.00
@@ -50,16 +50,16 @@ var monthly_interest = percent_interest/(100.0 * 12.0)
 
 var monthly_payment = principal * (monthly_interest / (1.0 - (pow(1.0 + monthly_interest,-payment_number))))
 
-printlnBiCol("Total loan     : " & ff2(principal,2))
-printlnBiCol("Interest       : " & ff2(percent_interest) & "%")
-printlnBiCol("Years          : " & ff2(myears,2))
-printlnBiCol("Payments       : " & ff2(payment_number,2))
-printlnBiCol("Payment/month  : " & ff2(monthly_payment,2))
+printLnBiCol("Total loan     : " & ff2(principal,2))
+printLnBiCol("Interest       : " & ff2(percent_interest) & "%")
+printLnBiCol("Years          : " & ff2(myears,2))
+printLnBiCol("Payments       : " & ff2(payment_number,2))
+printLnBiCol("Payment/month  : " & ff2(monthly_payment,2))
 
 hlineln(80)
 
-printlnBiCol("Total cost     : " & ff2(payment_number * monthly_payment,2))
-printlnBiCol("Total interest : " & ff2(payment_number * monthly_payment - principal,2))
+printLnBiCol("Total cost     : " & ff2(payment_number * monthly_payment,2))
+printLnBiCol("Total interest : " & ff2(payment_number * monthly_payment - principal,2))
 
 hlineln(80)
 
@@ -70,12 +70,12 @@ var a = pow(1.0 + monthly_interest,payments) - 1.0
 var b = pow(1.0 + monthly_interest,payment_number) - 1.0
 var rem_principal = principal * (1.0 - (a / b))
 
-printlnBiCol("Remaining principal               : " & ff2(rem_principal,2) & " after " & ff2(payments,2) & " payments" )
-printlnBiCol("Paid sofar a total of             : " & ff2(monthly_payment * payments,2))
+printLnBiCol("Remaining principal               : " & ff2(rem_principal,2) & " after " & ff2(payments,2) & " payments" )
+printLnBiCol("Paid sofar a total of             : " & ff2(monthly_payment * payments,2))
 var togo = payment_number * monthly_payment - monthly_payment * payments
-printlnBiCol("Still to pay principal + interest : " & ff2(togo,2))
+printLnBiCol("Still to pay principal + interest : " & ff2(togo,2))
 
 
 decho(2)
-println("Thank you for using quickMortgage.",randcol())
+printLn("Thank you for using quickMortgage.",randcol())
 doFinish()

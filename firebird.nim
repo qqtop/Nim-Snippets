@@ -2,8 +2,8 @@
 # Program     : firebird.nim  
 # Status      : Development 
 # License     : MIT opensource  
-# Version     : 0.0.3
-# Compiler    : Nim 0.14.3
+# Version     : 0.0.4
+# Compiler    : Nim 0.15.3
 # Description : Conveniently access firebird database via python from nim
 #               Needs a firebird installation and the python fdb.py driver installed 
 #               ( pip install fdb )
@@ -11,8 +11,8 @@
 # ProjectStart: 2016-06-03
 # Todo        : 
 # Pastebin    : 
-# Tested on   : 2016-07-21 against firebird 3.0 Super-Server  with python 2.7.x
-# Last        : 2016-10-16
+# Tested on   : 2017-01-06 against firebird 3.0 Super-Server  with python 2.7.x
+# Last        : 2017-01-06
 # 
 # Programming : qqTop
 # 
@@ -23,7 +23,7 @@
 ## 
 ## Note : Do not change indentation for var. python code
 
-import cx, pythonize
+import cx, pythonize , rdstdin, osproc , hashes
 
 type
   Tfb* = tuple[res:seq[seq[string]]] 
@@ -94,8 +94,8 @@ template localDsn*(s:string):string =
   if s != "":
       z = "inet://" & localip() & "//" & s
   else:
-      println("Error : no database path specified ",red)
-      println("""Usage : localDsn("datadir/my.fdb")""",red)
+      printLn("Error : no database path specified ",red)
+      printLn("""Usage : localDsn("datadir/my.fdb")""",red)
   z
 
   
@@ -113,7 +113,7 @@ proc showServerInfo*(spassword:string) =
     
     pythonEnvironment["spassword"] = spassword
     decho(3)
-    println(" Firebird Server Information",peru)
+    printLn(" Firebird Server Information",peru)
     dlineln(55)
     echo()
     execPython("con2 = fdb.services.connect('','sysdba',spassword)")
@@ -149,9 +149,73 @@ proc showServerInfo*(spassword:string) =
     for x in 0.. <adnl:
        pythonEnvironment["ax"] = x
        execPython("sadn = str(adn[ax])")
-       printlnBiCol(" Connected         : " & pythonEnvironment["sadn"].depythonify(string),":") 
+       printLnBiCol(" Connected         : " & pythonEnvironment["sadn"].depythonify(string),":") 
     execPython("con2.close()")
 
+proc hashE2*() = 
+     var zz = readLineFromStdin("Create hash for a string : ")
+     echo hash(zz)
+
+proc getFbPassword*():string =
+     ## getFbPassword
+     ## 
+     ## prompts user for the firebird password
+     ##  
+     # here we can do a double entry lock
+     # using a hash for the cryptfile consider this for a mobile solution
+     # create a hash for your password with hashE2   
+     result = ""
+     let zz = readPasswordFromStdin("Enter Database Password : ")
+     let syst = execCmdEX("uname -m")
+     #echo syst.output
+     if syst.output.startswith("x86_64") :
+        if hash(zz) == -4550309748678904198 :  # 64
+          curup(1)
+          printLnBiCol("Hash 64 Status   : ok . Access granted at " & $localTime() & ".")
+          echo()
+          result = zz
+        else:
+            echo()
+            printLnBiCol("Hash 64 Status   : failed",":",red)
+            printLnBiCol("Access denied at : " & $localTime() & ".",":",red)
+            printLn("Exiting ...",salmon)
+            doFinish()
+            
+          
+     else:     
+        if hash(zz) == hash(-696674300) :  # 32
+                curup(1)
+                printLnBiCol("Hash 32 Status   : ok . Access granted at " & $localTime() & ".")
+                echo()
+                result = zz
+        else:
+                echo()
+                printLnBiCol("Hash 32 Status   : failed",":",red)
+                printLnBiCol("Access denied at : " & $localTime() & ".",":",red)
+                printLn("Exiting ...",salmon)
+                doFinish()
+
+proc fbUnload*[T](z:T):string =
+  # unpack the cursor into comma delimited fields per row
+  var cursortext = ""
+  for x in z.res:
+        var c = 1
+        for b in x:
+            var b0 = b
+            if b0.contains(spaces(3)):
+                b0 = b0.replace(spaces(3),"")  # remove triple spaces anywhere 
+            if c != x.len():
+                cursortext = cursortext & b0 & ", "
+            else:
+                if b.endswith(",") or b.endswith(", ") == true:
+                   var b1 = b0.strip()
+                   b1.removesuffix(",")
+                   cursortext = cursortext & b1
+                else:
+                   cursortext = cursortext & b0.wordwrap(tw - 10)
+            inc c
+        cursortext = cursortext & "\n" 
+  result = cursortext      
   
 
 proc fdbquery*(qs:string): Tfb =
@@ -194,7 +258,6 @@ res1 = re.sub(r'(?<!\n)\n(?![\n\t])', ' ', res1.replace('\r', ''))
 
 proc doFbShow* [T](z:T) =
   # a quick viewer for firebird select query results
-  
   for x in z.res:
     var c = 1
     for b in x:
@@ -207,13 +270,34 @@ proc doFbShow* [T](z:T) =
             if b.endswith(",") or b.endswith(", ") == true:
                var b1 = b0.strip()
                b1.removesuffix(",")
-               println(b1,rosybrown)
+               printLn(b1,rosybrown)
             else:
-               println(b0.wordwrap(tw - 10))
+               printLn(b0.wordwrap(tw - 10))
           inc c    
     echo()   
   
-
+proc doFbExport* [T](z:T,filename:string) =
+  # a quick exporter for firebird select query results
+  let fn = filename
+  var f: File
+  if open(f, fn, fmAppend):
+   for x in z.res:
+     var c = 1
+     for b in x:
+          var b0 = b
+          if b0.contains(spaces(3)):
+             b0 = b0.replace(spaces(3),"")  # remove triple spaces anywhere 
+          if c != x.len():
+            f.write(b0 & ", ")
+          else:
+            if b.endswith(",") or b.endswith(", ") == true:
+               var b1 = b0.strip()
+               b1.removesuffix(",")
+               f.writeline(b1)
+            else:
+               f.writeline(b0.wordwrap(tw - 10))
+          inc c    
+     echo()   
 
 
 proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
@@ -245,8 +329,7 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
       for item in 0.. <cols:
          if res[row][item].len > maxcolwidth[item]:
                  maxcolwidth[item] = res[row][item].len
-        
- 
+   
   for row in 0.. <reslen:    
       # display the row w/o column marker
       
@@ -288,16 +371,16 @@ proc doFbPretty* (z:Tfb,xpos:int = 1,col:string = yellowgreen,sep:bool = true) =
                            removeSuffix(ssokitem[0],"\n")
         
                       ssokitem[0] = ssokitem[0].strip(true,true).replace("\t"," ").replace("\f"," ").replace("\v"," ").replace("\r"," ").replace("\n"," ")
-                      println(dodgerblue & rightarrow & lightgrey & ssokitem[0],xpos = nxpos - 1)
+                      printLn(dodgerblue & rightarrow & lightgrey & ssokitem[0],xpos = nxpos - 1)
                      
                      
                 
                 # try to put blue end marker indicating end of longitem
                 if slongitem.high == aitem :
                     if nxpos + maxcolwidth[item] > tw - 2:
-                        println("|",lightskyblue,xpos = tw - 2)
+                        printLn("|",lightskyblue,xpos = tw - 2)
                     else:
-                        println("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
+                        printLn("|",lightskyblue,xpos = nxpos + maxcolwidth[item])
                 else:
                     discard 
          
@@ -347,7 +430,7 @@ def newdatabase(dsn,auser,apassword):
     try:
       cx = fdb.connect(dsn=dsn , user=auser, password=apassword)
     except:
-      cx = fdb.create_database("create database '%s' user '%s' password '%s'" % (dsn,auser,apassword))  
+      cx = fdb.create_database("create database '%s' user '%s' password '%s' page_size 8192 " % (dsn,auser,apassword))  
       cx.commit()
       cx.close()
     return cx 
@@ -399,7 +482,7 @@ proc allviews*() =
  
 proc allindexes*() =  
    printLn("\nIndexes in Db ", salmon,styled = {styleUnderScore}, substr = "Indexes in Db ")
-   println(rightarrow & "Name, UniqueFlag, Table, Field",dodgerblue)
+   printLn(rightarrow & "Name, UniqueFlag, Table, Field",dodgerblue)
    echo()
    doFbShow(fdbquery("select i.rdb$index_name,i.rdb$unique_flag,i.rdb$relation_name, s.rdb$field_name from rdb$indices i, rdb$index_segments s where  i.rdb$index_name=s.rdb$index_name and  i.rdb$index_name not like 'RDB$%'"))
   
@@ -416,14 +499,15 @@ usx = acon.db_info(fdb.isc_info_user_names)
 usxs = str(usx)
      """)
      var usx = pythonEnvironment["usxs"].depythonify(string)
-     printlnBiCol("Users : " & usx)
+     printLnBiCol("Users : " & usx)
    
  
 proc secusers*() = 
      # the newer fb3 related user query
      printLn("\nSecusers  Authentication", salmon,styled = {styleUnderScore},substr = "Secusers  Authentication")
      echo()
-     doFbShow(fdbquery("select SEC$USER_NAME, SEC$PLUGIN from sec$users")) 
+     doFbShow(fdbquery("select SEC$USER_NAME, SEC$PLUGIN from sec$users"))
+     
  
   
 proc allinfo*() =
@@ -456,22 +540,23 @@ for un in acon.db_info(fdb.isc_info_user_names):
 print '\n'        
     """)
    
-
+proc allcolumns*() =
+   printLn("\nColumns", salmon,styled = {styleUnderScore},substr = "Columns")
+   echo()
+   doFbShow(fdbquery("select f.rdb$relation_name, f.rdb$field_name from rdb$relation_fields f join rdb$relations r on f.rdb$relation_name = r.rdb$relation_name and r.rdb$view_blr is null and (r.rdb$system_flag is null or r.rdb$system_flag = 0) order by 1, f.rdb$field_position"))
+     
 proc closecons*() =
    # close down current database connection
    execPython("""
 acon.commit()
 acon.close()
-   """)
-  
-
+   """)  
 
 # some utility queries for dispaly only
 
 proc showRowCount*() =
-   println("Rows count for all tables in current database ",salmon)
+   printLn("Rows count for all tables in current database ",salmon)
    doFbShow(fdbquery(countall))
-
 
 
 proc showOds*() = 
