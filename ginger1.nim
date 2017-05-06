@@ -3,7 +3,6 @@
 # Here after some spruce up in Nim
 
 import cx
-import "random-0.5.3/random"
 import asyncdispatch,net
 
 
@@ -18,14 +17,15 @@ var wd =  createSeqInt(200,1,tw - 5)
 proc random_legs(): int = 
     var x = -1 
     while (x < 0 == true) or (x > 2 == true):
-      x = randomChoice(lg)
+      x = getrndint(0,2)
+      
     result = x
     
 proc random_arms(): int = 
     var x = -1 
     while (x < 0 == true) or (x > 6 == true):
-      x = randomChoice(am)
-    result = x     
+      x = getrndint(0,6)
+    result = 2     
 
 proc head():string =   "  O  "
   
@@ -39,7 +39,7 @@ proc dance() =
     var a = random_arms()
     var l = random_legs()
    
-    var xpos = randomChoice(wd)
+    var xpos = getrndint(1,tw - 5)
     printLn(head(),fgr = randcol(),xpos = xpos)
     printLn(arms[a],fgr = randcol(),xpos = xpos)
     printLn(abdomen(),fgr = randcol(),xpos = xpos)
@@ -72,4 +72,3 @@ while true:
        printLn("Trying to restart loop",peru)
 
 curdn(th - 8)
-
