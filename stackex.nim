@@ -1,4 +1,4 @@
-import cx,httpclient, os, streams, xmltree, parsexml, xmlparser
+import nimcx,httpclient, os, streams, xmltree, parsexml, xmlparser
 
 # stackexchange feed viewer
 # based on idea found in nim gitter
@@ -21,24 +21,24 @@ for line in splitLines($entries):
                                                aline = aline.replace("&amp;gt;",">")
                                                aline = aline.replace("&amp;lt;","<")
                                                aline = aline.replace("&#x2F;","/")
-                                               printLnBiCol("\n" & "Title     : " & aline,":",yellowgreen,truetomato)
+                                               printLnBiCol("\n" & "Title     : " & aline,yellowgreen,truetomato,":",0,false,{})
   elif line.contains("<name>"): 
                                aline = aline.replace("</name>","")
                                aline = aline.replace("<name>","")
-                               printLnBiCol("Author    :   " & aline.strip(),":",yellowgreen,steelblue,xpos = 1)
+                               printLnBiCol("Author    :   " & aline.strip(),yellowgreen,steelblue,":",10,false,{})
   elif line.contains("""<link rel="alternate" href=""") : 
                                aline = aline.replace("""<link rel="alternate" href="""","")
                                aline = aline.replace("""" />""","")
-                               printLnBiCol("Link      :  " & " " & aline.strip(),":",yellowgreen,pastelyellow)
+                               printLnBiCol("Link      :  " & " " & aline.strip(),yellowgreen,pastelyellow,":",0,false,{})
   elif line.contains("<uri>"): discard
   elif line.contains("<published>"): 
                                aline = aline.replace("</published>","")
                                aline = aline.replace("<published>","")
-                               printLnBiCol("Published : " & aline,":",yellowgreen,pastelgreen)
+                               printLnBiCol("Published : " & aline,yellowgreen,pastelgreen,":",0,false,{})
   elif line.contains("<updated>"): 
                                aline = aline.replace("</updated>","")
                                aline = aline.replace("<updated>","")
-                               printLnBiCol("Updated   : " & aline,":",yellowgreen,pastelgreen)
+                               printLnBiCol("Updated   : " & aline,yellowgreen,pastelgreen,":",0,false,{})
   elif line.contains("<summary type="): 
                                aline = aline.replace("""<summary type="html">""","")
                                aline = aline.replace("&quot;","'")

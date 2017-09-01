@@ -1,6 +1,6 @@
 import math
  
-proc distance_on_unit_sphere(lat1, long1, lat2, long2):float =
+proc distance_on_unit_sphere(lat1, long1, lat2, long2:float):float =
  
     # adapted from 
     # http://www.johndcook.com/blog/python_longitude_latitude/

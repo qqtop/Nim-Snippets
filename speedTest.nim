@@ -1,4 +1,4 @@
-import cx,httpclient
+import nimcx,httpclient
 
 var client = newHttpClient()
 var url = "http://speedtest-ams2.digitalocean.com/100mb.test"

@@ -1,4 +1,4 @@
-import cx,strutils
+import nimcx
 
 # Attention ! Gnu traffic ahead !
 # The absolute must have gnu's ! Currently busy running about .
@@ -79,7 +79,7 @@ proc gnuMe(j:int,xpos:int = 10) =
        
        
       nxpos = j - 25 
-      curup(getrandomint(6,20))
+      curup(getrndint(6,20))
       rainbow2("\n        WWWWWW||WWWWWW\n",xpos = nxpos)
       rainbow2("           W W W||W W W \n",xpos = nxpos)
       rainbow2(unpa(reverseMe("         ||                \n")),xpos = nxpos)
@@ -93,7 +93,7 @@ proc gnuMe(j:int,xpos:int = 10) =
         
       #gnu1
       nn = 45
-      curup(getrandomint(10,20))
+      curup(getrndint(10,20))
       rainbow2("\n WWWWWW||WWWWWW\n",xpos = xpos + nn)
       rainbow2("   W W W||W W W \n",xpos = xpos + nn)
       rainbow2("        || \n",xpos = xpos + nn)

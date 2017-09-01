@@ -1,4 +1,4 @@
-import cx,os,osproc
+import nimcx,os,osproc
 
 # wifi scanner  (requires root password)
 # requires iwlist and iw installed
@@ -13,13 +13,13 @@ proc scan(wifiinterface:string) =
      for line in outp.splitlines():
         if line.contains("Cell "):
             echo()
-            printLnBiCol(line.strip(),":",lightseagreen,styled={styleReverse},xpos=16)
+            printLnBiCol(line.strip(),lightseagreen,termwhite,":",60,false,{styleReverse})
         elif line.contains("key:off"):
            printLn(line,red)
         elif line.contains("key:on")  :
            printLn(line,yellowgreen)
         elif line.contains("ESSID")  :
-           printLnBiCol(line,":",peru)
+           printLnBiCol(line,":",peru,termwhite,":",0,false,{})
         else:
            printLn(line)
    else:

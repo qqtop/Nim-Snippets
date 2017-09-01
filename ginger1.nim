@@ -2,7 +2,7 @@
 # BASED ON : https://github.com/undecided/gingerbread-man/blob/master/dance.rb
 # Here after some spruce up in Nim
 
-import cx
+import nimcx
 import asyncdispatch,net
 
 

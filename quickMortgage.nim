@@ -1,4 +1,4 @@
-import cx,math,rdstdin,osproc
+import nimcx,math,rdstdin,osproc
 
 # quickMortgage
 # 

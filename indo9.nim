@@ -1,21 +1,23 @@
-import os,osproc,strutils,parseutils,math,strfmt,rdstdin
+import os,osproc,parseutils,math,strfmt,rdstdin
 import asyncDispatch, asyncnet
-import cx, pythonize
+import nimcx, pythonize
 
 # indo9   - clipboard translate utility
-# 
+#           works now with indo8
 # 
 # Requires : gawk,transhell,xclip
-#            python with mecab and jcconv module installed  for japanese 
+#            python with mecab and jcconv module installed for japanese 
 # 
 # selecting some text in a website will translate from any language to english
 # using transhell -w mode
 # exit program Ctrl-C
+#
 # to start stop the clipboard reading use mouse to select .Start or .Stop words shown
  
 # todo allow different switches 
 
 # some procs and vars currently unused , but maybe used in future 
+#
 
 
 var rx = ""
@@ -26,7 +28,7 @@ var switch = "cb"
 let i7file = "/dev/shm/indo7q.txt"    # change path as required keep filename
   
   
-var VERSION = "1.6.7 dev"
+var VERSION = "1.6.8 dev"
 setControlCHook(handler)
 
 var recBuff = newSeq[seq[string]]()
@@ -68,14 +70,14 @@ proc showHist(n:int = idd) =
    if id < n:
      for x in 1.. id:      
        var rx = getidrec(x)
-       printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
-       printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
+       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
+       println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
     
    else :
         for x in id-n+1.. id: 
             var rx = getidrec(x)
-            printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
-            printLn("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
+            println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
+            println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
             
    dlineln(tw - 1,"-",pastelgreen)
      
@@ -83,7 +85,7 @@ proc showHist(n:int = idd) =
 proc showHistSingle(n:int) =
        var rx = getidrec(n)
        var xpos = tw - 10 - rx[0].len - rx[1].len - rx[2].len
-       printLn("{:>4} {:<4} {:<50} {}".fmt(yellowgreen & rx[0],termwhite & rx[1],truetomato & rx[2], termwhite & rx[3]),xpos = xpos)
+       println("{:>4} {:<4} {:<50} {}".fmt(yellowgreen & rx[0],termwhite & rx[1],truetomato & rx[2], termwhite & rx[3]),xpos = xpos)
     
   
 proc getidswitch(idx:string|int):string =
@@ -144,7 +146,7 @@ proc showTop()=
         clearup()
         print("{:<9}".fmt("Active : "), moccasin)
         print("{:<4}".fmt(switch),cyan)
-        printBiCol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"),":")
+        printBicol("{}".fmt("Switches: d,dr,p,e,ep,er,v,ev,ej,ejp,dj,djp,a,av,ac,acp,p,k,z,cb,h=help,q=quit"))
         echo()
         print("_________^",red)
         hlineln(tw - 10,pastelgreen)  
@@ -158,36 +160,53 @@ proc doMecab(b:string) =
         nimhira = pythonEnvironment["hira"].depythonify(string)
 
 # set up for japanese
-execPython("import MeCab")
-execPython("from jcconv import kata2hira")
+execPython("""
+import MeCab
+from jcconv import kata2hira
+""")
 
-
+proc doPrompt() =
+      echo()
+      hlineln(80,truetomato)
+      printBiCol(" .Start | .Stop | .Input ","|",lime,truetomato,":",0,false,{})
+      println("| .Quit ",salmon)
+      
 proc doClip(ms:int = 100) {.async.} =
      
     while true:        
-            
-          
+   
          cp = checkClip()
          cp = strip(cp,true,false)
             
          if cp.startswith(".Stop") == true and stopflag == false :  
             stopflag = true
             curup(1)
-            printLnBiCol(rightarrow & " Status : stopped",":",greenyellow,red,xpos = 30)           
-            
+            printlnBiCol(rightarrow & " Status : stopped",greenyellow,red,":",40,false,{})           
+            # we are getting high cpu upon stop 
          
          elif cp.startswith(".Start") == true and stopflag == true:  
             stopflag = false
             curup(1)
-            printLnBiCol(rightarrow & " Status : ok" & spaces(6),":",greenyellow,skyblue,xpos = 30)
+            printlnBiCol(rightarrow & " Status : ok" & spaces(6),greenyellow,skyblue,":",40,false,{})
          
+         
+         elif cp.startswith(".Input") == true and stopflag == false:  
+            stopflag = true
+            curup(1)
+            printlnBiCol(rightarrow & " Status : input" & spaces(6),greenyellow,skyblue,":",40,false,{})
+            # we call indo8 in case we want to manually input words
+            discard execCMD("indo8")
+            cleanscreen()
+            echo()
+            println(" Manual input finished . Please select menu item below.\n",lightsalmon)
+            doPrompt()
          
          elif cp.startswith(".Quit") == true :  
             curup(1)
-            printLnBiCol(rightarrow & " Status : exiting" & spaces(6),":",greenyellow,salmon,xpos = 30)
+            printlnBiCol(rightarrow & " Status : exiting" & spaces(6),greenyellow,salmon,":",40,false,{})
             quit(0) 
-         
-            
+          
+                   
          else : discard 
          
             
@@ -202,11 +221,11 @@ proc doClip(ms:int = 100) {.async.} =
                       echo()
                       print(greenyellow & "ClipB" & dodgerblue & "  : " & termwhite)
                       for cpline in cpl:
-                          printLn(cpline,powderblue,xpos = 10)                  
+                          println(cpline,powderblue,xpos = 10)                  
                       oldcpl = cpl
                 await sleepAsync(ms)
                                                            
-                if bflag == true and hflag==false:
+                if bflag == true and hflag == false:
                     
                     rx = execProcess(acmd).strip()  # here the trans is executed
                     if $rx == oldtrans:
@@ -223,34 +242,40 @@ proc doClip(ms:int = 100) {.async.} =
                               if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                   echo()
                                   doMecab(rx)
-                                  printLn(nimhira,pastelgreen,xpos = 10)
+                                  println(nimhira,pastelgreen,xpos = 10)
                               
                           else:
                                   printLn(mediumspringgreen & "Trans" & dodgerblue & "  : " & termwhite)
                                   for rxline in rxl:
                                       
-                                      printLn(rxline,yellowgreen,xpos = 10)
+                                      println(rxline,yellowgreen,xpos = 10)
                                       
                                       if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                           if rxl.len == 2:
                                                 doMecab(rxline)
-                                                printLn(nimhira,pastelgreen,xpos = 10)
+                                                println(nimhira,pastelgreen,xpos = 10)
                                           else:      
                                                 doMecab(rxline)
-                                                printLn(nimhira,pastelgreen,xpos = 3) 
-                          echo()
-                          hlineln(80,truetomato)
-                          printBiCol(".Start | .Stop ","|",lime,truetomato)
-                          printLn("| .Quit ",yellow)
-                          
+                                                println(nimhira,pastelgreen,xpos = 3) 
+                          doprompt()
+                         
+                                                   
                           
                 else:
-                        printLn(acmd,truetomato) 
+                        println(acmd,truetomato) 
               
-                   
-                 
+         else:
+               await sleepAsync(ms * 10)                   
       
 asyncCheck doClip()
-runForever()
+
+while true:
+    try:
+       runForever()
+    except:
+       println("Error occured : ",red)
+       println(getCurrentExceptionMsg(),red)
+       println("Trying to restart loop",peru)
+
 
 

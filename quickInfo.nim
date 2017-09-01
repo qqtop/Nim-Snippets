@@ -5,13 +5,13 @@
 ##
 ##   License     : MIT opensource
 ##
-##   Version     : 0.8.0
+##   Version     : 0.9.0
 ##
 ##   ProjectStart: 2015-08-26
 ##
-##   Latest      : 2016-08-31
+##   Latest      : 2017-08-20
 ##
-##   Compiler    : Nim 0.14.3
+##   Compiler    : Nim 0.17.1
 ##
 ##   Description : proc,template,const etc. function lister of nim programs 
 ##   
@@ -23,7 +23,7 @@
 ##   Run         : quickInfo somefile.nim  proc template    
 ##                 quickInfo somefile.nim  |grep printBiCol
 ##                                       
-##   Requires    : cx.nim 
+##   Requires    : nimcx.nim 
 ##   
 ##                 
 ##   Project     : https://github.com/qqtop/Nim-Snippets
@@ -39,11 +39,11 @@
 ##   
 ##
 
-import os,strutils,cx
+import os,strutils,nimcx
     
 from memfiles import open, lines
 
-const QUICKINFOVERSION = 0.8
+const QUICKINFOVERSION = 0.9
 const available = "Available   : proc,template,macro,converter,var,let,const,type,from,import,method"
 
 var blflag:bool = false
@@ -90,7 +90,7 @@ proc showFunc*(fname: string,funcs: seq[string] = @["proc","template","macro","c
                  
         else:
            blflag = false
-           printBiCol(zl,funcy & " ",greenyellow,steelblue) 
+           printBiCol(zl,funcy & " ",greenyellow,steelblue,":",0,false,{}) 
            echo()
            inc shown
  
