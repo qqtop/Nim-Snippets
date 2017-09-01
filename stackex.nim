@@ -2,12 +2,12 @@ import nimcx,httpclient, os, streams, xmltree, parsexml, xmlparser
 
 # stackexchange feed viewer
 # based on idea found in nim gitter
-# status ok     |  2017-01-15
-
+# status ok     |  2017-09-01
+# compile with : nim c -d:release -d:ssl -r stackex
 
 proc getFeed(): StringStream =
     var client = newHttpClient()
-    newStringStream(client.getContent("http://stackexchange.com/feeds/questions"))
+    newStringStream(client.getContent("https://stackexchange.com/feeds/questions"))
 
 let entries = getFeed().parseXml.findAll "entry"
 
@@ -25,7 +25,7 @@ for line in splitLines($entries):
   elif line.contains("<name>"): 
                                aline = aline.replace("</name>","")
                                aline = aline.replace("<name>","")
-                               printLnBiCol("Author    :   " & aline.strip(),yellowgreen,steelblue,":",10,false,{})
+                               printLnBiCol("Author    :   " & aline.strip(),yellowgreen,steelblue,":",0,false,{})
   elif line.contains("""<link rel="alternate" href=""") : 
                                aline = aline.replace("""<link rel="alternate" href="""","")
                                aline = aline.replace("""" />""","")
