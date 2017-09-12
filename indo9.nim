@@ -167,7 +167,7 @@ from jcconv import kata2hira
 
 proc doPrompt() =
       echo()
-      hlineln(80,truetomato)
+      hlineln(tw - 10,truetomato)
       printBiCol(" .Start | .Stop | .Input ","|",lime,truetomato,":",0,false,{})
       println("| .Quit ",salmon)
       
@@ -214,14 +214,17 @@ proc doClip(ms:int = 100) {.async.} =
  
                 #acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(cp)
                 #acmd = "trans -b -w $1 "  % $tw & quoteshellposix(cp)
+                let xpos = 0
                 acmd = "trans -w $1 "  % $tw & quoteshellposix(cp)              
                 var cpl = splitlines(cp)
                 var oldcpl:type(cpl)
                 if cpl != oldcpl:
                       echo()
-                      print(greenyellow & "ClipB" & dodgerblue & "  : " & termwhite)
+                      printLn(gold & "ClipB" & dodgerblue & "  : " & termwhite,styled={styleReverse})
+                      echo()
                       for cpline in cpl:
-                          println(cpline,powderblue,xpos = 10)                  
+                          print(wordwrap(cpline, tw),powderblue,xpos = xpos) 
+                          echo()
                       oldcpl = cpl
                 await sleepAsync(ms)
                                                            
@@ -238,25 +241,29 @@ proc doClip(ms:int = 100) {.async.} =
                           var rxl = splitlines($rx)
                           oldrxl   = rxl
                           if rxl.len == 1:
-                              print(mediumspringgreen & "Trans" & dodgerblue & "  : " & white & $rx & termwhite)
+                              printLn(gold & "Trans" & dodgerblue & "  : " & white & $rx & termwhite,styled={styleReverse})
+                              echo()
                               if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                   echo()
                                   doMecab(rx)
-                                  println(nimhira,pastelgreen,xpos = 10)
-                              
+                                  print(wordwrap(nimhira,tw),pastelgreen,xpos = xpos)
+                                  echo()
                           else:
-                                  printLn(mediumspringgreen & "Trans" & dodgerblue & "  : " & termwhite)
+                                  printLn(gold & "Trans" & dodgerblue & "  : " & termwhite,styled={styleReverse})
+                                  echo()
                                   for rxline in rxl:
                                       
-                                      println(rxline,yellowgreen,xpos = 10)
-                                      
+                                      print(wordwrap(rxline,tw),yellowgreen,xpos = xpos)
+                                      echo()
                                       if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                           if rxl.len == 2:
                                                 doMecab(rxline)
-                                                println(nimhira,pastelgreen,xpos = 10)
+                                                print(wordwrap(nimhira,tw),pastelgreen,xpos = xpos)
+                                                echo()
                                           else:      
                                                 doMecab(rxline)
-                                                println(nimhira,pastelgreen,xpos = 3) 
+                                                print(wordwrap(nimhira,tw),pastelgreen,xpos = xpos) 
+                                                echo()
                           doprompt()
                          
                                                    

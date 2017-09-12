@@ -1,5 +1,4 @@
-import os,osproc,strutils,parseutils,math,strfmt,rdstdin
-import nimcx, pythonize
+import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 
 # indo8
 # 
@@ -38,12 +37,6 @@ import nimcx, pythonize
 # exit with ctrl-c or q at Next prompt
 #
 #
-# now using cx.nim to handle most color printing tasks
-#
-#
-# 
-# 
-# 
 # A rough receipe for installing mecab 0.996 from  https://github.com/taku910/mecab
 # 
 # tested with :
@@ -201,12 +194,12 @@ var nimhira = ""
 var curlang = ""
 
 proc dokatax(akatax:string) =
-     print(curlang & " " & switch,dodgerblue) 
+     print(curlang & "   " & switch,dodgerblue,styled = {styleReverse}) 
      printLn(": " & akatax,termwhite,xpos = 11)
      writeFile(i7file,akatax)
 
 proc dowordx(akatax:string) =
-     print(curlang & " " & switch ,dodgerblue)
+     print(curlang & "   " & switch ,dodgerblue,styled = {styleReverse})
      printLn(": " & akatax,termwhite,xpos = 11)
      
      
@@ -259,7 +252,7 @@ while fin == false:
                      if cflag == false:
                         var cpc = checkclip()
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(cpc)
-                        print("ClipB  : ", greenyellow)
+                        print("ClipB  : ", gold,styled={stylereverse})
                         println(cpc,powderblue,xpos = 9)
                      else:
                         acmd = "trans -b -w $1 -s id -t en "  % $tw & quoteshellposix(katax)
@@ -354,7 +347,7 @@ while fin == false:
                         dowordx(katax)
               
           of "djp" : 
-                     curlang = "Indo"
+                     curlang = "Ind"
                      acmd0 = ""
                      if cflag == false:
                         acmd = "trans -b -p -w $1 -s id -t ja+en "  % $tw & quoteshellposix(readLineFromStdin(curlang & spacer))
@@ -493,8 +486,8 @@ while fin == false:
                 var rxl = splitlines($rx)
                 oldrxl   = rxl
                 if rxl.len == 1:
-                    print("Trans-" & switch ,mediumspringgreen)
-                    print(":",xpos=11)
+                    print("Trans-" & switch , gold,styled={stylereverse})
+                    print(":",xpos=11,dodgerblue)
                     print($rx,white,xpos = 13 )
                     if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                         echo()
@@ -502,8 +495,8 @@ while fin == false:
                         println(nimhira,pastelgreen,xpos = 13)
                     
                 else:
-                        print("Trans-" & switch ,mediumspringgreen)
-                        printLn(":",xpos=11)
+                        print("Trans-" & switch ,gold,styled={stylereverse})
+                        printLn(":",xpos=11,dodgerblue)
                         for rxline in rxl:
                             # also tried with wordwrap function here but japanese is not cut off correctly
                             if rxl.len == 2:
