@@ -2,7 +2,7 @@ import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 
 # indo8
 # 
-# a  wrapper around soimorts translate shell  for more convenient terminal use. 
+# a wrapper around soimorts translate shell  for more convenient terminal use. 
 # Now also supports mecab via python to display hiragana in case of japanese use
 # 
 # and saving of word in "/dev/shm/indo7q.txt" for access by kateglo3
@@ -14,7 +14,7 @@ import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 #          
 #          switches ending with p play voice from google
 #  
-# Tested:  nim 0.17.1 
+# Tested:  nim 0.17.3 
 # 
 # Requires :
 # 
@@ -24,9 +24,9 @@ import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 #
 #           a working mecab (japanese lexer) installation callable via python
 #
-#           kateglo3 (optional) 
+#           kateglo3 (optional) must be started in another terminal window
 #           
-#           if kateglo3 is available any indonesian word entered in indo8 will
+#           if kateglo3 is available any indonesian word or first word of a phrase entered in indo8 will
 #           
 #           also be looked up in kateglo3 automatically
 #           
@@ -41,7 +41,7 @@ import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 # 
 # tested with :
 # 
-# opensuseLeap42.1 
+# opensuseLeap42.2 
 # openSuse Tumbleweed
 # 
 #  
@@ -87,15 +87,14 @@ import os,osproc,parseutils,math,strfmt,rdstdin, nimcx, pythonize
 #  of the downloaded package.
 #  and pip2 install jcconv
 #
-#  worked ok 2017-09-01
+#  worked ok 2017-11-12
 #
-
 
 
 let i7file = "/dev/shm/indo7q.txt"    # change path as required keep filename
   
   
-var VERSION = "1.6.7"
+var VERSION = "1.6.8"
 setControlCHook(handler)
 
 var recBuff = newSeq[seq[string]]()
@@ -115,7 +114,7 @@ proc getidrec(idx:string|int):seq[string] =
      if idmax > id:
         idmax = id
         
-     for x in 1.. id:
+     for x in 1..id:
         var  yu = recBuff[x - 1] 
         if yu[0] == $idmax:
            result = yu
@@ -126,7 +125,7 @@ proc showHist(n:int = idd) =
    # for better aligned display we first get the length of the longest rec in recBuff
    var x3max = 0   # len kata
    var x4max = 0   # len trans 
-   for x in 0.. <recBuff.len:
+   for x in 0..<recBuff.len:
        var z = recBuff[x]
        if z[3].len > x3max:
           x3max = z[3].len
@@ -135,13 +134,13 @@ proc showHist(n:int = idd) =
       x3max = tw - 11
   
    if id < n:
-     for x in 1.. id:      
+     for x in 1..id:      
        var rx = getidrec(x)
        println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],cadetblue & rx[2])) 
        println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],termwhite & rx[1],termwhite  & rx[3])) 
     
    else :
-        for x in id-n+1.. id: 
+        for x in id-n+1..id: 
             var rx = getidrec(x)
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],cadetblue & rx[2])) 
             println("{:>4} {:<4} {} ".fmt(yellowgreen & rx[0],white & rx[1],termwhite  & rx[3])) 
@@ -502,8 +501,18 @@ while fin == false:
                             if rxl.len == 2:
                                 println(rxline,yellowgreen,xpos = 13)
                             else:
-                                # in case of many lines we provide a bit more space
-                                println(rxline,yellowgreen,xpos = 2)
+                                # in case of many lines we provide a bit more space and remove empty lines 
+                                # and lines with see line below:
+                                if rxline.startswith("Translations of ") == true or rxline.contains("->") == true  or isEmpty(rxline) == true : discard
+                                else:  
+                                     # here we can try different colors for grammar indicators like noun etc
+                                     if rxline.strip() in @["noun","verb","adjective","adverb","preposition","conjunction","auxiliary verb"] == true:
+                                         println(rxline,lightslategray,xpos = 2,styled = {stylereverse})
+                                     elif rxline.startswith("Definitions of ") == true :
+                                         echo()
+                                         printlnBicol(rxline,plum,powderblue,"of",2,false,{styleReverse})
+                                     else:   
+                                         println(rxline,yellowgreen,xpos = 2)
 
                             if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp" :
                                 if rxl.len == 2:

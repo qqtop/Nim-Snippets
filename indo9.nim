@@ -18,7 +18,8 @@ import nimcx, pythonize
 
 # some procs and vars currently unused , but maybe used in future 
 #
-
+# 2017-10-01 added a timer to auto switch to indo8 after 1800 secs 
+# 2017-11-12 slight improvement of interface and reduce echoing of unneded output fron transhell
 
 var rx = ""
 var oldrx = ""
@@ -59,7 +60,7 @@ proc showHist(n:int = idd) =
    # for better aligned display we first get the length of the longest rec in recBuff
    var x3max = 0   # len kata
    var x4max = 0   # len trans 
-   for x in 0.. <recBuff.len:
+   for x in 0..<recBuff.len:
        var z = recBuff[x]
        if z[3].len > x3max:
           x3max = z[3].len
@@ -172,12 +173,16 @@ proc doPrompt() =
       println("| .Quit ",salmon)
       
 proc doClip(ms:int = 100) {.async.} =
-     
+    var nn = epochTime()
     while true:        
-   
+         
          cp = checkClip()
          cp = strip(cp,true,false)
-            
+         
+         if epochTime() - nn > 1800:
+           cp = ".Input"   # autoswitch to indo8 after 30 mins secs
+
+                    
          if cp.startswith(".Stop") == true and stopflag == false :  
             stopflag = true
             curup(1)
@@ -188,7 +193,7 @@ proc doClip(ms:int = 100) {.async.} =
             stopflag = false
             curup(1)
             printlnBiCol(rightarrow & " Status : ok" & spaces(6),greenyellow,skyblue,":",40,false,{})
-         
+            nn = epochTime()
          
          elif cp.startswith(".Input") == true and stopflag == false:  
             stopflag = true
@@ -200,6 +205,7 @@ proc doClip(ms:int = 100) {.async.} =
             echo()
             println(" Manual input finished . Please select menu item below.\n",lightsalmon)
             doPrompt()
+            nn = epochTime()
          
          elif cp.startswith(".Quit") == true :  
             curup(1)
@@ -252,9 +258,29 @@ proc doClip(ms:int = 100) {.async.} =
                                   printLn(gold & "Trans" & dodgerblue & "  : " & termwhite,styled={styleReverse})
                                   echo()
                                   for rxline in rxl:
+                                  
+                                      #print(wordwrap(rxline,tw),yellowgreen,xpos = xpos)   # orig
+                                      #echo()                                               # orig
+                                      # testing
+                                      if rxl.len == 2:
+                                            print(wordwrap(rxline,tw),yellowgreen,xpos = xpos)
+                                            echo()
+                                      else:
+                                            # in case of many lines we provide a bit more space and remove empty lines 
+                                            # and lines with see line below:
+                                            if rxline.startswith("Translations of ") == true or rxline.contains("->") == true  or isEmpty(rxline) == true : discard
+                                            else:  
+                                                # here we can try different colors for grammar indicators like noun etc
+                                                if rxline.strip() in @["noun","verb","adjective","adverb","preposition","conjunction","auxiliary verb"] == true:
+                                                    println(rxline,lightslategray,xpos = 2,styled = {stylereverse})
+                                                elif rxline.startswith("Definitions of ") == true :
+                                                    echo()
+                                                    printlnBicol(rxline,plum,powderblue,"of",2,false,{styleReverse})
+                                                else:   
+                                                    println(wordwrap(rxline,tw),yellowgreen,xpos = 2)
+                                                
+                                      # end testing  
                                       
-                                      print(wordwrap(rxline,tw),yellowgreen,xpos = xpos)
-                                      echo()
                                       if switch == "ej" or switch == "ejp" or switch == "dj" or switch == "djp":
                                           if rxl.len == 2:
                                                 doMecab(rxline)
@@ -275,6 +301,7 @@ proc doClip(ms:int = 100) {.async.} =
                await sleepAsync(ms * 10)                   
       
 asyncCheck doClip()
+#waitFor doClip()     # this blocks until doclip is finished
 
 while true:
     try:
