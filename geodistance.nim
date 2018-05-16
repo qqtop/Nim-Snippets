@@ -1,43 +1,55 @@
-import math
- 
-proc distance_on_unit_sphere(lat1, long1, lat2, long2:float):float =
- 
-    # adapted from 
-    # http://www.johndcook.com/blog/python_longitude_latitude/
-    
-    # Convert latitude and longitude to 
-    # spherical coordinates in radians.
-    var degrees_to_radians = PI/180.0
-         
-    # phi = 90 - latitude
-    var phi1 = (90.0 - lat1) * degrees_to_radians
-    var phi2 = (90.0 - lat2) * degrees_to_radians
-         
-    # theta = longitude
-    var theta1 = long1 * degrees_to_radians
-    var theta2 = long2 * degrees_to_radians
-         
-    # Compute spherical distance from spherical coordinates.
-         
-    # For two locations in spherical coordinates 
-    # (1, theta, phi) and (1, theta, phi)
-    # cosine( arc length ) = 
-    #    sin phi sin phi' cos(theta-theta') + cos phi cos phi'
-    # distance = rho * arc length
-     
-    var zcos = (math.sin(phi1) * math.sin(phi2) * math.cos(theta1 - theta2) + 
-           math.cos(phi1) * math.cos(phi2))
-    
-    var arc = math.arccos( zcos )
-    var earth_radius = 6378.388
-    var rv = arc * earth_radius
-    result = rv
+import nimcx
 
-# http://mygeoposition.com/   
+# geodistance.nim
+# 
+# haversine great circle distance formular in nim
+# 
+# distanceTo is implemented in cxutils.nim
+# 
+# 2018-05-16
+# 
+        
+        
+hlineln()        
+echo "Haversine Great Circle Formular with Earth Radius : 6371.0 km"        
+echo "expect best +/- 0.5% from actual distance " 
+hlineln()
 echo()
-echo "London , Downing Street - Auburn Alabama"
-var arcdist = distance_on_unit_sphere(51.5033630,-0.1276250,32.627837,-85.445105  )
+echo "Examples "
+decho(2)
+echo "Oslo - Vancouver"
+echo distanceto((10.738741, 59.913818),(-123.138565,49.263588)) , " km"   
+echo distanceto((10.738741, 59.913818),(-123.138565,49.263588)) / 1.609345 ," miles"
+decho(2)
 
-echo "Distance : ",arcdist ," km"
-echo "Distance : ",arcdist/1.60934 ," miles"
-echo ()
+echo "Oslo - Madrid"
+echo distanceto((10.738741, 59.913818),(-3.700345,40.41669)) , " km"
+echo distanceto((10.738741, 59.913818),(-3.700345,40.41669)) / 1.609345 ," miles"
+decho(2)
+
+echo "Hongkong - London"
+echo distanceto((114.109497,22.396427),(-0.126236,51.500153)) , " km"
+echo distanceto((114.109497,22.396427),(-0.126236,51.500153)) / 1.609345 ," miles"
+decho(2)
+hlineln()
+decho(2)
+# we also allow input from commandline if blank just using some default Oslo-Vancouver data
+
+var origin    = readLineFromStdin("Origin      eg Oslo        : ")
+if origin == "": origin = "Oslo"
+var originlon = readLineFromStdin("Longitude   eg 10.738741   : ") 
+if originlon == "": originlon = "10.738741"
+var originlat = readLineFromStdin("Latitude    eg 59.913818   : ")
+if originlat == "": originlat = "59.913818"
+
+var dest    = readLineFromStdin("Destination eg Vancouver   : ")
+if dest == "" : dest = "Vancouver"
+var destlon = readLineFromStdin("Longitude   eg -123.138565 : ") 
+if destlon == "" : destlon = "-123.138565"
+var destlat = readLineFromStdin("Latitude    eg 49.263588   : ")
+if destlat == "" : destlat = "49.263588"
+decho(2)
+printLnBicol(&"Great Circle Distance    : {origin} - {dest}")
+printlnbicol("                   km    : " & $distanceto((parseFloat(originlon),parseFloat(originlat)),(parseFloat(destlon),parsefloat(destlat))))
+printlnbicol("                miles    : " & $(distanceto((parseFloat(originlon),parseFloat(originlat)),(parseFloat(destlon),parsefloat(destlat))) / 1.609345))
+doFinish()
