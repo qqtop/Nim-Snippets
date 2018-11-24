@@ -1,7 +1,10 @@
 
 import pythonize
 
+# Old example, may not work on newer setups
+# needs python2.7 and full Mecab installation
 # Example of running mecab via python with Nim  
+# Note : This needs to be redone for python3 and using the newer nimpy library
 
 var nimkata = ""
 var mecab = ""
